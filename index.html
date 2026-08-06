@@ -1,5 +1,3 @@
-# Welcome Leute
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -19,7 +17,6 @@
     .flashcard-inner {
       position: relative;
       width: 100%;
-
       height: 100%;
       text-align: center;
       transition: transform 0.5s;
@@ -39,7 +36,6 @@
       justify-content: space-between;
     }
     .flashcard-back { transform: rotateY(180deg); }
-
     .theme-transition { transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
     ::-webkit-scrollbar { width: 4px; }
     ::-webkit-scrollbar-thumb { background: rgba(156, 163, 175, 0.3); border-radius: 2px; }
@@ -59,7 +55,6 @@
       <div class="flex items-center gap-2">
         <div id="streak-counter" class="font-bold text-xs flex items-center gap-1 px-2 py-1 rounded-lg border border-slate-800 bg-slate-900 text-amber-500">
           🔥 <span id="streak-days-val">1</span> d
-
         </div>
         <div class="font-bold text-xs bg-indigo-950 text-indigo-300 border border-indigo-800 px-2 py-1 rounded-lg">
           ✨ <span id="xp-amount-val">0</span> XP
@@ -79,7 +74,6 @@
         <span class="text-[9px] font-bold">Arena</span>
       </button>
       <button onclick="switchTab('vocabulary')" class="flex-1 flex flex-col items-center justify-center navigation-tab-btn transition-colors text-slate-500" id="tab-vocabulary">
-
         <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="mb-1"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z"/><path d="M6 6h10M6 10h10"/></svg>
         <span class="text-[9px] font-bold">Lexicon</span>
       </button>
@@ -99,7 +93,6 @@
   </div>
 
   <!-- Master Application Logic & Core Datastructure Matrices -->
-
   <script>
     // Comprehensive A1 Categorized Vocabulary Dataset Matrix from PDF Specifications with Pronunciation Suffixes
     const a1VocabularyDatabase = {
@@ -119,7 +112,6 @@
         { id: "pdf_a13", german: "M (M)", gender: "letter", english: "M", pronunciation: "em", hint: "Example word: Maus" },
         { id: "pdf_a14", german: "N (N)", gender: "letter", english: "N", pronunciation: "en", hint: "Example word: Nest" },
         { id: "pdf_a15", german: "O (O)", gender: "letter", english: "O", pronunciation: "oh", hint: "Example word: Obst" },
-
         { id: "pdf_a16", german: "P (Peh)", gender: "letter", english: "P", pronunciation: "peh", hint: "Example word: Pinguin" },
         { id: "pdf_a17", german: "Q (Kuh)", gender: "letter", english: "Q", pronunciation: "koo", hint: "Example word: Quad" },
         { id: "pdf_a18", german: "R (Er)", gender: "letter", english: "R", pronunciation: "air", hint: "Example word: Rat" },
@@ -139,7 +131,6 @@
         { id: "pdf_u4", german: "ß (Weiß / Heißen)", gender: "ligature", english: "pronounced as 'sa'", pronunciation: "vyss / hy-sen", hint: "Asset this letter is pronounced like a double S sound." },
         { id: "pdf_u5", german: "CH after a, o, u", gender: "phonics", english: "back throat 'Kha'", pronunciation: "boohch / owch", hint: "Formed at the back of the mouth. Ex: Buch, Auch" },
         { id: "pdf_u6", german: "CH after Consonants", gender: "phonics", english: "front mouth 'Sh'", pronunciation: "eech / shprech-en", hint: "Formed at the front of the mouth. Ex: Ich, Sprechen" }
-
       ],
       "Numbers (Zahlen)": [
         { id: "pdf_n1", german: "Eins", gender: "number", english: "one", pronunciation: "yns", hint: "1" },
@@ -159,7 +150,6 @@
         { id: "pdf_n15", german: "Fünf Zehn", gender: "number", english: "fifteen", pronunciation: "fuenf-tsehn", hint: "15" },
         { id: "pdf_n16", german: "Sech Zehn", gender: "number", english: "sixteen", pronunciation: "zech-tsehn", hint: "16" },
         { id: "pdf_n17", german: "Sieb Zehn", gender: "number", english: "seventeen", pronunciation: "zeeb-tsehn", hint: "17" },
-
         { id: "pdf_n18", german: "Acht Zehn", gender: "number", english: "eighteen", pronunciation: "acht-tsehn", hint: "18" },
         { id: "pdf_n19", german: "Neun Zehn", gender: "number", english: "nineteen", pronunciation: "noyn-tsehn", hint: "19" },
         { id: "pdf_n20", german: "Zwanzig", gender: "number", english: "twenty", pronunciation: "tsvan-tsig", hint: "20" }
@@ -179,7 +169,6 @@
         { id: "pdf_m3", german: "März", gender: "month", english: "March", pronunciation: "merts", hint: "Month 3" },
         { id: "pdf_m4", german: "April", gender: "month", english: "April", pronunciation: "ah-pril", hint: "Month 4" },
         { id: "pdf_m5", german: "Mai", gender: "month", english: "May", pronunciation: "my", hint: "Month 5" },
-
         { id: "pdf_m6", german: "Juni", gender: "month", english: "June", pronunciation: "yoo-nee", hint: "Month 6" },
         { id: "pdf_m7", german: "Juli", gender: "month", english: "July", pronunciation: "yoo-lee", hint: "Month 7" },
         { id: "pdf_m8", german: "August", gender: "month", english: "August", pronunciation: "ow-goost", hint: "Month 8" },
@@ -199,7 +188,6 @@
         { id: "pdf_pd1", german: "Vormorgen", gender: "daypart", english: "3 am - 6 am", pronunciation: "fohr-mor-gen", hint: "Early dawn segment." },
         { id: "pdf_pd2", german: "Morgen", gender: "daypart", english: "6 am - 10 am", pronunciation: "mor-gen", hint: "Morning window." },
         { id: "pdf_pd3", german: "Vormittag", gender: "daypart", english: "10 am - 12 pm", pronunciation: "fohr-mit-tahk", hint: "Late morning setup." },
-
         { id: "pdf_pd4", german: "Mittag", gender: "daypart", english: "12 pm", pronunciation: "mit-tahk", hint: "Midday exact mark." },
         { id: "pdf_pd5", german: "Nachmittag", gender: "daypart", english: "12 pm - 4 pm", pronunciation: "nach-mit-tahk", hint: "Afternoon window." },
         { id: "pdf_pd6", german: "Abend", gender: "daypart", english: "4 pm - 7 pm", pronunciation: "ah-bent", hint: "Evening time constant." },
@@ -219,7 +207,6 @@
         { id: "pdf_f10", german: "Großvater", gender: "masculine", english: "Grand Father", pronunciation: "grohs-fah-ter", hint: "Grandpa" },
         { id: "pdf_f12", german: "Tochter", gender: "feminine", english: "Daughter", pronunciation: "toch-ter", hint: "Female child" },
         { id: "pdf_f13", german: "Mann", gender: "masculine", english: "Husband / Man", pronunciation: "man", hint: "Male spouse entry." },
-
         { id: "pdf_f14", german: "Frau", gender: "feminine", english: "Wife / Woman", pronunciation: "frow", hint: "Female spouse." },
         { id: "pdf_f15", german: "Schweigervater", gender: "masculine", english: "Father in Law", pronunciation: "shvee-ger-fah-ter", hint: "Spouse's father." },
         { id: "pdf_f16", german: "Schweigermutter", gender: "feminine", english: "Mother in Law", pronunciation: "shvee-ger-moot-er", hint: "Spouse's mother." },
@@ -239,7 +226,6 @@
       "Body Parts (Körperteile)": [
         { id: "pdf_b1", german: "Der kopf", gender: "masculine", english: "Head", pronunciation: "dayr kopf", hint: "Upper command center." },
         { id: "pdf_b2", german: "Das Augen", gender: "neuter", english: "Eyes", pronunciation: "dahs ow-gen", hint: "Visual sensor." },
-
         { id: "pdf_b3", german: "Das Ohr", gender: "neuter", english: "Ear", pronunciation: "dahs ohr", hint: "Hearing system." },
         { id: "pdf_b4", german: "Die Nase", gender: "feminine", english: "Nose", pronunciation: "dee nah-zeh", hint: "Olfactory node." },
         { id: "pdf_b5", german: "Der Mund", gender: "masculine", english: "Mouth", pronunciation: "dayr moont", hint: "Speaking node." },
@@ -259,7 +245,6 @@
         { id: "pdf_b19", german: "Zähne", gender: "plural", english: "Teeth", pronunciation: "tsae-neh", hint: "Mouth processing array." },
         { id: "pdf_b20", german: "Zunge", gender: "feminine", english: "Tongue", pronunciation: "tsoong-eh", hint: "Taste loop execution tool." }
       ],
-
       "Occupation (Berufe)": [
         { id: "pdf_oc1", german: "Manager", gender: "masculine", english: "Manager", pronunciation: "meh-neh-djer", hint: "Supervisor structural node mapping." },
         { id: "pdf_oc2", german: "Arzt / Ärztin", gender: "split", english: "Doctor", pronunciation: "ahrtst / aerj-tin", hint: "Medical controllers." },
@@ -279,7 +264,6 @@
         { id: "pdf_col4", german: "Braun", gender: "colour", english: "Brown", pronunciation: "brown", hint: "Earth color tracker token." },
         { id: "pdf_col5", german: "Grau", gender: "colour", english: "Grey", pronunciation: "grow", hint: "Neutral color index configuration." },
         { id: "pdf_col6", german: "Grün", gender: "colour", english: "Green", pronunciation: "gruen", hint: "Forest foliage constant." },
-
         { id: "pdf_col7", german: "Orange", gender: "colour", english: "Orange", pronunciation: "o-rahnj", hint: "Spectrum balance secondary transition." },
         { id: "pdf_col11", german: "Schwarz", gender: "colour", english: "Black", pronunciation: "shvarts", hint: "Zero luminosity value coordinate." },
         { id: "pdf_col12", german: "Weiß", gender: "colour", english: "White", pronunciation: "vyss", hint: "Maximum reflection spectrum matrix." }
@@ -299,7 +283,6 @@
         { id: "pdf_cl4", german: "Der Mantel", gender: "masculine", english: "Coat", hint: "Outer boundary cold weather shelter." },
         { id: "pdf_cl5", german: "Das T-Shirt", gender: "neuter", english: "T-Shirt", pronunciation: "dahs tee-shurt", hint: "Casual top canvas layout element." }
       ],
-
       "Household (Hauswesen Tasks)": [
         { id: "pdf_ho1", german: "Das Badzimmer", gender: "neuter", english: "Bathroom", pronunciation: "dahs baht-tsi-mer", hint: "Syllabus exact text layout entry." },
         { id: "pdf_ho2", german: "Das Arbeitzimmer", gender: "neuter", english: "Workroom", pronunciation: "dahs ar-byts-tsi-mer", hint: "Syllabus specific compound spelling." },
@@ -319,7 +302,6 @@
         { id: "pdf_gr2", german: "Guten Morgen", gender: "greeting", english: "Good Morning", pronunciation: "goo-ten mor-gen", hint: "Early day hour greeting tracker." },
         { id: "pdf_gr3", german: "Guten Abend", gender: "greeting", english: "Good Evening", pronunciation: "goo-ten ah-bent", hint: "Late hours intermediate greeting." },
         { id: "pdf_gr4", german: "Gute Nacht", gender: "greeting", english: "Good Night", pronunciation: "goo-teh nacht", hint: "Terminal sleep transition departure phrase." },
-
         { id: "pdf_gr5", german: "Tschüß", gender: "departure", english: "Bye", pronunciation: "tshuess", hint: "Informal fast separation baseline token." }
       ],
       "W-Questions (W-Fragen)": [
@@ -339,7 +321,6 @@
         { id: "pdf_in4", german: "Ich Komme aus...", gender: "dialogue", english: "I come from...", pronunciation: "eech kom-eh ows", hint: "Country/city of birth tracking deployment." },
         { id: "pdf_in6", german: "Ich Wohnne in...", gender: "dialogue", english: "I live in...", pronunciation: "eech vohn-eh in", hint: "Active spatial living localization data." }
       ],
-
       "Daily Routine (Tagesablauf)": [
         { id: "pdf_dr1", german: "Ich Stehe um 7.00 uhr auf", gender: "routine", english: "I get up at 7:00", pronunciation: "eech shtay-eh oom zee-ben oohr owf", hint: "Separable verb activation sequence step 1." },
         { id: "pdf_dr2", german: "Ich mache das bett", gender: "routine", english: "I make the bed", pronunciation: "eech mach-eh dahs bet", hint: "Syllabus spelling specific maintenance task." },
@@ -347,7 +328,7 @@
       ]
     };
 
-    // Refactored Expanded 13-Module Grammar Blueprint Database Array
+    // Refactored Adjective / Conjugation / Article Grammar Database Array
     const a1GrammarDatabase = [
       { id: "g_art", title: "1. Definite & Indefinite Articles", rules: "German specifies noun sets through Masculine (der/ein), Feminine (die/eine), Neuter (das/ein). Plurals carry 'die' but no baseline indefinite article.", example: "Der Mann, eine Frau, das Kind." },
       { id: "g_pron", title: "2. Personal Pronouns Matrix", rules: "Subjects are tracked via personal handles: ich (I), du (you), er/sie/es (he/she/it), wir (us), ihr (you plural), sie/Sie (they/Formal You).", example: "Ich bin hier. Du lernst schnell." },
@@ -359,7 +340,6 @@
       { id: "g_imp", title: "8. Imperativ Commands Formulation", rules: "Used to declare instructions/requests. The 'du' command strips away both the pronoun 'du' and the tail standard '-st' suffix tracking.", example: "Komm hierher! (Infinitive 'kommen' drops pronoun and suffix constraints entirely.)" },
       { id: "g_comp", title: "9. Degrees of Comparison Adjectives", rules: "Modifiers escalate structural attributes using baseline rules, adding '-er' for comparative forms and 'am ...-sten' for superlative declarations.", example: "klein -> kleiner -> am kleinsten. alt -> älter -> am ältesten." },
       { id: "g_perf", title: "10. Present Perfect Past Construction", rules: "Form past statements using auxiliary helpers ('haben' or 'sein' based on motion rules) at position 2, placing a 'Partizip II' particle component at sentence tail.", example: "Ich habe Deutsch gelernt. Wir sind nach Berlin gefahren." },
-
       { id: "g_habs", title: "11. Past Tense Haben & Sein (Präteritum)", rules: "Simple past framework constants used universally for auxiliary assets. Haben -> hatte. Sein -> war. Conjugates via standardized rules.", example: "Ich hatte ein House. Gestern war ich müde." },
       { id: "g_case", title: "12. Akkusativ vs Dativ Case Tracking", rules: "Akkusativ targets direct action receivers (Masculine den/einen). Dativ models indirect benefit targets (dem/der/dem/den).", example: "Ich gebe dem Mann (Dativ indirect object) den Ball (Akkusativ direct item asset)." },
       { id: "g_mail", title: "13. Formal Email Writing Blueprints", rules: "Structured communications require strict CEFR protocols: Greeting ('Sehr geehrte Damen und Herren,'), body block content, and formal signoff lines ('Mit freundlichen Grüßen').", example: "Sehr geehrte Frau Müller, ... Mit freundlichen Grüßen, Jhansi." }
@@ -379,7 +359,6 @@
       speaking: [
         { id: "s1", title: "Pronunciation Phonetics Calibration Engine", context: "Practice reading the native phrase out loud according to the phonetics breakdown matrix configuration guide.", text: "Wie geht es Ihnen heute Morgen?", guide: "Pronounce: Vee gayt es ee-nen hoy-te mor-gen?" }
       ]
-
     };
 
     // Full 5 Mock Exam System Pipeline Core Structure Mapping Matrix
@@ -399,7 +378,6 @@
       { id: 2, title: "Mock Exam Arena 3: Structural Navigation Grammar Core", passingScore: 3, questions: [
         { q: "Identify the direct object Accusative shift modification:", o: ["Ich esse der Apfel.", "Ich esse den Apfel.", "Ich esse dem Apfel.", "Ich esse das Apfel."], c: 1, exp: "Masculine object 'der Apfel' changes to 'den Apfel' in accusative." },
         { q: "Which possessive pronoun denotes 'my parent' correctly?", o: ["mein Vater", "meine Vater", "meinen Vater", "meines Vater"], c: 0, exp: "Masculine subject use matches 'mein Vater'." }
-
       ]},
       { id: 3, title: "Mock Exam Arena 4: Daily Conversational Dialogue Proficiency", passingScore: 3, questions: [
         { q: "Select the standard reply for 'Danke schön':", o: ["Bitte sehr", "Guten Morgen", "Hallo", "Tschüss"], c: 0, exp: "'Bitte sehr' is the conventional matching response for gratitude." }
@@ -419,7 +397,6 @@
     let selectedVocabCategory = "Alphabet (Alphabet)";
     let activeVocabCardIndex = 0;
     let isVocabCardFlipped = false;
-
     let activeGrammarIndex = 0;
 
     // Skills Interactive Assessment Tracker Arrays
@@ -439,7 +416,6 @@
     // Theme Class Configurations Engine Object Profiles Map
     const systemThemeProfiles = {
       'midnight-slate': {
-
         shellBg: 'bg-slate-900 border-slate-800',
         headerBg: 'bg-slate-950 border-slate-800 text-white',
         footerBg: 'bg-slate-950 border-slate-800',
@@ -459,7 +435,6 @@
         tabActive: 'text-lime-400',
         tabInactive: 'text-fuchsia-400'
       }
-
     };
 
     // Native Browser Audio Speech Synthesis Runner
@@ -479,7 +454,6 @@
       if (num === 0) return "null";
       
       const units = ["", "eins", "zwei", "drei", "vier", "fünf", "sechs", "sieben", "acht", "neun"];
-
       const teens = ["zehn", "elf", "zwölf", "dreizehn", "vierzehn", "fünfzehn", "sechzehn", "siebzehn", "achtzehn", "neunzehn"];
       const tens = ["", "zehn", "zwanzig", "dreißig", "vierzig", "fünfzig", "sechzig", "siebzig", "achtzig", "neunzig"];
 
@@ -499,7 +473,6 @@
         if (h > 0) res += (h === 1 ? "ein" : units[h]) + "hundert";
         if (rem > 0) res += convertSubHundreds(rem);
         return res;
-
       }
 
       let outputText = "";
@@ -518,7 +491,6 @@
         if (thous === 1) outputText += "eintausend";
         else outputText += convertSubThousands(thous) + "tausend";
       }
-
 
       if (remainingValue > 0) {
         outputText += convertSubThousands(remainingValue);
@@ -539,7 +511,6 @@
       if (isNaN(val) || val < 0) {
         outputNode.innerText = "Please enter a valid positive integer baseline parameter.";
         return;
-
       }
       if (val > 100000000) {
         outputNode.innerText = "Maximum threshold capped safely at 100,000,000 (100 Million).";
@@ -559,7 +530,6 @@
     function applyThemeProfile(themeKey) {
       currentThemeProfile = themeKey;
       localStorage.setItem('sb_theme_profile', themeKey);
-
       const conf = systemThemeProfiles[themeKey] || systemThemeProfiles['midnight-slate'];
       
       document.getElementById('app-shell-container').className = `w-full max-w-md mx-auto min-h-screen shadow-2xl flex flex-col justify-between relative border-x theme-transition ${conf.shellBg}`;
@@ -579,7 +549,6 @@
       document.getElementById('xp-amount-val').innerText = totalXPAmount;
       
       const display = document.getElementById('player-rank-display');
-
       if (totalXPAmount >= 500) display.innerText = "Lv.4 Imperial Language Architect";
       else if (totalXPAmount >= 250) display.innerText = "Lv.3 Master Competitor";
       else if (totalXPAmount >= 100) display.innerText = "Lv.2 Experienced Challenger";
@@ -599,7 +568,6 @@
       activeGameMode = 'none';
       if (tabId !== 'exams') activeExamRunningMode = false;
       applyThemeProfile(currentThemeProfile);
-
       renderActiveTabModule();
     }
 
@@ -619,7 +587,6 @@
       
       matchGamePairs = {
         germans: germans.sort(() => 0.5 - Math.random()),
-
         english: english.sort(() => 0.5 - Math.random())
       };
       
@@ -639,7 +606,6 @@
         const gerItem = matchGamePairs.germans[matchSelectedGermanIdx];
         const engItem = matchGamePairs.english[matchSelectedEnglishIdx];
         
-
         if (gerItem.id === engItem.id) {
           gerItem.matched = true;
           engItem.matched = true;
@@ -659,7 +625,6 @@
       activeGameMode = 'gender';
       genderGameFeedback = null;
       
-
       const pool = [...a1VocabularyDatabase["Family (Die Familie)"], ...a1VocabularyDatabase["Body Parts (Körperteile)"]].filter(x => ['masculine', 'feminine', 'neuter'].includes(x.gender));
       
       if(pool.length > 0) {
@@ -679,7 +644,6 @@
       }
       renderActiveTabModule();
     }
-
 
     // View Route Processing Center Hub
     function renderActiveTabModule() {
@@ -701,7 +665,6 @@
             rightColHTML += `<button onclick="handleMatchSelection('eng', ${i})" class="w-full p-3 border rounded-xl font-bold text-xs text-center transition-all ${activeStyle}">${e.matched ? e.text : e.text}</button>`;
           });
 
-
           container.innerHTML = `
             <div class="space-y-4">
               <div class="flex justify-between items-center px-1">
@@ -721,7 +684,6 @@
                   <button onclick="initWordMatchGame()" class="px-4 py-1.5 bg-indigo-600 text-white font-bold text-xs rounded-lg">Play Another Round</button>
                 </div>
               ` : ''}
-
             </div>
           `;
           return;
@@ -741,7 +703,6 @@
               <p class="text-[11px] text-slate-400">Select the correct matching definite root article gender token structure for the German noun displayed.</p>
               
               <div class="${conf.cardBg} border p-8 rounded-2xl shadow-xl text-center flex flex-col items-center justify-center space-y-2">
-
                 <span class="text-2xl font-black text-amber-400 tracking-tight">${cleanGermanNoun}</span>
                 <span class="text-xs text-slate-400 font-medium font-mono">[ Meaning: ${genderGameActiveItem ? genderGameActiveItem.english : ''} ]</span>
               </div>
@@ -761,7 +722,6 @@
               ` : ''}
             </div>
           `;
-
           return;
         }
 
@@ -781,7 +741,6 @@
                 <h3 class="text-xs font-black text-amber-400 uppercase tracking-wider">⚡ Interactive Vocabulary Memory Games</h3>
                 <p class="text-[10px] text-slate-400 mt-0.5">Accelerate item retention using targeted cognitive game mechanics loops.</p>
               </div>
-
               <div class="grid grid-cols-2 gap-2">
                 <button onclick="initWordMatchGame()" class="p-3 bg-slate-950 hover:bg-slate-900 border border-indigo-900/60 rounded-xl text-left flex flex-col justify-between transition-all transform active:scale-95">
                   <span class="text-xs font-black text-indigo-300">Word Match Matrix</span>
@@ -801,7 +760,6 @@
               </div>
               <div class="${conf.cardBg} border p-4 rounded-xl flex flex-col justify-between">
                 <span class="text-[10px] uppercase font-bold text-slate-400 tracking-wider">Exam Status Modules</span>
-
                 <span class="text-base font-black text-indigo-400 mt-1">5 Simulations</span>
               </div>
             </div>
@@ -822,7 +780,6 @@
         const activeList = a1VocabularyDatabase[selectedVocabCategory];
         const card = activeList ? activeList[activeVocabCardIndex] : null;
 
-
         let selectOptionsHTML = '';
         categories.forEach(cat => {
           selectOptionsHTML += `<option value="${cat}" ${cat === selectedVocabCategory ? 'selected' : ''}>${cat}</option>`;
@@ -842,7 +799,6 @@
               </div>
             </div>
           `;
-
         } else if (card) {
           coreDisplayBodyHTML = `
             <div class="w-full flex justify-between items-center text-[11px] font-bold text-slate-400 px-1">
@@ -858,11 +814,10 @@
                     <span class="text-[9px] font-mono text-amber-400/80 font-bold bg-slate-950/40 px-1.5 py-0.5 rounded">📄 Front</span>
                   </div>
                   <div class="flex flex-col my-auto items-center">
-                    <span class="text-xl font-black tracking-tight select-none">${card.german}</span>
+                    <span class="text-2xl font-black tracking-tight select-none">${card.german}</span>
                     <span class="text-xs font-mono font-bold text-indigo-300 mt-2 bg-indigo-950/40 px-2 py-1 rounded border border-indigo-900/40">🗣️ [ ${card.pronunciation || 'N/A'} ]</span>
                     
                     <button onclick="event.stopPropagation(); triggerSpeechSynthesis('${card.german}');" class="mt-3 px-3 py-1.5 bg-indigo-600 hover:bg-indigo-500 text-white font-extrabold text-[10px] rounded-lg shadow-md flex items-center gap-1 transition-transform active:scale-95">
-
                       🔊 Listen Audio
                     </button>
                   </div>
@@ -883,7 +838,6 @@
           `;
         }
 
-
         container.innerHTML = `
           <div class="space-y-4 flex flex-col items-center">
             <div class="w-full">
@@ -903,7 +857,6 @@
           const isOpen = (idx === activeGrammarIndex);
           structuralAccordionHTML += `
             <div class="border border-slate-800 rounded-xl overflow-hidden ${isOpen ? 'bg-slate-950/40' : 'bg-slate-950/10'}">
-
               <button onclick="activeGrammarIndex=${idx}; renderActiveTabModule();" class="w-full text-left p-3.5 text-xs font-black flex justify-between items-center transition-colors bg-slate-950 border-b border-slate-800/60 text-slate-200">
                 <span>${item.title}</span>
                 <span>${isOpen ? '▼' : '▶'}</span>
@@ -924,7 +877,6 @@
           `;
         });
 
-
         container.innerHTML = `
           <div class="space-y-3">
             <div class="px-1">
@@ -944,7 +896,6 @@
             `).join('')}
           </div>
           <div class="${conf.cardBg} border p-4 rounded-2xl space-y-3">
-
             <h3 class="text-xs font-black uppercase tracking-wider text-indigo-400">${activeSkillSection.toUpperCase()} LAB IMMERSION</h3>`;
 
         if (activeSkillSection === 'listening') {
@@ -964,7 +915,6 @@
                 </div>
               ` : ''}
             </div>`;
-
         } else if (activeSkillSection === 'reading') {
           const rData = a1SkillsDatabase.reading[0];
           skillsHTML += `
@@ -984,7 +934,6 @@
             </div>`;
         } else if (activeSkillSection === 'writing') {
           const wData = a1SkillsDatabase.writing[0];
-
           skillsHTML += `
             <div class="space-y-3">
               <p class="text-xs font-medium leading-relaxed">${wData.context}</p>
@@ -1004,7 +953,6 @@
           const sData = a1SkillsDatabase.speaking[0];
           skillsHTML += `
             <div class="space-y-3 text-center py-2">
-
               <p class="text-xs font-bold text-slate-300">Target Statement Structure Challenge</p>
               <p class="text-xl font-black text-indigo-300">"${sData.text}"</p>
               <div class="p-2.5 bg-slate-950 text-left border border-slate-800 rounded-lg">
@@ -1024,7 +972,6 @@
           let selectionRowsHTML = '';
           mockExamsDatabase.forEach((ex, idx) => {
             selectionRowsHTML += `
-
               <div class="${conf.cardBg} border p-4 rounded-xl flex flex-col justify-between space-y-3">
                 <div>
                   <h4 class="text-xs font-black text-white">${ex.title}</h4>
@@ -1044,7 +991,6 @@
               <div class="space-y-3">${selectionRowsHTML}</div>
             </div>
           `;
-
         } else {
           const exam = mockExamsDatabase[selectedActiveExamIndex];
           
@@ -1064,7 +1010,6 @@
                 <div class="text-left bg-slate-900 p-3 rounded-lg border border-slate-800 text-[11px] space-y-1 text-slate-300">
                   <p><strong>Passing Constraint Target:</strong> ${exam.passingScore} Correct options</p>
                   <p><strong>Rewards Awarded:</strong> ${passed ? '+50 XP Milestone Achieved!' : '0 XP. Please run remediation rules.'}</p>
-
                 </div>
                 <button onclick="activeExamRunningMode=false; renderActiveTabModule();" class="w-full p-3 bg-gradient-to-r from-indigo-500 to-fuchsia-500 font-black text-xs text-white rounded-xl" >Return to Exam Selection Shell</button>
               </div>
@@ -1083,7 +1028,6 @@
               <div class="${conf.cardBg} border p-5 rounded-2xl shadow-xl">
                 <p class="text-xs font-bold leading-relaxed text-slate-200">${activeQuestion.q}</p>
               </div>
-
 
               <div class="space-y-2">
                 ${activeQuestion.o.map((opt, oIdx) => {
@@ -1104,7 +1048,6 @@
                   <span class="text-[9px] uppercase font-black text-slate-400 tracking-wider">Grammar Logic Correction Analysis</span>
                   <p class="text-xs text-slate-300 font-medium">${activeQuestion.exp}</p>
                   <button onclick="advanceActiveExamQuestionStep()" class="w-full mt-1 py-2.5 bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs rounded-xl" >Next Question →</button>
-
                 </div>
               ` : ''}
             </div>
@@ -1124,7 +1067,6 @@
     }
 
     function submitActiveExamOptionAnswer(ansIdx) {
-
       if (processingExamEvaluationFeedbackMode) return;
       activeExamUserAnswersCollected[currentExamQuestionIndex] = ansIdx;
       processingExamEvaluationFeedbackMode = true;
@@ -1139,5 +1081,3 @@
   </script>
 </body>
 </html>
-
-
