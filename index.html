@@ -1,13 +1,13 @@
 <!DOCTYPE html>
-<html lang="de">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Sprachblitz - A1 Language Arena & Exam Center</title>
   <!-- Tailwind CSS Core Setup -->
-  <script src="https://tailwindcss.com"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
   <!-- External Font Family Tracking -->
-  <link href="https://googleapis.com" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
     body {
       font-family: 'Plus Jakarta Sans', sans-serif;
@@ -19,7 +19,7 @@
       width: 100%;
       height: 100%;
       text-align: center;
-      transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      transition: transform 0.5s;
       transform-style: preserve-3d;
     }
     .flashcard-wrapper.flipped .flashcard-inner { transform: rotateY(180deg); }
@@ -41,7 +41,7 @@
     ::-webkit-scrollbar-thumb { background: rgba(156, 163, 175, 0.3); border-radius: 2px; }
   </style>
 </head>
-<body class="min-h-screen flex flex-col bg-slate-950 text-slate-100 selection:bg-indigo-500 selection:text-white">
+<body class="min-h-screen flex flex-col bg-slate-950 text-slate-100">
 
   <!-- Main Responsive Application Container Shell -->
   <div id="app-shell-container" class="w-full max-w-md mx-auto min-h-screen shadow-2xl flex flex-col justify-between relative border-x border-slate-800 bg-slate-900 theme-transition">
@@ -63,30 +63,30 @@
     </header>
 
     <!-- Main Dynamic Scrolling Workspace Window View Surface -->
-    <main id="main-scroll-view" class="flex-1 overflow-y-auto p-4 bg-slate-900 theme-transition mb-2">
-      <div id="view-mount-point"></div>
+    <main id="main-scroll-view" class="flex-1 overflow-y-auto p-4 bg-slate-900 theme-transition">
+      <!-- Programmatic Screen Modules Are Injected Universally Here -->
     </main>
 
     <!-- Persistent Global Footer Navigation Control Dock Grid Layout -->
     <footer id="app-footer-nav" class="border-t border-slate-800 bg-slate-950 h-16 flex sticky bottom-0 z-50 theme-transition">
       <button onclick="switchTab('dashboard')" class="flex-1 flex flex-col items-center justify-center navigation-tab-btn transition-colors text-indigo-400" id="tab-dashboard">
-        <svg xmlns="http://w3.org" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="mb-1"><rect width="7" height="9" x="3" y="3" rx="1"/><rect width="7" height="5" x="14" y="3" rx="1"/><rect width="7" height="9" x="14" y="12" rx="1"/><rect width="7" height="5" x="3" y="16" rx="1"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="mb-1"><rect width="7" height="9" x="3" y="3" rx="1"/><rect width="7" height="5" x="14" y="3" rx="1"/><rect width="7" height="9" x="14" y="12" rx="1"/><rect width="7" height="5" x="3" y="16" rx="1"/></svg>
         <span class="text-[9px] font-bold">Arena</span>
       </button>
       <button onclick="switchTab('vocabulary')" class="flex-1 flex flex-col items-center justify-center navigation-tab-btn transition-colors text-slate-500" id="tab-vocabulary">
-        <svg xmlns="http://w3.org" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="mb-1"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z"/><path d="M6 6h10M6 10h10"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="mb-1"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z"/><path d="M6 6h10M6 10h10"/></svg>
         <span class="text-[9px] font-bold">Lexicon</span>
       </button>
       <button onclick="switchTab('grammar')" class="flex-1 flex flex-col items-center justify-center navigation-tab-btn transition-colors text-slate-500" id="tab-grammar">
-        <svg xmlns="http://w3.org" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="mb-1"><path d="M21.42 10.922a1 1 0 0 0-.019-1.838L12.83 5.18a2 2 0 0 0-1.66 0L2.6 9.08a1 1 0 0 0 0 1.832l8.57 3.908a2 2 0 0 0 1.66 0z"/><path d="M6 18.8v-4L12 18l6-3.2v4"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="mb-1"><path d="M21.42 10.922a1 1 0 0 0-.019-1.838L12.83 5.18a2 2 0 0 0-1.66 0L2.6 9.08a1 1 0 0 0 0 1.832l8.57 3.908a2 2 0 0 0 1.66 0z"/><path d="M6 18.8v-4L12 18l6-3.2v4"/></svg>
         <span class="text-[9px] font-bold">Grammar</span>
       </button>
       <button onclick="switchTab('skills')" class="flex-1 flex flex-col items-center justify-center navigation-tab-btn transition-colors text-slate-500" id="tab-skills">
-        <svg xmlns="http://w3.org" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="mb-1"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/><path d="M19 10v1a7 7 0 0 1-14 0v-1M12 19v4M8 23h8"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="mb-1"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/><path d="M19 10v1a7 7 0 0 1-14 0v-1M12 19v4M8 23h8"/></svg>
         <span class="text-[9px] font-bold">Skills</span>
       </button>
       <button onclick="switchTab('exams')" class="flex-1 flex flex-col items-center justify-center navigation-tab-btn transition-colors text-slate-500" id="tab-exams">
-        <svg xmlns="http://w3.org" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="mb-1"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/><polyline points="14 2 14 8 20 8"/><path d="m9 15 2 2 4-4"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="mb-1"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/><polyline points="14 2 14 8 20 8"/><path d="m9 15 2 2 4-4"/></svg>
         <span class="text-[9px] font-bold">Exams</span>
       </button>
     </footer>
@@ -94,44 +94,991 @@
 
   <!-- Master Application Logic & Core Datastructure Matrices -->
   <script>
-    const appState = {
-      currentTab: 'dashboard',
-      xp: 0,
-      streak: 1,
-      currentRank: 'Lv.1 Arena Novice',
-      arenaMode: null,
-      vocabularyCategory: 'Alphabet (Alphabet)',
-      flashcardIndex: 0,
-      quizIndex: 0,
-      quizScore: 0,
-      activeExamIdx: null,
-      examAnswers: {},
-      savedItems: []
-    };
-
-    // Full Complete A1 German Vocabulary Dataset from Syllabus Specifications
+    // Comprehensive A1 Categorized Vocabulary Dataset Matrix from PDF Specifications with Pronunciation Suffixes
     const a1VocabularyDatabase = {
       "Alphabet (Alphabet)": [
-        { id: "v_al_a", german: "A", gender: "letter", english: "Apple (Apfel)", pronunciation: "ah", hint: "Short vowel sound" },
-        { id: "v_al_b", german: "B", gender: "letter", english: "Banana (Banana)", pronunciation: "beh", hint: "Hard consonant explosive sound" },
-        { id: "v_al_c", german: "C", gender: "letter", english: "Clown (Clown)", pronunciation: "tseh", hint: "Often takes ts- sound" },
-        { id: "v_al_d", german: "D", gender: "letter", english: "Dame (Dame)", pronunciation: "deh", hint: "Pronounced soft at start" },
-        { id: "v_al_e", german: "E", gender: "letter", english: "Elephant (Elephant)", pronunciation: "eh", hint: "Like 'ay' without gliding" },
-        { id: "v_al_f", german: "F", gender: "letter", english: "Fisch (Fish)", pronunciation: "ef", hint: "Identical to English sound" },
-        { id: "v_al_g", german: "G", gender: "letter", english: "Gabel (Fork)", pronunciation: "geh", hint: "Always hard G sound" },
-        { id: "v_al_h", german: "H", gender: "letter", english: "Hund (Dog)", pronunciation: "ha", hint: "Silent when lengthening inside word" },
-        { id: "v_al_i", german: "I", gender: "letter", english: "Iglu (Igloo)", pronunciation: "ih", hint: "Sounds like English 'ee'" },
-        { id: "v_al_j", german: "J", gender: "letter", english: "Junge (Boy)", pronunciation: "yot", hint: "Sounds like English 'Y'" },
-        { id: "v_al_k", german: "K", gender: "letter", english: "Katze (Cat)", pronunciation: "kah", hint: "Sharp breath sound" },
-        { id: "v_al_l", german: "L", gender: "letter", english: "Letter (Brief)", pronunciation: "el", hint: "Standard liquid dental track" },
-        { id: "v_al_m", german: "M", gender: "letter", english: "Maus (Mouse)", pronunciation: "em", hint: "Bilabial nasal path sound" },
-        { id: "v_al_n", german: "N", gender: "letter", english: "Nest (Nest)", pronunciation: "en", hint: "Nasal track element sound" },
-        { id: "v_al_o", german: "O", gender: "letter", english: "Obst (Fruit)", pronunciation: "oh", hint: "Pure deep round sound" },
-        { id: "v_al_p", german: "P", gender: "letter", english: "Pinguin (Penguin)", pronunciation: "peh", hint: "Aspirated hard labial structure" },
-        { id: "v_al_q", german: "Q", gender: "letter", english: "Quad (Quad)", pronunciation: "kooh", hint: "Always combined with u: 'kv'" },
-        { id: "v_al_r", german: "R", gender: "letter", english: "Rat (Ratte)", pronunciation: "er", hint: "Throat voiced rolling variant" },
-        { id: "v_al_s", german: "S", gender: "letter", english: "Sonne (Sun)", pronunciation: "es", hint: "Voiced 'Z' sound before vowels" },
-        { id: "v_al_t", german: "T", gender: "letter", english: "Tomato (Tomate)", pronunciation: "teh", hint: "Alveolar dental burst sound" },
-        { id: "v_al_u", german: "U", gender: "letter", english: "Uhr (Clock)", pronunciation: "oo", hint: "Sounds like English double O" },
-        { id: "v_al_v", german: "V", gender: "letter", english: "Vogel (Bird)", pronunciation: "fau", hint: "Usually maps directly to 'F'" },
-        { id: "v_al_w", german: "W", gender: "letter", english: "Wolf (Wolf)", pronunciation: "weh", hint: "Maps directly to English 'V' vector" },{ id: "v_al_x", german: "X", gender: "letter", english: "Xylophone (Xylophon)", pronunciation: "ix", hint: "Sounds like 'ks'" },{ id: "v_al_y", german: "Y", gender: "letter", english: "Yoga (Yoga)", pronunciation: "upsilon", hint: "Pronounced like long Ü track" },{ id: "v_al_z", german: "Z", gender: "letter", english: "Zebra (Zebra)", pronunciation: "tset", hint: "Sharp 'ts' structural release" },{ id: "v_al_ae", german: "Ä", gender: "umlaut", english: "Bär (Bear)", pronunciation: "eh-umlaut", hint: "Lips flat wide release track" },{ id: "v_al_oe", german: "Ö", gender: "umlaut", english: "Löwe (Lion)", pronunciation: "er-umlaut", hint: "Shape lips like O say E" },{ id: "v_al_ue", german: "Ü", gender: "umlaut", english: "Gemüse (Vegetables)", pronunciation: "oo-umlaut", hint: "Shape lips like whistle say ee" },{ id: "v_al_ss", german: "ß", gender: "ligature", english: "Weiß / Heißen", pronunciation: "es-tset", hint: "Sharp unvoiced double S sound" }],"Numbers (Zahlen)": [{ id: "v_nu_1", german: "eins", gender: "number", english: "one", pronunciation: "aynts", hint: "Drops 's' in counting sequences" },{ id: "v_nu_2", german: "zwei", gender: "number", english: "two", pronunciation: "tsvay", hint: "Alternative spoken form: zwo" },{ id: "v_nu_3", german: "drei", gender: "number", english: "three", pronunciation: "dray", hint: "Roll r track slightly if possible" },{ id: "v_nu_4", german: "vier", gender: "number", english: "four", pronunciation: "feer", hint: "Starts with sharp F tone sound" },{ id: "v_nu_5", german: "fünf", gender: "number", english: "five", pronunciation: "fuynf", hint: "Keep lips tight on tracking umlaut" },{ id: "v_nu_6", german: "sechs", gender: "number", english: "six", pronunciation: "zeks", hint: "The chs reads directly like ks" },{ id: "v_nu_7", german: "sieben", gender: "number", english: "seven", pronunciation: "zee-ben", hint: "Standard initial soft tracking path" },{ id: "v_nu_8", german: "acht", gender: "number", english: "eight", pronunciation: "akht", hint: "Back throat sound after a" },{ id: "v_nu_9", german: "neun", gender: "number", english: "nine", pronunciation: "noyn", hint: "Diphthong sounds like English 'oy'" },{ id: "v_nu_10", german: "zehn", gender: "number", english: "ten", pronunciation: "tseh-n", hint: "Silent h lengthens vowel sound" },{ id: "v_nu_11", german: "elf", gender: "number", english: "eleven", pronunciation: "elf", hint: "Short clear uniform layout tone" },{ id: "v_nu_12", german: "zwölf", gender: "number", english: "twelve", pronunciation: "tsvuylf", hint: "Umlaut requires rounded lip profile" },{ id: "v_nu_20", german: "zwanzig", gender: "number", english: "twenty", pronunciation: "tsvan-tsikh", hint: "-ig suffix reads like soft sh/ch" }],"Days & Months (Zeitwerte)": [{ id: "v_da_1", german: "der Montag", gender: "masculine", english: "Monday", pronunciation: "mohn-tahk", hint: "All days are masculine gender" },{ id: "v_da_2", german: "der Dienstag", gender: "masculine", english: "Tuesday", pronunciation: "deens-tahk", hint: "Long ie tracking structure" },{ id: "v_da_3", german: "der Mittwoch", gender: "masculine", english: "Wednesday", pronunciation: "mit-vokh", hint: "Only day not ending in -tag" },{ id: "v_da_4", german: "der Donnerstag", gender: "masculine", english: "Thursday", pronunciation: "don-ers-tahk", hint: "Double consonant shortens vowel" },{ id: "v_da_5", german: "der Freitag", gender: "masculine", english: "Friday", pronunciation: "fry-tahk", hint: "Diphthong initial block element" },{ id: "v_da_6", german: "der Samstag", gender: "masculine", english: "Saturday", pronunciation: "zams-tahk", hint: "Variant in North: Sonnabend" },{ id: "v_da_7", german: "der Sonntag", gender: "masculine", english: "Sunday", pronunciation: "zon-tahk", hint: "Day of rest marker standard" },{ id: "v_mo_1", german: "der Januar", gender: "masculine", english: "January", pronunciation: "yan-oo-ahr", hint: "All months are masculine gender" },{ id: "v_mo_2", german: "der Februar", gender: "masculine", english: "February", pronunciation: "feb-roo-ahr", hint: "Vowel structures clear separate" },{ id: "v_mo_3", german: "der März", gender: "masculine", english: "March", pronunciation: "merts", hint: "Ä tracks direct sharp flat open" }],"Family & Body Parts": [{ id: "v_fa_1", german: "die Eltern", gender: "plural", english: "parents", pronunciation: "el-tern", hint: "Always plural article tracking" },{ id: "v_fa_2", german: "der Vater", gender: "masculine", english: "father", pronunciation: "fah-ter", hint: "Initial v reads like standard F" },{ id: "v_fa_3", german: "die Mutter", gender: "feminine", english: "mother", pronunciation: "moot-er", hint: "Short u sound block tracking" },{ id: "v_fa_4", german: "das Kind", gender: "neutral", english: "child", pronunciation: "kint", hint: "Final d mutates toward hard T" },{ id: "v_fa_5", german: "der Bruder", gender: "masculine", english: "brother", pronunciation: "broo-der", hint: "Long u structural anchor path" },{ id: "v_fa_6", german: "die Schwester", gender: "feminine", english: "sister", pronunciation: "shves-ter", hint: "Sch creates unified triple sound" },{ id: "v_bp_1", german: "der Kopf", gender: "masculine", english: "head", pronunciation: "kopf", hint: "Short distinct aspirated exit" },{ id: "v_bp_2", german: "das Auge", gender: "neutral", english: "eye", pronunciation: "ow-geh", hint: "Plural structure maps to die Augen" },{ id: "v_bp_3", german: "das Ohr", gender: "neutral", english: "ear", pronunciation: "ohr", hint: "Long vowel track signature path" },{ id: "v_bp_4", german: "die Nase", gender: "feminine", english: "nose", pronunciation: "nah-zeh", hint: "Voiced internal s component track" }],"Occupations & Colours": [{ id: "v_oc_1", german: "der Arzt / die Ärztin", gender: "mixed", english: "doctor", pronunciation: "artst / erts-tin", hint: "-in suffix denotes feminine role" },{ id: "v_oc_2", german: "der Kellner", gender: "masculine", english: "waiter", pronunciation: "kel-ner", hint: "Feminine: die Kellnerin" },{ id: "v_oc_3", german: "der Koch", gender: "masculine", english: "cook", pronunciation: "kokh", hint: "Uses back mouth ch sound" },{ id: "v_co_1", german: "rot", gender: "adjective", english: "red", pronunciation: "roht", hint: "Long pure vowel root component" },{ id: "v_co_2", german: "gelb", gender: "adjective", english: "yellow", pronunciation: "gelp", hint: "Final b shifts to soft P sound" },{ id: "v_co_3", german: "blau", gender: "adjective", english: "blue", pronunciation: "blow", hint: "Diphthong matches English 'ow'" },{ id: "v_co_4", german: "grün", gender: "adjective", english: "green", pronunciation: "gruyn", hint: "Tight lips on long umlaut form" },{ id: "v_co_5", german: "schwarz", gender: "adjective", english: "black", pronunciation: "shvarts", hint: "Sharp terminal ts signature sound" }],"Greetings & W-Questions": [{ id: "v_gr_1", german: "Guten Tag", gender: "phrase", english: "Good Day", pronunciation: "goo-ten tahk", hint: "Standard accusative formal greet" },{ id: "v_gr_2", german: "Auf Wiedersehen", gender: "phrase", english: "Goodbye", pronunciation: "owf vee-der-zayn", hint: "Literally: Until we see again" },{ id: "v_gr_3", german: "Bitte", gender: "phrase", english: "Please / Pardon", pronunciation: "bit-eh", hint: "Multi-use structural courtesy term" },{ id: "v_gr_4", german: "Danke", gender: "phrase", english: "Thank you", pronunciation: "dun-keh", hint: "Short pure structural acknowledgement" },{ id: "v_wq_1", german: "Wo", gender: "question", english: "Where", pronunciation: "voh", hint: "Tracks static position coordinates" },{ id: "v_wq_2", german: "Wer", gender: "question", english: "Who", pronunciation: "vayr", hint: "False friend: means who, not where" },{ id: "v_wq_3", german: "Was", gender: "question", english: "What", pronunciation: "vahs", hint: "Inquires about item identities" },{ id: "v_wq_4", german: "Wie", gender: "question", english: "How", pronunciation: "vee", hint: "Used also in time: Wie spät ist es" },{ id: "v_wq_5", german: "Wann", gender: "question", english: "When", pronunciation: "vun", hint: "Inquires about temporal structures" }]};// Advanced Expanded Grammar Syllabus Engine Mapping Directly to content requirementsconst a1GrammarDatabase = [{title: "Articles & Grammatical Gender (Artikel)",level: "Syllabus A1.1",summary: "Every German noun carries an inherent gender marker affecting adjacent adjective sets.",rules: [{ label: "Masculine (Maskulin)", text: "Uses definite 'der' and indefinite 'ein' tracking tags." },{ label: "Feminine (Feminin)", text: "Uses definite 'die' and indefinite 'eine' tracking tags." },{ label: "Neutral (Neutrum)", text: "Uses definite 'das' and indefinite 'ein' tracking tags." },{ label: "Plural Forms", text: "All target categories convert uniformly into 'die' layouts." }],example: "Der Kopf ist groß. Die Nase ist klein. Das Auge ist blau."},{title: "Personal Pronouns & Verb Conjugation",level: "Syllabus A1.1",summary: "Regular systemic matrices drop infinitive '-en' tags to load distinct subject markers.",rules: [{ label: "ich (I)", text: "Appends terminal -e root tag (e.g., ich lerne, ich koche)." },{ label: "du (you, informal)", text: "Appends terminal -st root tag (e.g., du lernst, du kochst)." },{ label: "er/sie/es (he/she/it)", text: "Appends terminal -t root tag (e.g., er lernt, sie kocht)." },{ label: "wir / sie (we / they)", text: "Retains absolute matching infinitive base form profile structures." }],example: "Ich komme aus Frankreich, aber du wohnst in Deutschland."},{title: "Essential Core Linkers: Sein Forms & Haben",level: "Syllabus A1.1",summary: "Irregular auxiliary verb clusters managing target identity profiles and possession.",rules: [{ label: "sein (to be)", text: "ich bin, du bist, er ist, wir sind, ihr seid, sie sind." },{ label: "haben (to have)", text: "ich habe, du hast, er hat, wir haben, ihr habt, sie haben." },{ label: "Past Tense Variant", text: "A1 criteria requires 'war' (was) and 'hatte' (had) root vectors." }],example: "Ich bin Arzt.Ich hatte gestern einen Termin beim Zahnarzt."},{title: "Cases Matrix: Nominativ vs. Akkusativ vs. Dativ",level: "Syllabus A1.2",summary: "Sentence tracking relies heavily on noun functional roles changing spelling formats.",rules: [{ label: "Nominativ (Subject)", text: "The primary base operator acting out target verbs (der/die/das)." },{ label: "Akkusativ (Direct Object)", text: "Masculine fields morph here: 'der' shifts directly into 'den'." },{ label: "Dativ (Indirect Object)", text: "Deep structural changes occur: der/das become dem; die becomes der." }],example: "Ich habe den Apfel (Akkusativ direct object from base der Apfel)."},{title: "Advanced Elements: Modal & Separable (Trennbar) Verbs",level: "Syllabus A1.2",summary: "Prefix separation operations alter word layout syntax positioning maps inside arrays.",rules: [{ label: "Separable (Trennbar)", text: "Prefix moves entirely to absolute clause end (e.g., aufstehen -> steht auf)." },{ label: "Modal (Können/Müssen)", text: "Conjugated operator holds slot 2; base verb slips to the back edge." }],example: "Ich stehe um 7 Uhr auf. Ich muss heute mein Zimmer aufräumen."}];// High Density Conversational Blueprint Array Matrix - Loaded with Scenariosconst a1SkillsDatabase = [{title: "Sich vorstellen & Introductions",description: "Standard self-identification sequences covering names, age, origin, and residence templates.",phrases: [{ de: "Wie heißen Sie? / Wie heißt du?", en: "What is your name? (Formal / Informal)" },{ de: "Ich heiße Yvonne Legrand und das ist mein Kollege.", en: "My name is Yvonne Legrand and this is my colleague." },{ de: "Woher kommen Sie? - Ich komme aus Frankreich.", en: "Where do you come from? - I come from France." },{ de: "Wo wohnen Sie? - Ich wohne jetzt in Berlin.", en: "Where do you live? - I live in Berlin now." },{ de: "Können Sie das bitte buchstabieren?", en: "Could you please spell that out loud?" }]},{title: "Daily Routine & Time Navigation (Uhrzeit)",description: "Navigating daily timetables using official standard coordinate structures.",phrases: [{ de: "Wie viel Uhr ist es? / Wie spät ist es?", en: "What time is it right now?" },{ de: "Es ist viertel nach vier (4:15) / Es ist halb fünf (4:30).", en: "It is quarter past four / It is half past four (half to five)." },{ de: "Ich stehe um 7.00 Uhr auf und mache das Bett.", en: "I wake up at 7:00 AM and make the bed." },{ de: "Wann beginnt der Deutschkurs? - Um neun Uhr.", en: "When does the German course begin? - At 9:00 AM." }]},{title: "Einkaufen & Household Tasks",description: "Interaction protocols for retail interfaces, markets, and managing spaces.",phrases: [{ de: "Entschuldigung, was kostet dieser Pullover?", en: "Excuse me, how much does this sweater cost?" },{ de: "Das macht 19,95 Euro. Zahlen Sie bar?", en: "That totals 19.95 Euros. Are you paying cash?" },{ de: "Ich habe keine Kreditkarte. Ich bezahle bar.", en: "I do not have a credit card. I am paying with cash." },{ de: "Wer wäscht das Geschirr? - Ich muss die Wäsche waschen.", en: "Who washes the dishes? - I have to do the laundry." }]},{title: "Asking for Info & Giving Directions",description: "Syllabus Speaking Part 2 interface frameworks for location mapping.",phrases: [{ de: "Wo ist der nächste Supermarkt bitte?", en: "Where is the nearest supermarket, please?" },{ de: "Gehen Sie rechts um die Ecke und nehmen Sie den Aufzug.", en: "Go right around the corner and take the elevator." },{ de: "Wo kann ich einen Stadtplan bekommen? - An der Information.", en: "Where can I get a city map? - At the information desk." },{ de: "Fährt dieser Bus zum Flughafen? - Nein, der Zug.", en: "Does this bus go to the airport? - No, the train does." }]}];// High Density Production Grade Unified Examination Center Database Matrix// Packed with 5 distinct multi-part exams (2 Authentic + 3 Synthetic Framework Layouts)const a1ExamsSuite = [{title: "Mock Test 1: Goethe Übungssatz 01 Core",duration: "20 Minutes",sections: [{name: "Teil 1: Hören & Bildauswahl (Listening Match)",questions: [{ id: "m1_q1", prompt: "Maria asks: 'Weißt du, wo es hier Kleidung für Kinder gibt?' What is the correct floor matrix location?", options: ["Im 1. Stock (Damen)", "Im 2. Stock (Kinder)", "Im 4. Stock (Spielzeug)"], correct: 1, exp: "The audio script explicitly states children's clothes are located on the second floor ('Im zweiten Stock findest du Kinderkleidung')." },{ id: "m1_q2", prompt: "The waiter suggests fish. The lady responds: 'Nein danke, ich mag keinen Fisch. Salat ist eine gute Idee.' What does she order?", options: ["Hähnchen mit Pommes", "Fisch gericht", "Chefsalat mit Ei"], correct: 2, exp: "She directly declines fish and orders the salad array layout option." },{ id: "m1_q3", prompt: "Student ticket request input: 'Wie lange hat das Museum am Mittwoch geöffnet?'", options: ["Bis 15 Uhr", "Bis 18 Uhr", "Bis 22 Uhr"], correct: 0, exp: "On Wednesday afternoons, closing occurs early at 3:00 PM ('Mittwochnachmittag schließen wir schon um 15 Uhr')." }]},{name: "Teil 2: Richtig/Falsch Announcement Verification",questions: [{ id: "m1_q4", prompt: "Train announcement vector: 'Problems with the onboard computer. Bitte steigen Sie nicht aus! Wir fahren gleich weiter.' -> Statement: Die Fahrgäste sollen im Zug bleiben.", options: ["Richtig (True)", "Falsch (False)"], correct: 0, exp: "Passengers are explicitly requested not to exit the carriage layout structure." },{ id: "m1_q5", prompt: "Airport announcement tracker: 'Flight LH 487 to Rome please go to Gate B18. Gate A7 is occupied.' -> Statement: Fluggäste nach Rom sollen zu Ausgang A7 kommen.", options: ["Richtig (True)", "Falsch (False)"], correct: 1, exp: "It is false because passengers are redirected to B18 due to A7 being blocked." }]}]},{title: "Mock Test 2: Goethe Modellsatz Standard",duration: "25 Minutes",sections: [{name: "Teil 1: Practical Price & Time Vectors",questions: [{ id: "m2_q1", prompt: "Customer asks about a discounted sweater. Clerk replies: 'Neunzehnfünfundneunzig.' What is the price?", options: ["30,00 Euro", "95,00 Euro", "19,95 Euro"], correct: 2, exp: "19.95 is explicitly outputted as 'neunzehnfünfundneunzig' currency units." },{ id: "m2_q2", prompt: "Passerby asks for the time. The answer is: 'Jetzt ist es gleich 5 Uhr.' What is the position state?", options: ["Exactly 5:00", "Almost 5:00", "Half past 4"], correct: 1, exp: "'Gleich 5 Uhr' translates directly to 'almost/shortly before 5:00'." }]},{name: "Teil 2: Reading Matrix Validation Checks",questions: [{ id: "m2_q3", prompt: "Sign on language center door: 'Das Sprachzentrum ist umgezogen. Sie finden uns jetzt in der Beethovenstr. 23.' -> Entry check layout path confirmation?", options: ["Richtig (True)", "Falsch (False)"], correct: 0, exp: "The notice explicitly establishes the target destination relocation data vector." },{ id: "m2_q4", prompt: "Station sign: 'Auf dem gesamten Bahnhof ist das Rauchen verboten.' -> Statement: Sie können hier Zigaretten rauchen.", options: ["Richtig (True)", "Falsch (False)"], correct: 1, exp: "Smoking is completely barred across the entire structural network perimeter area." }]}]},{title: "Mock Test 3: Structural Form Filling Syntax",duration: "15 Minutes",sections: [{name: "Teil 1: Profile Field Translation Checks",questions: [{ id: "m3_q1", prompt: "Yvonne Legrand is from France. What should be logged inside the 'Muttersprache' tracking slot?", options: ["Frankreich", "Französisch", "Deutsch"], correct: 1, exp: "Muttersprache demands the language format item value string (Französisch), not the country profile name string." },{ id: "m3_q2", prompt: "Eva Kadavy travels with her husband and two boys. What is the value for 'Anzahl der Personen'?", options: ["2", "3", "4"], correct: 2, exp: "Husband + Wife + 2 Children equals an aggregate sum value matrix component of 4." },{ id: "m3_q3", prompt: "Yvonne has time in the morning. Which checkbox field slot option must match?", options: ["von 9 - 12 Uhr", "von 13 - 16 Uhr", "von 17 - 20 Uhr"], correct: 0, exp: "'Vormittag' correlates uniquely to the morning slot matrix (9 - 12)." }]}]},{title: "Mock Test 4: Accusative & Spatial Directions Case",duration: "15 Minutes",sections: [{name: "Teil 1: Grammatical Function Validations",questions: [{ id: "m4_q1", prompt: "Complete the object tracking slot: 'Ich kaufe den Pullover für ___ Bruder.' (masculine accusative tracking path)", options: ["mein", "meinen", "meinem"], correct: 1, exp: "The direct object tracking channel requires the masculine accusative ending modifier '-en'." },{ id: "m4_q2", prompt: "Complete: 'Wo ist der Bahnhof? - Gehen Sie geradeaus, dann sehen Sie ___ Bahnhof.'", options: ["der", "den", "dem"], correct: 1, exp: "Sehen demands a clean accusative assignment layer, altering 'der' into 'den'." }]}]},{title: "Mock Test 5: Situational Written Dialogues",duration: "20 Minutes",sections: [{name: "Teil 1: Corporate & Informal Communication Formats",questions: [{ id: "m5_q1", prompt: "You want to invite Anna to your birthday party via email. What is the optimal text sorting opening anchor header string?", options: ["Sehr geehrte Damen und Herren,", "Liebe Anna,", "Hallo Herr und Frau,"], correct: 1, exp: "An informal close associate track requires 'Liebe Anna,' for accurate textual assessment tracking scores." },{ id: "m5_q2", prompt: "Which item phrase satisfies the mandatory criteria query parameter 'Fragen Sie: kommen?'", options: ["Ich feiere zu Haus.", "Kannst du am Samstag kommen?", "Danke für die Einladung."], correct: 1, exp: "This directly asks whether the guest can attend, which satisfies the prompt target check condition sequence." }]}]}];function switchTab(targetTabId) {appState.currentTab = targetTabId;document.querySelectorAll('.navigation-tab-btn').forEach(btn => {btn.classList.remove('text-indigo-400');btn.classList.add('text-slate-500');});const targetBtn = document.getElementById(tab-${targetTabId});if(targetBtn) {targetBtn.classList.remove('text-slate-500');targetBtn.classList.add('text-indigo-400');}renderCurrentView();}function renderCurrentView() {const mountPoint = document.getElementById('view-mount-point');if(!mountPoint) return;let viewHtml = '';switch(appState.currentTab) {case 'dashboard': viewHtml = generateDashboardViewHtml(); break;case 'vocabulary': viewHtml = generateVocabularyViewHtml(); break;case 'grammar': viewHtml = generateGrammarViewHtml(); break;case 'skills': viewHtml = generateSkillsViewHtml(); break;case 'exams': viewHtml = generateExamsViewHtml(); break;default: viewHtml = <div class="p-6 text-center text-slate-400">System initialization structural fault.</div>;}
+        { id: "pdf_a1", german: "A (Aa)", gender: "letter", english: "A", pronunciation: "ah", hint: "Example word: Apple" },
+        { id: "pdf_a2", german: "B (Beh)", gender: "letter", english: "B", pronunciation: "beh", hint: "Example word: Banana" },
+        { id: "pdf_a3", german: "C (TSeh)", gender: "letter", english: "C", pronunciation: "tseh", hint: "Example word: Clown" },
+        { id: "pdf_a4", german: "D (Deh)", gender: "letter", english: "D", pronunciation: "deh", hint: "Example word: Dame" },
+        { id: "pdf_a5", german: "E (eh)", gender: "letter", english: "E", pronunciation: "ay", hint: "Example word: Elephant" },
+        { id: "pdf_a6", german: "F (ef)", gender: "letter", english: "F", pronunciation: "ef", hint: "Example word: Fisch" },
+        { id: "pdf_a7", german: "G (Geh)", gender: "letter", english: "G", pronunciation: "gay", hint: "Example word: Gabel" },
+        { id: "pdf_a8", german: "H (Ha)", gender: "letter", english: "H", pronunciation: "hah", hint: "Example word: Hund" },
+        { id: "pdf_a9", german: "I (ih)", gender: "letter", english: "I", pronunciation: "ee", hint: "Example word: Iglu" },
+        { id: "pdf_a10", german: "J (Yot)", gender: "letter", english: "J", pronunciation: "yot", hint: "Example word: Junge" },
+        { id: "pdf_a11", german: "K (Kah)", gender: "letter", english: "K", pronunciation: "kah", hint: "Example word: Katze" },
+        { id: "pdf_a12", german: "L (L)", gender: "letter", english: "L", pronunciation: "el", hint: "Example word: Letter" },
+        { id: "pdf_a13", german: "M (M)", gender: "letter", english: "M", pronunciation: "em", hint: "Example word: Maus" },
+        { id: "pdf_a14", german: "N (N)", gender: "letter", english: "N", pronunciation: "en", hint: "Example word: Nest" },
+        { id: "pdf_a15", german: "O (O)", gender: "letter", english: "O", pronunciation: "oh", hint: "Example word: Obst" },
+        { id: "pdf_a16", german: "P (Peh)", gender: "letter", english: "P", pronunciation: "peh", hint: "Example word: Pinguin" },
+        { id: "pdf_a17", german: "Q (Kuh)", gender: "letter", english: "Q", pronunciation: "koo", hint: "Example word: Quad" },
+        { id: "pdf_a18", german: "R (Er)", gender: "letter", english: "R", pronunciation: "air", hint: "Example word: Rat" },
+        { id: "pdf_a19", german: "S (Ess)", gender: "letter", english: "S", pronunciation: "es", hint: "Example word: Sonne" },
+        { id: "pdf_a20", german: "T (Te)", gender: "letter", english: "T", pronunciation: "teh", hint: "Example word: Tomato" },
+        { id: "pdf_a21", german: "U (Uh)", gender: "letter", english: "U", pronunciation: "oo", hint: "Example word: Uhr" },
+        { id: "pdf_a22", german: "V (Fau)", gender: "letter", english: "V", pronunciation: "fow", hint: "Example word: Vogel" },
+        { id: "pdf_a23", german: "W (Weh)", gender: "letter", english: "W", pronunciation: "veh", hint: "Example word: Wolf" },
+        { id: "pdf_a24", german: "X (Ix)", gender: "letter", english: "X", pronunciation: "ix", hint: "Example word: Xylophone" },
+        { id: "pdf_a25", german: "Y (Epsilon)", gender: "letter", english: "Y", pronunciation: "oop-si-lon", hint: "Example word: Yoga" },
+        { id: "pdf_a26", german: "Z (Tset)", gender: "letter", english: "Z", pronunciation: "tset", hint: "Example word: Zebra" }
+      ],
+      "Umlauts & Sound Rules": [
+        { id: "pdf_u1", german: "ä (Bär)", gender: "umlaut", english: "sound 'eh'", pronunciation: "bair", hint: "Make the sound 'eh' without gliding into 'ey'." },
+        { id: "pdf_u2", german: "ö (Löwe)", gender: "umlaut", english: "sound 'e' with rounded lips", pronunciation: "luu-veh", hint: "Pursue your lips into an 'O' shape." },
+        { id: "pdf_u3", german: "ü (Gemüse)", gender: "umlaut", english: "sound 'ee' with whistling lips", pronunciation: "geh-mue-zeh", hint: "Pursue lips as if you are whistling." },
+        { id: "pdf_u4", german: "ß (Weiß / Heißen)", gender: "ligature", english: "pronounced as 'sa'", pronunciation: "vyss / hy-sen", hint: "Asset this letter is pronounced like a double S sound." },
+        { id: "pdf_u5", german: "CH after a, o, u", gender: "phonics", english: "back throat 'Kha'", pronunciation: "boohch / owch", hint: "Formed at the back of the mouth. Ex: Buch, Auch" },
+        { id: "pdf_u6", german: "CH after Consonants", gender: "phonics", english: "front mouth 'Sh'", pronunciation: "eech / shprech-en", hint: "Formed at the front of the mouth. Ex: Ich, Sprechen" }
+      ],
+      "Numbers (Zahlen)": [
+        { id: "pdf_n1", german: "Eins", gender: "number", english: "one", pronunciation: "yns", hint: "1" },
+        { id: "pdf_n2", german: "Zwei", gender: "number", english: "two", pronunciation: "tsvy", hint: "2" },
+        { id: "pdf_n3", german: "Drei", gender: "number", english: "three", pronunciation: "dry", hint: "3" },
+        { id: "pdf_n4", german: "Vier", gender: "number", english: "four", pronunciation: "feer", hint: "4" },
+        { id: "pdf_n5", german: "Fünf", gender: "number", english: "five", pronunciation: "fuenf", hint: "5" },
+        { id: "pdf_n6", german: "Sechs", gender: "number", english: "six", pronunciation: "zeks", hint: "6" },
+        { id: "pdf_n7", german: "Sieben", gender: "number", english: "seven", pronunciation: "zee-ben", hint: "7" },
+        { id: "pdf_n8", german: "Acht", gender: "number", english: "eight", pronunciation: "acht", hint: "8" },
+        { id: "pdf_n9", german: "Neun", gender: "number", english: "nine", pronunciation: "noyn", hint: "9" },
+        { id: "pdf_n10", german: "Zehn", gender: "number", english: "ten", pronunciation: "tsehn", hint: "10" },
+        { id: "pdf_n11", german: "Elf", gender: "number", english: "eleven", pronunciation: "elf", hint: "11" },
+        { id: "pdf_n12", german: "Zwölf", gender: "number", english: "twelve", pronunciation: "tsvuelf", hint: "12" },
+        { id: "pdf_n13", german: "Drei Zehn", gender: "number", english: "thirteen", pronunciation: "dry-tsehn", hint: "13" },
+        { id: "pdf_n14", german: "Vier Zehn", gender: "number", english: "fourteen", pronunciation: "feer-tsehn", hint: "14" },
+        { id: "pdf_n15", german: "Fünf Zehn", gender: "number", english: "fifteen", pronunciation: "fuenf-tsehn", hint: "15" },
+        { id: "pdf_n16", german: "Sech Zehn", gender: "number", english: "sixteen", pronunciation: "zech-tsehn", hint: "16" },
+        { id: "pdf_n17", german: "Sieb Zehn", gender: "number", english: "seventeen", pronunciation: "zeeb-tsehn", hint: "17" },
+        { id: "pdf_n18", german: "Acht Zehn", gender: "number", english: "eighteen", pronunciation: "acht-tsehn", hint: "18" },
+        { id: "pdf_n19", german: "Neun Zehn", gender: "number", english: "nineteen", pronunciation: "noyn-tsehn", hint: "19" },
+        { id: "pdf_n20", german: "Zwanzig", gender: "number", english: "twenty", pronunciation: "tsvan-tsig", hint: "20" }
+      ],
+      "Days (Tage)": [
+        { id: "pdf_d1", german: "Sonntag", gender: "day", english: "Sunday", pronunciation: "zon-tahk", hint: "Weekend day" },
+        { id: "pdf_d2", german: "Montag", gender: "day", english: "Monday", pronunciation: "mohn-tahk", hint: "First work day" },
+        { id: "pdf_d3", german: "Dienstag", gender: "day", english: "Tuesday", pronunciation: "deens-tahk", hint: "Second work day" },
+        { id: "pdf_d4", german: "Mittwoch", gender: "day", english: "Wednesday", pronunciation: "mit-voch", hint: "Mid-week day" },
+        { id: "pdf_d5", german: "Donnerstag", gender: "day", english: "Thursday", pronunciation: "don-ers-tahk", hint: "Before Friday" },
+        { id: "pdf_d6", german: "Freitag", gender: "day", english: "Friday", pronunciation: "fry-tahk", hint: "Last work day" },
+        { id: "pdf_d7", german: "Samstag", gender: "day", english: "Saturday", pronunciation: "zams-tahk", hint: "Weekend starter" }
+      ],
+      "Months (Monate)": [
+        { id: "pdf_m1", german: "Januar", gender: "month", english: "January", pronunciation: "yan-oo-ahr", hint: "Month 1" },
+        { id: "pdf_m2", german: "Februaur", gender: "month", english: "February", pronunciation: "feb-roo-ahr", hint: "Syllabus spelling tracker node." },
+        { id: "pdf_m3", german: "März", gender: "month", english: "March", pronunciation: "merts", hint: "Month 3" },
+        { id: "pdf_m4", german: "April", gender: "month", english: "April", pronunciation: "ah-pril", hint: "Month 4" },
+        { id: "pdf_m5", german: "Mai", gender: "month", english: "May", pronunciation: "my", hint: "Month 5" },
+        { id: "pdf_m6", german: "Juni", gender: "month", english: "June", pronunciation: "yoo-nee", hint: "Month 6" },
+        { id: "pdf_m7", german: "Juli", gender: "month", english: "July", pronunciation: "yoo-lee", hint: "Month 7" },
+        { id: "pdf_m8", german: "August", gender: "month", english: "August", pronunciation: "ow-goost", hint: "Month 8" },
+        { id: "pdf_m9", german: "September", gender: "month", english: "September", pronunciation: "zep-tem-ber", hint: "Month 9" },
+        { id: "pdf_m10", german: "Oktober", gender: "month", english: "October", pronunciation: "ok-toh-ber", hint: "Month 10" },
+        { id: "pdf_m11", german: "November", gender: "month", english: "November", pronunciation: "no-vem-ber", hint: "Month 11" },
+        { id: "pdf_m12", german: "Dezember", gender: "month", english: "December", pronunciation: "deh-tsem-ber", hint: "Month 12" }
+      ],
+      "Seasons (Jahreszeiten)": [
+        { id: "pdf_sea1", german: "Sommer", gender: "season", english: "Summer", pronunciation: "zom-er", hint: "Warm season" },
+        { id: "pdf_sea2", german: "Winter", gender: "season", english: "Winter", pronunciation: "vin-ter", hint: "Cold season" },
+        { id: "pdf_sea3", german: "Frühling", gender: "season", english: "Spring", pronunciation: "frue-ling", hint: "Blooming season" },
+        { id: "pdf_sea4", german: "Herbst", gender: "season", english: "Autumn", pronunciation: "herpst", hint: "Fall season" },
+        { id: "pdf_sea5", german: "Regen", gender: "season", english: "Rainy", pronunciation: "ray-gen", hint: "Wet season layout" }
+      ],
+      "Part of the Day (Teil des Tages)": [
+        { id: "pdf_pd1", german: "Vormorgen", gender: "daypart", english: "3 am - 6 am", pronunciation: "fohr-mor-gen", hint: "Early dawn segment." },
+        { id: "pdf_pd2", german: "Morgen", gender: "daypart", english: "6 am - 10 am", pronunciation: "mor-gen", hint: "Morning window." },
+        { id: "pdf_pd3", german: "Vormittag", gender: "daypart", english: "10 am - 12 pm", pronunciation: "fohr-mit-tahk", hint: "Late morning setup." },
+        { id: "pdf_pd4", german: "Mittag", gender: "daypart", english: "12 pm", pronunciation: "mit-tahk", hint: "Midday exact mark." },
+        { id: "pdf_pd5", german: "Nachmittag", gender: "daypart", english: "12 pm - 4 pm", pronunciation: "nach-mit-tahk", hint: "Afternoon window." },
+        { id: "pdf_pd6", german: "Abend", gender: "daypart", english: "4 pm - 7 pm", pronunciation: "ah-bent", hint: "Evening time constant." },
+        { id: "pdf_pd7", german: "Nacht", gender: "daypart", english: "7 pm - 12 am", pronunciation: "nacht", hint: "Night segment operational view." },
+        { id: "pdf_pd8", german: "Mittenacht", gender: "daypart", english: "12 am - 3 am", pronunciation: "mit-er-nacht", hint: "Midnight frame." }
+      ],
+      "Family (Die Familie)": [
+        { id: "pdf_f1", german: "Eltern", gender: "plural", english: "Parents", pronunciation: "el-tern", hint: "Father + Mother node setup." },
+        { id: "pdf_f2", german: "Großeltern", gender: "plural", english: "Grand Parents", pronunciation: "grohs-el-tern", hint: "Grandfather + Grandmother" },
+        { id: "pdf_f3", german: "Vater", gender: "masculine", english: "Father", pronunciation: "fah-ter", hint: "Male parent" },
+        { id: "pdf_f4", german: "Mutter", gender: "feminine", english: "Mother", pronunciation: "moot-er", hint: "Female parent" },
+        { id: "pdf_f5", german: "Kinder", gender: "plural", english: "Kids", pronunciation: "kin-der", hint: "Offspring tracking framework." },
+        { id: "pdf_f6", german: "Bruder", gender: "masculine", english: "Brother", pronunciation: "broo-der", hint: "Male sibling" },
+        { id: "pdf_f7", german: "Geschwister", gender: "plural", english: "Sibling", pronunciation: "geh-shvis-ter", hint: "Siblings cluster." },
+        { id: "pdf_f8", german: "Schwester", gender: "feminine", english: "Sister", pronunciation: "shves-ter", hint: "Female sibling" },
+        { id: "pdf_f9", german: "Großmutter", gender: "feminine", english: "Grand Mother", pronunciation: "grohs-moot-er", hint: "Grandma" },
+        { id: "pdf_f10", german: "Großvater", gender: "masculine", english: "Grand Father", pronunciation: "grohs-fah-ter", hint: "Grandpa" },
+        { id: "pdf_f12", german: "Tochter", gender: "feminine", english: "Daughter", pronunciation: "toch-ter", hint: "Female child" },
+        { id: "pdf_f13", german: "Mann", gender: "masculine", english: "Husband / Man", pronunciation: "man", hint: "Male spouse entry." },
+        { id: "pdf_f14", german: "Frau", gender: "feminine", english: "Wife / Woman", pronunciation: "frow", hint: "Female spouse." },
+        { id: "pdf_f15", german: "Schweigervater", gender: "masculine", english: "Father in Law", pronunciation: "shvee-ger-fah-ter", hint: "Spouse's father." },
+        { id: "pdf_f16", german: "Schweigermutter", gender: "feminine", english: "Mother in Law", pronunciation: "shvee-ger-moot-er", hint: "Spouse's mother." },
+        { id: "pdf_f17", german: "Schwagar", gender: "masculine", english: "Brother in Law", pronunciation: "shvah-gahr", hint: "Syllabus tracking label." },
+        { id: "pdf_f18", german: "Schwägerin", gender: "feminine", english: "Sister in Law", pronunciation: "shvae-ger-in", hint: "Spouse's sister." },
+        { id: "pdf_f19", german: "Tante", gender: "feminine", english: "Aunt", pronunciation: "tan-teh", hint: "Parent's sister" },
+        { id: "pdf_f20", german: "Onkel", gender: "masculine", english: "Uncle", pronunciation: "on-kel", hint: "Parent's brother" },
+        { id: "pdf_f21", german: "Neffe", gender: "masculine", english: "Nephew", pronunciation: "nef-eh", hint: "Sibling's son" },
+        { id: "pdf_f22", german: "Nichte", gender: "feminine", english: "Niece", pronunciation: "nich-teh", hint: "Sibling's daughter" },
+        { id: "pdf_f25", german: "Enkelin", gender: "feminine", english: "Grand Daughter", pronunciation: "en-kel-in", hint: "Granddaughter" },
+        { id: "pdf_f26", german: "Junge", gender: "masculine", english: "Young", pronunciation: "yoon-geh", hint: "Boy or young profile." },
+        { id: "pdf_f27", german: "Alte", gender: "expression", english: "Elder", pronunciation: "al-teh", hint: "Age descriptor." },
+        { id: "pdf_f28", german: "Mädchen", gender: "neuter", english: "Girl", pronunciation: "maet-chen", hint: "Takes neuter forms." },
+        { id: "pdf_f29", german: "Stief Bruder", gender: "masculine", english: "Step Brother", pronunciation: "shteef broo-der", hint: "Step sibling layout." },
+        { id: "pdf_f30", german: "Stief Schwester", gender: "feminine", english: "Step Sister", pronunciation: "shteef shves-ter", hint: "Step sister template." }
+      ],
+      "Body Parts (Körperteile)": [
+        { id: "pdf_b1", german: "Der kopf", gender: "masculine", english: "Head", pronunciation: "dayr kopf", hint: "Upper command center." },
+        { id: "pdf_b2", german: "Das Augen", gender: "neuter", english: "Eyes", pronunciation: "dahs ow-gen", hint: "Visual sensor." },
+        { id: "pdf_b3", german: "Das Ohr", gender: "neuter", english: "Ear", pronunciation: "dahs ohr", hint: "Hearing system." },
+        { id: "pdf_b4", german: "Die Nase", gender: "feminine", english: "Nose", pronunciation: "dee nah-zeh", hint: "Olfactory node." },
+        { id: "pdf_b5", german: "Der Mund", gender: "masculine", english: "Mouth", pronunciation: "dayr moont", hint: "Speaking node." },
+        { id: "pdf_b6", german: "Die Arm", gender: "masculine", english: "Arm", pronunciation: "dee ahrm", hint: "Upper limb structural part." },
+        { id: "pdf_b7", german: "Die hand", gender: "feminine", english: "Hand", pronunciation: "dee hahnt", hint: "Limb parameter." },
+        { id: "pdf_b8", german: "Das Bein", gender: "neuter", english: "Leg", hint: "Lower movement support structure." },
+        { id: "pdf_b9", german: "Der Fuß", gender: "masculine", english: "Foot", hint: "Ground terminal point unit." },
+        { id: "pdf_b10", german: "Der bauch", gender: "masculine", english: "Stomach", hint: "Midsection tracking block." },
+        { id: "pdf_b11", german: "Der Rücken", gender: "masculine", english: "Back", hint: "Rear physical chassis parameter." },
+        { id: "pdf_b12", german: "Die Haare", gender: "plural", english: "Hair", pronunciation: "dee hah-reh", hint: "Head fibers array." },
+        { id: "pdf_b13", german: "Gesicht", gender: "neuter", english: "Face", pronunciation: "geh-zicht", hint: "Front visual cluster." },
+        { id: "pdf_b14", german: "Hals", gender: "masculine", english: "Neck", pronunciation: "hahlz", hint: "Throat connection module." },
+        { id: "pdf_b15", german: "Knie", gender: "neuter", english: "Knee", pronunciation: "knee", hint: "Leg joint hinge parameter." },
+        { id: "pdf_b16", german: "Schulter", gender: "feminine", english: "Shoulder", pronunciation: "shool-ter", hint: "Upper socket tracking component." },
+        { id: "pdf_b17", german: "Kinn", gender: "neuter", english: "Chin", pronunciation: "kin", hint: "Jaw point boundary coordinate." },
+        { id: "pdf_b18", german: "Wange", gender: "feminine", english: "Cheeks", pronunciation: "vahn-geh", hint: "Side facial structure." },
+        { id: "pdf_b19", german: "Zähne", gender: "plural", english: "Teeth", pronunciation: "tsae-neh", hint: "Mouth processing array." },
+        { id: "pdf_b20", german: "Zunge", gender: "feminine", english: "Tongue", pronunciation: "tsoong-eh", hint: "Taste loop execution tool." }
+      ],
+      "Occupation (Berufe)": [
+        { id: "pdf_oc1", german: "Manager", gender: "masculine", english: "Manager", pronunciation: "meh-neh-djer", hint: "Supervisor structural node mapping." },
+        { id: "pdf_oc2", german: "Arzt / Ärztin", gender: "split", english: "Doctor", pronunciation: "ahrtst / aerj-tin", hint: "Medical controllers." },
+        { id: "pdf_oc3", german: "Rechtsanwältin", gender: "feminine", english: "Lawyer", pronunciation: "rechts-ahn-vel-tin", hint: "Legal processor tracking row." },
+        { id: "pdf_oc4", german: "Kellner / Kellnerin", gender: "split", english: "Waiter", pronunciation: "kel-ner / kel-ner-in", hint: "Hospitality operation processor." },
+        { id: "pdf_oc5", german: "Pilot", gender: "masculine", english: "Pilot", pronunciation: "pee-loht", hint: "Aviation navigation driver." },
+        { id: "pdf_oc6", german: "Ingenieur", gender: "masculine", english: "Engineer", pronunciation: "in-jen-yuhr", hint: "Technical builder node model." },
+        { id: "pdf_oc7", german: "Schauspeiler / in", gender: "split", english: "Actor", pronunciation: "show-shpeel-er", hint: "Syllabus spelling row parameter." },
+        { id: "pdf_oc8", german: "Fahrer", gender: "masculine", english: "Driver", pronunciation: "fah-rer", hint: "Logistics transport execution unit." },
+        { id: "pdf_oc9", german: "Politiker", gender: "masculine", english: "Politician", pronunciation: "po-lee-tee-ker", hint: "State regulatory operator logic." },
+        { id: "pdf_oc10", german: "Polizist", gender: "masculine", english: "Police", pronunciation: "po-lee-tsist", hint: "Enforcement safety agent." }
+      ],
+      "Colours (Farben)": [
+        { id: "pdf_col1", german: "Rot", gender: "colour", english: "Red", pronunciation: "roht", hint: "Base color layout code." },
+        { id: "pdf_col2", german: "Gelb", gender: "colour", english: "Yellow", pronunciation: "gelp", hint: "Luminescent warm spectrum constant." },
+        { id: "pdf_col3", german: "Blau", gender: "colour", english: "Blue", pronunciation: "blow", hint: "Deep water channel matrix baseline." },
+        { id: "pdf_col4", german: "Braun", gender: "colour", english: "Brown", pronunciation: "brown", hint: "Earth color tracker token." },
+        { id: "pdf_col5", german: "Grau", gender: "colour", english: "Grey", pronunciation: "grow", hint: "Neutral color index configuration." },
+        { id: "pdf_col6", german: "Grün", gender: "colour", english: "Green", pronunciation: "gruen", hint: "Forest foliage constant." },
+        { id: "pdf_col7", german: "Orange", gender: "colour", english: "Orange", pronunciation: "o-rahnj", hint: "Spectrum balance secondary transition." },
+        { id: "pdf_col11", german: "Schwarz", gender: "colour", english: "Black", pronunciation: "shvarts", hint: "Zero luminosity value coordinate." },
+        { id: "pdf_col12", german: "Weiß", gender: "colour", english: "White", pronunciation: "vyss", hint: "Maximum reflection spectrum matrix." }
+      ],
+      "Hobbies (Hobbys)": [
+        { id: "pdf_h1", german: "Bücher Lesen", gender: "hobby", english: "Books Reading", pronunciation: "bue-cher lay-zen", hint: "Literature consumption tracking loop." },
+        { id: "pdf_h2", german: "Auto Fahren", gender: "hobby", english: "Car Drinking", pronunciation: "ow-toh fah-ren", hint: "Syllabus text parameter node." },
+        { id: "pdf_h3", german: "Fernsehen", gender: "hobby", english: "Watching TV", pronunciation: "fehrn-zay-hen", hint: "Video broadcasting display data." },
+        { id: "pdf_h4", german: "Cricket Spielen", gender: "hobby", english: "Playing Cricket", pronunciation: "krik-et shpeel-en", hint: "Athletic batting coordination." },
+        { id: "pdf_h5", german: "Schwimmen", gender: "hobby", english: "Swimming", pronunciation: "shvim-en", hint: "Aquatic movement trajectory loop." },
+        { id: "pdf_h6", german: "Singen", gender: "hobby", english: "Singing", pronunciation: "zing-en", hint: "Acoustic frequency performance block." }
+      ],
+      "Clothes (Kleidung)": [
+        { id: "pdf_cl1", german: "Die Jeans", gender: "feminine", english: "Jeans", pronunciation: "dee djeens", hint: "Denim apparel garments." },
+        { id: "pdf_cl2", german: "Der Rock", gender: "masculine", english: "Skirt", pronunciation: "dayr rok", hint: "Lower body apparel garment model." },
+        { id: "pdf_cl3", german: "Das Hemd", gender: "neuter", english: "Shirt", pronunciation: "dahs hemt", hint: "Standard buttoned upper torso coverage." },
+        { id: "pdf_cl4", german: "Der Mantel", gender: "masculine", english: "Coat", hint: "Outer boundary cold weather shelter." },
+        { id: "pdf_cl5", german: "Das T-Shirt", gender: "neuter", english: "T-Shirt", pronunciation: "dahs tee-shurt", hint: "Casual top canvas layout element." }
+      ],
+      "Household (Hauswesen Tasks)": [
+        { id: "pdf_ho1", german: "Das Badzimmer", gender: "neuter", english: "Bathroom", pronunciation: "dahs baht-tsi-mer", hint: "Syllabus exact text layout entry." },
+        { id: "pdf_ho2", german: "Das Arbeitzimmer", gender: "neuter", english: "Workroom", pronunciation: "dahs ar-byts-tsi-mer", hint: "Syllabus specific compound spelling." },
+        { id: "pdf_ho3", german: "Das Schlafzimmer", gender: "neuter", english: "Bedroom", pronunciation: "dahs shlahf-tsi-mer", hint: "Sleep area localization node." },
+        { id: "pdf_ho4", german: "Das Kinderzimmer", gender: "neuter", english: "Kidsroom", hint: "Play area localization compartment." },
+        { id: "pdf_ho5", german: "Der Flur", gender: "masculine", english: "Corridor", pronunciation: "dayr floohr", hint: "Connecting hallway transit corridor." }
+      ],
+      "Shapes (Die Formen)": [
+        { id: "pdf_sh1", german: "Der Halbkreis", gender: "masculine", english: "Semi Circle", pronunciation: "dayr halp-krys", hint: "Split circle geometric profile blueprint." },
+        { id: "pdf_sh2", german: "Der Kegel", gender: "masculine", english: "Cone", pronunciation: "dayr kay-gel", hint: "Tapered circular base 3D volume." },
+        { id: "pdf_sh3", german: "Der Kreis", gender: "masculine", english: "Circle", pronunciation: "dayr krys", hint: "Equidistant center boundary line." },
+        { id: "pdf_sh4", german: "Der Rhombus", gender: "masculine", english: "Rhombus", pronunciation: "dayr rom-boos", hint: "Equilateral slanted parallelogram geometry." },
+        { id: "pdf_sh5", german: "Der Stern", gender: "masculine", english: "Star", pronunciation: "dayr shtairn", hint: "Multi pointed radiant vertex intersection." }
+      ],
+      "Greetings (Begrüßung)": [
+        { id: "pdf_gr1", german: "Guten Tag", gender: "greeting", english: "Good Day", pronunciation: "goo-ten tahk", hint: "Midday core standard polite greeting." },
+        { id: "pdf_gr2", german: "Guten Morgen", gender: "greeting", english: "Good Morning", pronunciation: "goo-ten mor-gen", hint: "Early day hour greeting tracker." },
+        { id: "pdf_gr3", german: "Guten Abend", gender: "greeting", english: "Good Evening", pronunciation: "goo-ten ah-bent", hint: "Late hours intermediate greeting." },
+        { id: "pdf_gr4", german: "Gute Nacht", gender: "greeting", english: "Good Night", pronunciation: "goo-teh nacht", hint: "Terminal sleep transition departure phrase." },
+        { id: "pdf_gr5", german: "Tschüß", gender: "departure", english: "Bye", pronunciation: "tshuess", hint: "Informal fast separation baseline token." }
+      ],
+      "W-Questions (W-Fragen)": [
+        { id: "pdf_wq1", german: "Wo", gender: "query", english: "Where", pronunciation: "voh", hint: "Static geographic localization coordinates." },
+        { id: "pdf_wq2", german: "Wer", gender: "query", english: "Who", hint: "Person entity item target validation identity." },
+        { id: "pdf_wq3", german: "Woher", gender: "query", english: "From Where", hint: "Origin generation coordinate source track trace." },
+        { id: "pdf_wq4", german: "Wie", gender: "query", english: "How", pronunciation: "vee", hint: "Methodology execution efficiency configuration." },
+        { id: "pdf_wq5", german: "Welche", gender: "query", english: "Which", pronunciation: "vel-cheh", hint: "Array element selection choice." }
+      ],
+      "Time (Uhrzeit Layouts)": [
+        { id: "pdf_tm3", german: "Es ist Drei", gender: "informal time", english: "It is three o'clock", pronunciation: "es ist dry", hint: "Baseline hour indicator shorthand output." },
+        { id: "pdf_tm4", german: "Es ist Kurz Nach Drei", gender: "informal time", english: "It is shortly after three", pronunciation: "es ist koorts nach dry", hint: "Syllabus proximity temporal tracking." },
+        { id: "pdf_tm5", german: "Es ist Kurz vor drei", gender: "informal time", english: "It is shortly before three", pronunciation: "es ist koorts fohr dry", hint: "Syllabus backward reference hour boundary." }
+      ],
+      "Introductions (Vorstellung)": [
+        { id: "pdf_in2", german: "Ich Heiße...", gender: "dialogue", english: "My name is...", pronunciation: "eech hy-seh", hint: "Identity injection string presentation model." },
+        { id: "pdf_in4", german: "Ich Komme aus...", gender: "dialogue", english: "I come from...", pronunciation: "eech kom-eh ows", hint: "Country/city of birth tracking deployment." },
+        { id: "pdf_in6", german: "Ich Wohnne in...", gender: "dialogue", english: "I live in...", pronunciation: "eech vohn-eh in", hint: "Active spatial living localization data." }
+      ],
+      "Daily Routine (Tagesablauf)": [
+        { id: "pdf_dr1", german: "Ich Stehe um 7.00 uhr auf", gender: "routine", english: "I get up at 7:00", pronunciation: "eech shtay-eh oom zee-ben oohr owf", hint: "Separable verb activation sequence step 1." },
+        { id: "pdf_dr2", german: "Ich mache das bett", gender: "routine", english: "I make the bed", pronunciation: "eech mach-eh dahs bet", hint: "Syllabus spelling specific maintenance task." },
+        { id: "pdf_dr3", german: "Ich putze Die Zähne", gender: "routine", english: "I brush the teeth", pronunciation: "eech poot-seh dee tsae-neh", hint: "Dental sanitation workflow operational component." }
+      ]
+    };
+
+    // Refactored Adjective / Conjugation / Article Grammar Database Array
+    const a1GrammarDatabase = [
+      { id: "g_art", title: "1. Definite & Indefinite Articles", rules: "German specifies noun sets through Masculine (der/ein), Feminine (die/eine), Neuter (das/ein). Plurals carry 'die' but no baseline indefinite article.", example: "Der Mann, eine Frau, das Kind." },
+      { id: "g_pron", title: "2. Personal Pronouns Matrix", rules: "Subjects are tracked via personal handles: ich (I), du (you), er/sie/es (he/she/it), wir (us), ihr (you plural), sie/Sie (they/Formal You).", example: "Ich bin hier. Du lernst schnell." },
+      { id: "g_sein", title: "3. Irregular Sein (To Be) Forms", rules: "The foundation auxiliary verb 'sein' shifts conjugation fields dynamically: ich bin, du bist, er/sie/es ist, wir sind, ihr seid, sie/Sie sind.", example: "Wir sind im Arena. Ihr seid klug." },
+      { id: "g_conj", title: "4. Regular Verb Conjugation Suffixes", rules: "Drop infinitive tail (-en) and apply standardized pronoun terminations: -e, -st, -t, -en, -t, -en.", example: "Ich spiele, du spielst, er spielt, wir spielen." },
+      { id: "g_poss", title: "5. Possessive Articles", rules: "Indicate ownership. Base items follow pronoun structures: mein (my), dein (your), sein (his), ihr (her/their), unser (our), euer (your pl). Appends '-e' if item is feminine/plural.", example: "Das ist mein Tisch. Wo ist meine Jacke?" },
+      { id: "g_mod", title: "6. Modal Verbs Structure", rules: "Verbs like 'können' (can), 'müssen' (must), 'wollen' (want) conjugate irregularly in singular positions and push main infinitive companion verbs to the sentence tail.", example: "Ich kann Deutsch sprechen. (Infinitive 'sprechen' anchors at the extreme tail position.)" },
+      { id: "g_tren", title: "7. Trennbar (Separable) Verbs", rules: "Prefix particles split off active base stems during simple sentence layouts, anchoring directly at the terminal punctuation boundary.", example: "aufstehen -> Ich stehe um 6:00 Uhr auf. ('auf' detaches to the tail window completely.)" },
+      { id: "g_imp", title: "8. Imperativ Commands Formulation", rules: "Used to declare instructions/requests. The 'du' command strips away both the pronoun 'du' and the tail standard '-st' suffix tracking.", example: "Komm hierher! (Infinitive 'kommen' drops pronoun and suffix constraints entirely.)" },
+      { id: "g_comp", title: "9. Degrees of Comparison Adjectives", rules: "Modifiers escalate structural attributes using baseline rules, adding '-er' for comparative forms and 'am ...-sten' for superlative declarations.", example: "klein -> kleiner -> am kleinsten. alt -> älter -> am ältesten." },
+      { id: "g_perf", title: "10. Present Perfect Past Construction", rules: "Form past statements using auxiliary helpers ('haben' or 'sein' based on motion rules) at position 2, placing a 'Partizip II' particle component at sentence tail.", example: "Ich habe Deutsch gelernt. Wir sind nach Berlin gefahren." },
+      { id: "g_habs", title: "11. Past Tense Haben & Sein (Präteritum)", rules: "Simple past framework constants used universally for auxiliary assets. Haben -> hatte. Sein -> war. Conjugates via standardized rules.", example: "Ich hatte ein House. Gestern war ich müde." },
+      { id: "g_case", title: "12. Akkusativ vs Dativ Case Tracking", rules: "Akkusativ targets direct action receivers (Masculine den/einen). Dativ models indirect benefit targets (dem/der/dem/den).", example: "Ich gebe dem Mann (Dativ indirect object) den Ball (Akkusativ direct item asset)." },
+      { id: "g_mail", title: "13. Formal Email Writing Blueprints", rules: "Structured communications require strict CEFR protocols: Greeting ('Sehr geehrte Damen und Herren,'), body block content, and formal signoff lines ('Mit freundlichen Grüßen').", example: "Sehr geehrte Frau Müller, ... Mit freundlichen Grüßen, Jhansi." }
+    ];
+
+    // Comprehensive A1 Skills Laboratory Array Matrix
+    const a1SkillsDatabase = {
+      listening: [
+        { id: "l1", title: "Train Station Announcement Dialogue", context: "Listen to the simulated text statement carefully and capture the explicit target destination platform.", transcript: "Achtung am Gleis 4: Der Zug nach Berlin fährt jetzt ab.", question: "Where is the train moving towards?", options: ["München", "Berlin", "Hamburg", "Frankfurt"], correct: 1 }
+      ],
+      reading: [
+        { id: "r1", title: "Supermarket Notice Parsing", context: "Read the informational announcement layout and deduce the correct closure time validation.", body: "Liebe Grüße! Unser Laden schließt heute bereits um 18:00 Uhr wegen Renovierung. Bitte kommen Sie früher vorbei.", question: "At what time sequence does the shop close today?", options: ["16:00", "18:00", "20:00", "22:00"], correct: 1 }
+      ],
+      writing: [
+        { id: "w1", title: "Goethe A1 Form Completion Challenge", context: "Determine the correct missing case marker article to fulfill the structural requirement layout syntax.", text: "Ich möchte ___ (neuter object direct target) Buch kaufen, aber ich habe kein Geld dabei.", options: ["das", "die", "den", "der"], correct: 0 }
+      ],
+      speaking: [
+        { id: "s1", title: "Pronunciation Phonetics Calibration Engine", context: "Practice reading the native phrase out loud according to the phonetics breakdown matrix configuration guide.", text: "Wie geht es Ihnen heute Morgen?", guide: "Pronounce: Vee gayt es ee-nen hoy-te mor-gen?" }
+      ]
+    };
+
+    // Full 5 Mock Exam System Pipeline Core Structure Mapping Matrix
+    const mockExamsDatabase = [
+      { id: 0, title: "Mock Exam Arena 1: Goethe A1 Simulation Framework", passingScore: 3, questions: [
+        { q: "Which core definite article correctly fits: '___ Tisch ist alt'?", o: ["Der", "Die", "Das", "Den"], c: 0, exp: "'Tisch' is masculine nominative." },
+        { q: "Translate to accurate English format: 'Ich brauche eine Küche.'", o: ["I have a room.", "I need a kitchen.", "I buy a house.", "I like cooking."], c: 1, exp: "'brauche' translates to need; 'Küche' means kitchen." },
+        { q: "Conjugate properly: 'Du ___ (to speak) sehr gut Deutsch.'", o: ["spreche", "spricht", "sprechen", "sprichst"], c: 3, exp: "Irregular vowel-shifting verb match for 'du' form is 'sprichst'." },
+        { q: "Identify the odd vocabulary item out from this collection:", o: ["Mutter", "Vater", "Bruder", "Auto"], c: 3, exp: "'Auto' is a vehicle; all others are direct family relation identifiers." }
+      ]},
+      { id: 1, title: "Mock Exam Arena 2: Telc A1 Competency Assessment Matrix", passingScore: 3, questions: [
+        { q: "Complete the statement pattern: 'Wir wohnen ___ Berlin.'", o: ["in", "auf", "aus", "bei"], c: 0, exp: "City localization spatial preposition uses 'in'." },
+        { q: "What is the appropriate English transformation for 'das Brot'?", o: ["The cheese", "The milk", "The bread", "The water"], c: 2, exp: "'das Brot' translates directly to 'the bread'." },
+        { q: "Select the accurate feminine assignment descriptor pairing:", o: ["der Mann", "die Frau", "das Kind", "den Jungen"], c: 1, exp: "'Frau' is feminine, taking 'die'." },
+        { q: "Complete the sentence tracking: 'Ich trinke ein Glas ___.'", o: ["Brot", "Apfel", "Wasser", "Küche"], c: 2, exp: "'Wasser' is the only consumable liquid option listed." }
+      ]},
+      { id: 2, title: "Mock Exam Arena 3: Structural Navigation Grammar Core", passingScore: 3, questions: [
+        { q: "Identify the direct object Accusative shift modification:", o: ["Ich esse der Apfel.", "Ich esse den Apfel.", "Ich esse dem Apfel.", "Ich esse das Apfel."], c: 1, exp: "Masculine object 'der Apfel' changes to 'den Apfel' in accusative." },
+        { q: "Which possessive pronoun denotes 'my parent' correctly?", o: ["mein Vater", "meine Vater", "meinen Vater", "meines Vater"], c: 0, exp: "Masculine subject use matches 'mein Vater'." }
+      ]},
+      { id: 3, title: "Mock Exam Arena 4: Daily Conversational Dialogue Proficiency", passingScore: 3, questions: [
+        { q: "Select the standard reply for 'Danke schön':", o: ["Bitte sehr", "Guten Morgen", "Hallo", "Tschüss"], c: 0, exp: "'Bitte sehr' is the conventional matching response for gratitude." }
+      ]},
+      { id: 4, title: "Mock Exam Arena 5: Advanced Comprehensive Baseline Synthesis", passingScore: 3, questions: [
+        { q: "Conjugate root operational verb 'haben': 'Ihr ___ ein Haus.'", o: ["habe", "hast", "hat", "habt"], c: 3, exp: "The plural pronoun form for 'ihr' takes the 'habt' configuration suffix." }
+      ]}
+    ];
+
+    // Global Core Architecture Reactivity State Cache Layout Engine Variables
+    let activeTab = 'dashboard';
+    let currentThemeProfile = localStorage.getItem('sb_theme_profile') || 'midnight-slate';
+    let totalXPAmount = parseInt(localStorage.getItem('sb_total_xp'), 10) || 0;
+    let savedStreakCount = parseInt(localStorage.getItem('sb_streak_count'), 10) || 1;
+
+    // Sub-Navigation Module Frame Index Trackers
+    let selectedVocabCategory = "Alphabet (Alphabet)";
+    let activeVocabCardIndex = 0;
+    let isVocabCardFlipped = false;
+    let activeGrammarIndex = 0;
+
+    // Skills Interactive Assessment Tracker Arrays
+    let activeSkillSection = 'listening';
+    let skillSelectedAnswer = null;
+
+    // Mini-Games Core Playground State Models
+    let activeGameMode = 'none'; // 'none', 'match', 'gender'
+    let matchGamePairs = [];
+    let matchSelectedGermanIdx = null;
+    let matchSelectedEnglishIdx = null;
+    let matchSuccessCount = 0;
+    
+    let genderGameActiveItem = null;
+    let genderGameFeedback = null; // 'correct', 'wrong'
+
+    // Theme Class Configurations Engine Object Profiles Map
+    const systemThemeProfiles = {
+      'midnight-slate': {
+        shellBg: 'bg-slate-900 border-slate-800',
+        headerBg: 'bg-slate-950 border-slate-800 text-white',
+        footerBg: 'bg-slate-950 border-slate-800',
+        viewSurfaceBg: 'bg-slate-900 text-slate-100',
+        cardBg: 'bg-slate-800 border-slate-700 text-slate-100',
+        cardBackBg: 'bg-indigo-950 border-indigo-800 text-indigo-200',
+        tabActive: 'text-indigo-400',
+        tabInactive: 'text-slate-500'
+      },
+      'cyberpunk-neon': {
+        shellBg: 'bg-indigo-950 border-fuchsia-500',
+        headerBg: 'bg-slate-950 border-fuchsia-500 text-cyan-400',
+        footerBg: 'bg-slate-950 border-fuchsia-500',
+        viewSurfaceBg: 'bg-indigo-950 text-cyan-100',
+        cardBg: 'bg-slate-900 border-cyan-500 text-cyan-300',
+        cardBackBg: 'bg-fuchsia-950 border-fuchsia-500 text-fuchsia-300',
+        tabActive: 'text-lime-400',
+        tabInactive: 'text-fuchsia-400'
+      }
+    };
+
+    // Native Browser Audio Speech Synthesis Runner
+    function triggerSpeechSynthesis(text) {
+      if ('speechSynthesis' in window) {
+        window.speechSynthesis.cancel();
+        const cleanText = text.split('(')[0].split('-')[0].trim();
+        const utterance = new SpeechSynthesisUtterance(cleanText);
+        utterance.lang = 'de-DE';
+        utterance.rate = 0.8;
+        window.speechSynthesis.speak(utterance);
+      }
+    }
+
+    // Algorithmic Large-Scale Number Generator Engine Method (0 to 100 Million converter rule matrix)
+    function generateGermanNumberStringFormula(num) {
+      if (num === 0) return "null";
+      
+      const units = ["", "eins", "zwei", "drei", "vier", "fünf", "sechs", "sieben", "acht", "neun"];
+      const teens = ["zehn", "elf", "zwölf", "dreizehn", "vierzehn", "fünfzehn", "sechzehn", "siebzehn", "achtzehn", "neunzehn"];
+      const tens = ["", "zehn", "zwanzig", "dreißig", "vierzig", "fünfzig", "sechzig", "siebzig", "achtzig", "neunzig"];
+
+      function convertSubHundreds(val) {
+        if (val < 10) return units[val];
+        if (val < 20) return teens[val - 10];
+        const u = val % 10;
+        const t = Math.floor(val / 10);
+        if (u === 0) return tens[t];
+        return (u === 1 ? "ein" : units[u]) + "und" + tens[t];
+      }
+
+      function convertSubThousands(val) {
+        const h = Math.floor(val / 100);
+        const rem = val % 100;
+        let res = "";
+        if (h > 0) res += (h === 1 ? "ein" : units[h]) + "hundert";
+        if (rem > 0) res += convertSubHundreds(rem);
+        return res;
+      }
+
+      let outputText = "";
+      let remainingValue = num;
+
+      if (remainingValue >= 1000000) {
+        const mill = Math.floor(remainingValue / 1000000);
+        remainingValue %= 1000000;
+        if (mill === 1) outputText += "eine Million";
+        else outputText += convertSubThousands(mill) + " Millionen";
+      }
+
+      if (remainingValue >= 1000) {
+        const thous = Math.floor(remainingValue / 1000);
+        remainingValue %= 1000;
+        if (thous === 1) outputText += "eintausend";
+        else outputText += convertSubThousands(thous) + "tausend";
+      }
+
+      if (remainingValue > 0) {
+        outputText += convertSubThousands(remainingValue);
+      }
+
+      if (outputText.endsWith("eins") && num > 1) {
+        outputText = outputText.slice(0, -4) + "eins";
+      }
+      return outputText;
+    }
+
+    function runLiveIntegerConversionCheck() {
+      const inputNode = document.getElementById('numerical-matrix-input');
+      const outputNode = document.getElementById('numerical-matrix-output-string');
+      if (!inputNode || !outputNode) return;
+      
+      let val = parseInt(inputNode.value, 10);
+      if (isNaN(val) || val < 0) {
+        outputNode.innerText = "Please enter a valid positive integer baseline parameter.";
+        return;
+      }
+      if (val > 100000000) {
+        outputNode.innerText = "Maximum threshold capped safely at 100,000,000 (100 Million).";
+        return;
+      }
+      
+      outputNode.innerText = generateGermanNumberStringFormula(val);
+    }
+
+    // Main Startup Setup System Directives
+    window.onload = function() {
+      applyThemeProfile(currentThemeProfile);
+      updateDashboardTelemetry();
+      renderActiveTabModule();
+    };
+
+    function applyThemeProfile(themeKey) {
+      currentThemeProfile = themeKey;
+      localStorage.setItem('sb_theme_profile', themeKey);
+      const conf = systemThemeProfiles[themeKey] || systemThemeProfiles['midnight-slate'];
+      
+      document.getElementById('app-shell-container').className = `w-full max-w-md mx-auto min-h-screen shadow-2xl flex flex-col justify-between relative border-x theme-transition ${conf.shellBg}`;
+      document.getElementById('app-header-nav').className = `p-4 border-b flex justify-between items-center sticky top-0 z-50 theme-transition ${conf.headerBg}`;
+      document.getElementById('main-scroll-view').className = `flex-1 overflow-y-auto p-4 theme-transition ${conf.viewSurfaceBg}`;
+      document.getElementById('app-footer-nav').className = `border-t h-16 flex sticky bottom-0 z-50 theme-transition ${conf.footerBg}`;
+      
+      const tabs = ['dashboard', 'vocabulary', 'grammar', 'skills', 'exams'];
+      tabs.forEach(t => {
+        const node = document.getElementById(`tab-${t}`);
+        if (node) node.className = `flex-1 flex flex-col items-center justify-center transition-colors ${t === activeTab ? conf.tabActive : conf.tabInactive}`;
+      });
+    }
+
+    function updateDashboardTelemetry() {
+      document.getElementById('streak-days-val').innerText = savedStreakCount;
+      document.getElementById('xp-amount-val').innerText = totalXPAmount;
+      
+      const display = document.getElementById('player-rank-display');
+      if (totalXPAmount >= 500) display.innerText = "Lv.4 Imperial Language Architect";
+      else if (totalXPAmount >= 250) display.innerText = "Lv.3 Master Competitor";
+      else if (totalXPAmount >= 100) display.innerText = "Lv.2 Experienced Challenger";
+      else display.innerText = "Lv.1 Arena Novice";
+    }
+
+    function rewardXP(amt) {
+      totalXPAmount += amt;
+      localStorage.setItem('sb_total_xp', totalXPAmount);
+      updateDashboardTelemetry();
+    }
+
+    function switchTab(tabId) {
+      activeTab = tabId;
+      isVocabCardFlipped = false;
+      skillSelectedAnswer = null;
+      activeGameMode = 'none';
+      if (tabId !== 'exams') activeExamRunningMode = false;
+      applyThemeProfile(currentThemeProfile);
+      renderActiveTabModule();
+    }
+
+    // --- GAME 1: WORD MATCHING MATRIX ENGINE ---
+    function initWordMatchGame() {
+      activeGameMode = 'match';
+      matchSuccessCount = 0;
+      matchSelectedGermanIdx = null;
+      matchSelectedEnglishIdx = null;
+      
+      // Pull random 4 items from Family/Body parts pool safely
+      const pool = [...a1VocabularyDatabase["Family (Die Familie)"], ...a1VocabularyDatabase["Body Parts (Körperteile)"]];
+      const shuffled = pool.sort(() => 0.5 - Math.random()).slice(0, 4);
+      
+      const germans = shuffled.map((x, i) => ({ text: x.german, id: i, matched: false }));
+      const english = shuffled.map((x, i) => ({ text: x.english, id: i, matched: false }));
+      
+      matchGamePairs = {
+        germans: germans.sort(() => 0.5 - Math.random()),
+        english: english.sort(() => 0.5 - Math.random())
+      };
+      
+      renderActiveTabModule();
+    }
+
+    function handleMatchSelection(type, idx) {
+      if (type === 'ger') {
+        if (matchGamePairs.germans[idx].matched) return;
+        matchSelectedGermanIdx = idx;
+      } else {
+        if (matchGamePairs.english[idx].matched) return;
+        matchSelectedEnglishIdx = idx;
+      }
+
+      if (matchSelectedGermanIdx !== null && matchSelectedEnglishIdx !== null) {
+        const gerItem = matchGamePairs.germans[matchSelectedGermanIdx];
+        const engItem = matchGamePairs.english[matchSelectedEnglishIdx];
+        
+        if (gerItem.id === engItem.id) {
+          gerItem.matched = true;
+          engItem.matched = true;
+          matchSuccessCount++;
+          rewardXP(5);
+          if (matchSuccessCount === 4) rewardXP(10);
+        }
+        
+        matchSelectedGermanIdx = null;
+        matchSelectedEnglishIdx = null;
+      }
+      renderActiveTabModule();
+    }
+
+    // --- GAME 2: GENDER BLITZ ARTICLES STRIKER ---
+    function initGenderBlitzGame() {
+      activeGameMode = 'gender';
+      genderGameFeedback = null;
+      
+      const pool = [...a1VocabularyDatabase["Family (Die Familie)"], ...a1VocabularyDatabase["Body Parts (Körperteile)"]].filter(x => ['masculine', 'feminine', 'neuter'].includes(x.gender));
+      
+      if(pool.length > 0) {
+        genderGameActiveItem = pool[Math.floor(Math.random() * pool.length)];
+      }
+      renderActiveTabModule();
+    }
+
+    function submitGenderStrikeAnswer(chosenGender) {
+      if (genderGameFeedback !== null) return;
+      
+      if (genderGameActiveItem.gender === chosenGender) {
+        genderGameFeedback = 'correct';
+        rewardXP(5);
+      } else {
+        genderGameFeedback = 'wrong';
+      }
+      renderActiveTabModule();
+    }
+
+    // View Route Processing Center Hub
+    function renderActiveTabModule() {
+      const container = document.getElementById('main-scroll-view');
+      const conf = systemThemeProfiles[currentThemeProfile] || systemThemeProfiles['midnight-slate'];
+      
+      if (activeTab === 'dashboard') {
+        if (activeGameMode === 'match') {
+          let leftColHTML = '';
+          let rightColHTML = '';
+          
+          matchGamePairs.germans.forEach((g, i) => {
+            let activeStyle = g.matched ? 'bg-emerald-950/40 border-emerald-500 text-emerald-400 opacity-60' : (matchSelectedGermanIdx === i ? 'border-indigo-500 bg-indigo-950/40 text-indigo-300' : 'bg-slate-800 border-slate-700');
+            leftColHTML += `<button onclick="handleMatchSelection('ger', ${i})" class="w-full p-3 border rounded-xl font-bold text-xs text-center transition-all ${activeStyle}">${g.matched ? g.text : g.text}</button>`;
+          });
+          
+          matchGamePairs.english.forEach((e, i) => {
+            let activeStyle = e.matched ? 'bg-emerald-950/40 border-emerald-500 text-emerald-400 opacity-60' : (matchSelectedEnglishIdx === i ? 'border-indigo-500 bg-indigo-950/40 text-indigo-300' : 'bg-slate-800 border-slate-700');
+            rightColHTML += `<button onclick="handleMatchSelection('eng', ${i})" class="w-full p-3 border rounded-xl font-bold text-xs text-center transition-all ${activeStyle}">${e.matched ? e.text : e.text}</button>`;
+          });
+
+          container.innerHTML = `
+            <div class="space-y-4">
+              <div class="flex justify-between items-center px-1">
+                <h3 class="text-xs font-black uppercase text-indigo-400 tracking-wider">Word Match Matrix Playground</h3>
+                <button onclick="activeGameMode='none'; renderActiveTabModule();" class="text-[10px] bg-slate-800 px-2 py-1 rounded font-bold border border-slate-700">✕ Exit</button>
+              </div>
+              <p class="text-[11px] text-slate-400">Tap a German word, then tap its matching English translation block layout below.</p>
+              
+              <div class="grid grid-cols-2 gap-3 pt-2">
+                <div class="space-y-2">${leftColHTML}</div>
+                <div class="space-y-2">${rightColHTML}</div>
+              </div>
+
+              ${matchSuccessCount === 4 ? `
+                <div class="p-4 bg-slate-950 border border-emerald-800 rounded-xl text-center space-y-2 animate-fadeIn">
+                  <p class="text-xs font-black text-emerald-400">🎉 Matrix Decoupled Match Cleared! (+30 Total XP)</p>
+                  <button onclick="initWordMatchGame()" class="px-4 py-1.5 bg-indigo-600 text-white font-bold text-xs rounded-lg">Play Another Round</button>
+                </div>
+              ` : ''}
+            </div>
+          `;
+          return;
+        }
+
+        if (activeGameMode === 'gender') {
+          let rawGerman = genderGameActiveItem ? genderGameActiveItem.german : 'N/A';
+          let cleanGermanNoun = rawGerman.replace(/^(der|die|das)\s+/i, '');
+          cleanGermanNoun = cleanGermanNoun.charAt(0).toUpperCase() + cleanGermanNoun.slice(1);
+
+          container.innerHTML = `
+            <div class="space-y-4">
+              <div class="flex justify-between items-center px-1">
+                <h3 class="text-xs font-black uppercase text-indigo-400 tracking-wider">Gender Blitz Article Striker</h3>
+                <button onclick="activeGameMode='none'; renderActiveTabModule();" class="text-[10px] bg-slate-800 px-2 py-1 rounded font-bold border border-slate-700">✕ Exit</button>
+              </div>
+              <p class="text-[11px] text-slate-400">Select the correct matching definite root article gender token structure for the German noun displayed.</p>
+              
+              <div class="${conf.cardBg} border p-8 rounded-2xl shadow-xl text-center flex flex-col items-center justify-center space-y-2">
+                <span class="text-2xl font-black text-amber-400 tracking-tight">${cleanGermanNoun}</span>
+                <span class="text-xs text-slate-400 font-medium font-mono">[ Meaning: ${genderGameActiveItem ? genderGameActiveItem.english : ''} ]</span>
+              </div>
+
+              <div class="grid grid-cols-3 gap-2">
+                <button onclick="submitGenderStrikeAnswer('masculine')" class="p-3 bg-blue-950/40 border border-blue-800 text-blue-400 font-black text-xs rounded-xl hover:bg-blue-900/20">DER</button>
+                <button onclick="submitGenderStrikeAnswer('feminine')" class="p-3 bg-pink-950/40 border border-pink-800 text-pink-400 font-black text-xs rounded-xl hover:bg-pink-900/20">DIE</button>
+                <button onclick="submitGenderStrikeAnswer('neuter')" class="p-3 bg-amber-950/40 border border-amber-800 text-amber-400 font-black text-xs rounded-xl hover:bg-amber-900/20">DAS</button>
+              </div>
+
+              ${genderGameFeedback !== null ? `
+                <div class="p-4 bg-slate-950 border rounded-xl text-center space-y-2 animate-fadeIn ${genderGameFeedback === 'correct' ? 'border-emerald-800 text-emerald-400' : 'border-rose-800 text-rose-400'}">
+                  <p class="text-xs font-black">${genderGameFeedback === 'correct' ? '✓ Strike Matrix Verified Match! (+5 XP)' : '✗ Incorrect Article Gender assignment.'}</p>
+                  <p class="text-[11px] text-slate-400">The noun takes full dictionary configuration: <strong>${genderGameActiveItem.german}</strong></p>
+                  <button onclick="initGenderBlitzGame()" class="px-4 py-1.5 bg-indigo-600 text-white font-bold text-xs rounded-lg">Next Word →</button>
+                </div>
+              ` : ''}
+            </div>
+          `;
+          return;
+        }
+
+        container.innerHTML = `
+          <div class="space-y-5">
+            <div class="p-5 rounded-2xl bg-gradient-to-br from-indigo-600 to-fuchsia-600 text-white shadow-xl">
+              <h2 class="text-lg font-extrabold">Welcome to A1 Language Training Ground ⚡</h2>
+              <p class="text-xs text-indigo-100 mt-1 leading-relaxed">Master standard Goethe or Telc proficiency variants cleanly using accelerated game interface metrics.</p>
+              <div class="mt-4 flex gap-2">
+                <button onclick="switchTab('exams')" class="bg-white text-indigo-950 font-black text-[11px] px-3.5 py-2 rounded-xl shadow-md transform active:scale-95 transition-transform">Run Mock Test</button>
+                <button onclick="switchTab('vocabulary')" class="bg-indigo-500/30 border border-indigo-400/40 text-white font-bold text-[11px] px-3.5 py-2 rounded-xl">Lexicon Hub</button>
+              </div>
+            </div>
+
+            <div class="${conf.cardBg} border p-4 rounded-xl space-y-3">
+              <div>
+                <h3 class="text-xs font-black text-amber-400 uppercase tracking-wider">⚡ Interactive Vocabulary Memory Games</h3>
+                <p class="text-[10px] text-slate-400 mt-0.5">Accelerate item retention using targeted cognitive game mechanics loops.</p>
+              </div>
+              <div class="grid grid-cols-2 gap-2">
+                <button onclick="initWordMatchGame()" class="p-3 bg-slate-950 hover:bg-slate-900 border border-indigo-900/60 rounded-xl text-left flex flex-col justify-between transition-all transform active:scale-95">
+                  <span class="text-xs font-black text-indigo-300">Word Match Matrix</span>
+                  <span class="text-[9px] text-slate-500 font-medium mt-1">Link terms together</span>
+                </button>
+                <button onclick="initGenderBlitzGame()" class="p-3 bg-slate-950 hover:bg-slate-900 border border-fuchsia-900/60 rounded-xl text-left flex flex-col justify-between transition-all transform active:scale-95">
+                  <span class="text-xs font-black text-fuchsia-300">Gender Blitz Striker</span>
+                  <span class="text-[9px] text-slate-500 font-medium mt-1">Master Der/Die/Das</span>
+                </button>
+              </div>
+            </div>
+
+            <div class="grid grid-cols-2 gap-3">
+              <div class="${conf.cardBg} border p-4 rounded-xl flex flex-col justify-between">
+                <span class="text-[10px] uppercase font-bold text-slate-400 tracking-wider">A1 Framework Core</span>
+                <span class="text-base font-black text-emerald-400 mt-1">100% Validated</span>
+              </div>
+              <div class="${conf.cardBg} border p-4 rounded-xl flex flex-col justify-between">
+                <span class="text-[10px] uppercase font-bold text-slate-400 tracking-wider">Exam Status Modules</span>
+                <span class="text-base font-black text-indigo-400 mt-1">5 Simulations</span>
+              </div>
+            </div>
+
+            <div class="${conf.cardBg} border p-4 rounded-xl">
+              <h3 class="text-xs font-black text-slate-400 uppercase tracking-wider mb-2">System Theme Core Profile</h3>
+              <div class="grid grid-cols-2 gap-2">
+                <button onclick="applyThemeProfile('midnight-slate')" class="p-2.5 rounded-lg border text-[11px] font-bold text-center bg-slate-900 border-slate-700">Slate Mode</button>
+                <button onclick="applyThemeProfile('cyberpunk-neon')" class="p-2.5 rounded-lg border text-[11px] font-bold text-center bg-indigo-950 border-fuchsia-800 text-cyan-300">Neon Mode</button>
+              </div>
+            </div>
+          </div>
+        `;
+      }
+
+      else if (activeTab === 'vocabulary') {
+        const categories = Object.keys(a1VocabularyDatabase);
+        const activeList = a1VocabularyDatabase[selectedVocabCategory];
+        const card = activeList ? activeList[activeVocabCardIndex] : null;
+
+        let selectOptionsHTML = '';
+        categories.forEach(cat => {
+          selectOptionsHTML += `<option value="${cat}" ${cat === selectedVocabCategory ? 'selected' : ''}>${cat}</option>`;
+        });
+        selectOptionsHTML += `<option value="DYNAM_NUMBERS" ${selectedVocabCategory === 'DYNAM_NUMBERS' ? 'selected' : ''}>Numbers (0 to 100 Million Engine)</option>`;
+
+        let coreDisplayBodyHTML = '';
+
+        if (selectedVocabCategory === "DYNAM_NUMBERS") {
+          coreDisplayBodyHTML = `
+            <div class="${conf.cardBg} border p-4 rounded-2xl w-full space-y-3">
+              <h3 class="text-xs font-black text-indigo-400 uppercase tracking-wider">Algorithmic 100M Numbers Engine</h3>
+              <p class="text-[11px] text-slate-400">Type any number between 0 and 100,000,000 to see its exact written grammatical German compilation string framework.</p>
+              <input type="number" id="numerical-matrix-input" min="0" max="100000000" placeholder="Type integer... (e.g. 984520)" oninput="runLiveIntegerConversionCheck()" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 text-sm font-mono font-bold text-amber-400 outline-none" />
+              <div class="p-3 bg-slate-950 border border-slate-800 rounded-xl min-h-[50px] flex items-center justify-center">
+                <p id="numerical-matrix-output-string" class="text-xs font-bold text-emerald-400 font-mono text-center">null</p>
+              </div>
+            </div>
+          `;
+        } else if (card) {
+          coreDisplayBodyHTML = `
+            <div class="w-full flex justify-between items-center text-[11px] font-bold text-slate-400 px-1">
+              <span>Card ${activeVocabCardIndex + 1} of ${activeList.length}</span>
+              <span class="text-indigo-400 font-extrabold uppercase">A1 Lexicon Library</span>
+            </div>
+
+            <div class="flashcard-wrapper w-full h-56 cursor-pointer ${isVocabCardFlipped ? 'flipped' : ''}" onclick="this.classList.toggle('flipped'); isVocabCardFlipped=!isVocabCardFlipped;">
+              <div class="flashcard-inner">
+                <div class="flashcard-front ${conf.cardBg} border shadow-xl">
+                  <div class="w-full flex justify-between items-center">
+                    <span class="text-[9px] uppercase tracking-widest font-black px-2 py-0.5 rounded bg-slate-950/50 text-indigo-400">${card.gender}</span>
+                    <span class="text-[9px] font-mono text-amber-400/80 font-bold bg-slate-950/40 px-1.5 py-0.5 rounded">📄 Front</span>
+                  </div>
+                  <div class="flex flex-col my-auto items-center">
+                    <span class="text-2xl font-black tracking-tight select-none">${card.german}</span>
+                    <span class="text-xs font-mono font-bold text-indigo-300 mt-2 bg-indigo-950/40 px-2 py-1 rounded border border-indigo-900/40">🗣️ [ ${card.pronunciation || 'N/A'} ]</span>
+                    
+                    <button onclick="event.stopPropagation(); triggerSpeechSynthesis('${card.german}');" class="mt-3 px-3 py-1.5 bg-indigo-600 hover:bg-indigo-500 text-white font-extrabold text-[10px] rounded-lg shadow-md flex items-center gap-1 transition-transform active:scale-95">
+                      🔊 Listen Audio
+                    </button>
+                  </div>
+                  <span class="text-[10px] text-slate-400 font-medium italic">💡 Tap card background area to flip</span>
+                </div>
+                <div class="flashcard-back ${conf.cardBackBg} border shadow-xl">
+                  <span class="text-[9px] uppercase tracking-widest font-black self-start text-indigo-300">English Translation Mapping</span>
+                  <span class="text-xl font-extrabold tracking-tight my-auto select-none">${card.english}</span>
+                  <p class="text-xs text-indigo-200/80 px-4">${card.hint}</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="w-full grid grid-cols-2 gap-2">
+              <button onclick="activeVocabCardIndex = (activeVocabCardIndex === 0) ? ${activeList.length - 1} : activeVocabCardIndex - 1; isVocabCardFlipped=false; renderActiveTabModule();" class="p-3 bg-slate-800 border border-slate-700 text-xs font-bold rounded-xl active:scale-95 transition-transform">← Prev</button>
+              <button onclick="activeVocabCardIndex = (activeVocabCardIndex === ${activeList.length - 1}) ? 0 : activeVocabCardIndex + 1; isVocabCardFlipped=false; renderActiveTabModule();" class="p-3 bg-slate-800 border border-slate-700 text-xs font-bold rounded-xl active:scale-95 transition-transform">Next →</button>
+            </div>
+          `;
+        }
+
+        container.innerHTML = `
+          <div class="space-y-4 flex flex-col items-center">
+            <div class="w-full">
+              <label for="lexicon-category-selector" class="text-[10px] uppercase font-black tracking-wider text-slate-400 block mb-1">Lexicon Category Matrix</label>
+              <select id="lexicon-category-selector" onchange="selectedVocabCategory=this.value; activeVocabCardIndex=0; isVocabCardFlipped=false; renderActiveTabModule();" class="w-full bg-slate-950 border border-slate-800 p-2.5 text-xs font-bold rounded-xl text-slate-200 outline-none">
+                ${selectOptionsHTML}
+              </select>
+            </div>
+            ${coreDisplayBodyHTML}
+          </div>
+        `;
+      }
+
+      else if (activeTab === 'grammar') {
+        let structuralAccordionHTML = '';
+        a1GrammarDatabase.forEach((item, idx) => {
+          const isOpen = (idx === activeGrammarIndex);
+          structuralAccordionHTML += `
+            <div class="border border-slate-800 rounded-xl overflow-hidden ${isOpen ? 'bg-slate-950/40' : 'bg-slate-950/10'}">
+              <button onclick="activeGrammarIndex=${idx}; renderActiveTabModule();" class="w-full text-left p-3.5 text-xs font-black flex justify-between items-center transition-colors bg-slate-950 border-b border-slate-800/60 text-slate-200">
+                <span>${item.title}</span>
+                <span>${isOpen ? '▼' : '▶'}</span>
+              </button>
+              ${isOpen ? `
+                <div class="p-4 space-y-3 bg-slate-900/40 animate-fadeIn">
+                  <div>
+                    <span class="text-[9px] uppercase tracking-wider font-extrabold text-indigo-400 block mb-0.5">Core Syntax Rules Directives</span>
+                    <p class="text-xs font-medium leading-relaxed text-slate-300">${item.rules}</p>
+                  </div>
+                  <div class="p-3 rounded-xl bg-slate-950 border border-slate-800/80">
+                    <span class="text-[9px] uppercase tracking-wider font-extrabold text-emerald-400 block mb-0.5">Contextual Formulation Usage Template</span>
+                    <p class="text-xs font-mono font-bold text-emerald-300 leading-snug">${item.example}</p>
+                  </div>
+                </div>
+              ` : ''}
+            </div>
+          `;
+        });
+
+        container.innerHTML = `
+          <div class="space-y-3">
+            <div class="px-1">
+              <h3 class="text-sm font-black text-white">Goethe A1 Unified Grammar Curriculum Matrix</h3>
+              <p class="text-[10px] text-slate-400 mt-0.5">13 Essential morphological tracking nodes formatted for direct mobile deployment view.</p>
+            </div>
+            <div class="space-y-2">${structuralAccordionHTML}</div>
+          </div>
+        `;
+      }
+
+      else if (activeTab === 'skills') {
+        let skillsHTML = `<div class="space-y-4">
+          <div class="grid grid-cols-4 gap-1.5">
+            ${['listening', 'reading', 'writing', 'speaking'].map(s => `
+              <button onclick="activeSkillSection='${s}'; skillSelectedAnswer=null; renderActiveTabModule();" class="py-2 px-1 rounded-xl text-[10px] font-black uppercase tracking-tight border text-center transition-all ${activeSkillSection === s ? 'bg-indigo-600 border-indigo-500 text-white' : 'bg-slate-800 border-slate-700 text-slate-400'}" >${s}</button>
+            `).join('')}
+          </div>
+          <div class="${conf.cardBg} border p-4 rounded-2xl space-y-3">
+            <h3 class="text-xs font-black uppercase tracking-wider text-indigo-400">${activeSkillSection.toUpperCase()} LAB IMMERSION</h3>`;
+
+        if (activeSkillSection === 'listening') {
+          const lData = a1SkillsDatabase.listening[0];
+          skillsHTML += `
+            <div class="space-y-3">
+              <p class="text-xs text-slate-400 font-mono italic">Audio simulation text: "${lData.transcript}"</p>
+              <p class="text-xs font-bold">${lData.question}</p>
+              <div class="space-y-2">
+                ${lData.options.map((o, idx) => `
+                  <button onclick="skillSelectedAnswer=${idx}; renderActiveTabModule();" class="w-full text-left p-2.5 border rounded-xl text-xs font-bold ${skillSelectedAnswer === idx ? 'border-indigo-500 bg-indigo-950/40' : 'border-slate-700 bg-slate-900'}" >${o}</button>
+                `).join('')}
+              </div>
+              ${skillSelectedAnswer !== null ? `
+                <div class="p-2 text-xs rounded bg-slate-950 text-center font-bold ${skillSelectedAnswer === lData.correct ? 'text-emerald-400' : 'text-rose-400'}" >
+                  ${skillSelectedAnswer === lData.correct ? '✓ Correct! (+10 XP)' : '✗ Incorrect! Try listening again.'}
+                </div>
+              ` : ''}
+            </div>`;
+        } else if (activeSkillSection === 'reading') {
+          const rData = a1SkillsDatabase.reading[0];
+          skillsHTML += `
+            <div class="space-y-3">
+              <div class="p-3 bg-slate-950 border border-slate-800 rounded-xl font-mono text-xs leading-relaxed italic text-slate-300">"${rData.body}"</div>
+              <p class="text-xs font-bold">${rData.question}</p>
+              <div class="space-y-2">
+                ${rData.options.map((o, idx) => `
+                  <button onclick="skillSelectedAnswer=${idx}; renderActiveTabModule();" class="w-full text-left p-2.5 border rounded-xl text-xs font-bold ${skillSelectedAnswer === idx ? 'border-indigo-500 bg-indigo-950/40' : 'border-slate-700 bg-slate-900'}" >${o}</button>
+                `).join('')}
+              </div>
+              ${skillSelectedAnswer !== null ? `
+                <div class="p-2 text-xs rounded bg-slate-950 text-center font-bold ${skillSelectedAnswer === rData.correct ? 'text-emerald-400' : 'text-rose-400'}" >
+                  ${skillSelectedAnswer === rData.correct ? '✓ Correct! (+10 XP)' : '✗ Incorrect. Look for closure timestamps.'}
+                </div>
+              ` : ''}
+            </div>`;
+        } else if (activeSkillSection === 'writing') {
+          const wData = a1SkillsDatabase.writing[0];
+          skillsHTML += `
+            <div class="space-y-3">
+              <p class="text-xs font-medium leading-relaxed">${wData.context}</p>
+              <div class="p-3 bg-slate-950 border border-slate-800 font-mono text-xs rounded-xl">${wData.text}</div>
+              <div class="grid grid-cols-2 gap-2">
+                ${wData.options.map((o, idx) => `
+                  <button onclick="skillSelectedAnswer=${idx}; renderActiveTabModule();" class="p-2.5 border rounded-xl text-xs font-mono font-bold text-center ${skillSelectedAnswer === idx ? 'border-indigo-500 bg-indigo-950/40' : 'border-slate-700 bg-slate-900'}" >${o}</button>
+                `).join('')}
+              </div>
+              ${skillSelectedAnswer !== null ? `
+                <div class="p-2 text-xs rounded bg-slate-950 text-center font-bold ${skillSelectedAnswer === wData.correct ? 'text-emerald-400' : 'text-rose-400'}" >
+                  ${skillSelectedAnswer === wData.correct ? '✓ Success Matrix Match (+15 XP)' : '✗ Case grammar mismatches identified.'}
+                </div>
+              ` : ''}
+            </div>`;
+        } else if (activeSkillSection === 'speaking') {
+          const sData = a1SkillsDatabase.speaking[0];
+          skillsHTML += `
+            <div class="space-y-3 text-center py-2">
+              <p class="text-xs font-bold text-slate-300">Target Statement Structure Challenge</p>
+              <p class="text-xl font-black text-indigo-300">"${sData.text}"</p>
+              <div class="p-2.5 bg-slate-950 text-left border border-slate-800 rounded-lg">
+                <span class="text-[9px] uppercase font-black block text-slate-400 tracking-wider">Phonetics Suffix Guide Map</span>
+                <p class="text-xs text-amber-400 font-mono font-bold mt-0.5">${sData.guide}</p>
+              </div>
+              <button onclick="rewardXP(5);" class="w-full mt-2 p-3 bg-indigo-600 font-black text-xs text-white rounded-xl shadow-md active:scale-95 transition-all">🎤 Verify Speaking Pronunciation</button>
+            </div>`;
+        }
+
+        skillsHTML += `</div></div>`;
+        container.innerHTML = skillsHTML;
+      }
+
+      else if (activeTab === 'exams') {
+        if (!activeExamRunningMode) {
+          let selectionRowsHTML = '';
+          mockExamsDatabase.forEach((ex, idx) => {
+            selectionRowsHTML += `
+              <div class="${conf.cardBg} border p-4 rounded-xl flex flex-col justify-between space-y-3">
+                <div>
+                  <h4 class="text-xs font-black text-white">${ex.title}</h4>
+                  <p class="text-[10px] text-slate-400 mt-0.5">Comprehensive Standard Assessment Block • ${ex.questions.length} Questions</p>
+                </div>
+                <button onclick="startSpecificMockExamSuite(${idx})" class="w-full py-2 bg-slate-950 hover:bg-slate-900 border border-indigo-900 text-indigo-400 font-extrabold text-[11px] rounded-lg transition-transform active:scale-95" >Launch Simulation</button>
+              </div>
+            `;
+          });
+
+          container.innerHTML = `
+            <div class="space-y-4">
+              <div class="px-1">
+                <h3 class="text-sm font-black tracking-tight text-white">Goethe / Telc A1 Mock Exam Arena</h3>
+                <p class="text-[11px] text-slate-400 font-medium">Verify your cross-dimension capabilities using full runtime testing models.</p>
+              </div>
+              <div class="space-y-3">${selectionRowsHTML}</div>
+            </div>
+          `;
+        } else {
+          const exam = mockExamsDatabase[selectedActiveExamIndex];
+          
+          if (currentExamQuestionIndex >= exam.questions.length) {
+            let correctCounter = 0;
+            exam.questions.forEach((q, idx) => {
+              if (activeExamUserAnswersCollected[idx] === q.c) correctCounter++;
+            });
+            const passed = correctCounter >= exam.passingScore;
+            if (passed) setTimeout(() => { rewardXP(50); }, 100);
+
+            container.innerHTML = `
+              <div class="text-center p-6 bg-slate-950 border border-slate-800 rounded-2xl space-y-4 shadow-2xl">
+                <span class="text-5xl block">${passed ? '🏆' : '⏳'}</span>
+                <h3 class="text-lg font-black text-white">${passed ? 'Examination Passed!' : 'Requires Review'}</h3>
+                <p class="text-xs text-slate-400 font-semibold leading-relaxed">Performance Output Score metrics tracking evaluated: <br><span class="text-base font-black ${passed ? 'text-emerald-400' : 'text-rose-400'}">${correctCounter} / ${exam.questions.length} Correct</span></p>
+                <div class="text-left bg-slate-900 p-3 rounded-lg border border-slate-800 text-[11px] space-y-1 text-slate-300">
+                  <p><strong>Passing Constraint Target:</strong> ${exam.passingScore} Correct options</p>
+                  <p><strong>Rewards Awarded:</strong> ${passed ? '+50 XP Milestone Achieved!' : '0 XP. Please run remediation rules.'}</p>
+                </div>
+                <button onclick="activeExamRunningMode=false; renderActiveTabModule();" class="w-full p-3 bg-gradient-to-r from-indigo-500 to-fuchsia-500 font-black text-xs text-white rounded-xl" >Return to Exam Selection Shell</button>
+              </div>
+            `;
+            return;
+          }
+
+          const activeQuestion = exam.questions[currentExamQuestionIndex];
+          container.innerHTML = `
+            <div class="space-y-4">
+              <div class="flex justify-between items-center px-1">
+                <span class="text-xs font-black text-slate-400">Exam Question ${currentExamQuestionIndex + 1} of ${exam.questions.length}</span>
+                <span class="text-[10px] font-mono bg-rose-950 border border-rose-800 px-2 py-0.5 text-rose-400 rounded-md font-bold">LIVE ASSESS MODE</span>
+              </div>
+
+              <div class="${conf.cardBg} border p-5 rounded-2xl shadow-xl">
+                <p class="text-xs font-bold leading-relaxed text-slate-200">${activeQuestion.q}</p>
+              </div>
+
+              <div class="space-y-2">
+                ${activeQuestion.o.map((opt, oIdx) => {
+                  let optStyle = "bg-slate-800 border-slate-700 text-slate-300";
+                  if (processingExamEvaluationFeedbackMode) {
+                    if (oIdx === activeQuestion.c) optStyle = "bg-emerald-950 border-emerald-500 text-emerald-200 font-black";
+                    else if (oIdx === activeExamUserAnswersCollected[currentExamQuestionIndex]) optStyle = "bg-rose-950 border-rose-500 text-rose-200";
+                    else optStyle = "bg-slate-900 border-slate-800 opacity-40 text-slate-600";
+                  }
+                  return `
+                    <button onclick="submitActiveExamOptionAnswer(${oIdx})" ${processingExamEvaluationFeedbackMode ? 'disabled' : ''} class="w-full text-left p-3.5 border rounded-xl text-xs font-bold transition-all ${optStyle}" >${opt}</button>
+                  `;
+                }).join('')}
+              </div>
+
+              ${processingExamEvaluationFeedbackMode ? `
+                <div class="p-4 bg-slate-950 border border-slate-800 rounded-xl space-y-2">
+                  <span class="text-[9px] uppercase font-black text-slate-400 tracking-wider">Grammar Logic Correction Analysis</span>
+                  <p class="text-xs text-slate-300 font-medium">${activeQuestion.exp}</p>
+                  <button onclick="advanceActiveExamQuestionStep()" class="w-full mt-1 py-2.5 bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs rounded-xl" >Next Question →</button>
+                </div>
+              ` : ''}
+            </div>
+          `;
+        }
+      }
+    }
+
+    // Exam State Handler Methods
+    function startSpecificMockExamSuite(idx) {
+      selectedActiveExamIndex = idx;
+      activeExamRunningMode = true;
+      currentExamQuestionIndex = 0;
+      activeExamUserAnswersCollected = [];
+      processingExamEvaluationFeedbackMode = false;
+      renderActiveTabModule();
+    }
+
+    function submitActiveExamOptionAnswer(ansIdx) {
+      if (processingExamEvaluationFeedbackMode) return;
+      activeExamUserAnswersCollected[currentExamQuestionIndex] = ansIdx;
+      processingExamEvaluationFeedbackMode = true;
+      renderActiveTabModule();
+    }
+
+    function advanceActiveExamQuestionStep() {
+      processingExamEvaluationFeedbackMode = false;
+      currentExamQuestionIndex++;
+      renderActiveTabModule();
+    }
+  </script>
+</body>
+</html>
+
