@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sprachblitz - Learn Like a Game</title>
+  <!-- Tailwind CSS Core Setup -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- External Font Family Tracking -->
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+    /* Smooth 3D Cartesian Flip System Layout Configurations */
+    .flashcard-wrapper {
+      perspective: 1000px;
+    }
+    .flashcard-inner {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      text-align: center;
+      transition: transform 0.6s;
+      transform-style: preserve-3d;
+    }
+    .flashcard-wrapper.flipped .flashcard-inner {
+      transform: rotateY(180deg);
+    }
+    .flashcard-front, .flashcard-back {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      -webkit-backface-visibility: hidden;
+      backface-visibility: hidden;
+      border-radius: 0.75rem;
+      padding: 1.25rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .flashcard-back {
+      transform: rotateY(180deg);
+    }
+    
+    /* Theme Transition Rule Helper Packages */
+    .theme-transition {
+      transition: all 0.3s ease;
+    }
+    
+    /* Custom Scrollbar Styling */
+    ::-webkit-scrollbar {
+      width: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: rgba(156, 163, 175, 0.5);
+      border-radius: 3px;
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col bg-slate-950 text-slate-100">
+
+  <!-- Core App Shell Container -->
+  <div id="app-shell-container" class="w-full max-w-md mx-auto min-h-screen shadow-2xl flex flex-col justify-between relative border-x border-slate-800 bg-slate-900 theme-transition">
+    
+    <!-- Top Brand Navbar Navigation Header -->
+    <header id="app-header-nav" class="p-4 border-b border-slate-800 bg-slate-950 text-white flex justify-between items-center sticky top-0 z-50 theme-transition">
+      <div class="flex flex-col">
+        <h1 id="app-main-title" class="text-lg font-extrabold tracking-tight">Sprachblitz ⚡</h1>
+        <div id="player-rank-display" class="text-[10px] font-bold uppercase tracking-wider mt-0.5 text-indigo-400">Lv.1 Learner</div>
+      </div>
+      <div class="flex items-center gap-3">
+        <div id="streak-counter" class="font-extrabold text-sm flex items-center gap-1 px-2.5 py-1 rounded-lg border border-slate-800 bg-slate-900 text-amber-500 theme-transition">
+          🔥 <span id="streak-days-val">1</span> Day
+        </div>
+        <div id="xp-counter-badge" class="font-bold text-xs bg-indigo-950 text-indigo-300 border border-indigo-800 px-2 py-1 rounded-lg">
+          ✨ <span id="xp-amount-val">0</span> XP
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Dynamic Scrolling View Surface -->
+    <main id="main-scroll-view" class="flex-1 overflow-y-auto p-4 bg-slate-900 theme-transition">
+      <!-- Active dynamic app panel screens injected here programmatically -->
+    </main>
+
+    <!-- Bottom App Navigation Control Grid Bar Layout -->
+    <footer id="app-footer-nav" class="border-t border-slate-800 bg-slate-950 h-16 flex sticky bottom-0 z-50 theme-transition">
+      <button onclick="switchTab('dashboard')" class="flex-1 flex flex-col items-center justify-center navigation-tab-btn transition-colors text-indigo-400" id="tab-dashboard">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="mb-1"><rect width="7" height="9" x="3" y="3" rx="1"/><rect width="7" height="5" x="14" y="3" rx="1"/><rect width="7" height="9" x="14" y="12" rx="1"/><rect width="7" height="5" x="3" y="16" rx="1"/></svg>
+        <span class="text-[10px] font-bold">Arena</span>
+      </button>
+      <button onclick="switchTab('vocabulary')" class="flex-1 flex flex-col items-center justify-center navigation-tab-btn transition-colors text-slate-400" id="tab-vocabulary">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="mb-1"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z"/><path d="M6 6h10M6 10h10"/></svg>
+        <span class="text-[10px] font-semibold">Cards</span>
+      </button>
+      <button onclick="switchTab('grammar')" class="flex-1 flex flex-col items-center justify-center navigation-tab-btn transition-colors text-slate-400" id="tab-grammar">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="mb-1"><path d="M21.42 10.922a1 1 0 0 0-.019-1.838L12.83 5.18a2 2 0 0 0-1.66 0L2.6 9.08a1 1 0 0 0 0 1.832l8.57 3.908a2 2 0 0 0 1.66 0z"/><path d="M6 18.8v-4L12 18l6-3.2v4"/></svg>
+        <span class="text-[10px] font-semibold">Cheats</span>
+      </button>
+      <button onclick="switchTab('quiz')" class="flex-1 flex flex-col items-center justify-center navigation-tab-btn transition-colors text-slate-400" id="tab-quiz">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="mb-1"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3M12 17h.01"/></svg>
+        <span class="text-[10px] font-semibold">Battles</span>
+      </button>
+    </footer>
+
+  </div>
+
+  <!-- Master System Application Core Operations Script Stack -->
+  <script>
+    // Dataset for Language Systems
+    const coreVocabulary = [
+      { id: 1, german: "der Hund", gender: "masculine", english: "the dog", audioText: "der Hund", hint: "Man's best friend." },
+      { id: 2, german: "die Katze", gender: "feminine", english: "the cat", audioText: "die Katze", hint: "Likes chasing mice." },
+      { id: 3, german: "das Auto", gender: "neuter", english: "the car", audioText: "das Auto", hint: "Has four wheels." },
+      { id: 4, german: "das Buch", gender: "neuter", english: "the book", audioText: "das Buch", hint: "You can read it." },
+      { id: 5, german: "die Blume", gender: "feminine", english: "the flower", audioText: "die Blume", hint: "Smells nice in spring." }
+    ];
+
+    const coreGrammarCheats = [
+      { title: "Nominative vs Accusative", rules: "The subject is Nominative. The direct object changes to Accusative.", example: "Der Hund (Nom) isst einen Apfel (Acc)." },
+      { title: "Definite Articles", rules: "Masculine: der, Feminine: die, Neuter: das, Plural: die.", example: "Der Vater, die Mutter, das Kind." },
+      { title: "Verb Conjugation (sein)", rules: "ich bin, du bist, er/sie/es ist, wir sind, ihr seid, sie sind.", example: "Du bist ein kluger Spieler!" }
+    ];
+
+    const coreQuizBattles = [
+      {
+        question: "Which article completes: '___ Katze schläft'?",
+        options: ["Der", "Die", "Das", "Den"],
+        correct: 1,
+        explanation: "'Katze' is a feminine noun, so it takes 'die'."
+      },
+      {
+        question: "What is the correct English translation for 'das Buch'?",
+        options: ["The dog", "The table", "The book", "The window"],
+        correct: 2,
+        explanation: "'das Buch' translates accurately to 'the book'."
+      },
+      {
+        question: "Conjugate: 'Wir ___ (to be) hier.'",
+        options: ["bin", "bist", "ist", "sind"],
+        correct: 3,
+        explanation: "'Wir' matches with the plural verb form 'sind'."
+      }
+    ];
+
+    // Gamified Global App State Layer Models
+    let activeTab = 'dashboard';
+    let currentCardIndex = 0;
+    let currentGrammarIndex = 0;
+    let currentQuizIndex = 0;
+    let activeQuizFeedback = null;
+    
+    // Core Local Progress Arrays Caching
+    let masteredWordsList = JSON.parse(localStorage.getItem('sb_mastered_words')) || [];
+    let savedBattleScores = JSON.parse(localStorage.getItem('sb_battle_scores')) || { Rookie: 0, Challenger: 0, Elite: 0, Master: 0 };
+    let unlockedBadgesList = JSON.parse(localStorage.getItem('sb_unlocked_badges')) || [];
+    let missedQuestionsList = JSON.parse(localStorage.getItem('sb_missed_questions')) || [];
+    
+    // Custom Active UI Palette Skin Token
+    let activeThemeProfile = localStorage.getItem('sb_theme_profile') || 'midnight-slate';
+    
+    // Audio Customization Config Caching
+    let ttsSpeechRate = parseFloat(localStorage.getItem('sb_tts_rate')) || 0.85;
+    let ttsSpeechPitch = parseFloat(localStorage.getItem('sb_tts_pitch')) || 1.0;
+    
+    // Level & XP System Storage Engine Variables
+    let totalXPAmount = parseInt(localStorage.getItem('sb_total_xp')) || 0;
+    let savedStreakCount = parseInt(localStorage.getItem('sb_streak_count')) || 1;
+
+    // Theme Class Configuration Map Definitions (Fixed System Crash Configuration)
+    const systemThemeProfiles = {
+      'midnight-slate': {
+        shellBg: 'bg-slate-900 border-slate-800',
+        headerBg: 'bg-slate-950 border-slate-800 text-white',
+        footerBg: 'bg-slate-950 border-slate-800',
+        viewSurfaceBg: 'bg-slate-900 text-slate-100',
+        cardBg: 'bg-slate-800 border-slate-700 text-slate-100',
+        cardBackBg: 'bg-indigo-950 border-indigo-800 text-indigo-200',
+        tabActive: 'text-indigo-400',
+        tabInactive: 'text-slate-500'
+      },
+      'cyberpunk-neon': {
+        shellBg: 'bg-indigo-950 border-fuchsia-500',
+        headerBg: 'bg-slate-950 border-fuchsia-500 text-cyan-400',
+        footerBg: 'bg-slate-950 border-fuchsia-500',
+        viewSurfaceBg: 'bg-indigo-950 text-cyan-100',
+        cardBg: 'bg-slate-900 border-cyan-500 text-cyan-300',
+        cardBackBg: 'bg-fuchsia-950 border-fuchsia-500 text-fuchsia-300',
+        tabActive: 'text-lime-400',
+        tabInactive: 'text-fuchsia-400'
+      },
+      'autumn-wood': {
+        shellBg: 'bg-stone-800 border-amber-700',
+        headerBg: 'bg-stone-900 border-amber-800 text-amber-100',
+        footerBg: 'bg-stone-900 border-amber-800',
+        viewSurfaceBg: 'bg-stone-800 text-stone-100',
+        cardBg: 'bg-stone-700 border-amber-600 text-stone-100',
+        cardBackBg: 'bg-amber-900 border-amber-700 text-amber-100',
+        tabActive: 'text-amber-400',
+        tabInactive: 'text-stone-400'
+      }
+    };
+
+    // System Startup Initializers
+    window.onload = function() {
+      applyThemeProfile(activeThemeProfile);
+      updateDashboardTelemetry();
+      renderActiveTab();
+    };
+
+    function applyThemeProfile(themeKey) {
+      activeThemeProfile = themeKey;
+      localStorage.setItem('sb_theme_profile', themeKey);
+      const conf = systemThemeProfiles[themeKey] || systemThemeProfiles['midnight-slate'];
+      
+      const shell = document.getElementById('app-shell-container');
+      const header = document.getElementById('app-header-nav');
+      const viewSurface = document.getElementById('main-scroll-view');
+      const footer = document.getElementById('app-footer-nav');
+      
+      // Update primary layout framework nodes classes
+      shell.className = `w-full max-w-md mx-auto min-h-screen shadow-2xl flex flex-col justify-between relative border-x theme-transition ${conf.shellBg}`;
+      header.className = `p-4 border-b flex justify-between items-center sticky top-0 z-50 theme-transition ${conf.headerBg}`;
+      viewSurface.className = `flex-1 overflow-y-auto p-4 theme-transition ${conf.viewSurfaceBg}`;
+      footer.className = `border-t h-16 flex sticky bottom-0 z-50 theme-transition ${conf.footerBg}`;
+      
+      // Re-render tabs highlights
+      updateTabButtonHighlights(conf);
+    }
+
+    function updateTabButtonHighlights(conf) {
+      const tabs = ['dashboard', 'vocabulary', 'grammar', 'quiz'];
+      tabs.forEach(t => {
+        const btn = document.getElementById(`tab-${t}`);
+        if (btn) {
+          if (t === activeTab) {
+            btn.className = `flex-1 flex flex-col items-center justify-center navigation-tab-btn transition-colors ${conf.tabActive}`;
+          } else {
+            btn.className = `flex-1 flex flex-col items-center justify-center navigation-tab-btn transition-colors ${conf.tabInactive}`;
+          }
+        }
+      });
+    }
+
+    function updateDashboardTelemetry() {
+      document.getElementById('streak-days-val').innerText = savedStreakCount;
+      document.getElementById('xp-amount-val').innerText = totalXPAmount;
+      
+      const rankDisplay = document.getElementById('player-rank-display');
+      if (totalXPAmount >= 300) {
+        rankDisplay.innerText = "Lv.4 Language Master";
+        rankDisplay.className = "text-[10px] font-bold uppercase tracking-wider mt-0.5 text-amber-400";
+      } else if (totalXPAmount >= 150) {
+        rankDisplay.innerText = "Lv.3 Elite Competitor";
+        rankDisplay.className = "text-[10px] font-bold uppercase tracking-wider mt-0.5 text-cyan-400";
+      } else if (totalXPAmount >= 50) {
+        rankDisplay.innerText = "Lv.2 Challenger";
+        rankDisplay.className = "text-[10px] font-bold uppercase tracking-wider mt-0.5 text-lime-400";
+      } else {
+        rankDisplay.innerText = "Lv.1 Rookie Learner";
+        rankDisplay.className = "text-[10px] font-bold uppercase tracking-wider mt-0.5 text-indigo-400";
+      }
+    }
+
+    function rewardXP(amount) {
+      totalXPAmount += amount;
+      localStorage.setItem('sb_total_xp', totalXPAmount);
+      updateDashboardTelemetry();
+    }
+
+    function switchTab(tabId) {
+      activeTab = tabId;
+      applyThemeProfile(activeThemeProfile);
+      renderActiveTab();
+    }
+
+    function triggerSpeechSynthesis(text) {
+      if ('speechSynthesis' in window) {
+        window.speechSynthesis.cancel();
+        const utterance = new SpeechSynthesisUtterance(text);
+        utterance.lang = 'de-DE';
+        utterance.rate = ttsSpeechRate;
+        utterance.pitch = ttsSpeechPitch;
+        window.speechSynthesis.speak(utterance);
+      } else {
+        alert("Text-to-speech option not fully supported in this environment browser view.");
+      }
+    }
+
+    // View Layer Rendering Route Distribution Hub
+    function renderActiveTab() {
+      const container = document.getElementById('main-scroll-view');
+      const conf = systemThemeProfiles[activeThemeProfile] || systemThemeProfiles['midnight-slate'];
+      
+      if (activeTab === 'dashboard') {
+        container.innerHTML = `
+          <div class="space-y-6">
+            <!-- App Banner Welcome Greeting Card -->
+            <div class="p-5 rounded-2xl bg-gradient-to-br from-indigo-600 to-fuchsia-600 text-white shadow-lg">
+              <h2 class="text-xl font-black">Willkommen im Arena! ⚡</h2>
+              <p class="text-xs text-indigo-100 mt-1 font-medium">Level up your German capabilities using modular, accelerated learning algorithms.</p>
+              <div class="mt-4 flex gap-2">
+                <button onclick="switchTab('quiz')" class="bg-white text-indigo-950 font-bold text-xs px-4 py-2 rounded-xl shadow-md hover:bg-indigo-50 transition-transform active:scale-95">Start Battle</button>
+                <button onclick="switchTab('vocabulary')" class="bg-indigo-500 bg-opacity-30 text-white border border-indigo-400 border-opacity-40 font-bold text-xs px-4 py-2 rounded-xl transition-transform active:scale-95">Review Cards</button>
+              </div>
+            </div>
+
+            <!-- Global Architecture Progress System Tracker Matrix -->
+            <div class="grid grid-cols-2 gap-3">
+              <div class="${conf.cardBg} p-4 rounded-xl border flex flex-col justify-between">
+                <div class="text-xs font-semibold text-slate-400">Cards Learned</div>
+                <div class="text-2xl font-black mt-2 text-indigo-400">${masteredWordsList.length} / ${coreVocabulary.length}</div>
+              </div>
+              <div class="${conf.cardBg} p-4 rounded-xl border flex flex-col justify-between">
+                <div class="text-xs font-semibold text-slate-400">Streak Defense</div>
+                <div class="text-xs font-bold text-amber-500 mt-2 flex items-center gap-1">🛡️ Active Secure</div>
+              </div>
+            </div>
+
+            <!-- Appearance Theme Modification Skins Node Control Matrix -->
+            <div class="${conf.cardBg} p-4 rounded-xl border">
+              <h3 class="text-xs font-extrabold uppercase tracking-wider mb-3 text-slate-400">Select Interface Skin Architecture</h3>
+              <div class="space-y-2">
+                <button onclick="applyThemeProfile('midnight-slate')" class="w-full text-left p-2.5 rounded-lg border text-xs font-bold flex justify-between items-center transition-all bg-slate-900 border-slate-700 text-slate-200">
+                  <span>Midnight Slate (Default Code)</span>
+                  ${activeThemeProfile === 'midnight-slate' ? '✨' : ''}
+                </button>
+                <button onclick="applyThemeProfile('cyberpunk-neon')" class="w-full text-left p-2.5 rounded-lg border text-xs font-bold flex justify-between items-center transition-all bg-indigo-950 border-indigo-800 text-cyan-300">
+                  <span>Cyberpunk Neon (Luminescence)</span>
+                  ${activeThemeProfile === 'cyberpunk-neon' ? '✨' : ''}
+                </button>
+                <button onclick="applyThemeProfile('autumn-wood')" class="w-full text-left p-2.5 rounded-lg border text-xs font-bold flex justify-between items-center transition-all bg-stone-700 border-stone-600 text-amber-100">
+                  <span>Autumn Wood (Warm Timber)</span>
+                  ${activeThemeProfile === 'autumn-wood' ? '✨' : ''}
+                </button>
+              </div>
+            </div>
+            
+            <!-- TTS Options Settings Configuration System Panel -->
+            <div class="${conf.cardBg} p-4 rounded-xl border">
+              <h3 class="text-xs font-extrabold uppercase tracking-wider mb-3 text-slate-400">Audio Speech Engine Configuration</h3>
+              <div class="space-y-3">
+                <div>
+                  <div class="flex justify-between text-[11px] font-bold mb-1">
+                    <span>Speed Frequency Modulation</span>
+                    <span id="rate-display-lbl">${ttsSpeechRate}x</span>
+                  </div>
+                  <input type="range" min="0.5" max="1.5" step="0.05" value="${ttsSpeechRate}" oninput="adjustTTSSettings('rate', this.value)" class="w-full accent-indigo-500">
+                </div>
+                <div>
+                  <div class="flex justify-between text-[11px] font-bold mb-1">
+                    <span>Vocal Pitch Tone Elevation</span>
+                    <span id="pitch-display-lbl">${ttsSpeechPitch}x</span>
+                  </div>
+                  <input type="range" min="0.7" max="1.3" step="0.05" value="${ttsSpeechPitch}" oninput="adjustTTSSettings('pitch', this.value)" class="w-full accent-indigo-500">
+                </div>
+              </div>
+            </div>
+          </div>
+        `;
+      } 
+      
+      else if (activeTab === 'vocabulary') {
+        const item = coreVocabulary[currentCardIndex];
+        const isMastered = masteredWordsList.includes(item.id);
+        
+        container.innerHTML = `
+          <div class="space-y-4 flex flex-col items-center">
+            <div class="w-full flex justify-between items-center px-1">
+              <span class="text-xs font-bold text-slate-400">Card ${currentCardIndex + 1} of ${coreVocabulary.length}</span>
+              <span class="text-xs font-bold ${isMastered ? 'text-emerald-400' : 'text-amber-400'}">${isMastered ? '✓ Mastered' : '⏳ Reviewing'}</span>
+            </div>
+
+            <!-- Flashcard Arena Stage Core 3D Base Elements -->
+            <div id="flashcard-system-node" class="flashcard-wrapper w-full h-64 cursor-pointer" onclick="this.classList.toggle('flipped')">
+              <div class="flashcard-inner">
+                <!-- Front Frame Elements -->
+                <div class="flashcard-front ${conf.cardBg} border shadow-md">
+                  <div class="text-[10px] tracking-widest font-extrabold uppercase bg-slate-900 bg-opacity-40 px-2 py-1 rounded self-start ${item.gender === 'masculine' ? 'text-blue-400' : item.gender === 'feminine' ? 'text-pink-400' : 'text-amber-400'}">${item.gender}</div>
+                  <div class="text-3xl font-black my-auto tracking-tight select-none">${item.german}</div>
+                  <div class="text-xs text-slate-400 font-medium italic flex items-center justify-center gap-1">
+                    💡 Click Card frame surface layout to flip
+                  </div>
+                </div>
+                <!-- Back Frame Elements -->
+                <div class="flashcard-back ${conf.cardBackBg} border shadow-md">
+                  <span class="text-[10px] tracking-widest font-extrabold uppercase text-indigo-300 self-start">English Translation Translation</span>
+                  <div class="text-2xl font-extrabold my-auto select-none">${item.english}</div>
+                  <p class="text-xs text-indigo-200 opacity-80 px-4">${item.hint}</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Flashcard Matrix Interaction Footers Controls Navigation -->
+            <div class="w-full grid grid-cols-3 gap-2 mt-2">
+              <button onclick="navigateFlashcardSystem(-1)" class="p-3 font-bold text-xs rounded-xl bg-slate-800 text-slate-200 border border-slate-700 active:scale-95 transition-transform">← Prev</button>
+              <button onclick="triggerSpeechSynthesis('${item.audioText}')" class="p-3 font-bold text-xs rounded-xl bg-indigo-600 text-white shadow-md active:scale-95 transition-transform flex items-center justify-center gap-1">🔊 Audio</button>
+              <button onclick="navigateFlashcardSystem(1)" class="p-3 font-bold text-xs rounded-xl bg-slate-800 text-slate-200 border border-slate-700 active:scale-95 transition-transform">Next →</button>
+            </div>
+
+            <button onclick="toggleWordMasteryStatus(${item.id})" class="w-full mt-2 p-3 font-extrabold text-xs rounded-xl transition-all border ${isMastered ? 'bg-emerald-950 border-emerald-800 text-emerald-300' : 'bg-slate-800 border-slate-700 text-slate-400'}">
+              ${isMastered ? 'Remove from Mastered Repository' : '✓ Mark as Mastered (+10 XP)'}
+            </button>
+          </div>
+        `;
+      } 
+      
+      else if (activeTab === 'grammar') {
+        const block = coreGrammarCheats[currentGrammarIndex];
+        container.innerHTML = `
+          <div class="space-y-4">
+            <div class="flex justify-between items-center px-1">
+              <span class="text-xs font-bold text-slate-400">Cheat Module ${currentGrammarIndex + 1} of ${coreGrammarCheats.length}</span>
+            </div>
+
+            <div class="${conf.cardBg} border p-5 rounded-2xl shadow-xl space-y-4">
+              <div class="flex items-center gap-2">
+                <span class="text-2xl">💡</span>
+                <h3 class="text-lg font-black tracking-tight">${block.title}</h3>
+              </div>
+              <div class="h-px bg-slate-800 w-full"></div>
+              <div>
+                <h4 class="text-[10px] uppercase font-extrabold tracking-wider text-indigo-400 mb-1">Structural Directives</h4>
+                <p class="text-sm font-medium leading-relaxed opacity-90">${block.rules}</p>
+              </div>
+              <div class="p-3 rounded-xl bg-slate-950 border border-slate-800">
+                <h4 class="text-[10px] uppercase font-extrabold tracking-wider text-emerald-400 mb-1">Contextual Formulation Usage Template</h4>
+                <p class="text-sm font-mono text-emerald-300 font-bold">${block.example}</p>
+              </div>
+            </div>
+
+            <div class="grid grid-cols-2 gap-2">
+              <button onclick="navigateGrammarHub(-1)" class="p-3 font-bold text-xs rounded-xl bg-slate-800 text-slate-200 border border-slate-700 active:scale-95 transition-transform">Previous Rule</button>
+              <button onclick="navigateGrammarHub(1)" class="p-3 font-bold text-xs rounded-xl bg-slate-800 text-slate-200 border border-slate-700 active:scale-95 transition-transform">Next Rule</button>
+            </div>
+          </div>
+        `;
+      } 
+      
+      else if (activeTab === 'quiz') {
+        if (currentQuizIndex >= coreQuizBattles.length) {
+          container.innerHTML = `
+            <div class="text-center p-6 bg-slate-950 rounded-2xl border border-slate-800 space-y-4">
+              <span class="text-5xl block animate-bounce">🏆</span>
+              <h3 class="text-xl font-black text-white">Battle Finished!</h3>
+              <p class="text-xs text-slate-400 font-medium">You completed all active modular assessment engines successfully.</p>
+              <button onclick="resetQuizBattleModule()" class="w-full p-3 bg-gradient-to-r from-indigo-500 to-fuchsia-500 text-white font-extrabold text-xs rounded-xl shadow-md transition-transform active:scale-95">Restart Battle Arena Pipeline</button>
+            </div>
+          `;
+          return;
+        }
+
+        const quizItem = coreQuizBattles[currentQuizIndex];
+        
+        let optionsHTML = '';
+        quizItem.options.forEach((opt, idx) => {
+          let optionStyle = `bg-slate-800 border-slate-700 text-slate-200 hover:bg-slate-700`;
+          let statusAddon = '';
+          
+          if (activeQuizFeedback !== null) {
+            if (idx === quizItem.correct) {
+              optionStyle = `bg-emerald-950 border-emerald-500 text-emerald-200 font-black`;
+              statusAddon = ` <span class="text-emerald-400 text-xs float-right">✓ Correct</span>`;
+            } else if (idx === activeQuizFeedback.selected) {
+              optionStyle = `bg-rose-950 border-rose-500 text-rose-200`;
+              statusAddon = ` <span class="text-rose-400 text-xs float-right">✗ Wrong</span>`;
+            } else {
+              optionStyle = `bg-slate-900 border-slate-800 text-slate-500 opacity-50`;
+            }
+          }
+
+          optionsHTML += `
+            <button onclick="submitQuizOptionVerification(${idx})" ${activeQuizFeedback !== null ? 'disabled' : ''} class="w-full text-left p-3.5 rounded-xl border text-xs font-bold transition-all transform active:scale-98 ${optionStyle}">
+              <span>${opt}</span>${statusAddon}
+            </button>
+          `;
+        });
+
+        container.innerHTML = `
+          <div class="space-y-4">
+            <div class="flex justify-between items-center px-1">
+              <span class="text-xs font-bold text-slate-400">Question ${currentQuizIndex + 1} of ${coreQuizBattles.length}</span>
+              <span class="text-xs font-extrabold text-indigo-400 bg-indigo-950 px-2 py-0.5 rounded-md border border-indigo-900">Battle Matrix</span>
+            </div>
+
+            <div class="${conf.cardBg} border p-5 rounded-2xl shadow-lg space-y-4">
+              <p class="text-sm font-bold leading-snug">${quizItem.question}</p>
+            </div>
+
+            <div class="space-y-2">
+              ${optionsHTML}
+            </div>
+
+            ${activeQuizFeedback !== null ? `
+              <div class="p-4 rounded-xl bg-slate-950 border border-slate-800 space-y-2 animate-fadeIn">
+                <div class="text-[10px] font-extrabold uppercase tracking-wider text-slate-400">Grammatical Explanation Analysis</div>
+                <p class="text-xs text-slate-300 font-medium">${quizItem.explanation}</p>
+                <button onclick="advanceQuizBattleSequence()" class="w-full mt-2 p-2.5 bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs rounded-lg transition-transform active:scale-95">
+                  ${currentQuizIndex + 1 === coreQuizBattles.length ? 'Complete Battle Pipeline' : 'Next Question →'}
+                </button>
+              </div>
+            ` : ''}
+          </div>
+        `;
+      }
+    }
+
+    // Flashcard Controller Module Actions
+    function navigateFlashcardSystem(dir) {
+      currentCardIndex += dir;
+      if (currentCardIndex < 0) currentCardIndex = coreVocabulary.length - 1;
+      if (currentCardIndex >= coreVocabulary.length) currentCardIndex = 0;
+      renderActiveTab();
+    }
+
+    function toggleWordMasteryStatus(wordId) {
+      const idx = masteredWordsList.indexOf(wordId);
+      if (idx > -1) {
+        masteredWordsList.splice(idx, 1);
+      } else {
+        masteredWordsList.push(wordId);
+        rewardXP(10);
+      }
+      localStorage.setItem('sb_mastered_words', JSON.stringify(masteredWordsList));
+      renderActiveTab();
+    }
+
+    // Grammar Controller Actions
+    function navigateGrammarHub(dir) {
+      currentGrammarIndex += dir;
+      if (currentGrammarIndex < 0) currentGrammarIndex = coreGrammarCheats.length - 1;
+      if (currentGrammarIndex >= coreGrammarCheats.length) currentGrammarIndex = 0;
+      renderActiveTab();
+    }
+
+    // Quiz Processing Core Verification Algorithms
+    function submitQuizOptionVerification(selectedIdx) {
+      if (activeQuizFeedback !== null) return;
+      
+      const quizItem = coreQuizBattles[currentQuizIndex];
+      const isCorrect = (selectedIdx === quizItem.correct);
+      
+      if (isCorrect) {
+        rewardXP(15);
+      } else {
+        if (!missedQuestionsList.includes(currentQuizIndex)) {
+          missedQuestionsList.push(currentQuizIndex);
+          localStorage.setItem('sb_missed_questions', JSON.stringify(missedQuestionsList));
+        }
+      }
+      
+      activeQuizFeedback = { selected: selectedIdx, correct: quizItem.correct };
+      renderActiveTab();
+    }
+
+    function advanceQuizBattleSequence() {
+      activeQuizFeedback = null;
+      currentQuizIndex++;
+      renderActiveTab();
+    }
+
+    function resetQuizBattleModule() {
+      currentQuizIndex = 0;
+      activeQuizFeedback = null;
+      renderActiveTab();
+    }
+
+    function adjustTTSSettings(type, val) {
+      const parsedVal = parseFloat(val);
+      if (type === 'rate') {
+        ttsSpeechRate = parsedVal;
+        localStorage.setItem('sb_tts_rate', parsedVal);
+        document.getElementById('rate-display-lbl').innerText = parsedVal + 'x';
+      } else if (type === 'pitch') {
+        ttsSpeechPitch = parsedVal;
+        localStorage.setItem('sb_tts_pitch', parsedVal);
+        document.getElementById('pitch-display-lbl').innerText = parsedVal + 'x';
+      }
+    }
+  </script>
+</body>
+</html>
