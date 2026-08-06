@@ -499,283 +499,68 @@
 
     // Full 5 Mock Exam System Pipeline Core Structure Mapping Matrix
     const mockExamsDatabase = [
-      // ===================== MODELLPRÜFUNG 1 =====================
       {
-        id: 0, title: "Modellprüfung 1: Vorstellung & Alltag",
+        id: 0, title: "Goethe-Zertifikat A1 – Original-Übungssatz 01",
         hoeren: [
-          { teil: 1, audioText: "Guten Tag, mein Name ist Anna Beck. Ich komme aus Österreich und wohne jetzt in Berlin.", question: "Woher kommt Anna?", options: ["Aus Deutschland", "Aus Österreich", "Aus der Schweiz"], c: 1 },
-          { teil: 1, audioText: "Der Deutschkurs beginnt um neun Uhr dreißig im Raum vierzehn.", question: "Um wie viel Uhr beginnt der Kurs?", options: ["9:00 Uhr", "9:30 Uhr", "9:13 Uhr"], c: 1 },
-          { teil: 1, audioText: "Entschuldigung, wo ist die Toilette bitte? – Die Toilette ist dort links neben dem Aufzug.", question: "Wo ist die Toilette?", options: ["Rechts neben der Tür", "Links neben dem Aufzug", "Hinter der Treppe"], c: 1 },
-          { teil: 1, audioText: "Ich heiße Tom Fischer. Meine Telefonnummer ist null eins sieben neun, zwei drei vier fünf sechs.", question: "Was ist Toms Telefonnummer?", options: ["0179 234456", "0179 23456", "0197 234456"], c: 1 },
-          { teil: 2, audioText: "Hallo Lisa, hier ist Paul. Am Samstag mache ich eine kleine Party bei mir zu Hause. Sie beginnt um achtzehn Uhr. Bring bitte etwas zu trinken mit. Meine Adresse ist Gartenstraße zwölf. Bis Samstag!", question: "Die Party ist am Sonntag.", options: ["Richtig", "Falsch"], c: 1 },
-          { teil: 2, audioText: "Hallo Lisa, hier ist Paul. Am Samstag mache ich eine kleine Party bei mir zu Hause. Sie beginnt um achtzehn Uhr. Bring bitte etwas zu trinken mit. Meine Adresse ist Gartenstraße zwölf. Bis Samstag!", question: "Die Party beginnt um 18 Uhr.", options: ["Richtig", "Falsch"], c: 0 },
-          { teil: 2, audioText: "Hallo Lisa, hier ist Paul. Am Samstag mache ich eine kleine Party bei mir zu Hause. Sie beginnt um achtzehn Uhr. Bring bitte etwas zu trinken mit. Meine Adresse ist Gartenstraße zwölf. Bis Samstag!", question: "Lisa soll etwas zu essen mitbringen.", options: ["Richtig", "Falsch"], c: 1 },
-          { teil: 2, audioText: "Hallo Lisa, hier ist Paul. Am Samstag mache ich eine kleine Party bei mir zu Hause. Sie beginnt um achtzehn Uhr. Bring bitte etwas zu trinken mit. Meine Adresse ist Gartenstraße zwölf. Bis Samstag!", question: "Paul wohnt in der Gartenstraße.", options: ["Richtig", "Falsch"], c: 0 },
-          { teil: 3, audioText: "Sie haben die Nummer der Sprachschule Aktiv gewählt. Wir sind von Montag bis Freitag von acht bis siebzehn Uhr für Sie da. Am Wochenende sind wir geschlossen.", question: "Wann ist die Sprachschule geöffnet?", options: ["Nur am Wochenende", "Montag bis Freitag", "Jeden Tag rund um die Uhr"], c: 1 },
-          { teil: 3, audioText: "Achtung, eine Durchsage: Der Zug nach München fährt heute nicht von Gleis drei, sondern von Gleis sieben ab.", question: "Von welchem Gleis fährt der Zug ab?", options: ["Gleis 3", "Gleis 7", "Gleis 17"], c: 1 },
-          { teil: 3, audioText: "Liebe Kunden, unser Geschäft schließt heute schon um vierzehn Uhr wegen einer Inventur. Vielen Dank für Ihr Verständnis.", question: "Warum schließt das Geschäft früher?", options: ["Wegen einer Feier", "Wegen einer Inventur", "Wegen eines Feiertags"], c: 1 }
+          { teil: 1, audioText: "Maria: Weißt du, wo es hier Kleidung für Kinder gibt? Laura: Oh, das weiß ich auch nicht. Aber sehen wir einmal auf die Information – Kinderspielzeug gibt es im vierten Stock, Damenkleidung im ersten. Hier: Im zweiten Stock findest du Kinderkleidung.", question: "Wo gibt es Kleidung für Kinder?", options: ["Im 1. Stock.", "Im 2. Stock.", "Im 4. Stock."], c: 1 },
+          { teil: 1, audioText: "Ober: Hier, bitte, die Speisekarte. Ich kann heute den Fisch empfehlen. Dame: Nein, danke, ich mag keinen Fisch. Ober: Dann vielleicht Hähnchen mit Pommes frites oder unseren Chefsalat mit Ei und Schinken? Dame: Salat ist eine gute Idee. Den bringen Sie mir, bitte.", question: "Was bestellt die Dame?", options: ["Hähnchen.", "Fisch.", "Salat."], c: 2 },
+          { teil: 1, audioText: "Student: Bitte eine Eintrittskarte für Studenten. Frau: Gern, aber das Museum schließt in einer halben Stunde. Student: Ach, so früh schon! Frau: Ja, am Mittwochnachmittag schließen wir schon um 15 Uhr, aber an den anderen Tagen ist bis 18 Uhr geöffnet und am Donnerstag schließen wir erst um 22 Uhr.", question: "Wie lange hat das Museum am Mittwoch geöffnet?", options: ["Bis 15 Uhr.", "Bis 18 Uhr.", "Bis 22 Uhr."], c: 0 },
+          { teil: 1, audioText: "Tim: Mein Arzt sagt, ich soll mehr Sport machen. Klaus: Richtig! Komm in meinen Verein, da kannst du Fußball spielen. Und am Wochenende laufe ich immer eine Stunde. Tim: Nein, für mich ist Rad fahren das Beste – sagt mein Arzt. Laufen ist nichts für mich.", question: "Welchen Sport empfiehlt der Arzt?", options: ["Fahrrad fahren.", "Fußball.", "Laufen."], c: 0 },
+          { teil: 1, audioText: "Herr: Guten Tag, Frau Bauer. Machen Sie dieses Jahr wieder Urlaub am Meer oder bleiben Sie zu Haus? Dame: Nein. Wir waren in den letzten Jahren immer am Meer. Dieses Jahr besuchen wir unsere Verwandten in Süddeutschland. Die freuen sich schon sehr. Und wohin fahren Sie?", question: "Wo macht Familie Bauer Urlaub?", options: ["Am Meer.", "Bei Verwandten.", "Zu Hause."], c: 1 },
+          { teil: 1, audioText: "Dame: Du, Bruno, wie lange fliegst du von hier nach München? Bruno: Nicht lange, nur 50 Minuten. Aber ich muss eine halbe Stunde vor dem Abflug im Flughafen sein und bis zum Flughafen brauche ich auch noch 45 Minuten. Dame: Dann geht es doch nicht so schnell.", question: "Wie lange dauert der Flug nach München?", options: ["30 Minuten.", "45 Minuten.", "50 Minuten."], c: 2 },
+          { teil: 2, audioText: "Liebe Fahrgäste, herzlich willkommen an Bord des ICE 987 nach Frankfurt. Eine wichtige Information: Am nächsten Bahnhof müssen wir kurz anhalten. Es gibt Probleme mit dem Bordcomputer. Bitte steigen Sie nicht aus! Wir fahren gleich weiter.", question: "Die Fahrgäste sollen im Zug bleiben.", options: ["Richtig", "Falsch"], c: 0 },
+          { teil: 2, audioText: "Achtung! Eine Durchsage für die Gäste des Flugs LH 487 nach Rom. Bitte kommen Sie zu Ausgang B 18 im ersten Stock. Der Ausgang A 7 im zweiten Stock ist zurzeit besetzt. Ich wiederhole: Passagiere nach Rom bitte Ausgang B 18.", question: "Fluggäste nach Rom sollen zu Ausgang A7 kommen.", options: ["Richtig", "Falsch"], c: 1 },
+          { teil: 2, audioText: "Liebe Urlauber! Wir machen jetzt eine Pause von einer Stunde. Sie können einen Kaffee trinken oder das kleine Museum direkt am Meer besuchen. Aber bitte: Um 14 Uhr fahren wir weiter. Bitte, kommen Sie pünktlich zum Bus. Wir möchten nicht warten.", question: "Die Urlauber sollen um vier Uhr am Bus sein.", options: ["Richtig", "Falsch"], c: 1 },
+          { teil: 2, audioText: "Liebe Kunden! Das waren unsere Sonderangebote für heute. Und nun noch eine dringende Ansage: Der kleine Mario sucht seinen Vater. Kommen Sie bitte schnell zum Informationsschalter im 1. Stock. Mario wartet dort auf Sie.", question: "Der Vater von Mario soll sofort zur Information gehen.", options: ["Richtig", "Falsch"], c: 0 },
+          { teil: 3, audioText: "Autohaus Mayer. Guten Tag, Frau Krause. Wir haben noch eine Frage zu der Reparatur von Ihrem Wagen. Bitte rufen Sie uns nach 13 Uhr wieder zurück. Heute sind wir bis 19 Uhr hier. Nein, Entschuldigung, heute ist ja schon Freitag. Dann heute nur bis 18 Uhr. Danke!", question: "Wann soll Frau Krause anrufen?", options: ["Vor 13 Uhr.", "Zwischen 13 und 18 Uhr.", "Zwischen 18 und 19 Uhr."], c: 1 },
+          { teil: 3, audioText: "Hallo Irene, hier Nina. Ich möchte heute Abend nicht zu Hause bleiben. Im Metropolis gibt es einen guten Film. Kommst du mit oder musst du lernen? Ruf mich bitte auf dem Handy an.", question: "Was möchte Nina heute Abend machen?", options: ["Einen Film sehen.", "Lernen.", "Zu Hause bleiben."], c: 0 },
+          { teil: 3, audioText: "Sarah, ich bin's, Christoph. Du, ist mein Wörterbuch vielleicht bei dir? Auf dem kleinen Schrank mit den CDs? Bitte bring es gleich in den Kurs mit. Und ich gebe dir heute natürlich dein Buch zurück! Bis dann!", question: "Was soll Sarah mitbringen?", options: ["Ein Deutschbuch.", "Ein Wörterbuch.", "Eine CD."], c: 1 },
+          { teil: 3, audioText: "Hallo Sabine! Maria hier. War total schön im Café gestern, danke noch mal! Ich gehe gleich mit Julia ins Konzert und danach so um elf in die Disco Aladin. Wir treffen dich dort, okay?", question: "Wo wollen sich die Frauen mit Sabine treffen?", options: ["Beim Konzert.", "Im Café.", "In der Disco."], c: 2 },
+          { teil: 3, audioText: "Guten Tag, Frau Solms, Heinze hier. Morgen habe ich bis 12 Uhr einen Termin. Aber nach der Mittagspause habe ich Zeit. Wollen wir uns um 13 Uhr treffen? Rufen Sie mich bitte bis 18 Uhr zurück.", question: "Wann will Herr Heinze Frau Solms treffen?", options: ["Um 12 Uhr.", "Um 13 Uhr.", "Um 18 Uhr."], c: 1 }
         ],
         lesen: [
-          { teil: 1, readingText: "Hallo Mia! Ich kann heute Abend leider nicht kommen, ich bin krank. Können wir uns nächste Woche treffen? LG Sven", question: "Sven kann heute Abend nicht kommen, weil er krank ist.", options: ["Richtig", "Falsch"], c: 0 },
-          { teil: 1, readingText: "Liebe Frau Roth, das Meeting am Montag beginnt jetzt erst um elf Uhr, nicht um zehn Uhr. Danke, M. Klein", question: "Das Meeting beginnt früher als geplant.", options: ["Richtig", "Falsch"], c: 1 },
-          { teil: 1, readingText: "Hi Ben, ich habe deinen Regenschirm bei mir. Ich bringe ihn morgen zur Arbeit mit. Grüße, Nora", question: "Nora hat Bens Regenschirm.", options: ["Richtig", "Falsch"], c: 0 },
-          { teil: 1, readingText: "Liebe Kollegen, das Büro ist am Freitag wegen Renovierung geschlossen. Bitte arbeiten Sie von zu Hause. Danke, die Chefin", question: "Das Büro ist am Freitag normal geöffnet.", options: ["Richtig", "Falsch"], c: 1 },
-          { teil: 2, readingText: "Anzeige A: Deutschkurs A1, abends 18–20 Uhr, kleine Gruppe, 120 Euro im Monat.\nAnzeige B: Deutsch-Intensivkurs, vormittags 9–13 Uhr, jeden Tag, 250 Euro im Monat.\nAnzeige C: Deutsch-Konversationskurs, nur samstags 10–12 Uhr, 60 Euro im Monat.", question: "Frau Cortez arbeitet tagsüber und kann nur abends lernen. Welcher Kurs passt?", options: ["Anzeige A", "Anzeige B", "Anzeige C"], c: 0 },
-          { teil: 2, readingText: "Anzeige A: Deutschkurs A1, abends 18–20 Uhr, kleine Gruppe, 120 Euro im Monat.\nAnzeige B: Deutsch-Intensivkurs, vormittags 9–13 Uhr, jeden Tag, 250 Euro im Monat.\nAnzeige C: Deutsch-Konversationskurs, nur samstags 10–12 Uhr, 60 Euro im Monat.", question: "Herr Ali möchte schnell viel lernen und hat den ganzen Tag Zeit. Welcher Kurs passt?", options: ["Anzeige A", "Anzeige B", "Anzeige C"], c: 1 },
-          { teil: 2, readingText: "Anzeige A: Deutschkurs A1, abends 18–20 Uhr, kleine Gruppe, 120 Euro im Monat.\nAnzeige B: Deutsch-Intensivkurs, vormittags 9–13 Uhr, jeden Tag, 250 Euro im Monat.\nAnzeige C: Deutsch-Konversationskurs, nur samstags 10–12 Uhr, 60 Euro im Monat.", question: "Frau Lund hat wenig Geld und nur am Wochenende Zeit. Welcher Kurs passt?", options: ["Anzeige A", "Anzeige B", "Anzeige C"], c: 2 },
-          { teil: 3, readingText: "Schild: 'Bitte Schuhe ausziehen'", question: "Was bedeutet das Schild?", options: ["Man soll die Schuhe anlassen", "Man soll die Schuhe ausziehen", "Man darf keine Schuhe tragen kaufen"], c: 1 },
-          { teil: 3, readingText: "Schild: 'Kein Zutritt für Unbefugte'", question: "Was bedeutet das Schild?", options: ["Jeder darf hinein", "Nur bestimmte Personen dürfen hinein", "Der Raum ist geschlossen für immer"], c: 1 },
-          { teil: 3, readingText: "Schild: 'Aufzug außer Betrieb – bitte Treppe benutzen'", question: "Was sollen die Leute tun?", options: ["Den Aufzug benutzen", "Warten", "Die Treppe benutzen"], c: 2 },
-          { teil: 3, readingText: "Schild: 'Öffnungszeiten: Mo–Fr 8–18 Uhr, Sa 9–13 Uhr, So geschlossen'", question: "Wann hat das Geschäft sonntags geöffnet?", options: ["8–18 Uhr", "9–13 Uhr", "Gar nicht"], c: 2 }
+          { teil: 1, readingText: "Liebe Nora, ich bin nächste Woche drei Tage – von Montag bis Mittwoch – in Weimar. Ich muss viel arbeiten, habe viele Termine. Aber am Dienstag ab 18.00 Uhr habe ich Zeit. Können wir uns dann sehen? Ich wohne im Hotel „Drei Kronen“ in der Parkstraße. Das Hotel hat ein sehr gutes Restaurant. Wir können dorthin gehen. Was denkst du? Ich freue mich auf dich! Alles Liebe, Renate", question: "Renate macht in Weimar Urlaub.", options: ["Richtig", "Falsch"], c: 1 },
+          { teil: 1, readingText: "Liebe Nora, ich bin nächste Woche drei Tage – von Montag bis Mittwoch – in Weimar. Ich muss viel arbeiten, habe viele Termine. Aber am Dienstag ab 18.00 Uhr habe ich Zeit. Können wir uns dann sehen? Ich wohne im Hotel „Drei Kronen“ in der Parkstraße. Das Hotel hat ein sehr gutes Restaurant. Wir können dorthin gehen. Was denkst du? Ich freue mich auf dich! Alles Liebe, Renate", question: "Sie möchte am Abend mit Nora zusammen essen.", options: ["Richtig", "Falsch"], c: 0 },
+          { teil: 1, readingText: "Liebe Sportsfreunde vom Verein 1896, auch dieses Jahr wollen wir wieder unseren Sommerausflug machen. Wir fahren mit dem Bus an den Dümmer See. Dort wollen wir wandern und in einem netten Restaurant zu Mittag essen. Abfahrt ist am 27. Juni um 9 Uhr vor dem Vereinshaus. Die Busfahrt kostet 10 Euro pro Person; das Essen und die Getränke zahlt jeder allein. Liebe Freunde, bitte meldet euch bald an! Bis dann, Heinz Paschke", question: "Die Sportsfreunde machen jeden Sommer einen Ausflug.", options: ["Richtig", "Falsch"], c: 0 },
+          { teil: 1, readingText: "Liebe Sportsfreunde vom Verein 1896, auch dieses Jahr wollen wir wieder unseren Sommerausflug machen. Wir fahren mit dem Bus an den Dümmer See. Dort wollen wir wandern und in einem netten Restaurant zu Mittag essen. Abfahrt ist am 27. Juni um 9 Uhr vor dem Vereinshaus. Die Busfahrt kostet 10 Euro pro Person; das Essen und die Getränke zahlt jeder allein. Liebe Freunde, bitte meldet euch bald an! Bis dann, Heinz Paschke", question: "Der Bus wartet vor dem Vereinshaus.", options: ["Richtig", "Falsch"], c: 0 },
+          { teil: 1, readingText: "Liebe Sportsfreunde vom Verein 1896, auch dieses Jahr wollen wir wieder unseren Sommerausflug machen. Wir fahren mit dem Bus an den Dümmer See. Dort wollen wir wandern und in einem netten Restaurant zu Mittag essen. Abfahrt ist am 27. Juni um 9 Uhr vor dem Vereinshaus. Die Busfahrt kostet 10 Euro pro Person; das Essen und die Getränke zahlt jeder allein. Liebe Freunde, bitte meldet euch bald an! Bis dann, Heinz Paschke", question: "Für die Fahrt und das Essen bezahlt jeder 10 Euro.", options: ["Richtig", "Falsch"], c: 1 },
+          { teil: 2, readingText: "Anzeige a) www.goetheuni-frankfurt.de – Wohnen in Frankfurt: Wohngemeinschaften, Plätze im Studentenwohnheim, Ein- und Zwei-Zimmer-Wohnungen.\nAnzeige b) www.agentur-spiess.com – AGENTUR-SPIESS: Wir finden für Sie ein neues Zuhause. Günstige Kaufangebote: Häuser, Wohnungen, Apartments.", question: "Sie studieren in Frankfurt und möchten eine Wohnung mieten. Wo finden Sie Informationen?", options: ["Anzeige a", "Anzeige b"], c: 0 },
+          { teil: 2, readingText: "Anzeige a) www.flughafen-service.de – Flughafen Hamburg: Unsere Service-Leistungen: Flughafenhotel, Restaurants, Einkaufen/Banken/Geldwechsel, Besucherführungen.\nAnzeige b) www.hh-flughafen.de – Abflug, Ankunft, Parken, Flughafenbus: Hamburg Hauptbahnhof, Hamburg Altona.", question: "Sie möchten wissen: Wie kommt man vom Hamburger Bahnhof zum Hamburger Flughafen?", options: ["Anzeige a", "Anzeige b"], c: 1 },
+          { teil: 2, readingText: "Anzeige a) www.travel-münchen.de – Der Reiseladen bietet an: Heute Abend aktuell. Meine schönste Reise – unsere Mitarbeiter erzählen von ihren Expeditionen! Um 20 Uhr im Laden.\nAnzeige b) www.lastminute.de – Spanien, Abflug 27.8. ab Hannover, Hotel Soller 370 Euro/Woche. Türkei, Abflug 28.8. ab Hamburg, Club Side 465 Euro/Woche.", question: "Sie suchen ein Angebot für Ihre Urlaubsreise.", options: ["Anzeige a", "Anzeige b"], c: 1 },
+          { teil: 2, readingText: "Anzeige a) www.st.peter-ording.de/mietwohnungen – Schöne 3-Zimmerwohnung im Zentrum von St. Peter Ording, 5 Minuten zum Meer. 450€ kalt + Nebenkosten. Keine Küche.\nAnzeige b) www.ferienandernordsee.de – Ferienhäuser und -wohnungen, alle Größen, das ganze Jahr, auch auf den Inseln: Sylt, Juist, Amrum, Langeoog.", question: "Sie suchen eine Wohnung für Ihren Urlaub.", options: ["Anzeige a", "Anzeige b"], c: 1 },
+          { teil: 2, readingText: "Anzeige a) www.goal.de – Aktuelle Informationen aus der Welt des Fußballs. Hier finden Sie alles über: die Spiele, die Ergebnisse, die Fußballstars, die Mannschaften.\nAnzeige b) www.vereinssport.de – Welcher Verein für meinen Sport? Klicken Sie an: Tennis/Squash, Leichtathletik, Radsport, Fußball/Basketball, Schwimmen/Wasserball.", question: "Sie arbeiten in Deutschland. In Ihrer Freizeit möchten Sie Fußball spielen.", options: ["Anzeige a", "Anzeige b"], c: 1 },
+          { teil: 3, readingText: "Schild am Fahrkartenautomaten: „Bayern-Ticket: Ein Tag. Fünf Personen. 29 Euro. Montag und Freitag ab 9 Uhr, am Wochenende von 6 bis 24 Uhr.“", question: "Am Samstag können Sie und Ihre Freunde mit dem Ticket für 29 Euro fahren.", options: ["Richtig", "Falsch"], c: 0 },
+          { teil: 3, readingText: "Schild im Hotelzimmer: „Liebe Gäste, ab 21 Uhr ist die Haustür geschlossen. Bitte nehmen Sie Ihren Zimmerschlüssel mit, er ist auch der Hausschlüssel!“", question: "Nach 22 Uhr kommen Sie nicht mehr ins Hotel.", options: ["Richtig", "Falsch"], c: 1 },
+          { teil: 3, readingText: "Schild am Eingang Restaurant: „Wir haben für Sie täglich von 11.30 bis 15.00 Uhr und von 18.00 bis 22.00 Uhr geöffnet, auch am Wochenende und an Feiertagen.“", question: "Am Sonntagmittag können Sie in diesem Restaurant essen.", options: ["Richtig", "Falsch"], c: 0 },
+          { teil: 3, readingText: "Schild im Kultur-Verein: „Kartenverkauf an Schalter 1 bis 3. Informationen an Schalter 4. Ab sofort: Jeden Samstag um 20 Uhr Filmabend! Am 3.5. „Im Juli“ von Fatih Akin. Eintritt 2 Euro.“", question: "Man kann diesen Samstagabend einen Film sehen.", options: ["Richtig", "Falsch"], c: 0 },
+          { teil: 3, readingText: "Schild im Bahnhof: „Kartenverkauf an Schalter 1 bis 3. Informationen an Schalter 4.“", question: "Fahrkarten können Sie an allen Schaltern bekommen.", options: ["Richtig", "Falsch"], c: 1 }
         ],
         schreiben: {
           form: {
             title: "Teil 1: Formular ausfüllen",
-            scenario: "Sie möchten sich für einen Deutschkurs an der Sprachschule 'Aktiv' anmelden. Füllen Sie das Anmeldeformular mit Ihren eigenen Daten aus.",
-            fields: ["Name, Vorname", "Adresse", "Telefonnummer", "Geburtsdatum", "Kurs (z. B. A1 Abendkurs)"]
+            scenario: "Ihre Freundin Yvonne Legrand aus Frankreich, geboren am 17.4.1993 in Lyon, möchte vom 1. bis zum 28. August einen Deutschkurs in Deutschland besuchen. Sie hat schon sechs Monate Deutsch gelernt. Sie hat am Vormittag Zeit. In der Schule hat sie Englisch gelernt. Helfen Sie Ihrer Freundin und ergänzen Sie die fünf fehlenden Informationen im Anmeldeformular der Sprachenschule LIGA. (Familienname: Legrand, Vorname: Yvonne und Geburtsdatum: 17.4.1993 sind schon eingetragen.)",
+            fields: ["Geburtsort", "Andere Sprachen (in der Schule gelernt)", "Wie lange schon Deutsch gelernt?", "Kurstermin (von – bis)", "Kurszeit"],
+            fieldSolutions: ["Lyon / Lyon, Frankreich", "Englisch", "6 Monate / sechs Monate", "1. bis 28. August", "9–12 Uhr"]
           },
           message: {
-            title: "Teil 2: Kurze Mitteilung schreiben",
-            instructions: "Schreiben Sie eine kurze Nachricht (ca. 20–30 Wörter) an einen Freund / eine Freundin. Schreiben Sie zu diesen Punkten:",
-            points: ["Warum Sie schreiben", "Wann Sie sich treffen möchten", "Was er/sie mitbringen soll"],
-            sample: "Hallo Max, ich möchte dich am Samstag um 15 Uhr im Park treffen. Wir können zusammen spielen. Bring bitte deinen Ball mit. Bis bald! Liebe Grüße, Sara"
+            title: "Teil 2: Kurze Mitteilung schreiben (echte Prüfungsaufgabe)",
+            instructions: "Sie möchten Ihren Geburtstag feiern und Ihre Freundin Anna einladen. Schreiben Sie Anna eine E-Mail. Schreiben Sie zu jedem Punkt ein bis zwei Sätze (ca. 30 Wörter). Schreiben Sie auch eine Anrede und einen Gruß.",
+            points: ["Warum schreiben Sie?", "Sagen Sie: Wann und wo feiern Sie?", "Fragen Sie: kommen?"],
+            sample: "Liebe Anna, ich möchte dich zu meiner Geburtstagsparty einladen. Die Party ist am Samstag um 18 Uhr bei mir zu Hause. Wir feiern im Garten und es gibt Musik und Essen. Kommst du auch? Ich freue mich auf deine Antwort. Viele Grüße, Sara"
           }
         },
         sprechen: {
-          intro: { title: "Teil 1: Sich vorstellen", keywords: ["Name", "Land", "Wohnort", "Sprachen", "Beruf", "Hobby"], sample: "Ich heiße Sara. Ich komme aus Spanien und wohne jetzt in Berlin. Ich spreche Spanisch und ein bisschen Deutsch. Ich bin Studentin. Mein Hobby ist Tanzen." },
+          intro: { title: "Teil 1: Sich vorstellen", keywords: ["Name", "Alter", "Land", "Wohnort", "Sprachen", "Beruf", "Hobby"], sample: "Mein Name ist Sara. Ich bin 27 Jahre alt. Ich komme aus Spanien und wohne jetzt in Berlin. Ich spreche Spanisch und ein bisschen Deutsch. Ich bin Studentin. Mein Hobby ist Tanzen." },
           qa: [
-            { keyword: "Wohnort", sampleQ: "Wo wohnen Sie?", sampleA: "Ich wohne in Berlin, in der Nähe vom Bahnhof." },
-            { keyword: "Familie", sampleQ: "Haben Sie Geschwister?", sampleA: "Ja, ich habe eine Schwester. Sie heißt Lena." },
-            { keyword: "Freizeit", sampleQ: "Was machen Sie am Wochenende?", sampleA: "Am Wochenende treffe ich Freunde und gehe spazieren." }
+            { keyword: "Thema: Wochenende – Frühstück", sampleQ: "Was isst du am Wochenende zum Frühstück?", sampleA: "Am Wochenende esse ich Brötchen mit Marmelade und trinke Kaffee." },
+            { keyword: "Thema: Wochenende – Sport", sampleQ: "Machst du am Wochenende Sport?", sampleA: "Ja, am Samstag gehe ich immer joggen." },
+            { keyword: "Thema: Schule – Lehrer", sampleQ: "Wie sind deine Lehrer?", sampleA: "Meine Lehrerin ist sehr nett und erklärt alles genau." },
+            { keyword: "Thema: Schule – Hausaufgaben", sampleQ: "Machst du gern Hausaufgaben?", sampleA: "Nein, nicht so gern, aber sie helfen mir beim Lernen." }
           ],
           requests: [
-            { prompt: "Bitten Sie jemanden, das Fenster zu öffnen.", sample: "Können Sie bitte das Fenster öffnen?" },
-            { prompt: "Bitten Sie jemanden um ein Glas Wasser.", sample: "Kannst du mir bitte ein Glas Wasser geben?" },
-            { prompt: "Bitten Sie jemanden, langsamer zu sprechen.", sample: "Entschuldigung, können Sie bitte langsamer sprechen?" }
-          ]
-        }
-      },
-      // ===================== MODELLPRÜFUNG 2 =====================
-      {
-        id: 1, title: "Modellprüfung 2: Einkaufen & Essen",
-        hoeren: [
-          { teil: 1, audioText: "Ein Kilo Äpfel kostet zwei Euro fünfzig.", question: "Was kostet ein Kilo Äpfel?", options: ["1,50 Euro", "2,50 Euro", "5,20 Euro"], c: 1 },
-          { teil: 1, audioText: "Guten Tag, ich hätte gern ein Brot und zwei Croissants, bitte.", question: "Was möchte der Kunde kaufen?", options: ["Brot und Croissants", "Nur Brot", "Kuchen und Kaffee"], c: 0 },
-          { teil: 1, audioText: "Der Supermarkt hat heute bis zwanzig Uhr geöffnet.", question: "Bis wann hat der Supermarkt heute geöffnet?", options: ["18 Uhr", "20 Uhr", "22 Uhr"], c: 1 },
-          { teil: 1, audioText: "Zahlen Sie bar oder mit Karte? – Mit Karte, bitte.", question: "Wie bezahlt der Kunde?", options: ["Bar", "Mit Karte", "Mit einem Gutschein"], c: 1 },
-          { teil: 2, audioText: "Willkommen im Restaurant Sonne! Heute empfehlen wir die Gemüsesuppe als Vorspeise und als Hauptgericht Schnitzel mit Kartoffeln. Zum Nachtisch gibt es Apfelkuchen. Getränke bestellen Sie bitte direkt beim Kellner. Guten Appetit!", question: "Die Vorspeise heute ist Gemüsesuppe.", options: ["Richtig", "Falsch"], c: 0 },
-          { teil: 2, audioText: "Willkommen im Restaurant Sonne! Heute empfehlen wir die Gemüsesuppe als Vorspeise und als Hauptgericht Schnitzel mit Kartoffeln. Zum Nachtisch gibt es Apfelkuchen. Getränke bestellen Sie bitte direkt beim Kellner. Guten Appetit!", question: "Der Nachtisch ist Schokoladenkuchen.", options: ["Richtig", "Falsch"], c: 1 },
-          { teil: 2, audioText: "Willkommen im Restaurant Sonne! Heute empfehlen wir die Gemüsesuppe als Vorspeise und als Hauptgericht Schnitzel mit Kartoffeln. Zum Nachtisch gibt es Apfelkuchen. Getränke bestellen Sie bitte direkt beim Kellner. Guten Appetit!", question: "Getränke bestellt man beim Kellner.", options: ["Richtig", "Falsch"], c: 0 },
-          { teil: 2, audioText: "Willkommen im Restaurant Sonne! Heute empfehlen wir die Gemüsesuppe als Vorspeise und als Hauptgericht Schnitzel mit Kartoffeln. Zum Nachtisch gibt es Apfelkuchen. Getränke bestellen Sie bitte direkt beim Kellner. Guten Appetit!", question: "Das Hauptgericht ist Fisch mit Reis.", options: ["Richtig", "Falsch"], c: 1 },
-          { teil: 3, audioText: "Liebe Kunden, im Erdgeschoss finden Sie heute frisches Obst und Gemüse im Angebot.", question: "Was ist heute im Angebot?", options: ["Fleisch", "Obst und Gemüse", "Brot"], c: 1 },
-          { teil: 3, audioText: "Achtung, die Kasse drei ist jetzt geöffnet. Bitte kommen Sie zur Kasse drei.", question: "Was sollen die Kunden tun?", options: ["Zur Kasse drei gehen", "Warten", "Den Laden verlassen"], c: 0 },
-          { teil: 3, audioText: "Der Tisch für vier Personen um neunzehn Uhr ist leider schon reserviert. Wir haben aber noch einen Tisch um zwanzig Uhr dreißig frei.", question: "Wann ist noch ein Tisch frei?", options: ["19:00 Uhr", "20:30 Uhr", "21:00 Uhr"], c: 1 }
-        ],
-        lesen: [
-          { teil: 1, readingText: "Hey Tim, kannst du auf dem Weg nach Hause Milch und Eier kaufen? Wir haben nichts mehr im Kühlschrank. Danke! Jana", question: "Jana braucht Milch und Eier.", options: ["Richtig", "Falsch"], c: 0 },
-          { teil: 1, readingText: "Liebe Gäste, das Café ist heute wegen einer privaten Feier geschlossen. Morgen sind wir wieder für Sie da.", question: "Das Café ist heute geöffnet.", options: ["Richtig", "Falsch"], c: 1 },
-          { teil: 1, readingText: "Hallo Frau Meier, Ihre Bestellung ist fertig. Sie können das Paket ab morgen im Geschäft abholen.", question: "Das Paket ist schon abholbereit.", options: ["Richtig", "Falsch"], c: 1 },
-          { teil: 1, readingText: "Hi Lea, das neue Restaurant in der Marktstraße ist super! Das Essen ist lecker und nicht teuer. Wir sollten mal hingehen!", question: "Das Restaurant ist teuer.", options: ["Richtig", "Falsch"], c: 1 },
-          { teil: 2, readingText: "Anzeige A: Pizzeria Roma, Lieferung ab 15 Euro kostenlos, täglich 11–23 Uhr geöffnet.\nAnzeige B: Bio-Markt Grün, frisches Gemüse und Obst, günstige Preise, Mo–Sa geöffnet.\nAnzeige C: Café Nova, gemütliches Café mit Kuchen und Kaffee, nur vormittags geöffnet.", question: "Herr Weiss möchte am Abend Essen bestellen und nach Hause liefern lassen. Welche Anzeige passt?", options: ["Anzeige A", "Anzeige B", "Anzeige C"], c: 0 },
-          { teil: 2, readingText: "Anzeige A: Pizzeria Roma, Lieferung ab 15 Euro kostenlos, täglich 11–23 Uhr geöffnet.\nAnzeige B: Bio-Markt Grün, frisches Gemüse und Obst, günstige Preise, Mo–Sa geöffnet.\nAnzeige C: Café Nova, gemütliches Café mit Kuchen und Kaffee, nur vormittags geöffnet.", question: "Frau Diaz möchte günstig frisches Gemüse kaufen. Welche Anzeige passt?", options: ["Anzeige A", "Anzeige B", "Anzeige C"], c: 1 },
-          { teil: 2, readingText: "Anzeige A: Pizzeria Roma, Lieferung ab 15 Euro kostenlos, täglich 11–23 Uhr geöffnet.\nAnzeige B: Bio-Markt Grün, frisches Gemüse und Obst, günstige Preise, Mo–Sa geöffnet.\nAnzeige C: Café Nova, gemütliches Café mit Kuchen und Kaffee, nur vormittags geöffnet.", question: "Herr Nowak möchte morgens Kaffee und Kuchen genießen. Welche Anzeige passt?", options: ["Anzeige A", "Anzeige B", "Anzeige C"], c: 2 },
-          { teil: 3, readingText: "Schild: 'Bitte anstellen und Nummer ziehen'", question: "Was sollen die Kunden zuerst tun?", options: ["Direkt bezahlen", "Eine Nummer ziehen und warten", "Sofort nach Hause gehen"], c: 1 },
-          { teil: 3, readingText: "Schild: 'Angebot gültig bis Sonntag'", question: "Bis wann gilt das Angebot?", options: ["Bis Montag", "Bis Sonntag", "Für immer"], c: 1 },
-          { teil: 3, readingText: "Schild: 'Nur Bargeld – keine Kartenzahlung'", question: "Wie kann man hier bezahlen?", options: ["Nur mit Karte", "Nur mit Bargeld", "Mit Karte oder Bargeld"], c: 1 },
-          { teil: 3, readingText: "Schild: 'Frisch gebacken – noch warm!'", question: "Was bedeutet das Schild wahrscheinlich?", options: ["Es geht um frisches Brot", "Es geht um kalte Getränke", "Es geht um Kleidung"], c: 0 }
-        ],
-        schreiben: {
-          form: {
-            title: "Teil 1: Formular ausfüllen",
-            scenario: "Sie bestellen online Lebensmittel bei einem Lieferservice. Füllen Sie das Bestellformular mit Ihren eigenen Daten aus.",
-            fields: ["Name, Vorname", "Lieferadresse", "Telefonnummer", "E-Mail-Adresse", "Gewünschte Lieferzeit"]
-          },
-          message: {
-            title: "Teil 2: Kurze Mitteilung schreiben",
-            instructions: "Schreiben Sie eine kurze Nachricht (ca. 20–30 Wörter) an einen Mitbewohner / eine Mitbewohnerin. Schreiben Sie zu diesen Punkten:",
-            points: ["Was im Kühlschrank fehlt", "Wann Sie einkaufen gehen", "Was er/sie noch braucht"],
-            sample: "Hallo Ana, im Kühlschrank ist keine Milch mehr. Ich gehe heute Abend einkaufen. Brauchst du auch Brot oder Käse? Sag mir bitte Bescheid. Grüße, Leo"
-          }
-        },
-        sprechen: {
-          intro: { title: "Teil 1: Sich vorstellen", keywords: ["Name", "Land", "Wohnort", "Sprachen", "Lieblingsessen", "Hobby"], sample: "Ich heiße Leo. Ich komme aus Italien und wohne in Hamburg. Ich spreche Italienisch und Deutsch. Mein Lieblingsessen ist Pasta. Ich koche gern." },
-          qa: [
-            { keyword: "Essen", sampleQ: "Was essen Sie gern?", sampleA: "Ich esse gern Pasta und Salat." },
-            { keyword: "Einkaufen", sampleQ: "Wo kaufen Sie ein?", sampleA: "Ich kaufe meistens im Supermarkt in der Nähe ein." },
-            { keyword: "Kochen", sampleQ: "Kochen Sie gern?", sampleA: "Ja, ich koche sehr gern, besonders am Wochenende." }
-          ],
-          requests: [
-            { prompt: "Bitten Sie den Kellner um die Speisekarte.", sample: "Entschuldigung, könnten wir die Speisekarte bekommen?" },
-            { prompt: "Bitten Sie im Geschäft um ein Kilo Äpfel.", sample: "Ich hätte gern ein Kilo Äpfel, bitte." },
-            { prompt: "Bitten Sie um die Rechnung im Restaurant.", sample: "Die Rechnung, bitte." }
-          ]
-        }
-      },
-      // ===================== MODELLPRÜFUNG 3 =====================
-      {
-        id: 2, title: "Modellprüfung 3: Familie & Beruf",
-        hoeren: [
-          { teil: 1, audioText: "Meine Schwester ist Lehrerin und mein Bruder ist Arzt.", question: "Was ist der Bruder von Beruf?", options: ["Lehrer", "Arzt", "Koch"], c: 1 },
-          { teil: 1, audioText: "Ich arbeite von Montag bis Freitag, acht Stunden am Tag.", question: "Wie viele Tage arbeitet die Person pro Woche?", options: ["4 Tage", "5 Tage", "7 Tage"], c: 1 },
-          { teil: 1, audioText: "Meine Mutter ist fünfzig Jahre alt und mein Vater ist zweiundfünfzig.", question: "Wie alt ist die Mutter?", options: ["50 Jahre", "52 Jahre", "15 Jahre"], c: 0 },
-          { teil: 1, audioText: "Das Vorstellungsgespräch ist am Donnerstag um elf Uhr im dritten Stock.", question: "In welchem Stock ist das Gespräch?", options: ["1. Stock", "2. Stock", "3. Stock"], c: 2 },
-          { teil: 2, audioText: "Hallo, hier spricht Frau Neumann von der Firma Bauer GmbH. Ihr Vorstellungsgespräch ist bestätigt für Montag um zehn Uhr. Bitte bringen Sie Ihren Lebenslauf und ein Ausweisdokument mit. Kommen Sie bitte fünfzehn Minuten früher. Vielen Dank.", question: "Das Gespräch ist am Montag.", options: ["Richtig", "Falsch"], c: 0 },
-          { teil: 2, audioText: "Hallo, hier spricht Frau Neumann von der Firma Bauer GmbH. Ihr Vorstellungsgespräch ist bestätigt für Montag um zehn Uhr. Bitte bringen Sie Ihren Lebenslauf und ein Ausweisdokument mit. Kommen Sie bitte fünfzehn Minuten früher. Vielen Dank.", question: "Man soll nur den Lebenslauf mitbringen.", options: ["Richtig", "Falsch"], c: 1 },
-          { teil: 2, audioText: "Hallo, hier spricht Frau Neumann von der Firma Bauer GmbH. Ihr Vorstellungsgespräch ist bestätigt für Montag um zehn Uhr. Bitte bringen Sie Ihren Lebenslauf und ein Ausweisdokument mit. Kommen Sie bitte fünfzehn Minuten früher. Vielen Dank.", question: "Man soll früher kommen.", options: ["Richtig", "Falsch"], c: 0 },
-          { teil: 2, audioText: "Hallo, hier spricht Frau Neumann von der Firma Bauer GmbH. Ihr Vorstellungsgespräch ist bestätigt für Montag um zehn Uhr. Bitte bringen Sie Ihren Lebenslauf und ein Ausweisdokument mit. Kommen Sie bitte fünfzehn Minuten früher. Vielen Dank.", question: "Das Gespräch ist um vierzehn Uhr.", options: ["Richtig", "Falsch"], c: 1 },
-          { teil: 3, audioText: "Willkommen im Büro. Ihr Schreibtisch ist im zweiten Stock, Zimmer zweihundertfünf.", question: "Wo ist der Schreibtisch?", options: ["Zimmer 205", "Zimmer 250", "Zimmer 25"], c: 0 },
-          { teil: 3, audioText: "Die Teambesprechung wurde verschoben, von Dienstag auf Mittwoch, gleiche Uhrzeit.", question: "Wann ist die Besprechung jetzt?", options: ["Dienstag", "Mittwoch", "Freitag"], c: 1 },
-          { teil: 3, audioText: "Herzlichen Glückwunsch zur Geburt Ihrer Tochter! Der Mutterschutz beginnt automatisch ab heute.", question: "Was ist passiert?", options: ["Eine Hochzeit", "Die Geburt eines Kindes", "Ein neuer Job"], c: 1 }
-        ],
-        lesen: [
-          { teil: 1, readingText: "Liebe Kollegen, meine Tochter ist heute krank, deshalb arbeite ich von zu Hause. Ich bin per E-Mail erreichbar. Grüße, Julia", question: "Julia ist heute im Büro.", options: ["Richtig", "Falsch"], c: 1 },
-          { teil: 1, readingText: "Hallo Papa, die Schule endet heute schon um zwölf Uhr. Kannst du mich abholen? LG Emma", question: "Emma möchte, dass ihr Vater sie abholt.", options: ["Richtig", "Falsch"], c: 0 },
-          { teil: 1, readingText: "Sehr geehrter Herr Boldt, Ihre Bewerbung haben wir erhalten. Wir melden uns in den nächsten zwei Wochen. Freundliche Grüße, Personalabteilung", question: "Die Firma antwortet sofort.", options: ["Richtig", "Falsch"], c: 1 },
-          { teil: 1, readingText: "Hi Oma, wir kommen dieses Wochenende zu Besuch, mein Bruder und ich. Wir freuen uns schon! Küsschen, Nina", question: "Nina kommt allein zu Besuch.", options: ["Richtig", "Falsch"], c: 1 },
-          { teil: 2, readingText: "Anzeige A: Kita 'Sonnenschein' sucht Erzieher/in, Teilzeit, ab sofort.\nAnzeige B: Büro sucht Praktikant/in, 3 Monate, im Marketing-Team.\nAnzeige C: Restaurant sucht Koch/Köchin, Vollzeit, Erfahrung erwünscht.", question: "Frau Sultan hat Erfahrung als Erzieherin und möchte Teilzeit arbeiten. Welche Anzeige passt?", options: ["Anzeige A", "Anzeige B", "Anzeige C"], c: 0 },
-          { teil: 2, readingText: "Anzeige A: Kita 'Sonnenschein' sucht Erzieher/in, Teilzeit, ab sofort.\nAnzeige B: Büro sucht Praktikant/in, 3 Monate, im Marketing-Team.\nAnzeige C: Restaurant sucht Koch/Köchin, Vollzeit, Erfahrung erwünscht.", question: "Herr Petrov ist Student und sucht ein kurzes Praktikum. Welche Anzeige passt?", options: ["Anzeige A", "Anzeige B", "Anzeige C"], c: 1 },
-          { teil: 2, readingText: "Anzeige A: Kita 'Sonnenschein' sucht Erzieher/in, Teilzeit, ab sofort.\nAnzeige B: Büro sucht Praktikant/in, 3 Monate, im Marketing-Team.\nAnzeige C: Restaurant sucht Koch/Köchin, Vollzeit, Erfahrung erwünscht.", question: "Frau Costa ist erfahrene Köchin und sucht eine Vollzeitstelle. Welche Anzeige passt?", options: ["Anzeige A", "Anzeige B", "Anzeige C"], c: 2 },
-          { teil: 3, readingText: "Schild: 'Bewerbungen bitte nur online einreichen'", question: "Wie soll man sich bewerben?", options: ["Per Post", "Online", "Persönlich vorbeikommen"], c: 1 },
-          { teil: 3, readingText: "Schild: 'Besprechungsraum – bitte anklopfen'", question: "Was soll man tun, bevor man hineingeht?", options: ["Warten", "Klopfen", "Rufen"], c: 1 },
-          { teil: 3, readingText: "Schild: 'Mitarbeiterparkplatz – für Kunden bitte gegenüber parken'", question: "Wo sollen Kunden parken?", options: ["Auf diesem Parkplatz", "Gegenüber", "Nirgendwo"], c: 1 },
-          { teil: 3, readingText: "Schild: 'Betriebsferien vom 1. bis 15. August'", question: "Was bedeutet das Schild?", options: ["Die Firma ist in dieser Zeit geschlossen", "Es gibt ein Fest", "Neue Mitarbeiter starten"], c: 0 }
-        ],
-        schreiben: {
-          form: {
-            title: "Teil 1: Formular ausfüllen",
-            scenario: "Sie bewerben sich um einen Teilzeitjob. Füllen Sie das Bewerbungsformular mit Ihren eigenen Daten aus.",
-            fields: ["Name, Vorname", "Geburtsdatum", "Adresse", "Telefonnummer", "Aktueller Beruf / letzte Tätigkeit"]
-          },
-          message: {
-            title: "Teil 2: Kurze Mitteilung schreiben",
-            instructions: "Schreiben Sie eine kurze Nachricht (ca. 20–30 Wörter) an Ihren Chef / Ihre Chefin. Schreiben Sie zu diesen Punkten:",
-            points: ["Dass Sie heute krank sind", "Dass Sie nicht kommen können", "Dass Sie sich morgen wieder melden"],
-            sample: "Guten Morgen Frau Klein, ich bin heute leider krank und kann nicht ins Büro kommen. Ich melde mich morgen wieder bei Ihnen. Vielen Dank für Ihr Verständnis. Freundliche Grüße, Ahmed"
-          }
-        },
-        sprechen: {
-          intro: { title: "Teil 1: Sich vorstellen", keywords: ["Name", "Land", "Wohnort", "Sprachen", "Beruf", "Familie"], sample: "Ich heiße Ahmed. Ich komme aus Syrien und wohne in Köln. Ich spreche Arabisch, Englisch und ein bisschen Deutsch. Ich bin Ingenieur von Beruf. Ich habe eine Frau und zwei Kinder." },
-          qa: [
-            { keyword: "Beruf", sampleQ: "Was sind Sie von Beruf?", sampleA: "Ich bin Ingenieur, aber im Moment lerne ich Deutsch." },
-            { keyword: "Familie", sampleQ: "Wie viele Personen sind in Ihrer Familie?", sampleA: "Wir sind vier: meine Frau, zwei Kinder und ich." },
-            { keyword: "Arbeitszeit", sampleQ: "Wie viele Stunden arbeiten Sie pro Woche?", sampleA: "Ich arbeite normalerweise vierzig Stunden pro Woche." }
-          ],
-          requests: [
-            { prompt: "Bitten Sie Ihren Kollegen um Hilfe mit dem Computer.", sample: "Kannst du mir bitte mit dem Computer helfen?" },
-            { prompt: "Bitten Sie um einen freien Tag.", sample: "Könnte ich bitte am Freitag einen freien Tag nehmen?" },
-            { prompt: "Bitten Sie um eine Terminverschiebung.", sample: "Könnten wir den Termin bitte auf morgen verschieben?" }
-          ]
-        }
-      },
-      // ===================== MODELLPRÜFUNG 4 =====================
-      {
-        id: 3, title: "Modellprüfung 4: Reisen & Verkehr",
-        hoeren: [
-          { teil: 1, audioText: "Der Bus nach Frankfurt fährt in zehn Minuten von Steig fünf ab.", question: "Von welchem Steig fährt der Bus ab?", options: ["Steig 5", "Steig 10", "Steig 15"], c: 0 },
-          { teil: 1, audioText: "Eine Fahrkarte nach Hamburg, einfache Fahrt, kostet neunundvierzig Euro.", question: "Was kostet die Fahrkarte?", options: ["14 Euro", "49 Euro", "90 Euro"], c: 1 },
-          { teil: 1, audioText: "Der Flug nach Rom hat zwanzig Minuten Verspätung.", question: "Wie viel Verspätung hat der Flug?", options: ["10 Minuten", "20 Minuten", "2 Stunden"], c: 1 },
-          { teil: 1, audioText: "Wir kommen um sechzehn Uhr fünfundvierzig in München an.", question: "Wann kommt der Zug in München an?", options: ["16:45 Uhr", "17:45 Uhr", "6:45 Uhr"], c: 0 },
-          { teil: 2, audioText: "Sehr geehrte Fahrgäste, willkommen an Bord. Unser Zug fährt heute über Köln nach Frankfurt. Die Fahrzeit beträgt zwei Stunden dreißig Minuten. Bitte bewahren Sie Ihr Gepäck sicher auf. Der nächste Halt ist Köln Hauptbahnhof.", question: "Der Zug fährt nach Frankfurt.", options: ["Richtig", "Falsch"], c: 0 },
-          { teil: 2, audioText: "Sehr geehrte Fahrgäste, willkommen an Bord. Unser Zug fährt heute über Köln nach Frankfurt. Die Fahrzeit beträgt zwei Stunden dreißig Minuten. Bitte bewahren Sie Ihr Gepäck sicher auf. Der nächste Halt ist Köln Hauptbahnhof.", question: "Die Fahrt dauert eine Stunde.", options: ["Richtig", "Falsch"], c: 1 },
-          { teil: 2, audioText: "Sehr geehrte Fahrgäste, willkommen an Bord. Unser Zug fährt heute über Köln nach Frankfurt. Die Fahrzeit beträgt zwei Stunden dreißig Minuten. Bitte bewahren Sie Ihr Gepäck sicher auf. Der nächste Halt ist Köln Hauptbahnhof.", question: "Der nächste Halt ist Köln.", options: ["Richtig", "Falsch"], c: 0 },
-          { teil: 2, audioText: "Sehr geehrte Fahrgäste, willkommen an Bord. Unser Zug fährt heute über Köln nach Frankfurt. Die Fahrzeit beträgt zwei Stunden dreißig Minuten. Bitte bewahren Sie Ihr Gepäck sicher auf. Der nächste Halt ist Köln Hauptbahnhof.", question: "Man soll das Gepäck draußen lassen.", options: ["Richtig", "Falsch"], c: 1 },
-          { teil: 3, audioText: "Achtung: Bitte steigen Sie am Hauptbahnhof in die Linie zwei um.", question: "Was sollen die Fahrgäste tun?", options: ["Aussteigen und warten", "In Linie 2 umsteigen", "Sitzen bleiben"], c: 1 },
-          { teil: 3, audioText: "Wegen einer Baustelle ist die Straße zum Flughafen heute gesperrt. Bitte nutzen Sie die Umleitung.", question: "Warum ist die Straße gesperrt?", options: ["Wegen eines Unfalls", "Wegen einer Baustelle", "Wegen des Wetters"], c: 1 },
-          { teil: 3, audioText: "Der Mietwagen kann ab neun Uhr am Flughafen abgeholt werden, bitte bringen Sie Ihren Führerschein mit.", question: "Was muss man mitbringen?", options: ["Den Reisepass", "Den Führerschein", "Die Bordkarte"], c: 1 }
-        ],
-        lesen: [
-          { teil: 1, readingText: "Hallo Karim, unser Flug hat zwei Stunden Verspätung. Wir kommen also erst um Mitternacht an. LG Sofia", question: "Der Flug ist pünktlich.", options: ["Richtig", "Falsch"], c: 1 },
-          { teil: 1, readingText: "Liebe Fahrgäste, wegen einer Störung fahren die Züge heute nur bis Bonn. Bitte informieren Sie sich vor Ort.", question: "Die Züge fahren heute normal bis zum Endziel.", options: ["Richtig", "Falsch"], c: 1 },
-          { teil: 1, readingText: "Hi Ben, ich habe die Zugtickets schon gekauft, für Freitagmorgen um acht Uhr. Bring bitte deinen Koffer mit. Tim", question: "Der Zug fährt freitagmorgens.", options: ["Richtig", "Falsch"], c: 0 },
-          { teil: 1, readingText: "Sehr geehrte Gäste, das Hotelzimmer ist ab vierzehn Uhr bezugsfertig. Check-out ist bis elf Uhr am Abreisetag.", question: "Man kann das Zimmer schon um zehn Uhr beziehen.", options: ["Richtig", "Falsch"], c: 1 },
-          { teil: 2, readingText: "Anzeige A: Bahn-Sparpreis Berlin–München, 29 Euro, nur an bestimmten Tagen buchbar.\nAnzeige B: Flexticket, jederzeit gültig, freie Zugwahl, 89 Euro.\nAnzeige C: Bahncard 25, 25% Rabatt auf alle Fahrten, 62 Euro pro Jahr.", question: "Herr Klug reist oft mit dem Zug und möchte immer sparen. Welche Anzeige passt?", options: ["Anzeige A", "Anzeige B", "Anzeige C"], c: 2 },
-          { teil: 2, readingText: "Anzeige A: Bahn-Sparpreis Berlin–München, 29 Euro, nur an bestimmten Tagen buchbar.\nAnzeige B: Flexticket, jederzeit gültig, freie Zugwahl, 89 Euro.\nAnzeige C: Bahncard 25, 25% Rabatt auf alle Fahrten, 62 Euro pro Jahr.", question: "Frau Otero weiß ihre genaue Abfahrtszeit noch nicht und möchte flexibel bleiben. Welche Anzeige passt?", options: ["Anzeige A", "Anzeige B", "Anzeige C"], c: 1 },
-          { teil: 2, readingText: "Anzeige A: Bahn-Sparpreis Berlin–München, 29 Euro, nur an bestimmten Tagen buchbar.\nAnzeige B: Flexticket, jederzeit gültig, freie Zugwahl, 89 Euro.\nAnzeige C: Bahncard 25, 25% Rabatt auf alle Fahrten, 62 Euro pro Jahr.", question: "Herr Diallo fährt einmal von Berlin nach München und hat ein festes Datum. Welche Anzeige passt?", options: ["Anzeige A", "Anzeige B", "Anzeige C"], c: 0 },
-          { teil: 3, readingText: "Schild: 'Bitte Sicherheitsgurt anlegen'", question: "Was bedeutet das Schild?", options: ["Man soll den Gurt anlegen", "Man soll aussteigen", "Man soll das Fenster öffnen"], c: 0 },
-          { teil: 3, readingText: "Schild: 'Gepäckausgabe – Band 4'", question: "Wo bekommt man sein Gepäck?", options: ["An Band 4", "Im Flugzeug", "Am Check-in"], c: 0 },
-          { teil: 3, readingText: "Schild: 'Bitte Ticket am Automaten entwerten'", question: "Was soll man mit dem Ticket tun?", options: ["Es wegwerfen", "Es am Automaten entwerten", "Es dem Kellner geben"], c: 1 },
-          { teil: 3, readingText: "Schild: 'Ausgang nur in Notfällen'", question: "Wann darf man diesen Ausgang benutzen?", options: ["Immer", "Nur im Notfall", "Nur am Wochenende"], c: 1 }
-        ],
-        schreiben: {
-          form: {
-            title: "Teil 1: Formular ausfüllen",
-            scenario: "Sie mieten ein Auto für eine Reise. Füllen Sie das Mietformular mit Ihren eigenen Daten aus.",
-            fields: ["Name, Vorname", "Führerscheinnummer", "Adresse", "Telefonnummer", "Abhol- und Rückgabedatum"]
-          },
-          message: {
-            title: "Teil 2: Kurze Mitteilung schreiben",
-            instructions: "Schreiben Sie eine kurze Nachricht (ca. 20–30 Wörter) an einen Freund / eine Freundin über Ihre Reise. Schreiben Sie zu diesen Punkten:",
-            points: ["Wohin Sie fahren", "Wann Sie ankommen", "Ob er/sie Sie abholen kann"],
-            sample: "Hallo Nils, ich fahre am Freitag nach Berlin und komme um 18 Uhr am Hauptbahnhof an. Kannst du mich vom Bahnhof abholen? Das wäre super. Bis bald! Deine Mira"
-          }
-        },
-        sprechen: {
-          intro: { title: "Teil 1: Sich vorstellen", keywords: ["Name", "Land", "Wohnort", "Sprachen", "Beruf", "Reiseziel"], sample: "Ich heiße Mira. Ich komme aus Polen und wohne in Dresden. Ich spreche Polnisch, Englisch und Deutsch. Ich bin Krankenschwester. Ich reise gern, mein Lieblingsziel ist Italien." },
-          qa: [
-            { keyword: "Reisen", sampleQ: "Reisen Sie gern?", sampleA: "Ja, ich reise sehr gern, am liebsten mit dem Zug." },
-            { keyword: "Verkehrsmittel", sampleQ: "Wie kommen Sie zur Arbeit?", sampleA: "Ich fahre mit dem Bus zur Arbeit, das dauert zwanzig Minuten." },
-            { keyword: "Urlaub", sampleQ: "Wohin fahren Sie im Urlaub?", sampleA: "Im Sommer fahre ich meistens nach Italien ans Meer." }
-          ],
-          requests: [
-            { prompt: "Bitten Sie am Bahnschalter um eine Auskunft.", sample: "Entschuldigung, wann fährt der nächste Zug nach Köln?" },
-            { prompt: "Bitten Sie den Taxifahrer, an einer Adresse zu halten.", sample: "Können Sie bitte hier an der Ecke halten?" },
-            { prompt: "Bitten Sie um Hilfe mit dem Koffer.", sample: "Könnten Sie mir bitte mit dem Koffer helfen?" }
-          ]
-        }
-      },
-      // ===================== MODELLPRÜFUNG 5 =====================
-      {
-        id: 4, title: "Modellprüfung 5: Wohnen & Freizeit",
-        hoeren: [
-          { teil: 1, audioText: "Die Wohnung hat zwei Zimmer, eine Küche und ein Bad. Die Miete ist sechshundert Euro im Monat.", question: "Wie viel kostet die Miete?", options: ["600 Euro", "60 Euro", "6000 Euro"], c: 0 },
-          { teil: 1, audioText: "Am Wochenende gehe ich gern ins Kino oder schwimmen.", question: "Was macht die Person am Wochenende gern?", options: ["Ins Kino gehen oder schwimmen", "Arbeiten", "Kochen"], c: 0 },
-          { teil: 1, audioText: "Der Umzug ist am ersten März, ein Freund hilft mit dem Auto.", question: "Wann ist der Umzug?", options: ["1. Februar", "1. März", "1. Mai"], c: 1 },
-          { teil: 1, audioText: "Das Schwimmbad ist heute von zehn bis achtzehn Uhr geöffnet.", question: "Bis wann ist das Schwimmbad heute geöffnet?", options: ["16 Uhr", "18 Uhr", "20 Uhr"], c: 1 },
-          { teil: 2, audioText: "Liebe Mieter, am kommenden Dienstag kommt der Techniker, um die Heizung zu reparieren. Bitte seien Sie zwischen neun und dreizehn Uhr zu Hause oder informieren Sie den Hausmeister. Vielen Dank für Ihr Verständnis.", question: "Der Techniker kommt am Dienstag.", options: ["Richtig", "Falsch"], c: 0 },
-          { teil: 2, audioText: "Liebe Mieter, am kommenden Dienstag kommt der Techniker, um die Heizung zu reparieren. Bitte seien Sie zwischen neun und dreizehn Uhr zu Hause oder informieren Sie den Hausmeister. Vielen Dank für Ihr Verständnis.", question: "Es geht um die Reparatur der Dusche.", options: ["Richtig", "Falsch"], c: 1 },
-          { teil: 2, audioText: "Liebe Mieter, am kommenden Dienstag kommt der Techniker, um die Heizung zu reparieren. Bitte seien Sie zwischen neun und dreizehn Uhr zu Hause oder informieren Sie den Hausmeister. Vielen Dank für Ihr Verständnis.", question: "Man kann auch den Hausmeister informieren.", options: ["Richtig", "Falsch"], c: 0 },
-          { teil: 2, audioText: "Liebe Mieter, am kommenden Dienstag kommt der Techniker, um die Heizung zu reparieren. Bitte seien Sie zwischen neun und dreizehn Uhr zu Hause oder informieren Sie den Hausmeister. Vielen Dank für Ihr Verständnis.", question: "Der Techniker kommt am Abend.", options: ["Richtig", "Falsch"], c: 1 },
-          { teil: 3, audioText: "Willkommen im Fitnessstudio. Ihr Kurs 'Yoga für Anfänger' beginnt in Raum zwei um achtzehn Uhr dreißig.", question: "Wann beginnt der Kurs?", options: ["18:00 Uhr", "18:30 Uhr", "8:30 Uhr"], c: 1 },
-          { teil: 3, audioText: "Die Bibliothek schließt heute schon um sechzehn Uhr wegen einer Veranstaltung.", question: "Warum schließt die Bibliothek früher?", options: ["Wegen Ferien", "Wegen einer Veranstaltung", "Wegen Renovierung"], c: 1 },
-          { teil: 3, audioText: "Der Nachbarschaftsverein trifft sich jeden ersten Freitag im Monat im Gemeinschaftsraum.", question: "Wo trifft sich der Verein?", options: ["Im Park", "Im Gemeinschaftsraum", "Im Café"], c: 1 }
-        ],
-        lesen: [
-          { teil: 1, readingText: "Hallo Jonas, unsere neue Wohnung hat einen schönen Balkon und ist ruhig. Wir sind sehr zufrieden. LG Petra", question: "Petra ist mit der Wohnung zufrieden.", options: ["Richtig", "Falsch"], c: 0 },
-          { teil: 1, readingText: "Liebe Nachbarn, am Samstag machen wir ein kleines Hoffest. Alle sind herzlich eingeladen! Familie Roth", question: "Das Fest ist nur für die Familie Roth.", options: ["Richtig", "Falsch"], c: 1 },
-          { teil: 1, readingText: "Hi Marta, der Fitnesskurs am Mittwoch fällt diese Woche aus. Nächste Woche geht's normal weiter. Grüße, Elena", question: "Der Kurs findet diese Woche wie gewohnt statt.", options: ["Richtig", "Falsch"], c: 1 },
-          { teil: 1, readingText: "Lieber Herr Voss, die Wohnungsbesichtigung ist auf Freitag um sechzehn Uhr verschoben worden. Mit freundlichen Grüßen, die Hausverwaltung", question: "Die Besichtigung wurde verschoben.", options: ["Richtig", "Falsch"], c: 0 },
-          { teil: 2, readingText: "Anzeige A: 2-Zimmer-Wohnung, ruhige Lage, 650 Euro warm, ab sofort frei.\nAnzeige B: WG-Zimmer, zentral, 350 Euro, ideal für Studenten.\nAnzeige C: 4-Zimmer-Haus mit Garten, 1200 Euro, für Familien geeignet.", question: "Familie Grau sucht ein Haus mit Garten für die Kinder. Welche Anzeige passt?", options: ["Anzeige A", "Anzeige B", "Anzeige C"], c: 2 },
-          { teil: 2, readingText: "Anzeige A: 2-Zimmer-Wohnung, ruhige Lage, 650 Euro warm, ab sofort frei.\nAnzeige B: WG-Zimmer, zentral, 350 Euro, ideal für Studenten.\nAnzeige C: 4-Zimmer-Haus mit Garten, 1200 Euro, für Familien geeignet.", question: "Herr Yilmaz ist Student und hat wenig Geld. Welche Anzeige passt?", options: ["Anzeige A", "Anzeige B", "Anzeige C"], c: 1 },
-          { teil: 2, readingText: "Anzeige A: 2-Zimmer-Wohnung, ruhige Lage, 650 Euro warm, ab sofort frei.\nAnzeige B: WG-Zimmer, zentral, 350 Euro, ideal für Studenten.\nAnzeige C: 4-Zimmer-Haus mit Garten, 1200 Euro, für Familien geeignet.", question: "Frau Bianchi sucht eine ruhige Wohnung für sich allein. Welche Anzeige passt?", options: ["Anzeige A", "Anzeige B", "Anzeige C"], c: 0 },
-          { teil: 3, readingText: "Schild: 'Ruhezeit von 13 bis 15 Uhr'", question: "Was bedeutet das Schild?", options: ["Man soll in dieser Zeit laut sein", "Man soll in dieser Zeit leise sein", "Das Haus ist geschlossen"], c: 1 },
-          { teil: 3, readingText: "Schild: 'Müll bitte trennen: Papier, Glas, Restmüll'", question: "Was sollen die Bewohner tun?", options: ["Den Müll trennen", "Den Müll verbrennen", "Nichts wegwerfen"], c: 0 },
-          { teil: 3, readingText: "Schild: 'Fahrräder bitte im Fahrradkeller abstellen'", question: "Wo soll man das Fahrrad abstellen?", options: ["Im Treppenhaus", "Im Fahrradkeller", "Vor der Tür"], c: 1 },
-          { teil: 3, readingText: "Schild: 'Schwimmbad heute wegen Reinigung geschlossen'", question: "Warum ist das Schwimmbad geschlossen?", options: ["Wegen Reinigung", "Wegen Kälte", "Wegen eines Festes"], c: 0 }
-        ],
-        schreiben: {
-          form: {
-            title: "Teil 1: Formular ausfüllen",
-            scenario: "Sie möchten eine Wohnung besichtigen. Füllen Sie das Kontaktformular der Hausverwaltung mit Ihren eigenen Daten aus.",
-            fields: ["Name, Vorname", "Aktuelle Adresse", "Telefonnummer", "E-Mail-Adresse", "Gewünschter Besichtigungstermin"]
-          },
-          message: {
-            title: "Teil 2: Kurze Mitteilung schreiben",
-            instructions: "Schreiben Sie eine kurze Nachricht (ca. 20–30 Wörter) an einen Nachbarn / eine Nachbarin. Schreiben Sie zu diesen Punkten:",
-            points: ["Dass Sie eine kleine Party machen", "Wann die Party ist", "Dass es etwas lauter werden könnte"],
-            sample: "Liebe Frau Berg, am Samstag mache ich eine kleine Geburtstagsparty ab 19 Uhr. Es könnte etwas lauter werden. Ich hoffe, das ist okay. Freundliche Grüße, Elif"
-          }
-        },
-        sprechen: {
-          intro: { title: "Teil 1: Sich vorstellen", keywords: ["Name", "Land", "Wohnort", "Sprachen", "Beruf", "Hobby"], sample: "Ich heiße Elif. Ich komme aus der Türkei und wohne in Frankfurt. Ich spreche Türkisch und Deutsch. Ich bin Designerin. Mein Hobby ist Fotografieren." },
-          qa: [
-            { keyword: "Wohnung", sampleQ: "Wie ist Ihre Wohnung?", sampleA: "Meine Wohnung hat zwei Zimmer und einen kleinen Balkon." },
-            { keyword: "Freizeit", sampleQ: "Was machen Sie in Ihrer Freizeit?", sampleA: "In meiner Freizeit fotografiere ich gern und treffe Freunde." },
-            { keyword: "Nachbarn", sampleQ: "Wie sind Ihre Nachbarn?", sampleA: "Meine Nachbarn sind sehr freundlich und ruhig." }
-          ],
-          requests: [
-            { prompt: "Bitten Sie den Nachbarn, leiser zu sein.", sample: "Entschuldigung, könnten Sie bitte etwas leiser sein?" },
-            { prompt: "Bitten Sie den Hausmeister um Hilfe mit der Heizung.", sample: "Könnten Sie sich bitte die Heizung anschauen? Sie funktioniert nicht." },
-            { prompt: "Bitten Sie einen Freund, beim Umzug zu helfen.", sample: "Kannst du mir bitte am Samstag beim Umzug helfen?" }
+            { prompt: "Bitten Sie um ein Glas Wasser (echtes Prüfungsbeispiel).", sample: "Ein Glas Wasser, bitte!" },
+            { prompt: "Bitten Sie jemanden, Ihnen bei einer Deutsch-Übung zu helfen.", sample: "Kannst du mir bitte bei der Deutsch-Übung helfen?" },
+            { prompt: "Bitten Sie jemanden, die Musik leiser zu machen.", sample: "Könnten Sie bitte die Musik etwas leiser machen?" }
           ]
         }
       }
@@ -796,6 +581,7 @@
     let processingExamEvaluationFeedbackMode = false;
     let schreibenTaskIndex = 0; // 0 = Formular, 1 = Mitteilung
     let schreibenShowSample = [false, false];
+    let schreibenFormShowSolutions = false;
     let sprechenPartIndex = 0; // 0 Vorstellung, 1 Fragen, 2 Bitten
     let sprechenSubIndex = 0;
     let sprechenChecklist = { intro: false, qa: [false, false, false], requests: [false, false, false] };
@@ -892,6 +678,14 @@
         utterance.rate = 0.8;
         window.speechSynthesis.speak(utterance);
       }
+    }
+
+    // Safely embed a JS string as an argument inside a single-quoted HTML
+    // onclick="'...'" attribute. JSON.stringify alone does NOT escape
+    // apostrophes, so any exam text containing one (e.g. "ich bin's") would
+    // otherwise prematurely terminate the attribute and corrupt the markup.
+    function safeOnclickArg(str) {
+      return JSON.stringify(str).replace(/'/g, "&#39;");
     }
 
     // Algorithmic Large-Scale Number Generator Engine Method (0 to 100 Million converter rule matrix)
@@ -1914,7 +1708,7 @@
             </div>
             ${skillKey === 'hoeren' ? `
               <div class="${conf.cardBg} border p-5 rounded-2xl shadow-xl space-y-3">
-                <button onclick='triggerSpeechSynthesis(${JSON.stringify(q.audioText)})' class="w-full py-3 bg-indigo-600 hover:bg-indigo-500 text-white font-black text-xs rounded-xl flex items-center justify-center gap-2">🔊 Audio abspielen</button>
+                <button onclick='triggerSpeechSynthesis(${safeOnclickArg(q.audioText)})' class="w-full py-3 bg-indigo-600 hover:bg-indigo-500 text-white font-black text-xs rounded-xl flex items-center justify-center gap-2">🔊 Audio abspielen</button>
                 <p class="text-xs font-bold leading-relaxed text-slate-200">${q.question}</p>
               </div>
             ` : `
@@ -1961,6 +1755,14 @@
                     </div>
                   `).join('')}
                 </div>
+                ${f.fieldSolutions ? `
+                  <button onclick="toggleSchreibenFormSolutions()" class="w-full py-2 bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-300 font-bold text-[11px] rounded-lg">${schreibenFormShowSolutions ? 'Lösungen ausblenden' : 'Lösungen anzeigen'}</button>
+                  ${schreibenFormShowSolutions ? `
+                    <div class="p-3 bg-indigo-950/40 border border-indigo-900 rounded-lg text-xs text-indigo-200 space-y-1">
+                      ${f.fields.map((field, i) => `<p><span class="font-black">${field}:</span> ${f.fieldSolutions[i]}</p>`).join('')}
+                    </div>
+                  ` : ''}
+                ` : ''}
               </div>
               <button onclick="advanceSchreibenTask()" class="w-full p-3 bg-gradient-to-r from-indigo-500 to-fuchsia-500 font-black text-xs text-white rounded-xl">Weiter zu Teil 2 →</button>
             </div>
@@ -1998,7 +1800,7 @@
                 <div class="flex flex-wrap gap-1.5">
                   ${sp.intro.keywords.map(k => `<span class="text-[10px] font-bold bg-indigo-950 text-indigo-300 border border-indigo-800 px-2 py-1 rounded-lg">${k}</span>`).join('')}
                 </div>
-                <button onclick='triggerSpeechSynthesis(${JSON.stringify(sp.intro.sample)})' class="w-full py-2 bg-indigo-600 hover:bg-indigo-500 text-white font-black text-[11px] rounded-lg">🔊 Beispielantwort anhören</button>
+                <button onclick='triggerSpeechSynthesis(${safeOnclickArg(sp.intro.sample)})' class="w-full py-2 bg-indigo-600 hover:bg-indigo-500 text-white font-black text-[11px] rounded-lg">🔊 Beispielantwort anhören</button>
                 <p class="text-xs text-slate-300 italic leading-relaxed">"${sp.intro.sample}"</p>
                 <label class="flex items-center gap-2 text-[11px] text-slate-300 font-bold pt-1">
                   <input type="checkbox" ${sprechenChecklist.intro ? 'checked' : ''} onchange="toggleSprechenChecklistItem('intro')"> Ich habe das geübt
@@ -2016,7 +1818,7 @@
                   <div class="${conf.cardBg} border p-4 rounded-xl space-y-2">
                     <span class="text-[9px] uppercase font-black text-indigo-400 tracking-wider">${item.keyword}</span>
                     <p class="text-xs font-bold text-slate-200">${item.sampleQ}</p>
-                    <button onclick='triggerSpeechSynthesis(${JSON.stringify(item.sampleA)})' class="text-[10px] font-bold text-indigo-400">🔊 Beispielantwort anhören</button>
+                    <button onclick='triggerSpeechSynthesis(${safeOnclickArg(item.sampleA)})' class="text-[10px] font-bold text-indigo-400">🔊 Beispielantwort anhören</button>
                     <p class="text-xs text-slate-400 italic">"${item.sampleA}"</p>
                     <label class="flex items-center gap-2 text-[10px] text-slate-300 font-bold pt-1">
                       <input type="checkbox" ${sprechenChecklist.qa[idx] ? 'checked' : ''} onchange="toggleSprechenChecklistItem('qa', ${idx})"> Geübt
@@ -2035,7 +1837,7 @@
                 ${sp.requests.map((item, idx) => `
                   <div class="${conf.cardBg} border p-4 rounded-xl space-y-2">
                     <p class="text-xs font-bold text-slate-200">${item.prompt}</p>
-                    <button onclick='triggerSpeechSynthesis(${JSON.stringify(item.sample)})' class="text-[10px] font-bold text-indigo-400">🔊 Beispiel anhören</button>
+                    <button onclick='triggerSpeechSynthesis(${safeOnclickArg(item.sample)})' class="text-[10px] font-bold text-indigo-400">🔊 Beispiel anhören</button>
                     <p class="text-xs text-slate-400 italic">"${item.sample}"</p>
                     <label class="flex items-center gap-2 text-[10px] text-slate-300 font-bold pt-1">
                       <input type="checkbox" ${sprechenChecklist.requests[idx] ? 'checked' : ''} onchange="toggleSprechenChecklistItem('requests', ${idx})"> Geübt
@@ -2091,9 +1893,10 @@
       processingExamEvaluationFeedbackMode = false;
       schreibenTaskIndex = 0;
       schreibenShowSample = [false, false];
+      schreibenFormShowSolutions = false;
       sprechenPartIndex = 0;
       sprechenSubIndex = 0;
-      sprechenChecklist = { intro: false, qa: [false, false, false], requests: [false, false, false] };
+      sprechenChecklist = { intro: false, qa: [false, false, false, false], requests: [false, false, false] };
       renderActiveTabModule();
     }
 
@@ -2125,6 +1928,11 @@
 
     function toggleSchreibenSample(idx) {
       schreibenShowSample[idx] = !schreibenShowSample[idx];
+      renderActiveTabModule();
+    }
+
+    function toggleSchreibenFormSolutions() {
+      schreibenFormShowSolutions = !schreibenFormShowSolutions;
       renderActiveTabModule();
     }
 
