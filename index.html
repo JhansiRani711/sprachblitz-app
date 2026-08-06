@@ -436,17 +436,10 @@
     let genderGameActiveItem = null;
     let genderGameFeedback = null; // 'correct', 'wrong'
 
-    // Real-Time Testing Engine Operational State Models
-    let selectedActiveExamIndex = 0;
-    let activeExamRunningMode = false;
-
-    let currentExamQuestionIndex = 0;
-    let activeExamUserAnswersCollected = [];
-    let processingExamEvaluationFeedbackMode = false;
-
     // Theme Class Configurations Engine Object Profiles Map
     const systemThemeProfiles = {
       'midnight-slate': {
+
         shellBg: 'bg-slate-900 border-slate-800',
         headerBg: 'bg-slate-950 border-slate-800 text-white',
         footerBg: 'bg-slate-950 border-slate-800',
@@ -459,7 +452,6 @@
       'cyberpunk-neon': {
         shellBg: 'bg-indigo-950 border-fuchsia-500',
         headerBg: 'bg-slate-950 border-fuchsia-500 text-cyan-400',
-
         footerBg: 'bg-slate-950 border-fuchsia-500',
         viewSurfaceBg: 'bg-indigo-950 text-cyan-100',
         cardBg: 'bg-slate-900 border-cyan-500 text-cyan-300',
@@ -467,6 +459,7 @@
         tabActive: 'text-lime-400',
         tabInactive: 'text-fuchsia-400'
       }
+
     };
 
     // Native Browser Audio Speech Synthesis Runner
@@ -479,7 +472,6 @@
         utterance.rate = 0.8;
         window.speechSynthesis.speak(utterance);
       }
-
     }
 
     // Algorithmic Large-Scale Number Generator Engine Method (0 to 100 Million converter rule matrix)
@@ -487,6 +479,7 @@
       if (num === 0) return "null";
       
       const units = ["", "eins", "zwei", "drei", "vier", "fünf", "sechs", "sieben", "acht", "neun"];
+
       const teens = ["zehn", "elf", "zwölf", "dreizehn", "vierzehn", "fünfzehn", "sechzehn", "siebzehn", "achtzehn", "neunzehn"];
       const tens = ["", "zehn", "zwanzig", "dreißig", "vierzig", "fünfzig", "sechzig", "siebzig", "achtzig", "neunzig"];
 
@@ -499,7 +492,6 @@
         return (u === 1 ? "ein" : units[u]) + "und" + tens[t];
       }
 
-
       function convertSubThousands(val) {
         const h = Math.floor(val / 100);
         const rem = val % 100;
@@ -507,6 +499,7 @@
         if (h > 0) res += (h === 1 ? "ein" : units[h]) + "hundert";
         if (rem > 0) res += convertSubHundreds(rem);
         return res;
+
       }
 
       let outputText = "";
@@ -519,13 +512,13 @@
         else outputText += convertSubThousands(mill) + " Millionen";
       }
 
-
       if (remainingValue >= 1000) {
         const thous = Math.floor(remainingValue / 1000);
         remainingValue %= 1000;
         if (thous === 1) outputText += "eintausend";
         else outputText += convertSubThousands(thous) + "tausend";
       }
+
 
       if (remainingValue > 0) {
         outputText += convertSubThousands(remainingValue);
@@ -539,7 +532,6 @@
 
     function runLiveIntegerConversionCheck() {
       const inputNode = document.getElementById('numerical-matrix-input');
-
       const outputNode = document.getElementById('numerical-matrix-output-string');
       if (!inputNode || !outputNode) return;
       
@@ -547,6 +539,7 @@
       if (isNaN(val) || val < 0) {
         outputNode.innerText = "Please enter a valid positive integer baseline parameter.";
         return;
+
       }
       if (val > 100000000) {
         outputNode.innerText = "Maximum threshold capped safely at 100,000,000 (100 Million).";
@@ -559,7 +552,6 @@
     // Main Startup Setup System Directives
     window.onload = function() {
       applyThemeProfile(currentThemeProfile);
-
       updateDashboardTelemetry();
       renderActiveTabModule();
     };
@@ -567,6 +559,7 @@
     function applyThemeProfile(themeKey) {
       currentThemeProfile = themeKey;
       localStorage.setItem('sb_theme_profile', themeKey);
+
       const conf = systemThemeProfiles[themeKey] || systemThemeProfiles['midnight-slate'];
       
       document.getElementById('app-shell-container').className = `w-full max-w-md mx-auto min-h-screen shadow-2xl flex flex-col justify-between relative border-x theme-transition ${conf.shellBg}`;
@@ -579,7 +572,6 @@
         const node = document.getElementById(`tab-${t}`);
         if (node) node.className = `flex-1 flex flex-col items-center justify-center transition-colors ${t === activeTab ? conf.tabActive : conf.tabInactive}`;
       });
-
     }
 
     function updateDashboardTelemetry() {
@@ -587,6 +579,7 @@
       document.getElementById('xp-amount-val').innerText = totalXPAmount;
       
       const display = document.getElementById('player-rank-display');
+
       if (totalXPAmount >= 500) display.innerText = "Lv.4 Imperial Language Architect";
       else if (totalXPAmount >= 250) display.innerText = "Lv.3 Master Competitor";
       else if (totalXPAmount >= 100) display.innerText = "Lv.2 Experienced Challenger";
@@ -599,7 +592,6 @@
       updateDashboardTelemetry();
     }
 
-
     function switchTab(tabId) {
       activeTab = tabId;
       isVocabCardFlipped = false;
@@ -607,6 +599,7 @@
       activeGameMode = 'none';
       if (tabId !== 'exams') activeExamRunningMode = false;
       applyThemeProfile(currentThemeProfile);
+
       renderActiveTabModule();
     }
 
@@ -617,18 +610,16 @@
       matchSelectedGermanIdx = null;
       matchSelectedEnglishIdx = null;
       
-      // Pull random 4 items from Family/Body parts/Objects pool safely
+      // Pull random 4 items from Family/Body parts pool safely
       const pool = [...a1VocabularyDatabase["Family (Die Familie)"], ...a1VocabularyDatabase["Body Parts (Körperteile)"]];
-
-      // Shuffle pool array
       const shuffled = pool.sort(() => 0.5 - Math.random()).slice(0, 4);
       
-      // Generate decoupled left/right layout arrays
       const germans = shuffled.map((x, i) => ({ text: x.german, id: i, matched: false }));
       const english = shuffled.map((x, i) => ({ text: x.english, id: i, matched: false }));
       
       matchGamePairs = {
         germans: germans.sort(() => 0.5 - Math.random()),
+
         english: english.sort(() => 0.5 - Math.random())
       };
       
@@ -639,27 +630,24 @@
       if (type === 'ger') {
         if (matchGamePairs.germans[idx].matched) return;
         matchSelectedGermanIdx = idx;
-
       } else {
         if (matchGamePairs.english[idx].matched) return;
         matchSelectedEnglishIdx = idx;
       }
 
-      // Verify potential validation pairing matching rules
       if (matchSelectedGermanIdx !== null && matchSelectedEnglishIdx !== null) {
         const gerItem = matchGamePairs.germans[matchSelectedGermanIdx];
         const engItem = matchGamePairs.english[matchSelectedEnglishIdx];
         
+
         if (gerItem.id === engItem.id) {
-          // Success link identified
           gerItem.matched = true;
           engItem.matched = true;
           matchSuccessCount++;
           rewardXP(5);
-          if (matchSuccessCount === 4) rewardXP(10); // Completion Milestone reward bonus points
+          if (matchSuccessCount === 4) rewardXP(10);
         }
         
-
         matchSelectedGermanIdx = null;
         matchSelectedEnglishIdx = null;
       }
@@ -671,7 +659,7 @@
       activeGameMode = 'gender';
       genderGameFeedback = null;
       
-      // Filter words that have an explicit standard masculine/feminine/neuter tag parameter
+
       const pool = [...a1VocabularyDatabase["Family (Die Familie)"], ...a1VocabularyDatabase["Body Parts (Körperteile)"]].filter(x => ['masculine', 'feminine', 'neuter'].includes(x.gender));
       
       if(pool.length > 0) {
@@ -679,7 +667,6 @@
       }
       renderActiveTabModule();
     }
-
 
     function submitGenderStrikeAnswer(chosenGender) {
       if (genderGameFeedback !== null) return;
@@ -693,6 +680,7 @@
       renderActiveTabModule();
     }
 
+
     // View Route Processing Center Hub
     function renderActiveTabModule() {
       const container = document.getElementById('main-scroll-view');
@@ -700,27 +688,25 @@
       
       if (activeTab === 'dashboard') {
         if (activeGameMode === 'match') {
-
-          // Render Matching Playground Matrix view screen layout configuration
           let leftColHTML = '';
           let rightColHTML = '';
           
           matchGamePairs.germans.forEach((g, i) => {
             let activeStyle = g.matched ? 'bg-emerald-950/40 border-emerald-500 text-emerald-400 opacity-60' : (matchSelectedGermanIdx === i ? 'border-indigo-500 bg-indigo-950/40 text-indigo-300' : 'bg-slate-800 border-slate-700');
-            leftColHTML += `<button onclick="handleMatchSelection('ger', ${i})" class="w-full p-3 border rounded-xl font-bold text-xs text-center transition-all ${activeStyle}">${g.german ? g.text : ''}</button>`;
+            leftColHTML += `<button onclick="handleMatchSelection('ger', ${i})" class="w-full p-3 border rounded-xl font-bold text-xs text-center transition-all ${activeStyle}">${g.matched ? g.text : g.text}</button>`;
           });
           
           matchGamePairs.english.forEach((e, i) => {
             let activeStyle = e.matched ? 'bg-emerald-950/40 border-emerald-500 text-emerald-400 opacity-60' : (matchSelectedEnglishIdx === i ? 'border-indigo-500 bg-indigo-950/40 text-indigo-300' : 'bg-slate-800 border-slate-700');
-            rightColHTML += `<button onclick="handleMatchSelection('eng', ${i})" class="w-full p-3 border rounded-xl font-bold text-xs text-center transition-all ${activeStyle}">${e.english ? e.text : ''}</button>`;
+            rightColHTML += `<button onclick="handleMatchSelection('eng', ${i})" class="w-full p-3 border rounded-xl font-bold text-xs text-center transition-all ${activeStyle}">${e.matched ? e.text : e.text}</button>`;
           });
+
 
           container.innerHTML = `
             <div class="space-y-4">
               <div class="flex justify-between items-center px-1">
                 <h3 class="text-xs font-black uppercase text-indigo-400 tracking-wider">Word Match Matrix Playground</h3>
                 <button onclick="activeGameMode='none'; renderActiveTabModule();" class="text-[10px] bg-slate-800 px-2 py-1 rounded font-bold border border-slate-700">✕ Exit</button>
-
               </div>
               <p class="text-[11px] text-slate-400">Tap a German word, then tap its matching English translation block layout below.</p>
               
@@ -735,14 +721,18 @@
                   <button onclick="initWordMatchGame()" class="px-4 py-1.5 bg-indigo-600 text-white font-bold text-xs rounded-lg">Play Another Round</button>
                 </div>
               ` : ''}
+
             </div>
           `;
           return;
         }
 
-
         if (activeGameMode === 'gender') {
-          // Render Articles Speed Game Striker arena view layout configuration
+          // STRIP OUT THE LEADING ARTICLE PREFIX EXPLICITLY TO STOP SPOILING THE CHALLENGE WORD
+          let rawGerman = genderGameActiveItem ? genderGameActiveItem.german : 'N/A';
+          let cleanGermanNoun = rawGerman.replace(/^(der|die|das)\s+/i, '');
+          cleanGermanNoun = cleanGermanNoun.charAt(0).toUpperCase() + cleanGermanNoun.slice(1);
+
           container.innerHTML = `
             <div class="space-y-4">
               <div class="flex justify-between items-center px-1">
@@ -751,8 +741,10 @@
               </div>
               <p class="text-[11px] text-slate-400">Select the correct matching definite root article gender token structure for the German noun displayed.</p>
               
+
               <div class="${conf.cardBg} border p-8 rounded-2xl shadow-xl text-center flex flex-col items-center justify-center space-y-2">
-                <span class="text-2xl font-black text-amber-400 tracking-tight">${genderGameActiveItem ? genderGameActiveItem.german : 'N/A'}</span>
+                <!-- NOW PROPERLY HIDES THE ARTICLE FOR THE CHALLENGE -->
+                <span class="text-2xl font-black text-amber-400 tracking-tight">${cleanGermanNoun}</span>
                 <span class="text-xs text-slate-400 font-medium font-mono">[ Meaning: ${genderGameActiveItem ? genderGameActiveItem.english : ''} ]</span>
               </div>
 
@@ -760,27 +752,25 @@
                 <button onclick="submitGenderStrikeAnswer('masculine')" class="p-3 bg-blue-950/40 border border-blue-800 text-blue-400 font-black text-xs rounded-xl hover:bg-blue-900/20">DER</button>
                 <button onclick="submitGenderStrikeAnswer('feminine')" class="p-3 bg-pink-950/40 border border-pink-800 text-pink-400 font-black text-xs rounded-xl hover:bg-pink-900/20">DIE</button>
                 <button onclick="submitGenderStrikeAnswer('neuter')" class="p-3 bg-amber-950/40 border border-amber-800 text-amber-400 font-black text-xs rounded-xl hover:bg-amber-900/20">DAS</button>
-
               </div>
 
               ${genderGameFeedback !== null ? `
                 <div class="p-4 bg-slate-950 border rounded-xl text-center space-y-2 animate-fadeIn ${genderGameFeedback === 'correct' ? 'border-emerald-800 text-emerald-400' : 'border-rose-800 text-rose-400'}">
                   <p class="text-xs font-black">${genderGameFeedback === 'correct' ? '✓ Strike Matrix Verified Match! (+5 XP)' : '✗ Incorrect Article Gender assignment.'}</p>
-                  <p class="text-[11px] text-slate-400">The noun takes gender assignment category parameter: <strong>${genderGameActiveItem.gender}</strong></p>
+                  <p class="text-[11px] text-slate-400">The noun takes full dictionary configuration: <strong>${genderGameActiveItem.german}</strong></p>
                   <button onclick="initGenderBlitzGame()" class="px-4 py-1.5 bg-indigo-600 text-white font-bold text-xs rounded-lg">Next Word →</button>
                 </div>
               ` : ''}
+
             </div>
           `;
           return;
         }
 
-        // Standard Landing Arena configuration view dashboard template
         container.innerHTML = `
           <div class="space-y-5">
             <div class="p-5 rounded-2xl bg-gradient-to-br from-indigo-600 to-fuchsia-600 text-white shadow-xl">
               <h2 class="text-lg font-extrabold">Welcome to A1 Language Training Ground ⚡</h2>
-
               <p class="text-xs text-indigo-100 mt-1 leading-relaxed">Master standard Goethe or Telc proficiency variants cleanly using accelerated game interface metrics.</p>
               <div class="mt-4 flex gap-2">
                 <button onclick="switchTab('exams')" class="bg-white text-indigo-950 font-black text-[11px] px-3.5 py-2 rounded-xl shadow-md transform active:scale-95 transition-transform">Run Mock Test</button>
@@ -788,10 +778,10 @@
               </div>
             </div>
 
-            <!-- GAMIFIED MINI-GAMES PLAYGROUND CENTER NODE MODULE -->
             <div class="${conf.cardBg} border p-4 rounded-xl space-y-3">
               <div>
                 <h3 class="text-xs font-black text-amber-400 uppercase tracking-wider">⚡ Interactive Vocabulary Memory Games</h3>
+
                 <p class="text-[10px] text-slate-400 mt-0.5">Accelerate item retention using targeted cognitive game mechanics loops.</p>
               </div>
               <div class="grid grid-cols-2 gap-2">
@@ -800,7 +790,6 @@
                   <span class="text-[9px] text-slate-500 font-medium mt-1">Link terms together</span>
                 </button>
                 <button onclick="initGenderBlitzGame()" class="p-3 bg-slate-950 hover:bg-slate-900 border border-fuchsia-900/60 rounded-xl text-left flex flex-col justify-between transition-all transform active:scale-95">
-
                   <span class="text-xs font-black text-fuchsia-300">Gender Blitz Striker</span>
                   <span class="text-[9px] text-slate-500 font-medium mt-1">Master Der/Die/Das</span>
                 </button>
@@ -812,6 +801,7 @@
                 <span class="text-[10px] uppercase font-bold text-slate-400 tracking-wider">A1 Framework Core</span>
                 <span class="text-base font-black text-emerald-400 mt-1">100% Validated</span>
               </div>
+
               <div class="${conf.cardBg} border p-4 rounded-xl flex flex-col justify-between">
                 <span class="text-[10px] uppercase font-bold text-slate-400 tracking-wider">Exam Status Modules</span>
                 <span class="text-base font-black text-indigo-400 mt-1">5 Simulations</span>
@@ -820,7 +810,6 @@
 
             <div class="${conf.cardBg} border p-4 rounded-xl">
               <h3 class="text-xs font-black text-slate-400 uppercase tracking-wider mb-2">System Theme Core Profile</h3>
-
               <div class="grid grid-cols-2 gap-2">
                 <button onclick="applyThemeProfile('midnight-slate')" class="p-2.5 rounded-lg border text-[11px] font-bold text-center bg-slate-900 border-slate-700">Slate Mode</button>
                 <button onclick="applyThemeProfile('cyberpunk-neon')" class="p-2.5 rounded-lg border text-[11px] font-bold text-center bg-indigo-950 border-fuchsia-800 text-cyan-300">Neon Mode</button>
@@ -832,6 +821,7 @@
 
       else if (activeTab === 'vocabulary') {
         const categories = Object.keys(a1VocabularyDatabase);
+
         const activeList = a1VocabularyDatabase[selectedVocabCategory];
         const card = activeList ? activeList[activeVocabCardIndex] : null;
 
@@ -840,7 +830,6 @@
           selectOptionsHTML += `<option value="${cat}" ${cat === selectedVocabCategory ? 'selected' : ''}>${cat}</option>`;
         });
         selectOptionsHTML += `<option value="DYNAM_NUMBERS" ${selectedVocabCategory === 'DYNAM_NUMBERS' ? 'selected' : ''}>Numbers (0 to 100 Million Engine)</option>`;
-
 
         let coreDisplayBodyHTML = '';
 
@@ -852,6 +841,7 @@
               <input type="number" id="numerical-matrix-input" min="0" max="100000000" placeholder="Type integer... (e.g. 984520)" oninput="runLiveIntegerConversionCheck()" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 text-sm font-mono font-bold text-amber-400 outline-none" />
               <div class="p-3 bg-slate-950 border border-slate-800 rounded-xl min-h-[50px] flex items-center justify-center">
                 <p id="numerical-matrix-output-string" class="text-xs font-bold text-emerald-400 font-mono text-center">null</p>
+
               </div>
             </div>
           `;
@@ -862,7 +852,6 @@
               <span class="text-indigo-400 font-extrabold uppercase">A1 Lexicon Library</span>
             </div>
 
-
             <div class="flashcard-wrapper w-full h-56 cursor-pointer ${isVocabCardFlipped ? 'flipped' : ''}" onclick="this.classList.toggle('flipped'); isVocabCardFlipped=!isVocabCardFlipped;">
               <div class="flashcard-inner">
                 <div class="flashcard-front ${conf.cardBg} border shadow-xl">
@@ -871,10 +860,10 @@
                     <span class="text-[9px] font-mono text-amber-400/80 font-bold bg-slate-950/40 px-1.5 py-0.5 rounded">📄 Front</span>
                   </div>
                   <div class="flex flex-col my-auto items-center">
-                    <span class="text-xl font-black tracking-tight select-none">${card.german}</span>
+                    <span class="text-2xl font-black tracking-tight select-none">${card.german}</span>
+
                     <span class="text-xs font-mono font-bold text-indigo-300 mt-2 bg-indigo-950/40 px-2 py-1 rounded border border-indigo-900/40">🗣️ [ ${card.pronunciation || 'N/A'} ]</span>
                     
-                    <!-- DEDICATED INTERACTIVE AUDIO PRONUNCIATION BUTTON -->
                     <button onclick="event.stopPropagation(); triggerSpeechSynthesis('${card.german}');" class="mt-3 px-3 py-1.5 bg-indigo-600 hover:bg-indigo-500 text-white font-extrabold text-[10px] rounded-lg shadow-md flex items-center gap-1 transition-transform active:scale-95">
                       🔊 Listen Audio
                     </button>
@@ -882,7 +871,6 @@
                   <span class="text-[10px] text-slate-400 font-medium italic">💡 Tap card background area to flip</span>
                 </div>
                 <div class="flashcard-back ${conf.cardBackBg} border shadow-xl">
-
                   <span class="text-[9px] uppercase tracking-widest font-black self-start text-indigo-300">English Translation Mapping</span>
                   <span class="text-xl font-extrabold tracking-tight my-auto select-none">${card.english}</span>
                   <p class="text-xs text-indigo-200/80 px-4">${card.hint}</p>
@@ -893,6 +881,7 @@
             <div class="w-full grid grid-cols-2 gap-2">
               <button onclick="activeVocabCardIndex = (activeVocabCardIndex === 0) ? ${activeList.length - 1} : activeVocabCardIndex - 1; isVocabCardFlipped=false; renderActiveTabModule();" class="p-3 bg-slate-800 border border-slate-700 text-xs font-bold rounded-xl active:scale-95 transition-transform">← Prev</button>
               <button onclick="activeVocabCardIndex = (activeVocabCardIndex === ${activeList.length - 1}) ? 0 : activeVocabCardIndex + 1; isVocabCardFlipped=false; renderActiveTabModule();" class="p-3 bg-slate-800 border border-slate-700 text-xs font-bold rounded-xl active:scale-95 transition-transform">Next →</button>
+
             </div>
           `;
         }
@@ -902,7 +891,6 @@
             <div class="w-full">
               <label for="lexicon-category-selector" class="text-[10px] uppercase font-black tracking-wider text-slate-400 block mb-1">Lexicon Category Matrix</label>
               <select id="lexicon-category-selector" onchange="selectedVocabCategory=this.value; activeVocabCardIndex=0; isVocabCardFlipped=false; renderActiveTabModule();" class="w-full bg-slate-950 border border-slate-800 p-2.5 text-xs font-bold rounded-xl text-slate-200 outline-none">
-
                 ${selectOptionsHTML}
               </select>
             </div>
@@ -913,6 +901,7 @@
 
       else if (activeTab === 'grammar') {
         let structuralAccordionHTML = '';
+
         a1GrammarDatabase.forEach((item, idx) => {
           const isOpen = (idx === activeGrammarIndex);
           structuralAccordionHTML += `
@@ -922,7 +911,6 @@
                 <span>${isOpen ? '▼' : '▶'}</span>
               </button>
               ${isOpen ? `
-
                 <div class="p-4 space-y-3 bg-slate-900/40 animate-fadeIn">
                   <div>
                     <span class="text-[9px] uppercase tracking-wider font-extrabold text-indigo-400 block mb-0.5">Core Syntax Rules Directives</span>
@@ -933,6 +921,7 @@
                     <p class="text-xs font-mono font-bold text-emerald-300 leading-snug">${item.example}</p>
                   </div>
                 </div>
+
               ` : ''}
             </div>
           `;
@@ -942,7 +931,6 @@
           <div class="space-y-3">
             <div class="px-1">
               <h3 class="text-sm font-black text-white">Goethe A1 Unified Grammar Curriculum Matrix</h3>
-
               <p class="text-[10px] text-slate-400 mt-0.5">13 Essential morphological tracking nodes formatted for direct mobile deployment view.</p>
             </div>
             <div class="space-y-2">${structuralAccordionHTML}</div>
@@ -953,6 +941,7 @@
       else if (activeTab === 'skills') {
         let skillsHTML = `<div class="space-y-4">
           <div class="grid grid-cols-4 gap-1.5">
+
             ${['listening', 'reading', 'writing', 'speaking'].map(s => `
               <button onclick="activeSkillSection='${s}'; skillSelectedAnswer=null; renderActiveTabModule();" class="py-2 px-1 rounded-xl text-[10px] font-black uppercase tracking-tight border text-center transition-all ${activeSkillSection === s ? 'bg-indigo-600 border-indigo-500 text-white' : 'bg-slate-800 border-slate-700 text-slate-400'}" >${s}</button>
             `).join('')}
@@ -962,7 +951,6 @@
 
         if (activeSkillSection === 'listening') {
           const lData = a1SkillsDatabase.listening[0];
-
           skillsHTML += `
             <div class="space-y-3">
               <p class="text-xs text-slate-400 font-mono italic">Audio simulation text: "${lData.transcript}"</p>
@@ -973,6 +961,7 @@
                 `).join('')}
               </div>
               ${skillSelectedAnswer !== null ? `
+
                 <div class="p-2 text-xs rounded bg-slate-950 text-center font-bold ${skillSelectedAnswer === lData.correct ? 'text-emerald-400' : 'text-rose-400'}" >
                   ${skillSelectedAnswer === lData.correct ? '✓ Correct! (+10 XP)' : '✗ Incorrect! Try listening again.'}
                 </div>
@@ -982,7 +971,6 @@
           const rData = a1SkillsDatabase.reading[0];
           skillsHTML += `
             <div class="space-y-3">
-
               <div class="p-3 bg-slate-950 border border-slate-800 rounded-xl font-mono text-xs leading-relaxed italic text-slate-300">"${rData.body}"</div>
               <p class="text-xs font-bold">${rData.question}</p>
               <div class="space-y-2">
@@ -993,6 +981,7 @@
               ${skillSelectedAnswer !== null ? `
                 <div class="p-2 text-xs rounded bg-slate-950 text-center font-bold ${skillSelectedAnswer === rData.correct ? 'text-emerald-400' : 'text-rose-400'}" >
                   ${skillSelectedAnswer === rData.correct ? '✓ Correct! (+10 XP)' : '✗ Incorrect. Look for closure timestamps.'}
+
                 </div>
               ` : ''}
             </div>`;
@@ -1002,7 +991,6 @@
             <div class="space-y-3">
               <p class="text-xs font-medium leading-relaxed">${wData.context}</p>
               <div class="p-3 bg-slate-950 border border-slate-800 font-mono text-xs rounded-xl">${wData.text}</div>
-
               <div class="grid grid-cols-2 gap-2">
                 ${wData.options.map((o, idx) => `
                   <button onclick="skillSelectedAnswer=${idx}; renderActiveTabModule();" class="p-2.5 border rounded-xl text-xs font-mono font-bold text-center ${skillSelectedAnswer === idx ? 'border-indigo-500 bg-indigo-950/40' : 'border-slate-700 bg-slate-900'}" >${o}</button>
@@ -1013,6 +1001,7 @@
                   ${skillSelectedAnswer === wData.correct ? '✓ Success Matrix Match (+15 XP)' : '✗ Case grammar mismatches identified.'}
                 </div>
               ` : ''}
+
             </div>`;
         } else if (activeSkillSection === 'speaking') {
           const sData = a1SkillsDatabase.speaking[0];
@@ -1022,7 +1011,6 @@
               <p class="text-xl font-black text-indigo-300">"${sData.text}"</p>
               <div class="p-2.5 bg-slate-950 text-left border border-slate-800 rounded-lg">
                 <span class="text-[9px] uppercase font-black block text-slate-400 tracking-wider">Phonetics Suffix Guide Map</span>
-
                 <p class="text-xs text-amber-400 font-mono font-bold mt-0.5">${sData.guide}</p>
               </div>
               <button onclick="rewardXP(5);" class="w-full mt-2 p-3 bg-indigo-600 font-black text-xs text-white rounded-xl shadow-md active:scale-95 transition-all">🎤 Verify Speaking Pronunciation</button>
@@ -1033,6 +1021,7 @@
         container.innerHTML = skillsHTML;
       }
 
+
       else if (activeTab === 'exams') {
         if (!activeExamRunningMode) {
           let selectionRowsHTML = '';
@@ -1042,7 +1031,6 @@
                 <div>
                   <h4 class="text-xs font-black text-white">${ex.title}</h4>
                   <p class="text-[10px] text-slate-400 mt-0.5">Comprehensive Standard Assessment Block • ${ex.questions.length} Questions</p>
-
                 </div>
                 <button onclick="startSpecificMockExamSuite(${idx})" class="w-full py-2 bg-slate-950 hover:bg-slate-900 border border-indigo-900 text-indigo-400 font-extrabold text-[11px] rounded-lg transition-transform active:scale-95" >Launch Simulation</button>
               </div>
@@ -1053,6 +1041,7 @@
             <div class="space-y-4">
               <div class="px-1">
                 <h3 class="text-sm font-black tracking-tight text-white">Goethe / Telc A1 Mock Exam Arena</h3>
+
                 <p class="text-[11px] text-slate-400 font-medium">Verify your cross-dimension capabilities using full runtime testing models.</p>
               </div>
               <div class="space-y-3">${selectionRowsHTML}</div>
@@ -1062,7 +1051,6 @@
           const exam = mockExamsDatabase[selectedActiveExamIndex];
           
           if (currentExamQuestionIndex >= exam.questions.length) {
-
             let correctCounter = 0;
             exam.questions.forEach((q, idx) => {
               if (activeExamUserAnswersCollected[idx] === q.c) correctCounter++;
@@ -1073,6 +1061,7 @@
             container.innerHTML = `
               <div class="text-center p-6 bg-slate-950 border border-slate-800 rounded-2xl space-y-4 shadow-2xl">
                 <span class="text-5xl block">${passed ? '🏆' : '⏳'}</span>
+
                 <h3 class="text-lg font-black text-white">${passed ? 'Examination Passed!' : 'Requires Review'}</h3>
                 <p class="text-xs text-slate-400 font-semibold leading-relaxed">Performance Output Score metrics tracking evaluated: <br><span class="text-base font-black ${passed ? 'text-emerald-400' : 'text-rose-400'}">${correctCounter} / ${exam.questions.length} Correct</span></p>
                 <div class="text-left bg-slate-900 p-3 rounded-lg border border-slate-800 text-[11px] space-y-1 text-slate-300">
@@ -1082,7 +1071,6 @@
                 <button onclick="activeExamRunningMode=false; renderActiveTabModule();" class="w-full p-3 bg-gradient-to-r from-indigo-500 to-fuchsia-500 font-black text-xs text-white rounded-xl" >Return to Exam Selection Shell</button>
               </div>
             `;
-
             return;
           }
 
@@ -1094,6 +1082,7 @@
                 <span class="text-[10px] font-mono bg-rose-950 border border-rose-800 px-2 py-0.5 text-rose-400 rounded-md font-bold">LIVE ASSESS MODE</span>
               </div>
 
+
               <div class="${conf.cardBg} border p-5 rounded-2xl shadow-xl">
                 <p class="text-xs font-bold leading-relaxed text-slate-200">${activeQuestion.q}</p>
               </div>
@@ -1102,7 +1091,6 @@
                 ${activeQuestion.o.map((opt, oIdx) => {
                   let optStyle = "bg-slate-800 border-slate-700 text-slate-300";
                   if (processingExamEvaluationFeedbackMode) {
-
                     if (oIdx === activeQuestion.c) optStyle = "bg-emerald-950 border-emerald-500 text-emerald-200 font-black";
                     else if (oIdx === activeExamUserAnswersCollected[currentExamQuestionIndex]) optStyle = "bg-rose-950 border-rose-500 text-rose-200";
                     else optStyle = "bg-slate-900 border-slate-800 opacity-40 text-slate-600";
@@ -1114,6 +1102,7 @@
               </div>
 
               ${processingExamEvaluationFeedbackMode ? `
+
                 <div class="p-4 bg-slate-950 border border-slate-800 rounded-xl space-y-2">
                   <span class="text-[9px] uppercase font-black text-slate-400 tracking-wider">Grammar Logic Correction Analysis</span>
                   <p class="text-xs text-slate-300 font-medium">${activeQuestion.exp}</p>
@@ -1122,7 +1111,6 @@
               ` : ''}
             </div>
           `;
-
         }
       }
     }
@@ -1134,6 +1122,7 @@
       currentExamQuestionIndex = 0;
       activeExamUserAnswersCollected = [];
       processingExamEvaluationFeedbackMode = false;
+
       renderActiveTabModule();
     }
 
@@ -1142,7 +1131,6 @@
       activeExamUserAnswersCollected[currentExamQuestionIndex] = ansIdx;
       processingExamEvaluationFeedbackMode = true;
       renderActiveTabModule();
-
     }
 
     function advanceActiveExamQuestionStep() {
