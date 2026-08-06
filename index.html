@@ -1,4 +1,4 @@
-# Sprachblitz - Complete Single File A1 App
+# Sprachblitz - Complete A1 Full Curriculum Single File
 
 <!DOCTYPE html>
 <html lang="en">
@@ -33,7 +33,7 @@
       -webkit-backface-visibility: hidden;
       backface-visibility: hidden;
       border-radius: 1rem;
-      padding: 1.5rem;
+      padding: 1.25rem;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
@@ -53,7 +53,7 @@
     <!-- Top Global Status Header Tracking Engine -->
     <header id="app-header-nav" class="p-4 border-b border-slate-800 bg-slate-950 text-white flex justify-between items-center sticky top-0 z-50 theme-transition">
       <div class="flex flex-col">
-        <h1 class="text-base font-extrabold tracking-tight">Sprachblitz ⚡ <span class="text-xs font-black text-indigo-400 bg-indigo-950/60 border border-indigo-800/80 px-1.5 py-0.5 rounded ml-1">A1 PRO</span></h1>
+        <h1 class="text-base font-extrabold tracking-tight">Sprachblitz ⚡ <span class="text-xs font-black text-indigo-400 bg-indigo-950/60 border border-indigo-800/80 px-1.5 py-0.5 rounded ml-1">A1 MASTER</span></h1>
         <div id="player-rank-display" class="text-[9px] font-black uppercase tracking-wider mt-0.5 text-indigo-400">Lv.1 Arena Novice</div>
       </div>
       <div class="flex items-center gap-2">
@@ -101,75 +101,429 @@
   <!-- Master Application Logic & Core Datastructure Matrices -->
 
   <script>
-    // Comprehensive A1 Categorized Vocabulary Dataset Matrix
+    // Comprehensive A1 Categorized Vocabulary Dataset Matrix from PDF Specifications
     const a1VocabularyDatabase = {
-      "Alphabets Phonics": [
-        { id: "a1", german: "A", gender: "letter", english: "Ah (as in father)", hint: "Example word: Apfel" },
-        { id: "a2", german: "B", gender: "letter", english: "Beh", hint: "Example word: Brot" },
-        { id: "a3", german: "C", gender: "letter", english: "Tseh", hint: "Example word: Cafe" },
-        { id: "a4", german: "Ä", gender: "umlaut", english: "Air", hint: "Example word: Äpfel" },
-        { id: "a5", german: "Ö", gender: "umlaut", english: "Uh (rounded lips)", hint: "Example word: Österreich" },
-        { id: "a6", german: "Ü", gender: "umlaut", english: "Ee (rounded lips)", hint: "Example word: Übung" },
-        { id: "a7", german: "ß", gender: "ligature", english: "Eszett (double S sound)", hint: "Example word: heiß" }
+      "Alphabet (Alphabet)": [
+        { id: "pdf_a1", german: "A (Aa)", gender: "letter", english: "A", hint: "Example word: Apple" },
+        { id: "pdf_a2", german: "B (Beh)", gender: "letter", english: "B", hint: "Example word: Banana" },
+        { id: "pdf_a3", german: "C (TSeh)", gender: "letter", english: "C", hint: "Example word: Clown" },
+        { id: "pdf_a4", german: "D (Deh)", gender: "letter", english: "D", hint: "Example word: Dame" },
+        { id: "pdf_a5", german: "E (eh)", gender: "letter", english: "E", hint: "Example word: Elephant" },
+        { id: "pdf_a6", german: "F (ef)", gender: "letter", english: "F", hint: "Example word: Fisch" },
+        { id: "pdf_a7", german: "G (Geh)", gender: "letter", english: "G", hint: "Example word: Gabel" },
+        { id: "pdf_a8", german: "H (Ha)", gender: "letter", english: "H", hint: "Example word: Hund" },
+        { id: "pdf_a9", german: "I (ih)", gender: "letter", english: "I", hint: "Example word: Iglu" },
+        { id: "pdf_a10", german: "J (Yot)", gender: "letter", english: "J", hint: "Example word: Junge" },
+        { id: "pdf_a11", german: "K (Kah)", gender: "letter", english: "K", hint: "Example word: Katze" },
+        { id: "pdf_a12", german: "L (L)", gender: "letter", english: "L", hint: "Example word: Letter" },
+        { id: "pdf_a13", german: "M (M)", gender: "letter", english: "M", hint: "Example word: Maus" },
+        { id: "pdf_a14", german: "N (N)", gender: "letter", english: "N", hint: "Example word: Nest" },
+        { id: "pdf_a15", german: "O (O)", gender: "letter", english: "O", hint: "Example word: Obst" },
+
+        { id: "pdf_a16", german: "P (Peh)", gender: "letter", english: "P", hint: "Example word: Pinguin" },
+        { id: "pdf_a17", german: "Q (Kuh)", gender: "letter", english: "Q", hint: "Example word: Quad" },
+        { id: "pdf_a18", german: "R (Er)", gender: "letter", english: "R", hint: "Example word: Rat" },
+        { id: "pdf_a19", german: "S (Ess)", gender: "letter", english: "S", hint: "Example word: Sonne" },
+        { id: "pdf_a20", german: "T (Te)", gender: "letter", english: "T", hint: "Example word: Tomato" },
+        { id: "pdf_a21", german: "U (Uh)", gender: "letter", english: "U", hint: "Example word: Uhr" },
+        { id: "pdf_a22", german: "V (Fau)", gender: "letter", english: "V", hint: "Example word: Vogel" },
+        { id: "pdf_a23", german: "W (Weh)", gender: "letter", english: "W", hint: "Example word: Wolf" },
+        { id: "pdf_a24", german: "X (Ix)", gender: "letter", english: "X", hint: "Example word: Xylophone" },
+        { id: "pdf_a25", german: "Y (Epsilon)", gender: "letter", english: "Y", hint: "Example word: Yoga" },
+        { id: "pdf_a26", german: "Z (Tset)", gender: "letter", english: "Z", hint: "Example word: Zebra" }
+      ],
+      "Umlauts & Sound Rules": [
+        { id: "pdf_u1", german: "ä (Bär)", gender: "umlaut", english: "sound 'eh' without gliding into 'ey'", hint: "Example word: Bär" },
+        { id: "pdf_u2", german: "ö (Löwe)", gender: "umlaut", english: "sound 'e' and purse lips into 'O' shape", hint: "Example word: Löwe" },
+        { id: "pdf_u3", german: "ü (Gemüse)", gender: "umlaut", english: "sound 'ee' and purse lips as if whistling", hint: "Example word: Gemüse" },
+        { id: "pdf_u4", german: "ß (Weiß / Heißen)", gender: "ligature", english: "pronounced as 'sa' (double s)", hint: "Example words: Weiß, Heißen" },
+        { id: "pdf_u5", german: "CH after a, o, u", gender: "phonics", english: "formed at back of mouth - 'Kha'", hint: "Example words: Buch, Auch" },
+        { id: "pdf_u6", german: "CH after Consonants", gender: "phonics", english: "formed at front of mouth - 'Sh'", hint: "Example words: Ich, Sprechen" }
+
       ],
       "Numbers (Zahlen)": [
-        { id: "n1", german: "eins", gender: "number", english: "one", hint: "1" },
-        { id: "n2", german: "zwei", gender: "number", english: "two", hint: "2" },
-        { id: "n3", german: "drei", gender: "number", english: "three", hint: "3" },
-        { id: "n4", german: "vier", gender: "number", english: "four", hint: "4" },
-        { id: "n5", german: "fünf", gender: "number", english: "five", hint: "5" },
-        { id: "n6", german: "zehn", gender: "number", english: "ten", hint: "10" },
+        { id: "pdf_n1", german: "1 - Eins", gender: "number", english: "one", hint: "1" },
+        { id: "pdf_n2", german: "2 - Zwei", gender: "number", english: "two", hint: "2" },
+        { id: "pdf_n3", german: "3 - Drei", gender: "number", english: "three", hint: "3" },
+        { id: "pdf_n4", german: "4 - Vier", gender: "number", english: "four", hint: "4" },
+        { id: "pdf_n5", german: "5 - Fünf", gender: "number", english: "five", hint: "5" },
+        { id: "pdf_n6", german: "6 - Sechs", gender: "number", english: "six", hint: "6" },
+        { id: "pdf_n7", german: "7 - Sieben", gender: "number", english: "seven", hint: "7" },
+        { id: "pdf_n8", german: "8 - Acht", gender: "number", english: "eight", hint: "8" },
+        { id: "pdf_n9", german: "9 - Neun", gender: "number", english: "nine", hint: "9" },
+        { id: "pdf_n10", german: "10 - Zehn", gender: "number", english: "ten", hint: "10" },
+        { id: "pdf_n11", german: "11 - Elf", gender: "number", english: "eleven", hint: "11" },
+        { id: "pdf_n12", german: "12 - Zwölff", gender: "number", english: "twelve", hint: "12" },
+        { id: "pdf_n13", german: "13 - Drei Zehn", gender: "number", english: "thirteen", hint: "13" },
+        { id: "pdf_n14", german: "14 - Vier Zehn", gender: "number", english: "fourteen", hint: "14" },
+        { id: "pdf_n15", german: "15 - Fünf Zehn", gender: "number", english: "fifteen", hint: "15" },
+        { id: "pdf_n16", german: "16 - Sech Zehn", gender: "number", english: "sixteen", hint: "16" },
+        { id: "pdf_n17", german: "17 - Sieb Zehn", gender: "number", english: "seventeen", hint: "17" },
 
-        { id: "n7", german: "zwanzig", gender: "number", english: "twenty", hint: "20" },
-        { id: "n8", german: "einundzwanzig", gender: "number", english: "twenty-one", hint: "1 + 20 layout order structure" }
+        { id: "pdf_n18", german: "18 - Acht Zehn", gender: "number", english: "eighteen", hint: "18" },
+        { id: "pdf_n19", german: "19 - Neun Zehn", gender: "number", english: "nineteen", hint: "19" },
+        { id: "pdf_n20", german: "20 - Zwanzig", gender: "number", english: "twenty", hint: "20" }
       ],
-      "Seasons & Weather": [
-        { id: "s_e1", german: "der Frühling", gender: "masculine", english: "the spring", hint: "When flowers start to bloom." },
-        { id: "s_e2", german: "der Sommer", gender: "masculine", english: "the summer", hint: "The warmest season." },
-        { id: "s_e3", german: "der Herbst", gender: "masculine", english: "the autumn / fall", hint: "When leaves turn brown." },
-        { id: "s_e4", german: "der Winter", gender: "masculine", english: "the winter", hint: "Coldest time, often brings snow." },
-        { id: "s_e5", german: "das Wetter", gender: "neuter", english: "the weather", hint: "Overall climate state descriptor." }
+      "Days (Tage)": [
+        { id: "pdf_d1", german: "Sonntag", gender: "day", english: "Sunday", hint: "Weekend day" },
+        { id: "pdf_d2", german: "Montag", gender: "day", english: "Monday", hint: "First work day" },
+        { id: "pdf_d3", german: "Dienstag", gender: "day", english: "Tuesday", hint: "Second work day" },
+        { id: "pdf_d4", german: "Mittwoch", gender: "day", english: "Wednesday", hint: "Mid-week day" },
+        { id: "pdf_d5", german: "Donnerstag", gender: "day", english: "Thursday", hint: "Before Friday" },
+        { id: "pdf_d6", german: "Freitag", gender: "day", english: "Friday", hint: "Last work day" },
+        { id: "pdf_d7", german: "Samstag", gender: "day", english: "Saturday", hint: "Weekend starter" }
       ],
-      "Household (Haushalt)": [
-        { id: "h1", german: "das Haus", gender: "neuter", english: "the house", hint: "Residential building layout structure." },
-        { id: "h2", german: "das Zimmer", gender: "neuter", english: "the room", hint: "A compartmental partition within a house." },
-        { id: "h3", german: "die Küche", gender: "feminine", english: "the kitchen", hint: "Where hot meals are prepared and cooked." },
-        { id: "h4", german: "der Tisch", gender: "masculine", english: "the table", hint: "Flat furniture piece used for dining." },
-        { id: "h5", german: "der Stuhl", gender: "masculine", english: "the chair", hint: "Something you sit on at the table." },
-        { id: "h6", german: "das Bett", gender: "neuter", english: "the bed", hint: "Where you sleep at night." },
-        { id: "h7", german: "die Lampe", gender: "feminine", english: "the lamp", hint: "Provides illumination for the room." }
-      ],
+      "Months (Monate)": [
+        { id: "pdf_m1", german: "Januar", gender: "month", english: "January", hint: "Month 1" },
+        { id: "pdf_m2", german: "Februaur", gender: "month", english: "February", hint: "Syllabus spelling tracker node." },
+        { id: "pdf_m3", german: "März", gender: "month", english: "March", hint: "Month 3" },
+        { id: "pdf_m4", german: "April", gender: "month", english: "April", hint: "Month 4" },
+        { id: "pdf_m5", german: "Mai", gender: "month", english: "May", hint: "Month 5" },
 
-      "Greetings & Basics": [
-        { id: "v1", german: "Hallo", gender: "expression", english: "Hello", hint: "Standard friendly greeting." },
-        { id: "v2", german: "Bitte", gender: "expression", english: "Please / You're welcome", hint: "Universal polite response phrase." },
-        { id: "v3", german: "Danke", gender: "expression", english: "Thank you", hint: "Expressing gratitude." },
-        { id: "v4", german: "Auf Wiedersehen", gender: "expression", english: "Goodbye", hint: "Formal split farewell statement." }
+        { id: "pdf_m6", german: "Juni", gender: "month", english: "June", hint: "Month 6" },
+        { id: "pdf_m7", german: "Juli", gender: "month", english: "July", hint: "Month 7" },
+        { id: "pdf_m8", german: "August", gender: "month", english: "August", hint: "Month 8" },
+        { id: "pdf_m9", german: "September", gender: "month", english: "September", hint: "Month 9" },
+        { id: "pdf_m10", german: "Oktober", gender: "month", english: "October", hint: "Month 10" },
+        { id: "pdf_m11", german: "November", gender: "month", english: "November", hint: "Month 11" },
+        { id: "pdf_m12", german: "Dezember", gender: "month", english: "December", hint: "Month 12" }
+      ],
+      "Seasons (Jahreszeiten)": [
+        { id: "pdf_sea1", german: "Sommer", gender: "season", english: "Summer", hint: "Warm season" },
+        { id: "pdf_sea2", german: "Winter", gender: "season", english: "Winter", hint: "Cold season" },
+        { id: "pdf_sea3", german: "Frühling", gender: "season", english: "Spring", hint: "Blooming season" },
+        { id: "pdf_sea4", german: "Herbst", gender: "season", english: "Autumn", hint: "Fall season" },
+        { id: "pdf_sea5", german: "Regen", gender: "season", english: "Rainy", hint: "Wet season module layout" }
+      ],
+      "Part of the Day (Teil des Tages)": [
+        { id: "pdf_pd1", german: "Vormorgen", gender: "daypart", english: "3 am - 6 am", hint: "Early dawn segment." },
+        { id: "pdf_pd2", german: "Morgen", gender: "daypart", english: "6 am - 10 am", hint: "Morning window." },
+        { id: "pdf_pd3", german: "Vormittag", gender: "daypart", english: "10 am - 12 pm", hint: "Late morning setup." },
+
+        { id: "pdf_pd4", german: "Mittag", gender: "daypart", english: "12 pm", hint: "Midday exact mark." },
+        { id: "pdf_pd5", german: "Nachmittag", gender: "daypart", english: "12 pm - 4 pm", hint: "Afternoon pipeline layer." },
+        { id: "pdf_pd6", german: "Abend", gender: "daypart", english: "4 pm - 7 pm", hint: "Evening time constant." },
+        { id: "pdf_pd7", german: "Nacht", gender: "daypart", english: "7 pm - 12 am", hint: "Night segment operational view." },
+        { id: "pdf_pd8", german: "Mittenacht", gender: "daypart", english: "12 am - 3 am", hint: "Midnight frame." }
+      ],
+      "Family (Die Familie)": [
+        { id: "pdf_f1", german: "Eltern", gender: "plural", english: "Parents", hint: "Father + Mother node setup." },
+        { id: "pdf_f2", german: "Großeltern", gender: "plural", english: "Grand Parents", hint: "Grandfather + Grandmother" },
+        { id: "pdf_f3", german: "Vater", gender: "masculine", english: "Father", hint: "Male parent" },
+        { id: "pdf_f4", german: "Mutter", gender: "feminine", english: "Mother", hint: "Female parent" },
+        { id: "pdf_f5", german: "Kinder", gender: "plural", english: "Kids", hint: "Offspring tracking framework." },
+        { id: "pdf_f6", german: "Bruder", gender: "masculine", english: "Brother", hint: "Male sibling" },
+        { id: "pdf_f7", german: "Geschwister", gender: "plural", english: "Sibling", hint: "Siblings baseline cluster row." },
+        { id: "pdf_f8", german: "Schwester", gender: "feminine", english: "Sister", hint: "Female sibling" },
+        { id: "pdf_f9", german: "Großmutter", gender: "feminine", english: "Grand Mother", hint: "Grandma" },
+        { id: "pdf_f10", german: "Großvater", gender: "masculine", english: "Grand Father", hint: "Grandpa" },
+        { id: "pdf_f11", german: "Sohn", gender: "masculine", english: "Son", hint: "Male child" },
+        { id: "pdf_f12", german: "Tochter", gender: "feminine", english: "Daughter", hint: "Female child" },
+
+        { id: "pdf_f13", german: "Mann", gender: "masculine", english: "Husband / Man", hint: "Male spouse entry module." },
+        { id: "pdf_f14", german: "Frau", gender: "feminine", english: "Wife / Woman", hint: "Female spouse asset element." },
+        { id: "pdf_f15", german: "Schweigervater", gender: "masculine", english: "Father in Law", hint: "Spouse's father text mirror match." },
+        { id: "pdf_f16", german: "Schweigermutter", gender: "feminine", english: "Mother in Law", hint: "Spouse's mother tracker." },
+        { id: "pdf_f17", german: "Schwagar", gender: "masculine", english: "Brother in Law", hint: "Syllabus spelling index entry tracker." },
+        { id: "pdf_f18", german: "Schwägerin", gender: "feminine", english: "Sister in Law", hint: "Spouse's sister item tracking." },
+        { id: "pdf_f19", german: "Tante", gender: "feminine", english: "Aunt", hint: "Parent's sister" },
+        { id: "pdf_f20", german: "Onkel", gender: "masculine", english: "Uncle", hint: "Parent's brother" },
+        { id: "pdf_f21", german: "Neffe", gender: "masculine", english: "Nephew", hint: "Sibling's son" },
+        { id: "pdf_f22", german: "Nichte", gender: "feminine", english: "Niece", hint: "Sibling's daughter" },
+        { id: "pdf_f23", german: "Enkeln / Enkel Kinder", gender: "plural", english: "Grand Kids", hint: "Grandchildren framework array." },
+        { id: "pdf_f24", german: "Enkel", gender: "masculine", english: "Grand Son", hint: "Grandson" },
+        { id: "pdf_f25", german: "Enkelin", gender: "feminine", english: "Grand Daughter", hint: "Granddaughter" },
+        { id: "pdf_f26", german: "Junge", gender: "masculine", english: "Young", hint: "Alternatively used for boy or young baseline context." },
+        { id: "pdf_f27", german: "Alte", gender: "expression", english: "Elder", hint: "Age category descriptor item mapping." },
+        { id: "pdf_f28", german: "Mädchen", gender: "neuter", english: "Girl", hint: "Takes neuter tracking forms." },
+        { id: "pdf_f29", german: "Stief Bruder", gender: "masculine", english: "Step Brother", hint: "Split compound layout variant structure." },
+        { id: "pdf_f30", german: "Stief Schwester", gender: "feminine", english: "Step Sister", hint: "Step sibling template setup." },
+        { id: "pdf_f31", german: "Urgroß Mutter", gender: "feminine", english: "Great Grand Mother", hint: "Great grandma configuration entry node." },
+
+        { id: "pdf_f32", german: "Schweiger Tochter", gender: "feminine", english: "Daughter in Law", hint: "Syllabus label data mirror tracker string." }
+      ],
+      "Body Parts (Körperteile)": [
+        { id: "pdf_b1", german: "Der kopf", gender: "masculine", english: "Head", hint: "Upper command center." },
+        { id: "pdf_b2", german: "Das Augen", gender: "neuter", english: "Eyes", hint: "Plural or singular structural data tracker layout." },
+        { id: "pdf_b3", german: "Das Ohr", gender: "neuter", english: "Ear", hint: "Hearing system block." },
+        { id: "pdf_b4", german: "Die Nase", gender: "feminine", english: "Nose", hint: "Olfactory node entry location." },
+        { id: "pdf_b5", german: "Der Mund", gender: "masculine", english: "Mouth", hint: "Speaking loop node element." },
+        { id: "pdf_b6", german: "Die Arm", gender: "masculine / plural tracking", english: "Arm", hint: "Upper limb framework node configuration." },
+        { id: "pdf_b7", german: "Die hand", gender: "feminine tracking node", english: "Hand", hint: "Terminal limb parameter row matrix match." },
+        { id: "pdf_b8", german: "Das Bein", gender: "neuter", english: "Leg", hint: "Lower movement support structure matrix block." },
+        { id: "pdf_b9", german: "Der Fuß", gender: "masculine", english: "Foot", hint: "Ground terminal point unit frame." },
+        { id: "pdf_b10", german: "Der bauch", gender: "masculine", english: "Stomach", hint: "Midsection tracking block." },
+        { id: "pdf_b11", german: "Der Rücken", gender: "masculine", english: "Back", hint: "Rear physical chassis parameter node." },
+        { id: "pdf_b12", german: "Die Haare", gender: "plural", english: "Hair", hint: "Head fibers array constant configuration token." },
+        { id: "pdf_b13", german: "Gesicht", gender: "noun baseline", english: "Face", hint: "Front visual cluster block layout item." },
+        { id: "pdf_b14", german: "Hals", gender: "noun baseline", english: "Neck", hint: "Throat connection module column element." },
+        { id: "pdf_b15", german: "Knie", gender: "noun baseline", english: "Knee", hint: "Leg joint hinge parameter setup." },
+        { id: "pdf_b16", german: "Schulter", gender: "noun baseline", english: "Shoulder", hint: "Upper socket tracking component token." },
+
+        { id: "pdf_b17", german: "Kinn", gender: "noun baseline", english: "Chin", hint: "Jaw point item boundary coordinate node." },
+        { id: "pdf_b18", german: "Wange", gender: "noun baseline", english: "Cheeks", hint: "Side facial structure block rows model." },
+        { id: "pdf_b19", german: "Zähne", gender: "plural baseline", english: "Teeth", hint: "Mouth processing array components track." },
+        { id: "pdf_b20", german: "Zunge", gender: "noun baseline", english: "Tongue", hint: "Taste loop execution matrix unit tool." },
+        { id: "pdf_b21", german: "Augenbraue", gender: "noun baseline", english: "Eyebrow", hint: "Upper brow accent data coordinate framework." },
+        { id: "pdf_b22", german: "Lippen", gender: "plural baseline", english: "Lips", hint: "Mouth external framing row boundaries." }
+      ],
+      "Occupation (Berufe)": [
+        { id: "pdf_oc1", german: "Manager", gender: "masculine", english: "Manager", hint: "Supervisor constant structural node mapping." },
+        { id: "pdf_oc2", german: "Arzt / Ärztin", gender: "split entry", english: "Doctor", hint: "Medical controller assets tracker logic." },
+        { id: "pdf_oc3", german: "Rechtsanwältin", gender: "feminine", english: "Lawyer", hint: "Legal processor tracking element row view." },
+        { id: "pdf_oc4", german: "Kellner / Kellnerin", gender: "split entry", english: "Waiter", hint: "Hospitality operation processor nodes tracker." },
+        { id: "pdf_oc5", german: "Pilot", gender: "masculine", english: "Pilot", hint: "Aviation navigation driver block unit map." },
+        { id: "pdf_oc6", german: "Ingenieur", gender: "masculine", english: "Engineer", hint: "Technical builder node model block layout." },
+        { id: "pdf_oc7", german: "Schauspeiler / in", gender: "split tracker", english: "Actor", hint: "Syllabus string spelling data parameter." },
+        { id: "pdf_oc8", german: "Fahrer", gender: "masculine", english: "Driver", hint: "Logistics transport execution unit vector track." },
+        { id: "pdf_oc9", german: "Politiker", gender: "masculine", english: "Politician", hint: "State regulatory operator logic model grid." },
+        { id: "pdf_oc10", german: "Polizist", gender: "masculine", english: "Police", hint: "Enforcement safety agent matrix anchor index." },
+        { id: "pdf_oc11", german: "Tanzer", gender: "masculine specification", english: "Dancer", hint: "Rhythmic movement execution tracking element code." },
+
+        { id: "pdf_oc12", german: "Sänger", gender: "masculine", english: "singer", hint: "Vocal audio frequency performance block item." },
+        { id: "pdf_oc13", german: "Koch", gender: "masculine", english: "Cook", hint: "Culinary production supervisor index matrix item." },
+        { id: "pdf_oc14", german: "Mechaniker", gender: "masculine", english: "Mechanic", hint: "Hardware repair unit system constant node." },
+        { id: "pdf_oc15", german: "Elektriker", gender: "masculine", english: "Electrician", hint: "Power circuitry layout processor array tracker." },
+        { id: "pdf_oc16", german: "Journalist", gender: "masculine", english: "Journalist", hint: "Information media collection agent entry cell." },
+        { id: "pdf_oc17", german: "Richter", gender: "masculine", english: "judge", hint: "Judicial validation controller logic processing node." },
+        { id: "pdf_oc18", german: "Trainer", gender: "masculine system mirror", english: "Teacher", hint: "Syllabus matching context translation entry point." },
+        { id: "pdf_oc19", german: "Klempner", gender: "masculine", english: "Plumber", hint: "Fluid pipeline grid repair mechanic unit constant." },
+        { id: "pdf_oc20", german: "Geschäftsmann/Frau", gender: "compound tracker", english: "Businessman/Woman", hint: "Commercial enterprise director interface layer grid." },
+        { id: "pdf_oc21", german: "Friseur / in", gender: "split configuration", english: "Hair Dresser", hint: "Cosmetic hair management operator block token." },
+        { id: "pdf_oc22", german: "Verkaufer", gender: "masculine parameter", english: "Seller", hint: "Syllabus spelling constant token tracking label." },
+        { id: "pdf_oc23", german: "Krankenschwester", gender: "feminine", english: "Nurse", hint: "Medical assistance operations controller tracker unit." },
+        { id: "pdf_oc24", german: "Hausfrau", gender: "feminine", english: "House Wife", hint: "Domestic management supervisor matrix terminal index." }
+      ],
+      "Colours (Farben)": [
+        { id: "pdf_col1", german: "Rot", gender: "colour", english: "Red", hint: "Base color layout code row parameter." },
+        { id: "pdf_col2", german: "Gelb", gender: "colour", english: "Yellow", hint: "Luminescent warm spectrum constant coordinate value." },
+        { id: "pdf_col3", german: "Blau", gender: "colour", english: "Blue", hint: "Deep water channel matrix baseline index code." },
+        { id: "pdf_col4", german: "Braun", gender: "colour", english: "Brown", hint: "Earth color tracker token constant value data." },
+
+        { id: "pdf_col5", german: "Grau", gender: "colour", english: "Grey", hint: "Neutral color index configuration block parameter." },
+        { id: "pdf_col6", german: "Grün", gender: "colour", english: "Green", hint: "Forest foliage constant coordinate logic matching." },
+        { id: "pdf_col7", german: "Orange", gender: "colour", english: "Orange", hint: "Spectrum balance secondary transition token node." },
+        { id: "pdf_col8", german: "Violette", gender: "colour", english: "Violet", hint: "Syllabus specific spelling entry string literal." },
+        { id: "pdf_col9", german: "Lila", gender: "colour", english: "Purple", hint: "Alternate lavender tone grid layout index map." },
+        { id: "pdf_col10", german: "Rose", gender: "colour", english: "Pink", hint: "Syllabus mirror target label item mapping match." },
+        { id: "pdf_col11", german: "Schwarz", gender: "colour", english: "Black", hint: "Zero luminosity value coordinate system baseline trace." },
+        { id: "pdf_col12", german: "Weiß", gender: "colour", english: "White", hint: "Maximum reflection spectrum matrix baseline constant." },
+        { id: "pdf_col13", german: "Türkis", gender: "colour", english: "Turquoise", hint: "Cyan-green blend matrix data identifier tracking." },
+        { id: "pdf_col14", german: "Hell", gender: "modifier", english: "Light", hint: "Bright tone escalation modifier setup logic array." },
+        { id: "pdf_col15", german: "Dunkel", gender: "modifier", english: "Dark", hint: "Shadow shade adjustment coefficient constant block." },
+        { id: "pdf_col16", german: "Himmel Blau", gender: "colour compound", english: "Sky Blue", hint: "Split configuration string literal baseline match." }
+      ],
+      "Hobbies (Hobbys)": [
+        { id: "pdf_h1", german: "Bücher Lesen", gender: "hobby", english: "Books Reading", hint: "Literature consumption tracking loop processor." },
+        { id: "pdf_h2", german: "Auto Fahren", gender: "hobby", english: "Car Drinking", hint: "Syllabus textual mirror data text parameter node." },
+        { id: "pdf_h3", german: "Fernsehen", gender: "hobby", english: "Watching TV", hint: "Video broadcasting display data reception module." },
+        { id: "pdf_h4", german: "Cricket Spielen", gender: "hobby", english: "Playing Cricket", hint: "Athletic batting match coordination execution grid." },
+        { id: "pdf_h5", german: "Schwimmen", gender: "hobby", english: "Swimming", hint: "Aquatic movement trajectory tracking loop mechanism." },
+
+        { id: "pdf_h6", german: "Singen", gender: "hobby", english: "Singing", hint: "Acoustic frequency compression performance matrix item." },
+        { id: "pdf_h7", german: "Tanzen", gender: "hobby", english: "Dancing", hint: "Spatial kinetic animation sequence routine block." },
+        { id: "pdf_h8", german: "Kochen", gender: "hobby", english: "Cooking", hint: "Thermal food formulation assembly loop system." },
+        { id: "pdf_h9", german: "Musik Hören", gender: "hobby", english: "Listening to Music", hint: "Audio wave signal processing entertainment block unit." },
+        { id: "pdf_h10", german: "Reisen", gender: "hobby", english: "Travelling", hint: "Geographic coordinate transition execution node map." },
+        { id: "pdf_h11", german: "Reiten", gender: "hobby", english: "Horse Riding", hint: "Equine animal riding transportation loop logic node." },
+        { id: "pdf_h12", german: "Klettern", gender: "hobby", english: "Climbing", hint: "Vertical altitude ascension tracking element module." },
+        { id: "pdf_h13", german: "Stampe Sammeln", gender: "hobby", english: "Stamp Collection", hint: "Syllabus specific structural spelling data value text." },
+        { id: "pdf_h14", german: "Einkaufen", gender: "hobby", english: "Shopping", hint: "Commercial asset purchasing sequence workflow layer." },
+        { id: "pdf_h15", german: "Kerze Machen", gender: "hobby", english: "Candle Making", hint: "Wax lighting fixture production process workflow unit." },
+        { id: "pdf_h16", german: "Spazieren Gehen", gender: "hobby", english: "Going for a walk", hint: "Low velocity kinetic relaxation path traversal routine." },
+        { id: "pdf_h17", german: "Im Garten Arbeiten", gender: "hobby", english: "Working in Garden", hint: "Agricultural baseline landscape manipulation activity unit." }
+      ],
+      "Clothes (Kleidung)": [
+        { id: "pdf_cl1", german: "Die Jeans", gender: "feminine", english: "Jeans", hint: "Denim pants outerwear protection component element." },
+        { id: "pdf_cl2", german: "Der Rock", gender: "masculine", english: "Skirt", hint: "Lower body apparel garment model constant tracking." },
+        { id: "pdf_cl3", german: "Das Hemd", gender: "neuter", english: "Shirt", hint: "Standard buttoned upper torso coverage cloth asset." },
+        { id: "pdf_cl4", german: "Der Mantel", gender: "masculine", english: "Coat", hint: "Outer boundary cold weather thermal shelter component." },
+        { id: "pdf_cl5", german: "Das T-Shirt", gender: "neuter", english: "T-Shirt", hint: "Casual top canvas layout element model template." },
+
+        { id: "pdf_cl6", german: "Der Trainingsanzug", gender: "masculine", english: "Training Suit", hint: "Athletic apparel uniform configuration system framework." },
+        { id: "pdf_cl7", german: "Die Mütze", gender: "feminine", english: "Cap", hint: "Head boundary safety protection accessory component node." },
+        { id: "pdf_cl8", german: "Die Schuhe", gender: "plural", english: "Shoes", hint: "Ground contact friction armor parameters system pair." },
+        { id: "pdf_cl9", german: "Die Krawatte", gender: "feminine", english: "Tie", hint: "Formal neck alignment decoration layout asset vector." },
+        { id: "pdf_cl10", german: "Die Sandalen", gender: "plural", english: "Sandals", hint: "Open design footing frame layout component assets." },
+        { id: "pdf_cl11", german: "Der Anzug", gender: "masculine", english: "Suit", hint: "Complete matching formal uniform combination profile array." },
+        { id: "pdf_cl12", german: "Das Kleid", gender: "neuter", english: "Dress", hint: "One piece full length female garment design tracking." },
+        { id: "pdf_cl13", german: "Die Hose", gender: "feminine", english: "Pant", hint: "Standard leg partition lower apparel model line tracking." },
+        { id: "pdf_cl14", german: "Das Pyjama", gender: "neuter", english: "Pyjamas", hint: "Sleep relaxation layout uniform constant tracking block." },
+        { id: "pdf_cl15", german: "Der Regenmantel", gender: "masculine", english: "Raincoat", hint: "Waterproof outer boundary shield protection element layer." },
+        { id: "pdf_cl16", german: "Der hut", gender: "masculine", english: "Hat", hint: "Headwear round brim frame layout module tracking string." },
+        { id: "pdf_cl17", german: "Der Schal", gender: "masculine", english: "Schal", hint: "Neck warm wrap textile element line block structure." },
+        { id: "pdf_cl18", german: "Die Bluse", gender: "feminine", english: "Blouse", hint: "Feminine upper torso business apparel design tracker." },
+        { id: "pdf_cl19", german: "Die Socken", gender: "plural", english: "Socks", hint: "Foot internal thermal layer textile lining elements." },
+        { id: "pdf_cl20", german: "Die Jacke", gender: "feminine", english: "Jacket", hint: "Zip-up upper body intermediate insulation asset layer." },
+        { id: "pdf_cl21", german: "Der Pullover", gender: "masculine", english: "Pullover", hint: "Knit sweater upper chassis thermal insulation component." }
+      ],
+      "Household (Hauswesen Tasks)": [
+        { id: "pdf_ho1", german: "Das Badzimmer", gender: "neuter specification", english: "Bathroom", hint: "Syllabus exact text layout entry node match tracking." },
+
+        { id: "pdf_ho2", german: "Das Arbeitzimmer", gender: "neuter specification", english: "Workroom", hint: "Syllabus specific compound spelling constant token path." },
+        { id: "pdf_ho3", german: "Das Schlafzimmer", gender: "neuter layout tracking", english: "Bedroom", hint: "Sleep area localization node model component layer." },
+        { id: "pdf_ho4", german: "Das Kinderzimmer", gender: "neuter", english: "Kidsroom", hint: "Play area localization compartment container block system." },
+        { id: "pdf_ho5", german: "Der Flur", gender: "masculine", english: "Corridor", hint: "Connecting hallway transit corridor track matrix coordinate." },
+        { id: "pdf_ho6", german: "Der Küche", gender: "feminine structural mirror", english: "Kitchen", hint: "Syllabus raw matching documentation token identifier row." },
+        { id: "pdf_ho7", german: "Das Wohn Zimmer", gender: "neuter split layout", english: "Living Room", hint: "Social room partition split text definition data match." },
+        { id: "pdf_ho8", german: "Der Balkon", gender: "masculine", english: "Balcony", hint: "External extension platform framing perimeter node zone." },
+        { id: "pdf_ho9", german: "Die Pflanzen gießen", gender: "task framework", english: "Watering Plants", hint: "Botanical irrigation maintenance execution path cycle." },
+        { id: "pdf_ho10", german: "Die Wäsche waschen", gender: "task framework", english: "To Make the Laundry", hint: "Textile cleaning workflow operation process structure line." },
+        { id: "pdf_ho11", german: "Der Hund Füttern", gender: "task framework", english: "Feed the Dog", hint: "Canine nutritional dispersion sequence task execution block." },
+        { id: "pdf_ho12", german: "Das Geschirr Waschen", gender: "task framework", english: "Washing the Dishes", hint: "Culinary dishware sanitation loop processing model system." },
+        { id: "pdf_ho13", german: "Das Bett Machen", gender: "task framework", english: "Bed Making", hint: "Sleep surface organization maintenance execution blueprint." },
+        { id: "pdf_ho14", german: "Der Tisch Decken", gender: "task framework", english: "Set the Table", hint: "Dining setup arrangement execution track sequence layout." },
+        { id: "pdf_ho15", german: "Das Geschirr abtrocknen", gender: "task framework", english: "Dry the Dishes", hint: "Post-wash moisture removal manual execution track line." },
+        { id: "pdf_ho16", german: "Der Tisch abräumen", gender: "task framework", english: "Clear the Table", hint: "Post-dining cleanup removal organization sequence layer." },
+        { id: "pdf_ho17", german: "Der Kleiderschrank Ordnen", gender: "task framework", english: "Arrange the Wardrobe", hint: "Apparel storage compartment sorting algorithm execution trace." },
+        { id: "pdf_ho18", german: "Die Wäsche aufhängen", gender: "task framework", english: "Hang the Washed clothes", hint: "Evaporative textile line drying placement sequence unit." },
+        { id: "pdf_ho19", german: "Bügeln", gender: "task line entry", english: "Iron", hint: "Thermal textile wrinkle flattening process control element." },
+        { id: "pdf_ho20", german: "Wischen", gender: "task line entry", english: "Wipe", hint: "Moist surface disinfection chemical sweeping execution unit." },
+
+        { id: "pdf_ho21", german: "Fegen", gender: "task line entry", english: "Sweep", hint: "Dry debris broom displacement maintenance process routine." },
+        { id: "pdf_ho22", german: "Spülen", gender: "task line entry", english: "Washing up", hint: "Dishware rinse execution tracking operational model node." }
+      ],
+      "Shapes (Die Formen)": [
+        { id: "pdf_sh1", german: "Der Halbkreis", gender: "masculine", english: "Semi Circle", hint: "Split circle geometric profile blueprint model trace." },
+        { id: "pdf_sh2", german: "Der Kegel", gender: "masculine", english: "Cone", hint: "Tapered circular base 3D volume framework system." },
+        { id: "pdf_sh3", german: "Der Kreis", gender: "masculine", english: "Circle", hint: "Equidistant center boundary 2D geometry matrix line." },
+        { id: "pdf_sh4", german: "Der Rhombus", gender: "masculine", english: "Rhombus", hint: "Equilateral slanted parallelogram structural geometry node." },
+        { id: "pdf_sh5", german: "Der Stern", gender: "masculine", english: "Star", hint: "Multi pointed radiant vertex intersection geometry block." },
+        { id: "pdf_sh6", german: "Das Viereck / Quadrat", gender: "neuter pair entry", english: "Square", hint: "Four matching perimeter vectors perpendicular intersection system." },
+        { id: "pdf_sh7", german: "Der Würfel", gender: "masculine", english: "Cube", hint: "Six face matching equilateral 3D voxel volume chassis." },
+        { id: "pdf_sh8", german: "Der Zylinder", gender: "masculine", english: "Cylinder", hint: "Parallel circular face extrusion 3D mesh volume unit." },
+        { id: "pdf_sh9", german: "Das Achteck", gender: "neuter", english: "Octagon", hint: "Eight vector boundary structural outline model platform." },
+        { id: "pdf_sh10", german: "Das Fünfeck", gender: "neuter", english: "Pentagon", hint: "Five vector edge structural loop layout template frame." },
+        { id: "pdf_sh11", german: "Das Herz", gender: "neuter", english: "Heart", hint: "Symmetrical dual lobe cardioid geometry icon tracking." },
+        { id: "pdf_sh12", german: "Das Dreieck", gender: "neuter", english: "Triangle", hint: "Three vertex trilateral vector enclosed geometry baseline." },
+        { id: "pdf_sh13", german: "Das Oval", gender: "neuter", english: "Oval", hint: "Elongated continuous circular line profile architecture." },
+        { id: "pdf_sh14", german: "Das Sechseck", gender: "neuter", english: "Hexagon", hint: "Six side matching perimeter vector structural beehive pattern." },
+        { id: "pdf_sh15", german: "Das Rechteck", gender: "neuter", english: "Rectangle", hint: "Dual matching pair elongated quadrilateral framework design." },
+
+        { id: "pdf_sh16", german: "Das Zickzack", gender: "neuter", english: "Zigzag", hint: "Alternating sharp angle vertex track line sequence path." },
+        { id: "pdf_sh17", german: "Die Halbkugel", gender: "feminine", english: "Hemisphere", hint: "Split sphere 3D volume mathematical calculation constant." },
+        { id: "pdf_sh18", german: "Die Kugel", gender: "feminine", english: "Sphere", hint: "Continuous infinite axis round 3D geometry body shell." },
+        { id: "pdf_sh19", german: "Die Pyramide", gender: "feminine", english: "Pyramid", hint: "Quadrilateral base apex convergence 3D poly structure model." },
+        { id: "pdf_sh20", german: "Die Spirale", gender: "feminine", english: "Spiral", hint: "Continuous exponential radius rotation curve route vector." }
+      ],
+      "Greetings (Begrüßung)": [
+        { id: "pdf_gr1", german: "Guten Tag", gender: "greeting", english: "Good Day", hint: "Midday core standard polite greeting constant label." },
+        { id: "pdf_gr2", german: "Guten Morgen", gender: "greeting", english: "Good Morning", hint: "Early initial day hour greeting tracker token code." },
+        { id: "pdf_gr3", german: "Guten Abend", gender: "greeting", english: "Good Evening", hint: "Late hours intermediate standard hello variant match." },
+        { id: "pdf_gr4", german: "Gute Nacht", gender: "greeting", english: "Good Night", hint: "Terminal sleep transition departure phrase template logic." },
+        { id: "pdf_gr5", german: "Tschüß", gender: "departure", english: "Bye", hint: "Informal fast separation baseline token marker index." },
+        { id: "pdf_gr6", german: "Herzlichen Glückwünsch zum Geburtstag", gender: "celebration", english: "Happy Birthday", hint: "Syllabus specific text sequence compound character block." },
+        { id: "pdf_gr7", german: "Danke", gender: "expression", english: "Thank You", hint: "Universal recognition of asset assistance benefit token." },
+        { id: "pdf_gr8", german: "Aufwiedersehen", gender: "departure formal", english: "Good Bye", hint: "Syllabus merged spelling specific template label string." },
+        { id: "pdf_gr9", german: "Aufwiederhören", gender: "telephony departure", english: "Speak to you Soon", hint: "Formal audio connection interface closure target phrase." },
+        { id: "pdf_gr10", german: "Bitte", gender: "polite token", english: "Please / Pardon", hint: "Dual objective validation request modifier constant asset." },
+        { id: "pdf_gr11", german: "Bitte Schön, Will Kommen", gender: "welcome split", english: "Welcome", hint: "Syllabus explicit matching double token layout structure string." },
+        { id: "pdf_gr12", german: "Entschuldigung", gender: "modifier polite", english: "Excuse Me", hint: "Interruption clearance request baseline validation token label." },
+
+        { id: "pdf_gr13", german: "Tut Mir Leid", gender: "expression apology", english: "Sorry", hint: "Remediation error admission phrase template system trace." },
+        { id: "pdf_gr14", german: "Alles Gute", gender: "well-wishing", english: "All the Best", hint: "General fortune celebration support execution vector node." },
+        { id: "pdf_gr15", german: "Viel Glück", gender: "well-wishing", english: "Good Luck", hint: "Performance boost encouragement target invocation phrase." },
+        { id: "pdf_gr16", german: "Süße Träume", gender: "sleep token", english: "Sweet Dreams", hint: "Night frame layout optional accompaniment greeting mirror." },
+        { id: "pdf_gr17", german: "Herzlichen Beleid", gender: "condolence tracker", english: "Hearty Condolences", hint: "Syllabus raw specific text sequence matching dictionary row." },
+        { id: "pdf_gr18", german: "Ruhe in Frieden", gender: "monumental token", english: "Rest in Peace", hint: "Terminal structural reference expression phrase layout block." }
+      ],
+      "W-Questions (W-Fragen)": [
+        { id: "pdf_wq1", german: "Wo", gender: "query parameter", english: "Where", hint: "Static geographic localization coordinates interrogate tool." },
+        { id: "pdf_wq2", german: "Wer", gender: "query parameter", english: "Who", hint: "Person entity item target validation identity seeker logic." },
+        { id: "pdf_wq3", german: "Woher", gender: "query parameter", english: "From Where", hint: "Origin generation coordinate source track trace parameter." },
+        { id: "pdf_wq4", german: "Wie", gender: "query parameter", english: "How", hint: "Methodology execution efficiency configuration interrogator map." },
+        { id: "pdf_wq5", german: "Welche", gender: "query parameter", english: "Which", hint: "Array element selection filtration choice execution picker tool." },
+        { id: "pdf_wq6", german: "Wie Lange", gender: "query parameter", english: "How Long", hint: "Temporal duration interval measurement range validator node." },
+        { id: "pdf_wq7", german: "Was", gender: "query parameter", english: "What", hint: "Object type or raw logical data structure identifier picker." },
+        { id: "pdf_wq8", german: "Warum", gender: "query parameter", english: "Why", hint: "Causality tracking root motive explanation request tool logic." },
+        { id: "pdf_wq9", german: "Wohin", gender: "query parameter", english: "Where to", hint: "Motion target destination direction termination path vector." },
+        { id: "pdf_wq10", german: "Wann", gender: "query parameter", english: "When", hint: "Temporal timestamp parameter marker interrogation tool data." },
+        { id: "pdf_wq11", german: "Wie Viele", gender: "query parameter", english: "How Many", hint: "Discrete array length counter configuration validator tool index." },
+
+        { id: "pdf_wq12", german: "Wie Viel", gender: "query parameter", english: "How Much", hint: "Continuous variable mass quantity magnitude assessment scale tool." },
+        { id: "pdf_wq13", german: "Von Wann Bis Wann", gender: "complex parameter range", english: "From When Till When", hint: "Temporal framing operational window boundaries range capture query." }
+      ],
+      "Time (Uhrzeit Layouts)": [
+        { id: "pdf_tm1", german: "11.15 Es ist elf uhr Fünfzehn", gender: "official timeline", english: "11:15 standard form", hint: "Formal timing readout documentation track line baseline." },
+        { id: "pdf_tm2", german: "11.55 Es ist Elf Uhr Fünf und Fünfzig", gender: "official timeline", english: "11:55 standard form", hint: "Formal minute calculation sequence presentation row format." },
+        { id: "pdf_tm3", german: "3.00 Es ist Drei", gender: "informal frame", english: "3:00 sharp position", hint: "Baseline hour indicator shorthand systemic output trace." },
+        { id: "pdf_tm4", german: "3.05 Es ist Kurz Nach Drei", gender: "informal frame", english: "3:05 casual layout", hint: "Syllabus proximity temporal tracking descriptive token format." },
+        { id: "pdf_tm5", german: "2.55 Es ist Kurz vor drei", gender: "informal frame", english: "2:55 casual layout", hint: "Syllabus backward reference hour boundary offset marker." },
+        { id: "pdf_tm6", german: "4.15 Es ist Viertel nach vier", gender: "informal frame", english: "4:15 quadrant track", hint: "Quarter post current hour rotation index presentation mode." },
+        { id: "pdf_tm7", german: "3.45 Es ist Viertel Vor Vier", gender: "informal frame", english: "3:45 quadrant track", hint: "Quarter scale target milestone countdown readout schema match." },
+        { id: "pdf_tm8", german: "4.30 Es ist Halb Fünf", gender: "informal frame", english: "4:30 target progression", hint: "Idiomatic half-step calculation toward next hour marker." },
+        { id: "pdf_tm9", german: "4.40 Es ist Zwanzig Vor Fünf", gender: "informal frame", english: "4:40 offset metric", hint: "Twenty minute count margin before target boundary line." },
+        { id: "pdf_tm10", german: "4.10 Es ist Zehn nach Vier", gender: "informal frame", english: "4:10 offset metric", hint: "Ten minute count post current boundary baseline element track." },
+        { id: "pdf_tm11", german: "Wie Viel uhr ist es?", gender: "query form", english: "What time is it? (A)", hint: "Universal timing extraction question design format variant." },
+        { id: "pdf_tm12", german: "Wie spät ist es?", gender: "query form", english: "What time is it? (B)", hint: "Idiomatic structural alternative tracking time query layout." },
+        { id: "pdf_tm13", german: "Stunde", gender: "temporal metric", english: "hour", hint: "Sixty minute chunk size operational unit index tracking." },
+        { id: "pdf_tm14", german: "Minuten", gender: "temporal metric", english: "Minutes", hint: "Sixty second discrete step duration unit tracker element." },
+        { id: "pdf_tm15", german: "Sekunden", gender: "temporal metric", english: "Second", hint: "Base clock cycle heartbeat duration frequency unit constant." }
+
+      ],
+      "Introductions (Vorstellung)": [
+        { id: "pdf_in1", german: "Wie Heißen Sie? (Formel) / Wie Heißt du? (Informel)", gender: "dialogue split", english: "Identity verification query variants", hint: "Formal vs informal name interrogation input layout setup." },
+        { id: "pdf_in2", german: "Ich Heiße...............", gender: "dialogue fill", english: "My name is [Blank state template]", hint: "Identity injection string presentation model baseline target." },
+        { id: "pdf_in3", german: "Woher Kommen Sie? / Woher Kommst du?", gender: "dialogue split", english: "Origin verification coordinate query", hint: "Formal vs informal baseline geographic source extraction trace." },
+        { id: "pdf_in4", german: "Ich Komme aus............", gender: "dialogue fill", english: "I come from [Blank origin template]", hint: "Country/city of birth tracking deployment data field setup." },
+        { id: "pdf_in5", german: "Wo Wohnen Sie? / Wo Wohnst du?", gender: "dialogue split", english: "Current residence coordinates query", hint: "Formal vs informal spatial living location query line track." },
+        { id: "pdf_in6", german: "Ich Wohne in............", gender: "dialogue fill", english: "I live in [Blank residency template]", hint: "Active spatial living localization data coordinate field match." },
+        { id: "pdf_in7", german: "Welche sprachen sprechen sie? / Welche sprachen sprichst du?", gender: "dialogue split", english: "Linguistic inventory capability interrogation", hint: "Formal vs informal operational language capabilities checking tools." },
+        { id: "pdf_in8", german: "Ich spreche englisch und ein bisschen Deutsch", gender: "dialogue complete", english: "I speak English and a little German", hint: "CEFR standard initial interaction capability disclosure readout." },
+        { id: "pdf_in9", german: "Wie geht es Ihnen? / Wie geht es dir?", gender: "dialogue split", english: "System condition health check question", hint: "Formal vs informal personal state status check query loop." },
+        { id: "pdf_in10", german: "Mir geht es gut / sehr gut / schlecht / solala", gender: "dialogue choices", english: "Status options: Good / Very Good / Bad / So-so", hint: "System state reporting parameter answers cluster selection row." },
+        { id: "pdf_in11", german: "Mein Geburtsort ist ...", gender: "dialogue tracking", english: "My birthplace is ...", hint: "Page 24 item 6 specific birth location parameter row." },
+        { id: "pdf_in12", german: "Mein Heimatland ist ...", gender: "dialogue tracking", english: "My native country is ...", hint: "Page 24 item 7 specific homeland source track template." },
+        { id: "pdf_in13", german: "Meine Mutter Heißt ...", gender: "dialogue tracking", english: "My mother's name is ...", hint: "Page 24 item 8 maternal lineage mapping record layout." },
+        { id: "pdf_in14", german: "Ich habe ... Bruder", gender: "dialogue tracking", english: "I have ... brother", hint: "Page 24 item 9 sibling count data record string literal." },
+        { id: "pdf_in15", german: "Ich bin ... von beruf", gender: "dialogue tracking", english: "I am ... by occupation", hint: "Page 24 item 10 employment record data template field map." }
+      ],
+      "Daily Routine (Tagesablauf)": [
+
+        { id: "pdf_dr1", german: "7.00 - Ich Stehe um 7.00 uhr auf", gender: "timeline event", english: "I wake/get up at 7:00", hint: "Separable verb activation sequence step 1 routine trigger." },
+        { id: "pdf_dr2", german: "dass bett machen - Ich mache das bett", gender: "timeline event", english: "I make the bed", hint: "Syllabus spelling specific maintenance task operation cell." },
+        { id: "pdf_dr3", german: "7.15 - Die Zähne Putzen / Ich putze Die Zähne", gender: "timeline event", english: "I brush the teeth", hint: "Dental sanitation workflow operational component element row." },
+        { id: "pdf_dr4", german: "7.30 - Das Früstück Machen / Ich Mache das Früstück", gender: "timeline event", english: "I make breakfast", hint: "Syllabus spelling explicit culinary preparation workflow trace." },
+        { id: "pdf_dr5", german: "7.35 - Früstücken / Ich früstücke", gender: "timeline event", english: "I have breakfast", hint: "Syllabus spelling specific nutritional intake loop processing cell." },
+        { id: "pdf_dr6", german: "7.40 - Sich Duschen / Ich dusche Mich", gender: "timeline event", english: "I shower myself", hint: "Reflexive verb personal sanitation operational workflow sequence." },
+        { id: "pdf_dr7", german: "7.45 - Ich Ziehe mich an", gender: "timeline event", english: "I get ready / dressed", hint: "Reflexive apparel application execution module routine layout." },
+        { id: "pdf_dr8", german: "7.50 - Zur klasse / Arbeit gehen / Ich gehe zur klasse / Arbeit", gender: "timeline event", english: "I go to class / work", hint: "Transit spatial vector movement to target operational destination." },
+        { id: "pdf_dr9", german: "8.00 - Lernen / Arbeiten / Ich lerne / Arbeite", gender: "timeline event", english: "I learn / work", hint: "Primary day hours baseline cognitive task execution engine loop." }
       ]
     };
 
-    // Comprehensive A1 Structural Grammar Matrix Blueprint System
+    // Refactored Expanded 13-Module Grammar Blueprint Database Array
     const a1GrammarDatabase = [
-      { id: "g1", title: "Definite Articles & Gender Tracking", rules: "German nouns carry 3 precise grammatical genders: Masculine (der), Feminine (die), Neuter (das). Plural forms uniformly use 'die'.", example: "Der Tisch, die Küche, das Haus, die Kinder." },
-      { id: "g2", title: "The Nominative Case System", rules: "Used exclusively for the primary subject of sentences performing an action. Unchanging root foundational structure form.", example: "Der Hund schläft hier. (The dog is sleeping here.)" },
-      { id: "g3", title: "The Accusative Direct Object Shifts", rules: "Used for direct actions objects. Only Masculine changes article forms (der becomes den / ein becomes einen). Feminine & Neuter stay unchanged.", example: "Ich habe einen Tisch (Masculine Accusative modification match)." },
-      { id: "g4", title: "Present Tense Verb Conjugation rules", rules: "Regular verbs drop their standard root infinitive ending (-en) and apply personal pronoun suffixes: -e, -st, -t, -en, -t, -en.", example: "ich lerne, du lernst, er/sie/es lernt, wir lernen." }
+      { id: "g_art", title: "1. Definite & Indefinite Articles", rules: "German specifies noun sets through Masculine (der/ein), Feminine (die/eine), Neuter (das/ein). Plurals carry 'die' but no baseline indefinite article.", example: "Der Mann, eine Frau, das Kind." },
+      { id: "g_pron", title: "2. Personal Pronouns Matrix", rules: "Subjects are tracked via personal handles: ich (I), du (you), er/sie/es (he/she/it), wir (us), ihr (you plural), sie/Sie (they/Formal You).", example: "Ich bin hier. Du lernst schnell." },
+      { id: "g_sein", title: "3. Irregular Sein (To Be) Forms", rules: "The foundation auxiliary verb 'sein' shifts conjugation fields dynamically: ich bin, du bist, er/sie/es ist, wir sind, ihr seid, sie/Sie sind.", example: "Wir sind im Arena. Ihr seid klug." },
+      { id: "g_conj", title: "4. Regular Verb Conjugation Suffixes", rules: "Drop infinitive tail (-en) and apply standardized pronoun terminations: -e, -st, -t, -en, -t, -en.", example: "Ich spiele, du spielst, er spielt, wir spielen." },
+      { id: "g_poss", title: "5. Possessive Articles", rules: "Indicate ownership. Base items follow pronoun structures: mein (my), dein (your), sein (his), ihr (her/their), unser (our), euer (your pl). Appends '-e' if item is feminine/plural.", example: "Das ist mein Tisch. Wo ist meine Jacke?" },
+
+      { id: "g_mod", title: "6. Modal Verbs Structure", rules: "Verbs like 'können' (can), 'müssen' (must), 'wollen' (want) conjugate irregularly in singular positions and push main infinitive companion verbs to the sentence tail.", example: "Ich kann Deutsch sprechen. (Infinitive 'sprechen' anchors at the extreme tail position.)" },
+      { id: "g_tren", title: "7. Trennbar (Separable) Verbs", rules: "Prefix particles split off active base stems during simple sentence layouts, anchoring directly at the terminal punctuation boundary.", example: "aufstehen -> Ich stehe um 6:00 Uhr auf. ('auf' detaches to the tail window completely.)" },
+      { id: "g_imp", title: "8. Imperativ Commands Formulation", rules: "Used to declare instructions/requests. The 'du' command strips away both the pronoun 'du' and the tail standard '-st' suffix tracking.", example: "Komm hierher! (Infinitive 'kommen' drops pronoun and suffix constraints entirely.)" },
+      { id: "g_comp", title: "9. Degrees of Comparison Adjectives", rules: "Modifiers escalate structural attributes using baseline rules, adding '-er' for comparative forms and 'am ...-sten' for superlative declarations.", example: "klein -> kleiner -> am kleinsten. alt -> älter -> am ältesten." },
+      { id: "g_perf", title: "10. Present Perfect Past Construction", rules: "Form past statements using auxiliary helpers ('haben' or 'sein' based on motion rules) at position 2, placing a 'Partizip II' particle component at sentence tail.", example: "Ich habe Deutsch gelernt. Wir sind nach Berlin gefahren." },
+      { id: "g_habs", title: "11. Past Tense Haben & Sein (Präteritum)", rules: "Simple past framework constants used universally for auxiliary assets. Haben -> hatte. Sein -> war. Conjugates via standardized rules.", example: "Ich hatte ein House. Gestern war ich müde." },
+      { id: "g_case", title: "12. Akkusativ vs Dativ Case Tracking", rules: "Akkusativ targets direct action receivers (Masculine den/einen). Dativ models indirect benefit targets (dem/der/dem/den).", example: "Ich gebe dem Mann (Dativ indirect object) den Ball (Akkusativ direct item asset)." },
+      { id: "g_mail", title: "13. Formal Email Writing Blueprints", rules: "Structured communications require strict CEFR protocols: Greeting ('Sehr geehrte Damen und Herren,'), body block content, and formal signoff lines ('Mit freundlichen Grüßen').", example: "Sehr geehrte Frau Müller, ... Mit freundlichen Grüßen, Jhansi." }
     ];
 
-    // Comprehensive 4-Dimension A1 Immersive Training Laboratory Matrix
+    // Comprehensive A1 Skills Laboratory Array Matrix
     const a1SkillsDatabase = {
       listening: [
-
-        { id: "l1", title: "Train Station Announcement Dialogue", context: "Listen carefully to the audio sample clip and determine which structural track the train departures layout updates from.", transcript: "Achtung am Gleis 4: Der Zug nach Berlin fährt jetzt ab.", question: "Where is the train moving towards?", options: ["München", "Berlin", "Hamburg", "Frankfurt"], correct: 1 }
+        { id: "l1", title: "Train Station Announcement Dialogue", context: "Listen to the simulated text statement carefully and capture the explicit target destination platform.", transcript: "Achtung am Gleis 4: Der Zug nach Berlin fährt jetzt ab.", question: "Where is the train moving towards?", options: ["München", "Berlin", "Hamburg", "Frankfurt"], correct: 1 }
       ],
       reading: [
-        { id: "r1", title: "Supermarket Invitation Email parsing", context: "Read the formal communication text below and verify what timing operational limitations are enforced.", body: "Liebe Grüße! Unser Laden schließt heute bereits um 18:00 Uhr wegen Renovierung. Bitte kommen Sie früher vorbei.", question: "At what time sequence does the shop close today?", options: ["16:00", "18:00", "20:00", "22:00"], correct: 1 }
+        { id: "r1", title: "Supermarket Notice Parsing", context: "Read the informational announcement layout and deduce the correct closure time validation.", body: "Liebe Grüße! Unser Laden schließt heute bereits um 18:00 Uhr wegen Renovierung. Bitte kommen Sie früher vorbei.", question: "At what time sequence does the shop close today?", options: ["16:00", "18:00", "20:00", "22:00"], correct: 1 }
       ],
       writing: [
-        { id: "w1", title: "Goethe A1 Form Completion Challenge", context: "Fill in the correct blank article option missing from this formal notification snippet block.", text: "Ich möchte ___ (neuter) Buch kaufen, aber ich habe kein Geld dabei.", options: ["das", "die", "den", "der"], correct: 0 }
+
+        { id: "w1", title: "Goethe A1 Form Completion Challenge", context: "Determine the correct missing case marker article to fulfill the structural requirement layout syntax.", text: "Ich möchte ___ (neuter object direct target) Buch kaufen, aber ich habe kein Geld dabei.", options: ["das", "die", "den", "der"], correct: 0 }
       ],
       speaking: [
-        { id: "s1", title: "Pronunciation Phonetics Calibration Engine", context: "Review the phonetic structures statement and practice matching target native cadence patterns out loud.", text: "Wie geht es Ihnen heute Morgen?", guide: "Pronounce: Vee gayt es ee-nen hoy-te mor-gen?" }
+        { id: "s1", title: "Pronunciation Phonetics Calibration Engine", context: "Practice reading the native phrase out loud according to the phonetics breakdown matrix configuration guide.", text: "Wie geht es Ihnen heute Morgen?", guide: "Pronounce: Vee gayt es ee-nen hoy-te mor-gen?" }
       ]
     };
 
@@ -179,13 +533,13 @@
         { q: "Which core definite article correctly fits: '___ Tisch ist alt'?", o: ["Der", "Die", "Das", "Den"], c: 0, exp: "'Tisch' is masculine nominative." },
         { q: "Translate to accurate English format: 'Ich brauche eine Küche.'", o: ["I have a room.", "I need a kitchen.", "I buy a house.", "I like cooking."], c: 1, exp: "'brauche' translates to need; 'Küche' means kitchen." },
         { q: "Conjugate properly: 'Du ___ (to speak) sehr gut Deutsch.'", o: ["spreche", "spricht", "sprechen", "sprichst"], c: 3, exp: "Irregular vowel-shifting verb match for 'du' form is 'sprichst'." },
-
         { q: "Identify the odd vocabulary item out from this collection:", o: ["Mutter", "Vater", "Bruder", "Auto"], c: 3, exp: "'Auto' is a vehicle; all others are direct family relation identifiers." }
       ]},
       { id: 1, title: "Mock Exam Arena 2: Telc A1 Competency Assessment Matrix", passingScore: 3, questions: [
         { q: "Complete the statement pattern: 'Wir wohnen ___ Berlin.'", o: ["in", "auf", "aus", "bei"], c: 0, exp: "City localization spatial preposition uses 'in'." },
         { q: "What is the appropriate English transformation for 'das Brot'?", o: ["The cheese", "The milk", "The bread", "The water"], c: 2, exp: "'das Brot' translates directly to 'the bread'." },
         { q: "Select the accurate feminine assignment descriptor pairing:", o: ["der Mann", "die Frau", "das Kind", "den Jungen"], c: 1, exp: "'Frau' is feminine, taking 'die'." },
+
         { q: "Complete the sentence tracking: 'Ich trinke ein Glas ___.'", o: ["Brot", "Apfel", "Wasser", "Küche"], c: 2, exp: "'Wasser' is the only consumable liquid option listed." }
       ]},
       { id: 2, title: "Mock Exam Arena 3: Structural Navigation Grammar Core", passingScore: 3, questions: [
@@ -200,15 +554,15 @@
       ]}
     ];
 
-
     // Global Core Architecture Reactivity State Cache Layout Engine Variables
     let activeTab = 'dashboard';
     let currentThemeProfile = localStorage.getItem('sb_theme_profile') || 'midnight-slate';
     let totalXPAmount = parseInt(localStorage.getItem('sb_total_xp'), 10) || 0;
     let savedStreakCount = parseInt(localStorage.getItem('sb_streak_count'), 10) || 1;
 
+
     // Sub-Navigation Module Frame Index Trackers
-    let selectedVocabCategory = "Alphabets Phonics";
+    let selectedVocabCategory = "Alphabet (Alphabet)";
     let activeVocabCardIndex = 0;
     let isVocabCardFlipped = false;
     let activeGrammarIndex = 0;
@@ -220,13 +574,13 @@
     // Real-Time Testing Engine Operational State Models
     let selectedActiveExamIndex = 0;
     let activeExamRunningMode = false;
-
     let currentExamQuestionIndex = 0;
     let activeExamUserAnswersCollected = [];
     let processingExamEvaluationFeedbackMode = false;
 
     // Theme Class Configurations Engine Object Profiles Map
     const systemThemeProfiles = {
+
       'midnight-slate': {
         shellBg: 'bg-slate-900 border-slate-800',
         headerBg: 'bg-slate-950 border-slate-800 text-white',
@@ -240,19 +594,94 @@
       'cyberpunk-neon': {
         shellBg: 'bg-indigo-950 border-fuchsia-500',
         headerBg: 'bg-slate-950 border-fuchsia-500 text-cyan-400',
-
         footerBg: 'bg-slate-950 border-fuchsia-500',
         viewSurfaceBg: 'bg-indigo-950 text-cyan-100',
         cardBg: 'bg-slate-900 border-cyan-500 text-cyan-300',
         cardBackBg: 'bg-fuchsia-950 border-fuchsia-500 text-fuchsia-300',
         tabActive: 'text-lime-400',
         tabInactive: 'text-fuchsia-400'
+
       }
     };
+
+    // Algorithmic Large-Scale Number Generator Engine Method (0 to 100 Million converter rule matrix)
+    function generateGermanNumberStringFormula(num) {
+      if (num === 0) return "null";
+      
+      const units = ["", "eins", "zwei", "drei", "vier", "fünf", "sechs", "sieben", "acht", "neun"];
+      const teens = ["zehn", "elf", "zwölf", "dreizehn", "vierzehn", "fünfzehn", "sechzehn", "siebzehn", "achtzehn", "neunzehn"];
+      const tens = ["", "zehn", "zwanzig", "dreißig", "vierzig", "fünfzig", "sechzig", "siebzig", "achtzig", "neunzig"];
+
+      function convertSubHundreds(val) {
+        if (val < 10) return units[val];
+        if (val < 20) return teens[val - 10];
+        const u = val % 10;
+        const t = Math.floor(val / 10);
+        if (u === 0) return tens[t];
+        return (u === 1 ? "ein" : units[u]) + "und" + tens[t];
+      }
+
+
+      function convertSubThousands(val) {
+        const h = Math.floor(val / 100);
+        const rem = val % 100;
+        let res = "";
+        if (h > 0) res += (h === 1 ? "ein" : units[h]) + "hundert";
+        if (rem > 0) res += convertSubHundreds(rem);
+        return res;
+      }
+
+      let outputText = "";
+      let remainingValue = num;
+
+      if (remainingValue >= 1000000) {
+        const mill = Math.floor(remainingValue / 1000000);
+        remainingValue %= 1000000;
+        if (mill === 1) outputText += "eine Million";
+        else outputText += convertSubThousands(mill) + " Millionen";
+      }
+
+
+      if (remainingValue >= 1000) {
+        const thous = Math.floor(remainingValue / 1000);
+        remainingValue %= 1000;
+        if (thous === 1) outputText += "eintausend";
+        else outputText += convertSubThousands(thous) + "tausend";
+      }
+
+      if (remainingValue > 0) {
+        outputText += convertSubThousands(remainingValue);
+      }
+
+      if (outputText.endsWith("eins") && num > 1) {
+        outputText = outputText.slice(0, -4) + "eins";
+      }
+      return outputText;
+    }
+
+    function runLiveIntegerConversionCheck() {
+      const inputNode = document.getElementById('numerical-matrix-input');
+
+      const outputNode = document.getElementById('numerical-matrix-output-string');
+      if (!inputNode || !outputNode) return;
+      
+      let val = parseInt(inputNode.value, 10);
+      if (isNaN(val) || val < 0) {
+        outputNode.innerText = "Please enter a valid positive integer baseline parameter.";
+        return;
+      }
+      if (val > 100000000) {
+        outputNode.innerText = "Maximum threshold capped safely at 100,000,000 (100 Million).";
+        return;
+      }
+      
+      outputNode.innerText = generateGermanNumberStringFormula(val);
+    }
 
     // Main Startup Setup System Directives
     window.onload = function() {
       applyThemeProfile(currentThemeProfile);
+
       updateDashboardTelemetry();
       renderActiveTabModule();
     };
@@ -260,7 +689,6 @@
     function applyThemeProfile(themeKey) {
       currentThemeProfile = themeKey;
       localStorage.setItem('sb_theme_profile', themeKey);
-
       const conf = systemThemeProfiles[themeKey] || systemThemeProfiles['midnight-slate'];
       
       document.getElementById('app-shell-container').className = `w-full max-w-md mx-auto min-h-screen shadow-2xl flex flex-col justify-between relative border-x theme-transition ${conf.shellBg}`;
@@ -273,6 +701,7 @@
         const node = document.getElementById(`tab-${t}`);
         if (node) node.className = `flex-1 flex flex-col items-center justify-center transition-colors ${t === activeTab ? conf.tabActive : conf.tabInactive}`;
       });
+
     }
 
     function updateDashboardTelemetry() {
@@ -280,7 +709,6 @@
       document.getElementById('xp-amount-val').innerText = totalXPAmount;
       
       const display = document.getElementById('player-rank-display');
-
       if (totalXPAmount >= 500) display.innerText = "Lv.4 Imperial Language Architect";
       else if (totalXPAmount >= 250) display.innerText = "Lv.3 Master Competitor";
       else if (totalXPAmount >= 100) display.innerText = "Lv.2 Experienced Challenger";
@@ -293,6 +721,7 @@
       updateDashboardTelemetry();
     }
 
+
     function switchTab(tabId) {
       activeTab = tabId;
       isVocabCardFlipped = false;
@@ -300,7 +729,6 @@
       if (tabId !== 'exams') activeExamRunningMode = false;
       applyThemeProfile(currentThemeProfile);
       renderActiveTabModule();
-
     }
 
     // View Route Processing Center Hub
@@ -313,13 +741,13 @@
           <div class="space-y-5">
             <div class="p-5 rounded-2xl bg-gradient-to-br from-indigo-600 to-fuchsia-600 text-white shadow-xl">
               <h2 class="text-lg font-extrabold">Welcome to A1 Language Training Ground ⚡</h2>
+
               <p class="text-xs text-indigo-100 mt-1 leading-relaxed">Master standard Goethe or Telc proficiency variants cleanly using accelerated game interface metrics.</p>
               <div class="mt-4 flex gap-2">
                 <button onclick="switchTab('exams')" class="bg-white text-indigo-950 font-black text-[11px] px-3.5 py-2 rounded-xl shadow-md transform active:scale-95 transition-transform">Run Mock Test</button>
                 <button onclick="switchTab('vocabulary')" class="bg-indigo-500/30 border border-indigo-400/40 text-white font-bold text-[11px] px-3.5 py-2 rounded-xl">Lexicon Hub</button>
               </div>
             </div>
-
 
             <div class="grid grid-cols-2 gap-3">
               <div class="${conf.cardBg} border p-4 rounded-xl flex flex-col justify-between">
@@ -333,6 +761,7 @@
             </div>
 
             <div class="${conf.cardBg} border p-4 rounded-xl">
+
               <h3 class="text-xs font-black text-slate-400 uppercase tracking-wider mb-2">System Theme Core Profile</h3>
               <div class="grid grid-cols-2 gap-2">
                 <button onclick="applyThemeProfile('midnight-slate')" class="p-2.5 rounded-lg border text-[11px] font-bold text-center bg-slate-900 border-slate-700">Slate Mode</button>
@@ -340,19 +769,64 @@
               </div>
             </div>
           </div>
-
         `;
       }
 
       else if (activeTab === 'vocabulary') {
         const categories = Object.keys(a1VocabularyDatabase);
         const activeList = a1VocabularyDatabase[selectedVocabCategory];
-        const card = activeList[activeVocabCardIndex];
+        const card = activeList ? activeList[activeVocabCardIndex] : null;
 
         let selectOptionsHTML = '';
         categories.forEach(cat => {
           selectOptionsHTML += `<option value="${cat}" ${cat === selectedVocabCategory ? 'selected' : ''}>${cat}</option>`;
         });
+
+        selectOptionsHTML += `<option value="DYNAM_NUMBERS" ${selectedVocabCategory === 'DYNAM_NUMBERS' ? 'selected' : ''}>Numbers (0 to 100 Million Engine)</option>`;
+
+        let coreDisplayBodyHTML = '';
+
+        if (selectedVocabCategory === "DYNAM_NUMBERS") {
+          coreDisplayBodyHTML = `
+            <div class="${conf.cardBg} border p-4 rounded-2xl w-full space-y-3">
+              <h3 class="text-xs font-black text-indigo-400 uppercase tracking-wider">Algorithmic 100M Numbers Engine</h3>
+              <p class="text-[11px] text-slate-400">Type any number between 0 and 100,000,000 to see its exact written grammatical German compilation string framework.</p>
+              <input type="number" id="numerical-matrix-input" min="0" max="100000000" placeholder="Type integer... (e.g. 984520)" oninput="runLiveIntegerConversionCheck()" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 text-sm font-mono font-bold text-amber-400 outline-none" />
+              <div class="p-3 bg-slate-950 border border-slate-800 rounded-xl min-h-[50px] flex items-center justify-center">
+                <p id="numerical-matrix-output-string" class="text-xs font-bold text-emerald-400 font-mono text-center">null</p>
+              </div>
+            </div>
+          `;
+        } else if (card) {
+          coreDisplayBodyHTML = `
+            <div class="w-full flex justify-between items-center text-[11px] font-bold text-slate-400 px-1">
+              <span>Card ${activeVocabCardIndex + 1} of ${activeList.length}</span>
+
+              <span class="text-indigo-400 font-extrabold uppercase">A1 Lexicon Library</span>
+            </div>
+
+            <div class="flashcard-wrapper w-full h-56 cursor-pointer ${isVocabCardFlipped ? 'flipped' : ''}" onclick="this.classList.toggle('flipped'); isVocabCardFlipped=!isVocabCardFlipped;">
+              <div class="flashcard-inner">
+                <div class="flashcard-front ${conf.cardBg} border shadow-xl">
+                  <span class="text-[9px] uppercase tracking-widest font-black px-2 py-0.5 rounded bg-slate-950/50 self-start text-indigo-400">${card.gender}</span>
+                  <span class="text-xl font-black tracking-tight my-auto select-none">${card.german}</span>
+                  <span class="text-[10px] text-slate-400 font-medium italic">💡 Tap to reveal English context</span>
+                </div>
+                <div class="flashcard-back ${conf.cardBackBg} border shadow-xl">
+                  <span class="text-[9px] uppercase tracking-widest font-black self-start text-indigo-300">English Translation Mapping</span>
+                  <span class="text-xl font-extrabold tracking-tight my-auto select-none">${card.english}</span>
+                  <p class="text-xs text-indigo-200/80 px-4">${card.hint}</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="w-full grid grid-cols-2 gap-2">
+
+              <button onclick="activeVocabCardIndex = (activeVocabCardIndex === 0) ? ${activeList.length - 1} : activeVocabCardIndex - 1; isVocabCardFlipped=false; renderActiveTabModule();" class="p-3 bg-slate-800 border border-slate-700 text-xs font-bold rounded-xl active:scale-95 transition-transform">← Prev</button>
+              <button onclick="activeVocabCardIndex = (activeVocabCardIndex === ${activeList.length - 1}) ? 0 : activeVocabCardIndex + 1; isVocabCardFlipped=false; renderActiveTabModule();" class="p-3 bg-slate-800 border border-slate-700 text-xs font-bold rounded-xl active:scale-95 transition-transform">Next →</button>
+            </div>
+          `;
+        }
 
         container.innerHTML = `
           <div class="space-y-4 flex flex-col items-center">
@@ -360,70 +834,54 @@
               <label for="lexicon-category-selector" class="text-[10px] uppercase font-black tracking-wider text-slate-400 block mb-1">Lexicon Category Matrix</label>
               <select id="lexicon-category-selector" onchange="selectedVocabCategory=this.value; activeVocabCardIndex=0; isVocabCardFlipped=false; renderActiveTabModule();" class="w-full bg-slate-950 border border-slate-800 p-2.5 text-xs font-bold rounded-xl text-slate-200 outline-none">
                 ${selectOptionsHTML}
-
               </select>
             </div>
-
-            <div class="w-full flex justify-between items-center text-[11px] font-bold text-slate-400 px-1">
-              <span>Card ${activeVocabCardIndex + 1} of ${activeList.length}</span>
-              <span class="text-indigo-400 font-extrabold uppercase">A1 Lexicon Library</span>
-            </div>
-
-            <div class="flashcard-wrapper w-full h-60 cursor-pointer ${isVocabCardFlipped ? 'flipped' : ''}" onclick="this.classList.toggle('flipped'); isVocabCardFlipped=!isVocabCardFlipped;">
-              <div class="flashcard-inner">
-                <div class="flashcard-front ${conf.cardBg} border shadow-xl">
-                  <span class="text-[9px] uppercase tracking-widest font-black px-2 py-0.5 rounded bg-slate-950/50 self-start text-indigo-400">${card.gender}</span>
-                  <span class="text-3xl font-black tracking-tight my-auto select-none">${card.german}</span>
-                  <span class="text-[10px] text-slate-400 font-medium italic">💡 Tap to reveal English context</span>
-                </div>
-                <div class="flashcard-back ${conf.cardBackBg} border shadow-xl">
-                  <span class="text-[9px] uppercase tracking-widest font-black self-start text-indigo-300">English Translation Mapping</span>
-                  <span class="text-2xl font-extrabold tracking-tight my-auto select-none">${card.english}</span>
-                  <p class="text-xs text-indigo-200/80 px-4">${card.hint}</p>
-
-                </div>
-              </div>
-            </div>
-
-            <div class="w-full grid grid-cols-2 gap-2">
-              <button onclick="activeVocabCardIndex = (activeVocabCardIndex === 0) ? ${activeList.length - 1} : activeVocabCardIndex - 1; isVocabCardFlipped=false; renderActiveTabModule();" class="p-3 bg-slate-800 border border-slate-700 text-xs font-bold rounded-xl active:scale-95 transition-transform">← Prev</button>
-              <button onclick="activeVocabCardIndex = (activeVocabCardIndex === ${activeList.length - 1}) ? 0 : activeVocabCardIndex + 1; isVocabCardFlipped=false; renderActiveTabModule();" class="p-3 bg-slate-800 border border-slate-700 text-xs font-bold rounded-xl active:scale-95 transition-transform">Next →</button>
-            </div>
+            ${coreDisplayBodyHTML}
           </div>
         `;
       }
 
-      else if (activeTab === 'grammar') {
-        const item = a1GrammarDatabase[activeGrammarIndex];
-        container.innerHTML = `
-          <div class="space-y-4">
-            <span class="text-[11px] font-bold text-slate-400 block px-1">Structural Framework Matrix Blueprint ${activeGrammarIndex + 1} of ${a1GrammarDatabase.length}</span>
-            <div class="${conf.cardBg} border p-5 rounded-2xl shadow-xl space-y-4">
-              <div class="flex items-center gap-2">
 
-                <span class="text-xl">💡</span>
-                <h3 class="text-base font-black tracking-tight">${item.title}</h3>
-              </div>
-              <div class="h-px bg-slate-800" />
-              <div>
-                <span class="text-[9px] uppercase tracking-wider font-extrabold text-indigo-400 block mb-0.5">Core Syntax Rules Directives</span>
-                <p class="text-xs font-medium leading-relaxed opacity-95">${item.rules}</p>
-              </div>
-              <div class="p-3 rounded-xl bg-slate-950 border border-slate-800">
-                <span class="text-[9px] uppercase tracking-wider font-extrabold text-emerald-400 block mb-0.5">Contextual Usage Template Formulation</span>
-                <p class="text-xs font-mono font-bold text-emerald-300 leading-snug">${item.example}</p>
-              </div>
+      else if (activeTab === 'grammar') {
+        let structuralAccordionHTML = '';
+        a1GrammarDatabase.forEach((item, idx) => {
+          const isOpen = (idx === activeGrammarIndex);
+          structuralAccordionHTML += `
+            <div class="border border-slate-800 rounded-xl overflow-hidden ${isOpen ? 'bg-slate-950/40' : 'bg-slate-950/10'}">
+              <button onclick="activeGrammarIndex=${idx}; renderActiveTabModule();" class="w-full text-left p-3.5 text-xs font-black flex justify-between items-center transition-colors bg-slate-950 border-b border-slate-800/60 text-slate-200">
+                <span>${item.title}</span>
+                <span>${isOpen ? '▼' : '▶'}</span>
+              </button>
+              ${isOpen ? `
+                <div class="p-4 space-y-3 bg-slate-900/40 animate-fadeIn">
+                  <div>
+                    <span class="text-[9px] uppercase tracking-wider font-extrabold text-indigo-400 block mb-0.5">Core Syntax Rules Directives</span>
+                    <p class="text-xs font-medium leading-relaxed text-slate-300">${item.rules}</p>
+                  </div>
+                  <div class="p-3 rounded-xl bg-slate-950 border border-slate-800/80">
+                    <span class="text-[9px] uppercase tracking-wider font-extrabold text-emerald-400 block mb-0.5">Contextual Formulation Usage Template</span>
+                    <p class="text-xs font-mono font-bold text-emerald-300 leading-snug">${item.example}</p>
+
+                  </div>
+                </div>
+              ` : ''}
             </div>
-            <div class="grid grid-cols-2 gap-2">
-              <button onclick="activeGrammarIndex = (activeGrammarIndex === 0) ? ${a1GrammarDatabase.length - 1} : activeGrammarIndex - 1; renderActiveTabModule();" class="p-3 bg-slate-800 text-xs font-bold rounded-xl border border-slate-700">Previous</button>
-              <button onclick="activeGrammarIndex = (activeGrammarIndex === ${a1GrammarDatabase.length - 1}) ? 0 : activeGrammarIndex + 1; renderActiveTabModule();" class="p-3 bg-slate-800 text-xs font-bold rounded-xl border border-slate-700">Next Rule</button>
+          `;
+        });
+
+        container.innerHTML = `
+          <div class="space-y-3">
+            <div class="px-1">
+              <h3 class="text-sm font-black text-white">Goethe A1 Unified Grammar Curriculum Matrix</h3>
+              <p class="text-[10px] text-slate-400 mt-0.5">13 Essential morphological tracking nodes formatted for direct mobile deployment view.</p>
             </div>
+            <div class="space-y-2">${structuralAccordionHTML}</div>
           </div>
         `;
-
       }
 
       else if (activeTab === 'skills') {
+
         let skillsHTML = `<div class="space-y-4">
           <div class="grid grid-cols-4 gap-1.5">
             ${['listening', 'reading', 'writing', 'speaking'].map(s => `
@@ -440,10 +898,10 @@
               <p class="text-xs text-slate-400 font-mono italic">Audio simulation text: "${lData.transcript}"</p>
               <p class="text-xs font-bold">${lData.question}</p>
               <div class="space-y-2">
-
                 ${lData.options.map((o, idx) => `
                   <button onclick="skillSelectedAnswer=${idx}; renderActiveTabModule();" class="w-full text-left p-2.5 border rounded-xl text-xs font-bold ${skillSelectedAnswer === idx ? 'border-indigo-500 bg-indigo-950/40' : 'border-slate-700 bg-slate-900'}" >${o}</button>
                 `).join('')}
+
               </div>
               ${skillSelectedAnswer !== null ? `
                 <div class="p-2 text-xs rounded bg-slate-950 text-center font-bold ${skillSelectedAnswer === lData.correct ? 'text-emerald-400' : 'text-rose-400'}" >
@@ -460,10 +918,10 @@
               <div class="space-y-2">
                 ${rData.options.map((o, idx) => `
                   <button onclick="skillSelectedAnswer=${idx}; renderActiveTabModule();" class="w-full text-left p-2.5 border rounded-xl text-xs font-bold ${skillSelectedAnswer === idx ? 'border-indigo-500 bg-indigo-950/40' : 'border-slate-700 bg-slate-900'}" >${o}</button>
-
                 `).join('')}
               </div>
               ${skillSelectedAnswer !== null ? `
+
                 <div class="p-2 text-xs rounded bg-slate-950 text-center font-bold ${skillSelectedAnswer === rData.correct ? 'text-emerald-400' : 'text-rose-400'}" >
                   ${skillSelectedAnswer === rData.correct ? '✓ Correct! (+10 XP)' : '✗ Incorrect. Look for closure timestamps.'}
                 </div>
@@ -480,10 +938,10 @@
                   <button onclick="skillSelectedAnswer=${idx}; renderActiveTabModule();" class="p-2.5 border rounded-xl text-xs font-mono font-bold text-center ${skillSelectedAnswer === idx ? 'border-indigo-500 bg-indigo-950/40' : 'border-slate-700 bg-slate-900'}" >${o}</button>
                 `).join('')}
               </div>
-
               ${skillSelectedAnswer !== null ? `
                 <div class="p-2 text-xs rounded bg-slate-950 text-center font-bold ${skillSelectedAnswer === wData.correct ? 'text-emerald-400' : 'text-rose-400'}" >
                   ${skillSelectedAnswer === wData.correct ? '✓ Success Matrix Match (+15 XP)' : '✗ Case grammar mismatches identified.'}
+
                 </div>
               ` : ''}
             </div>`;
@@ -501,9 +959,9 @@
             </div>`;
         }
 
-
         skillsHTML += `</div></div>`;
         container.innerHTML = skillsHTML;
+
       }
 
       else if (activeTab === 'exams') {
@@ -521,9 +979,9 @@
             `;
           });
 
-
           container.innerHTML = `
             <div class="space-y-4">
+
               <div class="px-1">
                 <h3 class="text-sm font-black tracking-tight text-white">Goethe / Telc A1 Mock Exam Arena</h3>
                 <p class="text-[11px] text-slate-400 font-medium">Verify your cross-dimension capabilities using full runtime testing models.</p>
@@ -542,8 +1000,8 @@
             const passed = correctCounter >= exam.passingScore;
             if (passed) setTimeout(() => { rewardXP(50); }, 100);
 
-
             container.innerHTML = `
+
               <div class="text-center p-6 bg-slate-950 border border-slate-800 rounded-2xl space-y-4 shadow-2xl">
                 <span class="text-5xl block">${passed ? '🏆' : '⏳'}</span>
                 <h3 class="text-lg font-black text-white">${passed ? 'Examination Passed!' : 'Requires Review'}</h3>
@@ -562,8 +1020,8 @@
           container.innerHTML = `
             <div class="space-y-4">
               <div class="flex justify-between items-center px-1">
-
                 <span class="text-xs font-black text-slate-400">Exam Question ${currentExamQuestionIndex + 1} of ${exam.questions.length}</span>
+
                 <span class="text-[10px] font-mono bg-rose-950 border border-rose-800 px-2 py-0.5 text-rose-400 rounded-md font-bold">LIVE ASSESS MODE</span>
               </div>
 
@@ -582,8 +1040,8 @@
                   return `
                     <button onclick="submitActiveExamOptionAnswer(${oIdx})" ${processingExamEvaluationFeedbackMode ? 'disabled' : ''} class="w-full text-left p-3.5 border rounded-xl text-xs font-bold transition-all ${optStyle}" >${opt}</button>
                   `;
-
                 }).join('')}
+
               </div>
 
               ${processingExamEvaluationFeedbackMode ? `
@@ -602,8 +1060,8 @@
     // Exam State Handler Methods
     function startSpecificMockExamSuite(idx) {
       selectedActiveExamIndex = idx;
-
       activeExamRunningMode = true;
+
       currentExamQuestionIndex = 0;
       activeExamUserAnswersCollected = [];
       processingExamEvaluationFeedbackMode = false;
@@ -622,8 +1080,8 @@
       currentExamQuestionIndex++;
       renderActiveTabModule();
     }
-
   </script>
 </body>
 </html>
+
 
