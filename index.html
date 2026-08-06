@@ -348,42 +348,186 @@
     // Comprehensive A1 Skills Laboratory Array Matrix
     const a1SkillsDatabase = {
       listening: [
-        { id: "l1", title: "Train Station Announcement Dialogue", context: "Listen to the simulated text statement carefully and capture the explicit target destination platform.", transcript: "Achtung am Gleis 4: Der Zug nach Berlin fährt jetzt ab.", question: "Where is the train moving towards?", options: ["München", "Berlin", "Hamburg", "Frankfurt"], correct: 1 }
+        { id: "l1", title: "Train Station Announcement Dialogue", context: "Listen to the simulated text statement carefully and capture the explicit target destination platform.", transcript: "Achtung am Gleis 4: Der Zug nach Berlin fährt jetzt ab.", question: "Where is the train moving towards?", options: ["München", "Berlin", "Hamburg", "Frankfurt"], correct: 1 },
+        { id: "l2", title: "Restaurant Order Dialogue", context: "Listen to the waiter and customer exchange and identify the ordered item.", transcript: "Guten Tag! Ich möchte bitte einen Kaffee und ein Stück Kuchen.", question: "What did the customer order besides coffee?", options: ["Suppe", "Kuchen", "Brot", "Salat"], correct: 1 },
+        { id: "l3", title: "Weather Report Broadcast", context: "Listen to the short weather forecast statement and capture the temperature detail.", transcript: "Heute ist es sonnig mit einer Temperatur von zwanzig Grad.", question: "What is today's weather like?", options: ["Regnerisch", "Sonnig", "Schneit", "Windig"], correct: 1 },
+        { id: "l4", title: "Time Announcement Clip", context: "Listen to the spoken clock time and select the matching numeric value.", transcript: "Es ist jetzt Viertel nach neun am Morgen.", question: "What time is it?", options: ["9:00", "9:15", "9:30", "9:45"], correct: 1 },
+        { id: "l5", title: "Shopping Dialogue Exchange", context: "Listen to the shop conversation and determine the total price mentioned.", transcript: "Das kostet zusammen fünfzehn Euro fünfzig.", question: "How much does it cost in total?", options: ["5,50€", "15,50€", "50,15€", "51,50€"], correct: 1 },
+        { id: "l6", title: "Family Introduction Audio", context: "Listen to the self-introduction and identify the speaker's family member.", transcript: "Das ist meine Schwester. Sie heißt Anna und wohnt in München.", question: "Who is Anna to the speaker?", options: ["Mutter", "Schwester", "Tochter", "Freundin"], correct: 1 },
+        { id: "l7", title: "Phone Call Scheduling Clip", context: "Listen to the informal phone call and capture the proposed meeting day.", transcript: "Wollen wir uns am Samstag um zwölf Uhr treffen?", question: "On which day do they want to meet?", options: ["Freitag", "Samstag", "Sonntag", "Montag"], correct: 1 },
+        { id: "l8", title: "Doctor's Appointment Audio", context: "Listen to the clinic receptionist and note the appointment time given.", transcript: "Ihr Termin beim Arzt ist am Dienstag um halb elf.", question: "What day is the appointment?", options: ["Montag", "Dienstag", "Mittwoch", "Donnerstag"], correct: 1 },
+        { id: "l9", title: "Weekend Plans Announcement", context: "Listen to the friends discussing weekend activities and note the chosen plan.", transcript: "Am Wochenende gehen wir schwimmen und dann essen wir Pizza.", question: "What activity comes first?", options: ["Pizza essen", "Schwimmen", "Kino", "Schlafen"], correct: 1 },
+        { id: "l10", title: "Birthday Party Invitation Call", context: "Listen to the phone invitation and capture the party date.", transcript: "Meine Party ist am siebten Mai um achtzehn Uhr.", question: "What date is the party?", options: ["5. Mai", "7. Mai", "17. Mai", "27. Mai"], correct: 1 },
+        { id: "l11", title: "Grocery List Dictation", context: "Listen to someone reading their shopping list and identify the last item.", transcript: "Wir brauchen Milch, Eier, Brot und Käse.", question: "What is the last item on the list?", options: ["Milch", "Eier", "Brot", "Käse"], correct: 3 },
+        { id: "l12", title: "Bus Schedule Announcement", context: "Listen to the bus stop announcement and note the departure time.", transcript: "Der nächste Bus nach Köln fährt um vierzehn Uhr dreißig.", question: "When does the next bus leave?", options: ["13:30", "14:00", "14:30", "15:30"], correct: 2 },
+        { id: "l13", title: "Hotel Booking Phone Call", context: "Listen to the hotel reservation call and capture the number of nights.", transcript: "Ich möchte ein Zimmer für drei Nächte buchen, bitte.", question: "How many nights does the caller want?", options: ["Zwei", "Drei", "Vier", "Fünf"], correct: 1 },
+        { id: "l14", title: "Cinema Ticket Purchase Dialogue", context: "Listen to the ticket counter conversation and note the movie time chosen.", transcript: "Zwei Karten für den Film um neunzehn Uhr, bitte.", question: "What time is the chosen film?", options: ["17:00", "18:00", "19:00", "20:00"], correct: 2 },
+        { id: "l15", title: "Post Office Counter Dialogue", context: "Listen to the post office exchange and identify what is being sent.", transcript: "Ich möchte dieses Paket nach Spanien schicken.", question: "What is being sent?", options: ["Ein Brief", "Ein Paket", "Eine Postkarte", "Ein Geschenk"], correct: 1 },
+        { id: "l16", title: "Bank Visit Conversation", context: "Listen to the bank counter dialogue and capture the requested service.", transcript: "Ich möchte gern ein neues Konto eröffnen.", question: "What does the customer want to do?", options: ["Geld abheben", "Ein Konto eröffnen", "Karte sperren", "Geld überweisen"], correct: 1 },
+        { id: "l17", title: "School Day Schedule Clip", context: "Listen to the student describing their day and note the first class.", transcript: "Montags habe ich zuerst Deutsch und dann Mathematik.", question: "What is the first class on Monday?", options: ["Mathematik", "Deutsch", "Sport", "Kunst"], correct: 1 },
+        { id: "l18", title: "Sports Club Announcement", context: "Listen to the sports club message and capture the training day.", transcript: "Das Fußballtraining ist jeden Mittwoch um siebzehn Uhr.", question: "On which day is football training?", options: ["Montag", "Mittwoch", "Freitag", "Sonntag"], correct: 1 },
+        { id: "l19", title: "Work Schedule Dialogue", context: "Listen to the coworkers discussing shifts and identify who works Saturday.", transcript: "Ich arbeite am Samstag, aber Peter arbeitet am Sonntag.", question: "Who works on Saturday?", options: ["Peter", "The speaker", "Both", "Neither"], correct: 1 },
+        { id: "l20", title: "Holiday Plans Conversation", context: "Listen to the friends planning a trip and note the destination.", transcript: "Dieses Jahr fahren wir nach Italien in den Urlaub.", question: "Where are they going on holiday?", options: ["Frankreich", "Italien", "Spanien", "Österreich"], correct: 1 },
+        { id: "l21", title: "Pharmacy Counter Dialogue", context: "Listen to the pharmacy exchange and identify what the customer needs.", transcript: "Haben Sie etwas gegen Kopfschmerzen?", question: "What does the customer need medicine for?", options: ["Magenschmerzen", "Kopfschmerzen", "Husten", "Fieber"], correct: 1 },
+        { id: "l22", title: "Taxi Ride Request Clip", context: "Listen to the taxi call and capture the requested destination.", transcript: "Zum Hauptbahnhof, bitte, so schnell wie möglich.", question: "Where does the passenger want to go?", options: ["Flughafen", "Hauptbahnhof", "Hotel", "Museum"], correct: 1 },
+        { id: "l23", title: "Library Visit Dialogue", context: "Listen to the library counter conversation and note the return deadline.", transcript: "Sie müssen das Buch bis zum vierzehnten zurückbringen.", question: "By when must the book be returned?", options: ["4th", "14th", "24th", "40th"], correct: 1 },
+        { id: "l24", title: "Gym Class Schedule Clip", context: "Listen to the gym receptionist and capture the class start time.", transcript: "Der Yogakurs beginnt heute um neunzehn Uhr dreißig.", question: "What time does the yoga class start?", options: ["18:30", "19:00", "19:30", "20:30"], correct: 2 },
+        { id: "l25", title: "Cooking Recipe Instruction Audio", context: "Listen to the recipe narration and identify the first cooking step.", transcript: "Zuerst schneiden Sie die Zwiebeln klein.", question: "What is the first step?", options: ["Kochen", "Zwiebeln schneiden", "Servieren", "Würzen"], correct: 1 }
       ],
       reading: [
-        { id: "r1", title: "Supermarket Notice Parsing", context: "Read the informational announcement layout and deduce the correct closure time validation.", body: "Liebe Grüße! Unser Laden schließt heute bereits um 18:00 Uhr wegen Renovierung. Bitte kommen Sie früher vorbei.", question: "At what time sequence does the shop close today?", options: ["16:00", "18:00", "20:00", "22:00"], correct: 1 }
+        { id: "r1", title: "Supermarket Notice Parsing", context: "Read the informational announcement layout and deduce the correct closure time validation.", body: "Liebe Grüße! Unser Laden schließt heute bereits um 18:00 Uhr wegen Renovierung. Bitte kommen Sie früher vorbei.", question: "At what time sequence does the shop close today?", options: ["16:00", "18:00", "20:00", "22:00"], correct: 1 },
+        { id: "r2", title: "Birthday Invitation Note", context: "Read the short invitation text and identify the event location.", body: "Hallo! Ich feiere meinen Geburtstag am Samstag in unserem Garten. Bitte bring auch deine Familie mit.", question: "Where is the birthday party taking place?", options: ["Restaurant", "Garten", "Schule", "Büro"], correct: 1 },
+        { id: "r3", title: "Weather Forecast Text", context: "Read the printed forecast summary and select the correct expected condition tomorrow.", body: "Morgen wird es bewölkt und kühl. Am Nachmittag kann es auch etwas regnen.", question: "What is tomorrow's forecast?", options: ["Sonnig und heiß", "Bewölkt, evtl. Regen", "Schnee", "Sturm"], correct: 1 },
+        { id: "r4", title: "Restaurant Menu Excerpt", context: "Read the small menu listing and find the price of the soup.", body: "Tagessuppe: 4,50€ — Schnitzel mit Pommes: 9,90€ — Apfelkuchen: 3,20€.", question: "How much does the soup cost?", options: ["3,20€", "4,50€", "9,90€", "12,00€"], correct: 1 },
+        { id: "r5", title: "Job Advertisement Snippet", context: "Read the short job posting and identify the required working hours.", body: "Gesucht: Verkäuferin, Teilzeit, 20 Stunden pro Woche, ab sofort.", question: "How many hours per week is the job?", options: ["10", "20", "30", "40"], correct: 1 },
+        { id: "r6", title: "Public Transport Notice", context: "Read the transit board message and determine which line is affected.", body: "Achtung Fahrgäste: Die Linie 5 fällt heute wegen Bauarbeiten aus.", question: "Which line is cancelled today?", options: ["Linie 3", "Linie 5", "Linie 7", "Linie 9"], correct: 1 },
+        { id: "r7", title: "Weekend Plans Message", context: "Read the short text message and identify the planned weekend activity.", body: "Am Wochenende gehe ich mit Freunden ins Kino und danach essen wir Pizza.", question: "What are they doing first this weekend?", options: ["Essen gehen", "Ins Kino gehen", "Schlafen", "Arbeiten"], correct: 1 },
+        { id: "r8", title: "School Timetable Extract", context: "Read the class schedule line and find which subject comes after German.", body: "Montag: 8 Uhr Deutsch, 9 Uhr Mathematik, 10 Uhr Sport.", question: "What subject follows German class?", options: ["Sport", "Mathematik", "Englisch", "Kunst"], correct: 1 },
+        { id: "r9", title: "Apartment Listing Ad", context: "Read the rental ad and identify the monthly rent.", body: "Schöne 2-Zimmer-Wohnung, zentral gelegen, 650€ pro Monat, ab 1. Juni frei.", question: "What is the monthly rent?", options: ["560€", "650€", "605€", "506€"], correct: 1 },
+        { id: "r10", title: "Doctor's Office Sign", context: "Read the clinic hours sign and determine the closing day.", body: "Sprechstunden: Montag bis Freitag. Samstag und Sonntag geschlossen.", question: "When is the clinic closed?", options: ["Montag & Dienstag", "Mittwoch", "Samstag & Sonntag", "Nie"], correct: 2 },
+        { id: "r11", title: "Museum Opening Hours Notice", context: "Read the museum sign and find the last entry time.", body: "Öffnungszeiten: 9–17 Uhr. Letzter Einlass um 16:30 Uhr.", question: "What is the last entry time?", options: ["16:00", "16:30", "17:00", "17:30"], correct: 1 },
+        { id: "r12", title: "Train Ticket Information Slip", context: "Read the ticket details and identify the departure platform.", body: "Abfahrt: Gleis 7, Zug nach Hamburg, 10:15 Uhr.", question: "Which platform does the train depart from?", options: ["Gleis 5", "Gleis 7", "Gleis 9", "Gleis 11"], correct: 1 },
+        { id: "r13", title: "Café Menu Board Text", context: "Read the café board and find the price of a cappuccino.", body: "Espresso 2,00€, Cappuccino 3,20€, Latte 3,50€.", question: "How much is a cappuccino?", options: ["2,00€", "3,20€", "3,50€", "4,00€"], correct: 1 },
+        { id: "r14", title: "Lost And Found Notice", context: "Read the notice board post and identify the lost item.", body: "Verloren: Ein schwarzer Regenschirm im Park. Bitte melden Sie sich.", question: "What item was lost?", options: ["Ein Schirm", "Ein Hund", "Ein Buch", "Eine Tasche"], correct: 0 },
+        { id: "r15", title: "Gym Membership Flyer", context: "Read the flyer and find the monthly membership price.", body: "Fitnessstudio Mitgliedschaft: 29,90€ pro Monat, keine Anmeldegebühr.", question: "What is the monthly membership cost?", options: ["19,90€", "29,90€", "39,90€", "49,90€"], correct: 1 },
+        { id: "r16", title: "Wedding Invitation Card", context: "Read the invitation and identify the ceremony start time.", body: "Wir laden Sie herzlich ein: Die Trauung beginnt um 15 Uhr.", question: "What time does the ceremony start?", options: ["13:00", "14:00", "15:00", "16:00"], correct: 2 },
+        { id: "r17", title: "Recipe Card Excerpt", context: "Read the recipe card and find the baking time.", body: "Kuchen bei 180 Grad für 35 Minuten backen.", question: "How long should the cake bake?", options: ["25 Minuten", "35 Minuten", "45 Minuten", "55 Minuten"], correct: 1 },
+        { id: "r18", title: "Parking Sign Regulation", context: "Read the parking sign and determine the maximum stay allowed.", body: "Parken erlaubt: Maximal 2 Stunden, Montag bis Samstag.", question: "What is the maximum parking duration?", options: ["1 Stunde", "2 Stunden", "3 Stunden", "4 Stunden"], correct: 1 },
+        { id: "r19", title: "Flight Boarding Announcement Text", context: "Read the airport screen text and note the boarding gate.", body: "Flug LH123 nach München: Boarding an Gate 14.", question: "Which gate is boarding for LH123?", options: ["Gate 4", "Gate 14", "Gate 40", "Gate 41"], correct: 1 },
+        { id: "r20", title: "Language School Brochure", context: "Read the course brochure and identify the class duration.", body: "A1 Kurs: 8 Wochen, zweimal pro Woche, jeweils 90 Minuten.", question: "How long is the A1 course?", options: ["4 Wochen", "6 Wochen", "8 Wochen", "10 Wochen"], correct: 2 },
+        { id: "r21", title: "Pharmacy Opening Notice", context: "Read the pharmacy sign and identify the Sunday status.", body: "Apotheke geöffnet: Mo–Sa 8–20 Uhr. Sonntags Notdienst laut Aushang.", question: "What is the Sunday status?", options: ["Geschlossen", "Normal geöffnet", "Notdienst laut Aushang", "Nur vormittags"], correct: 2 },
+        { id: "r22", title: "Library Rules Notice", context: "Read the library notice and find the maximum borrowing period.", body: "Bücher können für maximal 4 Wochen ausgeliehen werden.", question: "What is the maximum loan period?", options: ["2 Wochen", "3 Wochen", "4 Wochen", "6 Wochen"], correct: 2 },
+        { id: "r23", title: "Weather App Screenshot Text", context: "Read the weather app snippet and find the wind information.", body: "Heute: 18°C, leicht bewölkt, Wind aus West mit 15 km/h.", question: "What is today's wind speed?", options: ["5 km/h", "15 km/h", "25 km/h", "35 km/h"], correct: 1 },
+        { id: "r24", title: "Sports Center Schedule", context: "Read the sports center board and find the swimming pool closing time.", body: "Schwimmbad geöffnet bis 21 Uhr, letzter Einlass 20 Uhr.", question: "When does the pool close?", options: ["19:00", "20:00", "21:00", "22:00"], correct: 2 },
+        { id: "r25", title: "Grocery Store Discount Flyer", context: "Read the discount flyer and identify the sale item price.", body: "Diese Woche: Äpfel im Angebot, 1kg für nur 1,50€.", question: "What is the price for 1kg of apples?", options: ["1,00€", "1,50€", "2,00€", "2,50€"], correct: 1 }
       ],
       writing: [
-        { id: "w1", title: "Goethe A1 Form Completion Challenge", context: "Determine the correct missing case marker article to fulfill the structural requirement layout syntax.", text: "Ich möchte ___ (neuter object direct target) Buch kaufen, aber ich habe kein Geld dabei.", options: ["das", "die", "den", "der"], correct: 0 }
+        { id: "w1", title: "Goethe A1 Form Completion Challenge", context: "Determine the correct missing case marker article to fulfill the structural requirement layout syntax.", text: "Ich möchte ___ (neuter object direct target) Buch kaufen, aber ich habe kein Geld dabei.", options: ["das", "die", "den", "der"], correct: 0 },
+        { id: "w2", title: "Article Gender Selection Drill", context: "Select the correct definite article for the given noun's grammatical gender.", text: "___ Tisch steht in der Küche.", options: ["Der", "Die", "Das", "Den"], correct: 0 },
+        { id: "w3", title: "Present Tense Verb Conjugation", context: "Fill in the missing conjugated verb form matching the subject pronoun.", text: "Er ___ (to work) jeden Tag im Büro.", options: ["arbeite", "arbeitest", "arbeitet", "arbeiten"], correct: 2 },
+        { id: "w4", title: "Preposition Selection Challenge", context: "Choose the preposition that correctly completes the location expression.", text: "Die Kinder spielen ___ dem Park.", options: ["in", "auf", "aus", "bei"], correct: 0 },
+        { id: "w5", title: "Plural Noun Formation Task", context: "Select the correct plural form of the singular noun shown.", text: "Ein Haus → viele ___", options: ["Haus", "Häuser", "Hauser", "Häuse"], correct: 1 },
+        { id: "w6", title: "Possessive Pronoun Matching", context: "Complete the sentence with the correct possessive pronoun for the subject.", text: "Das ist ___ (my) Auto.", options: ["mein", "meine", "meinen", "meines"], correct: 0 },
+        { id: "w7", title: "Word Order Structuring Drill", context: "Identify the version with correct German verb-second word order.", text: "Which sentence has correct word order?", options: ["Heute ich gehe einkaufen.", "Heute gehe ich einkaufen.", "Ich heute gehe einkaufen.", "Gehe ich heute einkaufen."], correct: 1 },
+        { id: "w8", title: "Accusative Case Transformation", context: "Select the correctly transformed accusative case article for the direct object.", text: "Ich sehe ___ Mann dort drüben.", options: ["der", "den", "dem", "des"], correct: 1 },
+        { id: "w9", title: "Modal Verb Sentence Completion", context: "Fill in the correctly conjugated modal verb form.", text: "Ich ___ (can) heute nicht kommen.", options: ["kann", "kannst", "können", "könnt"], correct: 0 },
+        { id: "w10", title: "Negation Placement Drill", context: "Choose the sentence with correctly placed negation.", text: "Which sentence is correctly negated?", options: ["Ich habe nicht Zeit.", "Ich habe keine Zeit.", "Ich nicht habe Zeit.", "Ich habe Zeit nicht."], correct: 1 },
+        { id: "w11", title: "Dative Case Article Selection", context: "Select the correct dative article to complete the sentence.", text: "Ich gebe ___ Frau das Buch.", options: ["die", "der", "den", "dem"], correct: 1 },
+        { id: "w12", title: "Adjective Ending Agreement Task", context: "Choose the correct adjective ending for the noun phrase.", text: "Das ist ein ___ (nice) Haus.", options: ["schöne", "schönes", "schöner", "schönen"], correct: 1 },
+        { id: "w13", title: "Separable Verb Placement Drill", context: "Select the sentence with correctly placed separable verb prefix.", text: "Which sentence is correct?", options: ["Ich stehe früh auf.", "Ich aufstehe früh.", "Ich stehe auf früh.", "Aufstehe ich früh."], correct: 0 },
+        { id: "w14", title: "Time Expression Ordering Task", context: "Select the sentence following correct time-manner-place word order.", text: "Which sentence follows correct order?", options: ["Ich fahre morgen mit dem Bus zur Schule.", "Ich fahre mit dem Bus morgen zur Schule.", "Ich fahre zur Schule morgen mit dem Bus.", "Morgen ich fahre zur Schule."], correct: 0 },
+        { id: "w15", title: "Question Word Selection Drill", context: "Choose the correct question word for the answer given.", text: "___ wohnst du? — In Berlin.", options: ["Wer", "Wo", "Wann", "Was"], correct: 1 },
+        { id: "w16", title: "Conjunction Usage Task", context: "Select the correct conjunction to link the two clauses.", text: "Ich bleibe zu Hause, ___ es regnet.", options: ["weil", "und", "aber", "oder"], correct: 0 },
+        { id: "w17", title: "Comparative Adjective Form Task", context: "Choose the correct comparative form of the adjective.", text: "Berlin ist ___ (bigger) als München.", options: ["groß", "größer", "am größten", "groß er"], correct: 1 },
+        { id: "w18", title: "Reflexive Verb Completion Drill", context: "Complete the sentence with the correct reflexive pronoun.", text: "Ich freue ___ auf die Ferien.", options: ["mich", "dich", "sich", "uns"], correct: 0 },
+        { id: "w19", title: "Past Tense Perfekt Formation", context: "Select the correctly formed Perfekt tense sentence.", text: "Which sentence uses correct Perfekt tense?", options: ["Ich habe gestern gearbeitet.", "Ich bin gestern gearbeitet.", "Ich gearbeitet habe gestern.", "Ich hat gestern gearbeitet."], correct: 0 },
+        { id: "w20", title: "Genitive Alternative With Von Task", context: "Select the correct way to express possession at A1 level.", text: "Das Auto ___ meines Vaters.", options: ["von", "aus", "aus dem", "zu"], correct: 0 },
+        { id: "w21", title: "Indefinite Article Selection Drill", context: "Choose the correct indefinite article for the noun.", text: "Ich habe ___ Schwester.", options: ["ein", "eine", "einen", "einem"], correct: 1 },
+        { id: "w22", title: "Verb Konjugation Sein Drill", context: "Complete with the correct form of 'sein' for the subject.", text: "Wir ___ (to be) heute müde.", options: ["bin", "bist", "ist", "sind"], correct: 3 },
+        { id: "w23", title: "Two-Way Preposition Case Task", context: "Select the correct case-matching article for the stationary location.", text: "Das Buch liegt auf ___ Tisch.", options: ["der", "die", "das", "dem"], correct: 3 },
+        { id: "w24", title: "Imperative Form Construction Drill", context: "Choose the correctly formed polite imperative sentence.", text: "Which is a correct polite request?", options: ["Bitte kommen Sie herein.", "Bitte kommst du herein.", "Bitte kommen herein Sie.", "Bitte du kommst herein."], correct: 0 },
+        { id: "w25", title: "Subordinate Clause Verb Position Task", context: "Select the sentence with the verb correctly placed at the end of the subordinate clause.", text: "Which sentence is correct?", options: ["Ich weiß, dass er heute kommt.", "Ich weiß, dass er kommt heute.", "Ich weiß, dass kommt er heute.", "Ich weiß dass er heute kommt er."], correct: 0 }
       ],
       speaking: [
-        { id: "s1", title: "Pronunciation Phonetics Calibration Engine", context: "Practice reading the native phrase out loud according to the phonetics breakdown matrix configuration guide.", text: "Wie geht es Ihnen heute Morgen?", guide: "Pronounce: Vee gayt es ee-nen hoy-te mor-gen?" }
+        { id: "s1", title: "Pronunciation Phonetics Calibration Engine", context: "Practice reading the native phrase out loud according to the phonetics breakdown matrix configuration guide.", text: "Wie geht es Ihnen heute Morgen?", guide: "Pronounce: Vee gayt es ee-nen hoy-te mor-gen?" },
+        { id: "s2", title: "Morning Greeting Phrase Drill", context: "Practice this common daily greeting phrase aloud.", text: "Guten Morgen, wie war Ihre Nacht?", guide: "Pronounce: Goo-ten mor-gen, vee var ee-reh nakht?" },
+        { id: "s3", title: "Self Introduction Phrase Practice", context: "Practice introducing yourself using this template phrase.", text: "Ich heiße Anna und ich komme aus Deutschland.", guide: "Pronounce: Eech hy-seh Anna oont eech kom-meh ows Doytch-lant." },
+        { id: "s4", title: "Asking Where Someone Lives", context: "Practice asking a new acquaintance where they live.", text: "Wo wohnen Sie genau?", guide: "Pronounce: Voh voh-nen zee geh-now?" },
+        { id: "s5", title: "Asking For A Price In A Shop", context: "Practice asking the price of an item while shopping.", text: "Wie viel kostet das, bitte?", guide: "Pronounce: Vee feel kos-tet das, bit-teh?" },
+        { id: "s6", title: "Requesting Help Politely", context: "Practice politely requesting assistance from someone.", text: "Können Sie mir bitte helfen?", guide: "Pronounce: Kur-nen zee meer bit-teh hel-fen?" },
+        { id: "s7", title: "Ordering A Drink At A Café", context: "Practice ordering a coffee at a café counter.", text: "Ich möchte gern einen Kaffee bestellen.", guide: "Pronounce: Eech muerkh-teh gairn eye-nen ka-fay beh-shtel-en." },
+        { id: "s8", title: "Saying Goodbye Formally", context: "Practice this formal farewell phrase used at the end of a conversation.", text: "Auf Wiedersehen und einen schönen Tag noch!", guide: "Pronounce: Owf vee-der-zayn oont eye-nen shur-nen tahk nokh!" },
+        { id: "s9", title: "Asking For Directions Phrase", context: "Practice asking a stranger for directions to the station.", text: "Entschuldigung, wie komme ich zum Bahnhof?", guide: "Pronounce: Ent-shool-dee-goong, vee kom-meh eech tsoom bahn-hohf?" },
+        { id: "s10", title: "Talking About The Weather", context: "Practice a simple phrase describing today's weather.", text: "Heute ist das Wetter wirklich schön.", guide: "Pronounce: Hoy-teh ist das vet-ter veerk-leekh shurn." },
+        { id: "s11", title: "Ordering Food At A Restaurant", context: "Practice ordering a main dish at a restaurant.", text: "Ich hätte gern das Schnitzel mit Pommes.", guide: "Pronounce: Eech het-teh gairn das shnit-sel mit pom-mes." },
+        { id: "s12", title: "Talking About Your Job", context: "Practice describing your profession in a simple sentence.", text: "Ich arbeite als Lehrerin in einer Schule.", guide: "Pronounce: Eech ar-by-teh als lay-rer-in in eye-ner shoo-leh." },
+        { id: "s13", title: "Making A Doctor's Appointment", context: "Practice requesting a medical appointment over the phone.", text: "Ich brauche einen Termin beim Arzt.", guide: "Pronounce: Eech brow-kheh eye-nen ter-meen bym artst." },
+        { id: "s14", title: "Expressing Likes And Dislikes", context: "Practice a simple sentence about a hobby you enjoy.", text: "Ich spiele gern Fußball am Wochenende.", guide: "Pronounce: Eech shpee-leh gairn foos-bal am vokh-en-en-deh." },
+        { id: "s15", title: "Talking About Family Members", context: "Practice describing a family member briefly.", text: "Meine Mutter heißt Claudia und wohnt in Hamburg.", guide: "Pronounce: My-neh moo-ter hy-st Cl-ow-dee-a oont voh-nt in Ham-boorg." },
+        { id: "s16", title: "Booking A Hotel Room Phrase", context: "Practice reserving a hotel room over the phone.", text: "Ich möchte ein Einzelzimmer für zwei Nächte buchen.", guide: "Pronounce: Eech muerkh-teh eyen eyn-tsel-tsim-mer fuer tsvy nekh-teh boo-khen." },
+        { id: "s17", title: "Apologizing Politely Phrase", context: "Practice a polite apology phrase used in daily conversation.", text: "Entschuldigung, das tut mir wirklich leid.", guide: "Pronounce: Ent-shool-dee-goong, das toot meer veerk-leekh lyt." },
+        { id: "s18", title: "Talking About Daily Routine", context: "Practice describing part of your daily routine.", text: "Ich stehe jeden Tag um sieben Uhr auf.", guide: "Pronounce: Eech shtay-eh yay-den tahk oom zee-ben oor owf." },
+        { id: "s19", title: "Confirming An Appointment Time", context: "Practice confirming a scheduled meeting time politely.", text: "Der Termin ist am Montag um zehn Uhr, richtig?", guide: "Pronounce: Dair ter-meen ist am mohn-tahk oom tsayn oor, reekh-teekh?" },
+        { id: "s20", title: "Asking About Opening Hours", context: "Practice asking a shop about its opening hours.", text: "Wann öffnet das Geschäft am Morgen?", guide: "Pronounce: Van uerf-net das geh-sheft am mor-gen?" },
+        { id: "s21", title: "Describing Where You Live", context: "Practice a simple sentence describing your home city.", text: "Ich wohne seit drei Jahren in Berlin.", guide: "Pronounce: Eech voh-neh zyt dry yah-ren in Bair-leen." },
+        { id: "s22", title: "Talking About The Weekend", context: "Practice describing your plans for the weekend.", text: "Am Wochenende besuche ich meine Großeltern.", guide: "Pronounce: Am vokh-en-en-deh beh-zoo-kheh eech my-neh grohs-el-tern." },
+        { id: "s23", title: "Ordering A Taxi Phrase", context: "Practice requesting a taxi to a specific address.", text: "Können Sie mir bitte ein Taxi rufen?", guide: "Pronounce: Kur-nen zee meer bit-teh eyen tak-see roo-fen?" },
+        { id: "s24", title: "Talking About Learning German", context: "Practice a sentence describing your language learning goal.", text: "Ich lerne Deutsch, weil ich in Deutschland arbeiten möchte.", guide: "Pronounce: Eech lair-neh Doytch, vy-l eech in Doytch-lant ar-by-ten muerkh-teh." },
+        { id: "s25", title: "Talking About Your Free Time", context: "Practice describing how you like to spend your free time.", text: "In meiner Freizeit lese ich gern Bücher.", guide: "Pronounce: In my-ner fry-tsyt lay-zeh eech gairn bue-kher." }
       ]
     };
 
     // Full 5 Mock Exam System Pipeline Core Structure Mapping Matrix
     const mockExamsDatabase = [
-      { id: 0, title: "Mock Exam Arena 1: Goethe A1 Simulation Framework", passingScore: 3, questions: [
-        { q: "Which core definite article correctly fits: '___ Tisch ist alt'?", o: ["Der", "Die", "Das", "Den"], c: 0, exp: "'Tisch' is masculine nominative." },
-        { q: "Translate to accurate English format: 'Ich brauche eine Küche.'", o: ["I have a room.", "I need a kitchen.", "I buy a house.", "I like cooking."], c: 1, exp: "'brauche' translates to need; 'Küche' means kitchen." },
-        { q: "Conjugate properly: 'Du ___ (to speak) sehr gut Deutsch.'", o: ["spreche", "spricht", "sprechen", "sprichst"], c: 3, exp: "Irregular vowel-shifting verb match for 'du' form is 'sprichst'." },
-        { q: "Identify the odd vocabulary item out from this collection:", o: ["Mutter", "Vater", "Bruder", "Auto"], c: 3, exp: "'Auto' is a vehicle; all others are direct family relation identifiers." }
+      { id: 0, title: "Mock Exam Arena 1: Grammar Foundations", passingScore: 8, questions: [
+        { q: "Welcher Artikel passt? '___ Tisch ist neu.'", o: ["Der", "Die", "Das", "Den"], c: 0, exp: "'Tisch' is masculine, so the nominative article is 'der'." },
+        { q: "Welches Wort passt? 'Ich trinke ein Glas ___.'", o: ["Brot", "Apfel", "Wasser", "Stuhl"], c: 2, exp: "'Wasser' is the only drinkable liquid among the options." },
+        { q: "Konjugieren Sie: 'Du ___ (sprechen) sehr gut Deutsch.'", o: ["spreche", "spricht", "sprechen", "sprichst"], c: 3, exp: "The 'du' form of the irregular verb 'sprechen' is 'sprichst'." },
+        { q: "Welches Wort passt nicht in die Gruppe?", o: ["Mutter", "Vater", "Bruder", "Auto"], c: 3, exp: "'Auto' is a vehicle; the others are family members." },
+        { q: "Wählen Sie die richtige Präposition: 'Wir wohnen ___ Berlin.'", o: ["in", "auf", "aus", "bei"], c: 0, exp: "Cities use the preposition 'in' for location." },
+        { q: "Was bedeutet 'das Brot' auf Englisch?", o: ["The cheese", "The milk", "The bread", "The water"], c: 2, exp: "'das Brot' means 'the bread'." },
+        { q: "Welches Nomen hat den Artikel 'die'?", o: ["der Mann", "die Frau", "das Kind", "den Jungen"], c: 1, exp: "'Frau' is feminine, so it takes 'die'." },
+        { q: "Akkusativ: Welcher Satz ist richtig?", o: ["Ich esse der Apfel.", "Ich esse den Apfel.", "Ich esse dem Apfel.", "Ich esse das Apfel."], c: 1, exp: "Masculine 'der Apfel' becomes 'den Apfel' in the accusative case." },
+        { q: "Welches Possessivpronomen ist richtig? '___ Vater arbeitet viel.' (my)", o: ["Mein", "Meine", "Meinen", "Meines"], c: 0, exp: "Masculine nominative possessive is 'mein'." },
+        { q: "Konjugieren Sie 'haben': 'Ihr ___ ein Haus.'", o: ["habe", "hast", "hat", "habt"], c: 3, exp: "The 'ihr' form of 'haben' is 'habt'." },
+        { q: "Wählen Sie die richtige Antwort auf 'Danke schön':", o: ["Bitte sehr", "Guten Morgen", "Hallo", "Tschüss"], c: 0, exp: "'Bitte sehr' is the standard polite response to thanks." },
+        { q: "Welches Verb passt? 'Sie ___ (wohnen) in München.'", o: ["wohne", "wohnst", "wohnt", "wohnen"], c: 2, exp: "The 'sie' (she) form of 'wohnen' is 'wohnt." }
       ]},
-      { id: 1, title: "Mock Exam Arena 2: Telc A1 Competency Assessment Matrix", passingScore: 3, questions: [
-        { q: "Complete the statement pattern: 'Wir wohnen ___ Berlin.'", o: ["in", "auf", "aus", "bei"], c: 0, exp: "City localization spatial preposition uses 'in'." },
-        { q: "What is the appropriate English transformation for 'das Brot'?", o: ["The cheese", "The milk", "The bread", "The water"], c: 2, exp: "'das Brot' translates directly to 'the bread'." },
-        { q: "Select the accurate feminine assignment descriptor pairing:", o: ["der Mann", "die Frau", "das Kind", "den Jungen"], c: 1, exp: "'Frau' is feminine, taking 'die'." },
-        { q: "Complete the sentence tracking: 'Ich trinke ein Glas ___.'", o: ["Brot", "Apfel", "Wasser", "Küche"], c: 2, exp: "'Wasser' is the only consumable liquid option listed." }
+      { id: 1, title: "Mock Exam Arena 2: Everyday Situations", passingScore: 8, questions: [
+        { q: "Sie sind im Restaurant. Was sagen Sie zum Kellner, um zu bestellen?", o: ["Ich möchte bitte einen Kaffee.", "Ich komme aus Deutschland.", "Wie viel Uhr ist es?", "Das ist mein Bruder."], c: 0, exp: "This is the correct polite way to order something in a restaurant." },
+        { q: "Welches Wort passt? 'Am Wochenende gehe ich ___ Supermarkt.'", o: ["im", "in den", "in dem", "auf den"], c: 1, exp: "Movement toward a place uses accusative: 'in den Supermarkt'." },
+        { q: "Wie fragt man nach dem Preis?", o: ["Wie spät ist es?", "Wie viel kostet das?", "Wo wohnst du?", "Wer bist du?"], c: 1, exp: "'Wie viel kostet das?' asks about price." },
+        { q: "Welche Uhrzeit ist 'halb drei'?", o: ["3:00", "2:30", "3:30", "2:15"], c: 1, exp: "'Halb drei' means half past two, i.e. 2:30." },
+        { q: "Sie möchten sich vorstellen. Was sagen Sie zuerst?", o: ["Ich heiße Anna.", "Auf Wiedersehen.", "Wie geht es dir?", "Das kostet zehn Euro."], c: 0, exp: "This is the standard way to introduce your name." },
+        { q: "Welches Wort gehört zum Thema 'Einkaufen'?", o: ["Kasse", "Bahnhof", "Krankenhaus", "Schule"], c: 0, exp: "'Kasse' (checkout) is directly related to shopping." },
+        { q: "Wie fragt man höflich um Hilfe?", o: ["Können Sie mir bitte helfen?", "Ich helfe dir.", "Das ist nicht gut.", "Ich verstehe nicht."], c: 0, exp: "This is a polite request for help." },
+        { q: "Was passt zu 'Frühstück'?", o: ["Brötchen und Kaffee", "Auto und Fahrrad", "Buch und Stift", "Tisch und Stuhl"], c: 0, exp: "Bread rolls and coffee are typical breakfast items." },
+        { q: "Welcher Satz beschreibt eine Verabredung?", o: ["Wollen wir uns am Samstag treffen?", "Das Wetter ist schön.", "Ich habe keinen Hunger.", "Wie ist deine Adresse?"], c: 0, exp: "This sentence proposes meeting up, i.e. making an appointment." },
+        { q: "Was sagt man beim Verabschieden am Abend?", o: ["Guten Morgen", "Gute Nacht", "Guten Appetit", "Gute Reise"], c: 1, exp: "'Gute Nacht' is said when parting in the evening/at bedtime." },
+        { q: "Welches Wort passt zum Wetter?", o: ["regnerisch", "freundlich", "günstig", "pünktlich"], c: 0, exp: "'Regnerisch' (rainy) describes weather." },
+        { q: "Wie fragt man nach dem Weg?", o: ["Wie komme ich zum Bahnhof?", "Wie heißt du?", "Was isst du gern?", "Wie alt bist du?"], c: 0, exp: "This question asks for directions to the train station." }
       ]},
-      { id: 2, title: "Mock Exam Arena 3: Structural Navigation Grammar Core", passingScore: 3, questions: [
-        { q: "Identify the direct object Accusative shift modification:", o: ["Ich esse der Apfel.", "Ich esse den Apfel.", "Ich esse dem Apfel.", "Ich esse das Apfel."], c: 1, exp: "Masculine object 'der Apfel' changes to 'den Apfel' in accusative." },
-        { q: "Which possessive pronoun denotes 'my parent' correctly?", o: ["mein Vater", "meine Vater", "meinen Vater", "meines Vater"], c: 0, exp: "Masculine subject use matches 'mein Vater'." }
+      { id: 2, title: "Mock Exam Arena 3: Family, Work & Daily Life", passingScore: 8, questions: [
+        { q: "Welches Wort bedeutet 'sister'?", o: ["der Bruder", "die Schwester", "die Mutter", "der Vater"], c: 1, exp: "'die Schwester' means 'sister'." },
+        { q: "Konjugieren Sie: 'Er ___ (arbeiten) jeden Tag im Büro.'", o: ["arbeite", "arbeitest", "arbeitet", "arbeiten"], c: 2, exp: "The 'er' form of 'arbeiten' is 'arbeitet'." },
+        { q: "Was ist das Gegenteil von 'groß'?", o: ["klein", "alt", "neu", "schnell"], c: 0, exp: "'klein' (small) is the opposite of 'groß' (big)." },
+        { q: "Welcher Satz ist im Perfekt richtig?", o: ["Ich habe gestern gearbeitet.", "Ich bin gestern gearbeitet.", "Ich gearbeitet habe gestern.", "Ich hat gestern gearbeitet."], c: 0, exp: "'haben' + past participle correctly forms the Perfekt tense here." },
+        { q: "Was passt zu 'Beruf'?", o: ["Lehrerin", "Fenster", "Regen", "Kuchen"], c: 0, exp: "'Lehrerin' (teacher) is a profession." },
+        { q: "Welches Modalverb passt? 'Ich ___ heute nicht arbeiten.' (can/be able to)", o: ["kann", "kannst", "können", "könnt"], c: 0, exp: "The 'ich' form of 'können' is 'kann'." },
+        { q: "Wie fragt man nach dem Beruf?", o: ["Was machst du beruflich?", "Wo wohnst du?", "Wie viel Uhr ist es?", "Was isst du gern?"], c: 0, exp: "This question asks what someone does for a living." },
+        { q: "Welches Wort passt zur Familie?", o: ["Onkel", "Teller", "Fahrrad", "Zeitung"], c: 0, exp: "'Onkel' (uncle) is a family member." },
+        { q: "Was bedeutet 'die Kollegin'?", o: ["Female colleague", "Female teacher", "Female doctor", "Female friend"], c: 0, exp: "'die Kollegin' means a female coworker." },
+        { q: "Welcher Satz beschreibt eine tägliche Routine?", o: ["Ich stehe um sieben Uhr auf.", "Ich war letztes Jahr in Spanien.", "Ich werde morgen Fußball spielen.", "Ich hatte gestern frei."], c: 0, exp: "This describes a regular daily habit in the present tense." },
+        { q: "Was ist das Gegenteil von 'arbeiten'?", o: ["schlafen", "sich ausruhen", "lernen", "kochen"], c: 1, exp: "'sich ausruhen' (to rest) is a natural opposite of working." },
+        { q: "Welches Wort passt zu 'Feierabend'?", o: ["nach der Arbeit", "vor der Schule", "am Morgen", "im Urlaub"], c: 0, exp: "'Feierabend' refers to the time after work is finished." }
       ]},
-      { id: 3, title: "Mock Exam Arena 4: Daily Conversational Dialogue Proficiency", passingScore: 3, questions: [
-        { q: "Select the standard reply for 'Danke schön':", o: ["Bitte sehr", "Guten Morgen", "Hallo", "Tschüss"], c: 0, exp: "'Bitte sehr' is the conventional matching response for gratitude." }
+      { id: 3, title: "Mock Exam Arena 4: Travel & Shopping", passingScore: 8, questions: [
+        { q: "Wie fragt man am Bahnhof nach dem Zug?", o: ["Wann fährt der Zug nach Berlin?", "Wie heißt du?", "Was kostet der Pullover?", "Wo ist die Toilette?"], c: 0, exp: "This question asks about a train's departure time." },
+        { q: "Welches Wort passt zu 'Koffer'?", o: ["packen", "kochen", "singen", "lesen"], c: 0, exp: "You 'pack' (packen) a suitcase before traveling." },
+        { q: "Was sagt man an der Kasse im Geschäft?", o: ["Das macht zusammen zwanzig Euro.", "Guten Appetit.", "Ich habe Hunger.", "Wie ist das Wetter?"], c: 0, exp: "This is a typical phrase used to state the total cost at checkout." },
+        { q: "Welche Präposition passt? 'Der Zug fährt ___ Hamburg.'", o: ["nach", "bei", "mit", "auf"], c: 0, exp: "'nach' is used with city destinations for direction." },
+        { q: "Wie fragt man nach dem Preis eines Kleidungsstücks?", o: ["Was kostet dieser Pullover?", "Wo ist der Bahnhof?", "Wie spät ist es?", "Was isst du gern?"], c: 0, exp: "This directly asks the price of the sweater." },
+        { q: "Welches Wort bedeutet 'Rückfahrkarte'?", o: ["Round-trip ticket", "One-way ticket", "Boarding pass", "Suitcase"], c: 0, exp: "'Rückfahrkarte' means a round-trip ticket." },
+        { q: "Was passt zu 'Hotel'?", o: ["Zimmer buchen", "Auto reparieren", "Brot backen", "Zähne putzen"], c: 0, exp: "Booking a room is directly related to staying at a hotel." },
+        { q: "Welcher Satz passt zu einer Reise?", o: ["Wir fliegen nächste Woche nach Spanien.", "Ich habe drei Geschwister.", "Das Auto ist blau.", "Er kocht gern Nudeln."], c: 0, exp: "This sentence describes upcoming travel plans." },
+        { q: "Was bedeutet 'Ermäßigung' im Kontext von Tickets?", o: ["Discount", "Delay", "Departure", "Destination"], c: 0, exp: "'Ermäßigung' means a discount or reduced price." },
+        { q: "Welches Wort passt zu 'Flughafen'?", o: ["Gepäck", "Kühlschrank", "Regal", "Teppich"], c: 0, exp: "'Gepäck' (luggage) is associated with airports." },
+        { q: "Wie fragt man höflich nach der Öffnungszeit?", o: ["Wann öffnet das Geschäft?", "Wie alt ist das Geschäft?", "Wo wohnt der Verkäufer?", "Was kostet die Miete?"], c: 0, exp: "This asks when the shop opens." },
+        { q: "Welcher Satz passt zum Einkaufen im Supermarkt?", o: ["Ich brauche noch Milch und Eier.", "Ich fliege morgen nach Rom.", "Er arbeitet als Lehrer.", "Sie wohnt in einem kleinen Dorf."], c: 0, exp: "This sentence lists items needed for grocery shopping." }
       ]},
-      { id: 4, title: "Mock Exam Arena 5: Advanced Comprehensive Baseline Synthesis", passingScore: 3, questions: [
-        { q: "Conjugate root operational verb 'haben': 'Ihr ___ ein Haus.'", o: ["habe", "hast", "hat", "habt"], c: 3, exp: "The plural pronoun form for 'ihr' takes the 'habt' configuration suffix." }
+      { id: 4, title: "Mock Exam Arena 5: Advanced A1 Synthesis", passingScore: 8, questions: [
+        { q: "Welches Fragewort passt? '___ wohnst du?' (Where)", o: ["Wer", "Wo", "Wann", "Was"], c: 1, exp: "'Wo' is used to ask about location." },
+        { q: "Welche Pluralform ist richtig? 'ein Haus' → 'viele ___'", o: ["Haus", "Häuser", "Hauser", "Häuse"], c: 1, exp: "The correct plural of 'Haus' is 'Häuser'." },
+        { q: "Welcher Satz hat die richtige Wortstellung?", o: ["Heute ich gehe einkaufen.", "Heute gehe ich einkaufen.", "Ich heute gehe einkaufen.", "Gehe ich heute einkaufen."], c: 1, exp: "German verb-second word order places the verb in second position." },
+        { q: "Welches Wort passt zur Negation? 'Ich habe ___ Zeit.'", o: ["nicht", "keine", "kein", "nichts"], c: 1, exp: "'Zeit' is a feminine noun, so 'keine' is used for negation." },
+        { q: "Wählen Sie den richtigen Komparativ: 'Berlin ist ___ als München.' (bigger)", o: ["groß", "größer", "am größten", "grosser"], c: 1, exp: "The comparative form of 'groß' is 'größer'." },
+        { q: "Welches Reflexivpronomen passt? 'Ich freue ___ auf die Ferien.'", o: ["mich", "dich", "sich", "uns"], c: 0, exp: "The reflexive pronoun for 'ich' is 'mich'." },
+        { q: "Welcher Satz verwendet die Dativ-Präposition richtig?", o: ["Ich gebe der Frau das Buch.", "Ich gebe die Frau das Buch.", "Ich gebe den Frau das Buch.", "Ich gebe des Frau das Buch."], c: 0, exp: "'der Frau' is the correct dative form for a feminine noun." },
+        { q: "Welches Wort passt zur Zweiweg-Präposition? 'Das Buch liegt auf ___ Tisch.' (stationary)", o: ["der", "die", "das", "dem"], c: 3, exp: "Stationary location with 'auf' takes the dative: 'dem Tisch'." },
+        { q: "Welcher Imperativsatz ist höflich richtig?", o: ["Bitte kommen Sie herein.", "Bitte kommst du herein.", "Bitte kommen herein Sie.", "Bitte du kommst herein."], c: 0, exp: "This is the correctly formed polite imperative using 'Sie'." },
+        { q: "Welcher Nebensatz hat die richtige Verbstellung?", o: ["Ich weiß, dass er heute kommt.", "Ich weiß, dass er kommt heute.", "Ich weiß, dass kommt er heute.", "Ich weiß dass er heute kommt er."], c: 0, exp: "In subordinate clauses with 'dass', the verb moves to the end." },
+        { q: "Welches Wort bedeutet 'appointment'?", o: ["der Termin", "die Reise", "das Fenster", "der Teppich"], c: 0, exp: "'der Termin' means an appointment." },
+        { q: "Welcher Satz passt zu einer formellen E-Mail?", o: ["Sehr geehrte Frau Müller, ...", "Hey, was geht ab?", "Tschüss, bis bald!", "Na, alles klar?"], c: 0, exp: "This is a formal salutation appropriate for official correspondence." }
       ]}
     ];
 
@@ -402,6 +546,8 @@
     // Skills Interactive Assessment Tracker Arrays
     let activeSkillSection = 'listening';
     let skillSelectedAnswer = null;
+    let activeSkillQuestionIndex = 0;
+    let isTranscriptVisible = false;
 
     // Mini-Games Core Playground State Models
     let activeGameMode = 'none'; // 'none', 'match', 'gender'
@@ -630,6 +776,38 @@
       if(pool.length > 0) {
         genderGameActiveItem = pool[Math.floor(Math.random() * pool.length)];
       }
+      renderActiveTabModule();
+    }
+
+    function playListeningAudio() {
+      if (!('speechSynthesis' in window) || typeof SpeechSynthesisUtterance === 'undefined') {
+        alert('Sorry, your browser does not support audio playback. Please try Chrome, Edge, or Safari in a full browser (not an in-app browser).');
+        return;
+      }
+      const lData = a1SkillsDatabase.listening[activeSkillQuestionIndex % a1SkillsDatabase.listening.length];
+      const synth = window.speechSynthesis;
+      if (synth.speaking) synth.cancel();
+
+      const utterance = new SpeechSynthesisUtterance(lData.transcript);
+      utterance.lang = 'de-DE';
+      utterance.rate = 0.85;
+      utterance.volume = 1;
+      const voices = synth.getVoices();
+      const germanVoice = voices.find(v => v.lang === 'de-DE') || voices.find(v => v.lang && v.lang.startsWith('de'));
+      if (germanVoice) utterance.voice = germanVoice;
+      utterance.onerror = (e) => {
+        console.error('Speech synthesis error:', e.error);
+        alert('Audio playback failed (' + e.error + '). Check your device volume/silent mode, or try opening this page directly in Chrome or Safari instead of an in-app browser.');
+      };
+      // Call speak() synchronously within the click handler - required by
+      // Safari/iOS, which blocks speech that isn't directly tied to a tap.
+      synth.speak(utterance);
+    }
+
+    function advanceSkillQuestion() {
+      activeSkillQuestionIndex++;
+      skillSelectedAnswer = null;
+      isTranscriptVisible = false;
       renderActiveTabModule();
     }
 
@@ -892,17 +1070,24 @@
         let skillsHTML = `<div class="space-y-4">
           <div class="grid grid-cols-4 gap-1.5">
             ${['listening', 'reading', 'writing', 'speaking'].map(s => `
-              <button onclick="activeSkillSection='${s}'; skillSelectedAnswer=null; renderActiveTabModule();" class="py-2 px-1 rounded-xl text-[10px] font-black uppercase tracking-tight border text-center transition-all ${activeSkillSection === s ? 'bg-indigo-600 border-indigo-500 text-white' : 'bg-slate-800 border-slate-700 text-slate-400'}" >${s}</button>
+              <button onclick="activeSkillSection='${s}'; skillSelectedAnswer=null; activeSkillQuestionIndex=0; isTranscriptVisible=false; renderActiveTabModule();" class="py-2 px-1 rounded-xl text-[10px] font-black uppercase tracking-tight border text-center transition-all ${activeSkillSection === s ? 'bg-indigo-600 border-indigo-500 text-white' : 'bg-slate-800 border-slate-700 text-slate-400'}" >${s}</button>
             `).join('')}
           </div>
           <div class="${conf.cardBg} border p-4 rounded-2xl space-y-3">
-            <h3 class="text-xs font-black uppercase tracking-wider text-indigo-400">${activeSkillSection.toUpperCase()} LAB IMMERSION</h3>`;
+            <div class="flex justify-between items-center">
+              <h3 class="text-xs font-black uppercase tracking-wider text-indigo-400">${activeSkillSection.toUpperCase()} LAB IMMERSION</h3>
+              <span class="text-[10px] font-bold text-slate-500">#${activeSkillQuestionIndex + 1}</span>
+            </div>`;
 
         if (activeSkillSection === 'listening') {
-          const lData = a1SkillsDatabase.listening[0];
+          const lData = a1SkillsDatabase.listening[activeSkillQuestionIndex % a1SkillsDatabase.listening.length];
           skillsHTML += `
             <div class="space-y-3">
-              <p class="text-xs text-slate-400 font-mono italic">Audio simulation text: "${lData.transcript}"</p>
+              <div class="flex items-center gap-2">
+                <button onclick="playListeningAudio()" class="flex items-center gap-2 px-4 py-2.5 bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs rounded-xl active:scale-95 transition-all" >🔊 Play Audio</button>
+                <button onclick="isTranscriptVisible = !isTranscriptVisible; renderActiveTabModule();" class="px-3 py-2.5 bg-slate-800 border border-slate-700 text-slate-300 font-bold text-[10px] rounded-xl" >${isTranscriptVisible ? 'Hide' : 'Show'} Transcript</button>
+              </div>
+              ${isTranscriptVisible ? `<p class="text-xs text-slate-400 font-mono italic">"${lData.transcript}"</p>` : ''}
               <p class="text-xs font-bold">${lData.question}</p>
               <div class="space-y-2">
                 ${lData.options.map((o, idx) => `
@@ -913,10 +1098,11 @@
                 <div class="p-2 text-xs rounded bg-slate-950 text-center font-bold ${skillSelectedAnswer === lData.correct ? 'text-emerald-400' : 'text-rose-400'}" >
                   ${skillSelectedAnswer === lData.correct ? '✓ Correct! (+10 XP)' : '✗ Incorrect! Try listening again.'}
                 </div>
+                <button onclick="advanceSkillQuestion();" class="w-full py-2.5 bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs rounded-xl" >Next Question →</button>
               ` : ''}
             </div>`;
         } else if (activeSkillSection === 'reading') {
-          const rData = a1SkillsDatabase.reading[0];
+          const rData = a1SkillsDatabase.reading[activeSkillQuestionIndex % a1SkillsDatabase.reading.length];
           skillsHTML += `
             <div class="space-y-3">
               <div class="p-3 bg-slate-950 border border-slate-800 rounded-xl font-mono text-xs leading-relaxed italic text-slate-300">"${rData.body}"</div>
@@ -930,10 +1116,11 @@
                 <div class="p-2 text-xs rounded bg-slate-950 text-center font-bold ${skillSelectedAnswer === rData.correct ? 'text-emerald-400' : 'text-rose-400'}" >
                   ${skillSelectedAnswer === rData.correct ? '✓ Correct! (+10 XP)' : '✗ Incorrect. Look for closure timestamps.'}
                 </div>
+                <button onclick="advanceSkillQuestion();" class="w-full py-2.5 bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs rounded-xl" >Next Question →</button>
               ` : ''}
             </div>`;
         } else if (activeSkillSection === 'writing') {
-          const wData = a1SkillsDatabase.writing[0];
+          const wData = a1SkillsDatabase.writing[activeSkillQuestionIndex % a1SkillsDatabase.writing.length];
           skillsHTML += `
             <div class="space-y-3">
               <p class="text-xs font-medium leading-relaxed">${wData.context}</p>
@@ -947,10 +1134,11 @@
                 <div class="p-2 text-xs rounded bg-slate-950 text-center font-bold ${skillSelectedAnswer === wData.correct ? 'text-emerald-400' : 'text-rose-400'}" >
                   ${skillSelectedAnswer === wData.correct ? '✓ Success Matrix Match (+15 XP)' : '✗ Case grammar mismatches identified.'}
                 </div>
+                <button onclick="advanceSkillQuestion();" class="w-full py-2.5 bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs rounded-xl" >Next Question →</button>
               ` : ''}
             </div>`;
         } else if (activeSkillSection === 'speaking') {
-          const sData = a1SkillsDatabase.speaking[0];
+          const sData = a1SkillsDatabase.speaking[activeSkillQuestionIndex % a1SkillsDatabase.speaking.length];
           skillsHTML += `
             <div class="space-y-3 text-center py-2">
               <p class="text-xs font-bold text-slate-300">Target Statement Structure Challenge</p>
@@ -959,7 +1147,7 @@
                 <span class="text-[9px] uppercase font-black block text-slate-400 tracking-wider">Phonetics Suffix Guide Map</span>
                 <p class="text-xs text-amber-400 font-mono font-bold mt-0.5">${sData.guide}</p>
               </div>
-              <button onclick="rewardXP(5);" class="w-full mt-2 p-3 bg-indigo-600 font-black text-xs text-white rounded-xl shadow-md active:scale-95 transition-all">🎤 Verify Speaking Pronunciation</button>
+              <button onclick="rewardXP(5); advanceSkillQuestion();" class="w-full mt-2 p-3 bg-indigo-600 font-black text-xs text-white rounded-xl shadow-md active:scale-95 transition-all">🎤 Verify Speaking Pronunciation</button>
             </div>`;
         }
 
@@ -1077,6 +1265,12 @@
       processingExamEvaluationFeedbackMode = false;
       currentExamQuestionIndex++;
       renderActiveTabModule();
+    }
+
+    // Preload speech synthesis voices so German audio is ready on first play
+    if ('speechSynthesis' in window) {
+      window.speechSynthesis.getVoices();
+      window.speechSynthesis.onvoiceschanged = () => window.speechSynthesis.getVoices();
     }
   </script>
 </body>
