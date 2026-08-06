@@ -458,14 +458,27 @@
       }
     };
 
-    // Algorithmic Large-Scale Number Generator Engine Method (0 to 100 Million converter rule matrix)
+    // Native Browser Audio Speech Synthesis Runner
 
+    function triggerSpeechSynthesis(text) {
+      if ('speechSynthesis' in window) {
+        window.speechSynthesis.cancel();
+        const cleanText = text.split('(')[0].split('-')[0].trim();
+        const utterance = new SpeechSynthesisUtterance(cleanText);
+        utterance.lang = 'de-DE';
+        utterance.rate = 0.8;
+        window.speechSynthesis.speak(utterance);
+      }
+    }
+
+    // Algorithmic Large-Scale Number Generator Engine Method (0 to 100 Million converter rule matrix)
     function generateGermanNumberStringFormula(num) {
       if (num === 0) return "null";
       
       const units = ["", "eins", "zwei", "drei", "vier", "fünf", "sechs", "sieben", "acht", "neun"];
       const teens = ["zehn", "elf", "zwölf", "dreizehn", "vierzehn", "fünfzehn", "sechzehn", "siebzehn", "achtzehn", "neunzehn"];
       const tens = ["", "zehn", "zwanzig", "dreißig", "vierzig", "fünfzig", "sechzig", "siebzig", "achtzig", "neunzig"];
+
 
       function convertSubHundreds(val) {
         if (val < 10) return units[val];
@@ -479,7 +492,6 @@
       function convertSubThousands(val) {
         const h = Math.floor(val / 100);
         const rem = val % 100;
-
         let res = "";
         if (h > 0) res += (h === 1 ? "ein" : units[h]) + "hundert";
         if (rem > 0) res += convertSubHundreds(rem);
@@ -487,6 +499,7 @@
       }
 
       let outputText = "";
+
       let remainingValue = num;
 
       if (remainingValue >= 1000000) {
@@ -499,7 +512,6 @@
       if (remainingValue >= 1000) {
         const thous = Math.floor(remainingValue / 1000);
         remainingValue %= 1000;
-
         if (thous === 1) outputText += "eintausend";
         else outputText += convertSubThousands(thous) + "tausend";
       }
@@ -507,6 +519,7 @@
       if (remainingValue > 0) {
         outputText += convertSubThousands(remainingValue);
       }
+
 
       if (outputText.endsWith("eins") && num > 1) {
         outputText = outputText.slice(0, -4) + "eins";
@@ -519,7 +532,6 @@
       const outputNode = document.getElementById('numerical-matrix-output-string');
       if (!inputNode || !outputNode) return;
       
-
       let val = parseInt(inputNode.value, 10);
       if (isNaN(val) || val < 0) {
         outputNode.innerText = "Please enter a valid positive integer baseline parameter.";
@@ -528,6 +540,7 @@
       if (val > 100000000) {
         outputNode.innerText = "Maximum threshold capped safely at 100,000,000 (100 Million).";
         return;
+
       }
       
       outputNode.innerText = generateGermanNumberStringFormula(val);
@@ -540,7 +553,6 @@
       renderActiveTabModule();
     };
 
-
     function applyThemeProfile(themeKey) {
       currentThemeProfile = themeKey;
       localStorage.setItem('sb_theme_profile', themeKey);
@@ -548,6 +560,7 @@
       
       document.getElementById('app-shell-container').className = `w-full max-w-md mx-auto min-h-screen shadow-2xl flex flex-col justify-between relative border-x theme-transition ${conf.shellBg}`;
       document.getElementById('app-header-nav').className = `p-4 border-b flex justify-between items-center sticky top-0 z-50 theme-transition ${conf.headerBg}`;
+
       document.getElementById('main-scroll-view').className = `flex-1 overflow-y-auto p-4 theme-transition ${conf.viewSurfaceBg}`;
       document.getElementById('app-footer-nav').className = `border-t h-16 flex sticky bottom-0 z-50 theme-transition ${conf.footerBg}`;
       
@@ -560,7 +573,6 @@
 
     function updateDashboardTelemetry() {
       document.getElementById('streak-days-val').innerText = savedStreakCount;
-
       document.getElementById('xp-amount-val').innerText = totalXPAmount;
       
       const display = document.getElementById('player-rank-display');
@@ -568,6 +580,7 @@
       else if (totalXPAmount >= 250) display.innerText = "Lv.3 Master Competitor";
       else if (totalXPAmount >= 100) display.innerText = "Lv.2 Experienced Challenger";
       else display.innerText = "Lv.1 Arena Novice";
+
     }
 
     function rewardXP(amt) {
@@ -580,7 +593,6 @@
       activeTab = tabId;
       isVocabCardFlipped = false;
       skillSelectedAnswer = null;
-
       if (tabId !== 'exams') activeExamRunningMode = false;
       applyThemeProfile(currentThemeProfile);
       renderActiveTabModule();
@@ -588,6 +600,7 @@
 
     // View Route Processing Center Hub
     function renderActiveTabModule() {
+
       const container = document.getElementById('main-scroll-view');
       const conf = systemThemeProfiles[currentThemeProfile] || systemThemeProfiles['midnight-slate'];
       
@@ -600,7 +613,6 @@
               <div class="mt-4 flex gap-2">
                 <button onclick="switchTab('exams')" class="bg-white text-indigo-950 font-black text-[11px] px-3.5 py-2 rounded-xl shadow-md transform active:scale-95 transition-transform">Run Mock Test</button>
                 <button onclick="switchTab('vocabulary')" class="bg-indigo-500/30 border border-indigo-400/40 text-white font-bold text-[11px] px-3.5 py-2 rounded-xl">Lexicon Hub</button>
-
               </div>
             </div>
 
@@ -608,6 +620,7 @@
               <div class="${conf.cardBg} border p-4 rounded-xl flex flex-col justify-between">
                 <span class="text-[10px] uppercase font-bold text-slate-400 tracking-wider">A1 Framework Core</span>
                 <span class="text-base font-black text-emerald-400 mt-1">100% Validated</span>
+
               </div>
               <div class="${conf.cardBg} border p-4 rounded-xl flex flex-col justify-between">
                 <span class="text-[10px] uppercase font-bold text-slate-400 tracking-wider">Exam Status Modules</span>
@@ -620,7 +633,6 @@
               <div class="grid grid-cols-2 gap-2">
                 <button onclick="applyThemeProfile('midnight-slate')" class="p-2.5 rounded-lg border text-[11px] font-bold text-center bg-slate-900 border-slate-700">Slate Mode</button>
                 <button onclick="applyThemeProfile('cyberpunk-neon')" class="p-2.5 rounded-lg border text-[11px] font-bold text-center bg-indigo-950 border-fuchsia-800 text-cyan-300">Neon Mode</button>
-
               </div>
             </div>
           </div>
@@ -628,6 +640,7 @@
       }
 
       else if (activeTab === 'vocabulary') {
+
         const categories = Object.keys(a1VocabularyDatabase);
         const activeList = a1VocabularyDatabase[selectedVocabCategory];
         const card = activeList ? activeList[activeVocabCardIndex] : null;
@@ -640,7 +653,6 @@
 
         let coreDisplayBodyHTML = '';
 
-
         if (selectedVocabCategory === "DYNAM_NUMBERS") {
           coreDisplayBodyHTML = `
             <div class="${conf.cardBg} border p-4 rounded-2xl w-full space-y-3">
@@ -648,6 +660,7 @@
               <p class="text-[11px] text-slate-400">Type any number between 0 and 100,000,000 to see its exact written grammatical German compilation string framework.</p>
               <input type="number" id="numerical-matrix-input" min="0" max="100000000" placeholder="Type integer... (e.g. 984520)" oninput="runLiveIntegerConversionCheck()" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 text-sm font-mono font-bold text-amber-400 outline-none" />
               <div class="p-3 bg-slate-950 border border-slate-800 rounded-xl min-h-[50px] flex items-center justify-center">
+
                 <p id="numerical-matrix-output-string" class="text-xs font-bold text-emerald-400 font-mono text-center">null</p>
               </div>
             </div>
@@ -660,18 +673,23 @@
             </div>
 
             <div class="flashcard-wrapper w-full h-56 cursor-pointer ${isVocabCardFlipped ? 'flipped' : ''}" onclick="this.classList.toggle('flipped'); isVocabCardFlipped=!isVocabCardFlipped;">
-
               <div class="flashcard-inner">
                 <div class="flashcard-front ${conf.cardBg} border shadow-xl">
                   <div class="w-full flex justify-between items-center">
                     <span class="text-[9px] uppercase tracking-widest font-black px-2 py-0.5 rounded bg-slate-950/50 text-indigo-400">${card.gender}</span>
-                    <span class="text-[9px] font-mono text-amber-400/80 font-bold bg-slate-950/40 px-1.5 py-0.5 rounded">🔊 Pronunciation Mode</span>
+                    <span class="text-[9px] font-mono text-amber-400/80 font-bold bg-slate-950/40 px-1.5 py-0.5 rounded">📄 Front</span>
                   </div>
                   <div class="flex flex-col my-auto items-center">
-                    <span class="text-xl font-black tracking-tight select-none">${card.german}</span>
-                    <span class="text-xs font-mono font-bold text-indigo-300 mt-2 bg-indigo-950/40 px-2 py-1 rounded border border-indigo-900/40">🗣️ Speak: [ ${card.pronunciation || 'N/A'} ]</span>
+
+                    <span class="text-2xl font-black tracking-tight select-none">${card.german}</span>
+                    <span class="text-xs font-mono font-bold text-indigo-300 mt-2 bg-indigo-950/40 px-2 py-1 rounded border border-indigo-900/40">🗣️ [ ${card.pronunciation || 'N/A'} ]</span>
+                    
+                    <!-- DEDICATED INTERACTIVE AUDIO PRONUNCIATION BUTTON -->
+                    <button onclick="event.stopPropagation(); triggerSpeechSynthesis('${card.german}');" class="mt-3 px-3 py-1.5 bg-indigo-600 hover:bg-indigo-500 text-white font-extrabold text-[10px] rounded-lg shadow-md flex items-center gap-1 transition-transform active:scale-95">
+                      🔊 Listen Audio
+                    </button>
                   </div>
-                  <span class="text-[10px] text-slate-400 font-medium italic">💡 Tap to reveal English context</span>
+                  <span class="text-[10px] text-slate-400 font-medium italic">💡 Tap card background area to flip</span>
                 </div>
                 <div class="flashcard-back ${conf.cardBackBg} border shadow-xl">
                   <span class="text-[9px] uppercase tracking-widest font-black self-start text-indigo-300">English Translation Mapping</span>
@@ -681,8 +699,8 @@
               </div>
             </div>
 
-
             <div class="w-full grid grid-cols-2 gap-2">
+
               <button onclick="activeVocabCardIndex = (activeVocabCardIndex === 0) ? ${activeList.length - 1} : activeVocabCardIndex - 1; isVocabCardFlipped=false; renderActiveTabModule();" class="p-3 bg-slate-800 border border-slate-700 text-xs font-bold rounded-xl active:scale-95 transition-transform">← Prev</button>
               <button onclick="activeVocabCardIndex = (activeVocabCardIndex === ${activeList.length - 1}) ? 0 : activeVocabCardIndex + 1; isVocabCardFlipped=false; renderActiveTabModule();" class="p-3 bg-slate-800 border border-slate-700 text-xs font-bold rounded-xl active:scale-95 transition-transform">Next →</button>
             </div>
