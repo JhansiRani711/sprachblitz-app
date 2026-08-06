@@ -1,108 +1,710 @@
+# Welcome Leute
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Sprachblitz - A1 Pro Arena</title>
-  <script src="https://tailwindcss.com"></script>
-  <link href="https://googleapis.com" rel="stylesheet">
+  <title>Sprachblitz - A1 Pro Language Arena</title>
+  <!-- Tailwind CSS Core Setup -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- External Font Family Tracking -->
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
-    body { font-family: 'Plus Jakarta Sans', sans-serif; transition: background-color 0.3s ease; }
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
     .flashcard-wrapper { perspective: 1000px; }
-    .flashcard-inner { position: relative; width: 100%; height: 100%; text-align: center; transition: transform 0.5s; transform-style: preserve-3d; }
+    .flashcard-inner {
+      position: relative;
+      width: 100%;
+
+      height: 100%;
+      text-align: center;
+      transition: transform 0.5s;
+      transform-style: preserve-3d;
+    }
     .flashcard-wrapper.flipped .flashcard-inner { transform: rotateY(180deg); }
-    .flashcard-front, .flashcard-back { position: absolute; width: 100%; height: 100%; -webkit-backface-visibility: hidden; backface-visibility: hidden; border-radius: 1rem; padding: 1.25rem; display: flex; flex-direction: column; justify-content: space-between; }
+    .flashcard-front, .flashcard-back {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      -webkit-backface-visibility: hidden;
+      backface-visibility: hidden;
+      border-radius: 1rem;
+      padding: 1.25rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
     .flashcard-back { transform: rotateY(180deg); }
-    .animate-fadeIn { animation: fIn 0.25s ease-out forwards; }
-    @keyframes fIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
+
+    .theme-transition { transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+    ::-webkit-scrollbar { width: 4px; }
+    ::-webkit-scrollbar-thumb { background: rgba(156, 163, 175, 0.3); border-radius: 2px; }
   </style>
 </head>
 <body class="min-h-screen flex flex-col bg-slate-950 text-slate-100">
 
-  <div id="app-shell-container" class="w-full max-w-md mx-auto min-h-screen shadow-2xl flex flex-col justify-between relative border-x border-slate-800 bg-slate-900">
+  <!-- Main Responsive Application Container Shell -->
+  <div id="app-shell-container" class="w-full max-w-md mx-auto min-h-screen shadow-2xl flex flex-col justify-between relative border-x border-slate-800 bg-slate-900 theme-transition">
     
-    <!-- Top Telemetry Status Header Bar -->
-    <header id="app-header-nav" class="p-4 border-b border-slate-800 bg-slate-950 text-white flex justify-between items-center sticky top-0 z-50">
+    <!-- Top Global Status Header Tracking Engine -->
+    <header id="app-header-nav" class="p-4 border-b border-slate-800 bg-slate-950 text-white flex justify-between items-center sticky top-0 z-50 theme-transition">
       <div class="flex flex-col">
         <h1 class="text-base font-extrabold tracking-tight">Sprachblitz ⚡ <span class="text-xs font-black text-indigo-400 bg-indigo-950/60 border border-indigo-800/80 px-1.5 py-0.5 rounded ml-1">A1 PRO</span></h1>
         <div id="player-rank-display" class="text-[9px] font-black uppercase tracking-wider mt-0.5 text-indigo-400">Lv.1 Arena Novice</div>
       </div>
       <div class="flex items-center gap-2">
-        <div id="streak-counter" class="font-bold text-xs flex items-center gap-1 px-2 py-1 rounded-lg border border-slate-800 bg-slate-900 text-amber-500">🔥 1 d</div>
-        <div class="font-bold text-xs bg-indigo-950 text-indigo-300 border border-indigo-800 px-2 py-1 rounded-lg">✨ <span id="xp-amount-val">0</span> XP</div>
+        <div id="streak-counter" class="font-bold text-xs flex items-center gap-1 px-2 py-1 rounded-lg border border-slate-800 bg-slate-900 text-amber-500">
+          🔥 <span id="streak-days-val">1</span> d
+
+        </div>
+        <div class="font-bold text-xs bg-indigo-950 text-indigo-300 border border-indigo-800 px-2 py-1 rounded-lg">
+          ✨ <span id="xp-amount-val">0</span> XP
+        </div>
       </div>
     </header>
 
-    <!-- Main Dynamic Scrolling View Surface -->
-    <main id="main-scroll-view" class="flex-1 overflow-y-auto p-4 bg-slate-900">
-      <!-- Dynamic views inject here programmatically -->
+    <!-- Main Dynamic Scrolling Workspace Window View Surface -->
+    <main id="main-scroll-view" class="flex-1 overflow-y-auto p-4 bg-slate-900 theme-transition">
+      <!-- Programmatic Screen Modules Are Injected Universally Here -->
     </main>
 
     <!-- Persistent Global Footer Navigation Control Dock Grid Layout -->
-    <footer id="app-footer-nav" class="border-t border-slate-800 bg-slate-950 h-16 flex sticky bottom-0 z-50">
-      <button onclick="switchTab('dashboard')" class="flex-1 flex flex-col items-center justify-center transition-colors" id="tab-dashboard">
-        <svg xmlns="http://w3.org" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="mb-1"><rect width="7" height="9" x="3" y="3" rx="1"/><rect width="7" height="5" x="14" y="3" rx="1"/><rect width="7" height="9" x="14" y="12" rx="1"/><rect width="7" height="5" x="3" y="16" rx="1"/></svg>
+    <footer id="app-footer-nav" class="border-t border-slate-800 bg-slate-950 h-16 flex sticky bottom-0 z-50 theme-transition">
+      <button onclick="switchTab('dashboard')" class="flex-1 flex flex-col items-center justify-center navigation-tab-btn transition-colors text-indigo-400" id="tab-dashboard">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="mb-1"><rect width="7" height="9" x="3" y="3" rx="1"/><rect width="7" height="5" x="14" y="3" rx="1"/><rect width="7" height="9" x="14" y="12" rx="1"/><rect width="7" height="5" x="3" y="16" rx="1"/></svg>
         <span class="text-[9px] font-bold">Arena</span>
       </button>
-      <button onclick="switchTab('vocabulary')" class="flex-1 flex flex-col items-center justify-center transition-colors" id="tab-vocabulary">
-        <svg xmlns="http://w3.org" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="mb-1"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z"/><path d="M6 6h10M6 10h10"/></svg>
+      <button onclick="switchTab('vocabulary')" class="flex-1 flex flex-col items-center justify-center navigation-tab-btn transition-colors text-slate-500" id="tab-vocabulary">
+
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="mb-1"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z"/><path d="M6 6h10M6 10h10"/></svg>
         <span class="text-[9px] font-bold">Lexicon</span>
       </button>
-      <button onclick="switchTab('grammar')" class="flex-1 flex flex-col items-center justify-center transition-colors" id="tab-grammar">
-        <svg xmlns="http://w3.org" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="mb-1"><path d="M21.42 10.922a1 1 0 0 0-.019-1.838L12.83 5.18a2 2 0 0 0-1.66 0L2.6 9.08a1 1 0 0 0 0 1.832l8.57 3.908a2 2 0 0 0 1.66 0z"/><path d="M6 18.8v-4L12 18l6-3.2v4"/></svg>
+      <button onclick="switchTab('grammar')" class="flex-1 flex flex-col items-center justify-center navigation-tab-btn transition-colors text-slate-500" id="tab-grammar">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="mb-1"><path d="M21.42 10.922a1 1 0 0 0-.019-1.838L12.83 5.18a2 2 0 0 0-1.66 0L2.6 9.08a1 1 0 0 0 0 1.832l8.57 3.908a2 2 0 0 0 1.66 0z"/><path d="M6 18.8v-4L12 18l6-3.2v4"/></svg>
         <span class="text-[9px] font-bold">Grammar</span>
       </button>
-      <button onclick="switchTab('skills')" class="flex-1 flex flex-col items-center justify-center transition-colors" id="tab-skills">
-        <svg xmlns="http://w3.org" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="mb-1"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/><path d="M19 10v1a7 7 0 0 1-14 0v-1M12 19v4M8 23h8"/></svg>
+      <button onclick="switchTab('skills')" class="flex-1 flex flex-col items-center justify-center navigation-tab-btn transition-colors text-slate-500" id="tab-skills">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="mb-1"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/><path d="M19 10v1a7 7 0 0 1-14 0v-1M12 19v4M8 23h8"/></svg>
         <span class="text-[9px] font-bold">Skills</span>
       </button>
-      <button onclick="switchTab('exams')" class="flex-1 flex flex-col items-center justify-center transition-colors" id="tab-exams">
-        <svg xmlns="http://w3.org" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="mb-1"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/><polyline points="14 2 14 8 20 8"/><path d="m9 15 2 2 4-4"/></svg>
+      <button onclick="switchTab('exams')" class="flex-1 flex flex-col items-center justify-center navigation-tab-btn transition-colors text-slate-500" id="tab-exams">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="mb-1"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/><polyline points="14 2 14 8 20 8"/><path d="m9 15 2 2 4-4"/></svg>
         <span class="text-[9px] font-bold">Exams</span>
       </button>
     </footer>
   </div>
 
+  <!-- Master Application Logic & Core Datastructure Matrices -->
+
   <script>
-    // Complete A1 Core Vocabulary Dataset Map Matrix
+    // A1 Vocabulary Data Core Layout Map
     const a1VocabularyDatabase = {
-      "Alphabet (Alphabet)": [
-        { id: "v1", german: "A (Aa)", gender: "letter", english: "A", pronunciation: "ah", hint: "Basic character track setup." },
-        { id: "v2", german: "B (Beh)", gender: "letter", english: "B", pronunciation: "beh", hint: "Consonant framework trace." },
-        { id: "v3", german: "C (TSeh)", gender: "letter", english: "C", pronunciation: "tseh", hint: "Syllabus entry character node." }
+      "Basics & Greetings": [
+        { id: "v1", german: "Guten Tag", gender: "greeting", english: "Good Day", pronunciation: "goo-ten tahk", hint: "Standard daytime greeting phrase." },
+        { id: "v2", german: "Tschüss", gender: "departure", english: "Bye", pronunciation: "tshuess", hint: "Informal, popular exit statement." },
+        { id: "v3", german: "Danke", gender: "expression", english: "Thank You", pronunciation: "dahn-keh", hint: "Expression of gratitude." }
       ],
-      "Umlauts & Sound Rules": [
-        { id: "u1", german: "ä (Bär)", gender: "umlaut", english: "sound 'eh'", pronunciation: "bair", hint: "Open vowel target node configuration." },
-        { id: "u2", german: "ö (Löwe)", gender: "umlaut", english: "rounded lips vowel", pronunciation: "luu-veh", hint: "Form lips like an O while stating Eh." }
+      "Alphabet & Phonics": [
+        { id: "a1", german: "A", gender: "letter", english: "Ah", pronunciation: "ah", hint: "Example: Apfel" },
+        { id: "a2", german: "ä (Bär)", gender: "umlaut", english: "sound 'eh'", pronunciation: "bair", hint: "Vowel modification tone node." },
+        { id: "a3", german: "ß (Weiß)", gender: "ligature", english: "sharp s", pronunciation: "vyss", hint: "Double-s phonetic equivalent." }
       ],
-      "Numbers (Zahlen)": [
-        { id: "n1", german: "Eins", gender: "number", english: "One", pronunciation: "yns", hint: "Integer baseline node 1." },
-        { id: "n2", german: "Zwei", gender: "number", english: "Two", pronunciation: "tsvy", hint: "Integer baseline node 2." }
-      ],
-      "Family (Die Familie)": [
-        { id: "f1", german: "Der Vater", gender: "masculine", english: "Father", pronunciation: "dayr fah-ter", hint: "Male parent entity matrix." },
-        { id: "f2", german: "Die Mutter", gender: "feminine", english: "Mother", pronunciation: "dee moot-er", hint: "Female parent entity matrix." },
-        { id: "f3", german: "Das Mädchen", gender: "neuter", english: "Girl", pronunciation: "dahs maet-chen", hint: "Grammatically takes neuter article syntax form." }
+      "Family & People": [
+        { id: "f1", german: "Der Vater", gender: "masculine", english: "Father", pronunciation: "dayr fah-ter", hint: "Male parent descriptor." },
+        { id: "f2", german: "Die Mutter", gender: "feminine", english: "Mother", pronunciation: "dee moot-er", hint: "Female parent descriptor." },
+        { id: "f3", german: "Das Mädchen", gender: "neuter", english: "Girl", pronunciation: "dahs maet-chen", hint: "Takes neuter forms." }
       ],
       "Body Parts (Körperteile)": [
-        { id: "b1", german: "Der Kopf", gender: "masculine", english: "Head", pronunciation: "dayr kopf", hint: "Upper body command console." },
-        { id: "b2", german: "Die Hand", gender: "feminine", english: "Hand", pronunciation: "dee hahnt", hint: "Terminal limb operational unit." }
+
+        { id: "b1", german: "Der Kopf", gender: "masculine", english: "Head", pronunciation: "dayr kopf", hint: "Upper command center mapping." },
+        { id: "b2", german: "Die Hand", gender: "feminine", english: "Hand", pronunciation: "dee hahnt", hint: "Terminal limb workspace node." }
+      ],
+      "Colours & Seasons": [
+        { id: "c1", german: "Rot", gender: "colour", english: "Red", pronunciation: "roht", hint: "Primary layout color signal." },
+        { id: "c2", german: "Sommer", gender: "season", english: "Summer", pronunciation: "zom-er", hint: "Warm seasonal calendar module." }
       ]
     };
 
-    // Unified 13-Module Grammar Blueprint Database Array
+    // All 13 Crucial A1 Grammar Curricular Sections
     const a1GrammarDatabase = [
-      { id: "g1", title: "1. Definite & Indefinite Articles", rules: "German nouns carry Masculine (der/ein), Feminine (die/eine), or Neuter (das/ein) tags based on lexical rules.", example: "Der Mann, eine Frau, das Kind." },
-      { id: "g2", title: "2. Personal Pronouns Matrix", rules: "Core subject markers: ich (I), du (you), er/sie/es (he/she/it), wir (wie), ihr (you pl.), sie/Sie (they/Formal You).", example: "Ich bin hier. Er lernt Deutsch." },
-      { id: "g3", title: "3. Irregular Sein Conjugation", rules: "The foundation auxiliary verb follows irregular conjugation profiles across all runtime pronoun sets.", example: "Ich bin, du bist, er ist, wir sind." }
+      { id: "g1", title: "1. Articles (Definite & Indefinite)", rules: "German tracks genders via Masculine (der/ein), Feminine (die/eine), and Neuter (das/ein).", example: "Der Kopf, eine Hand, das Mädchen." },
+      { id: "g2", title: "2. Personal Pronouns", rules: "Subject anchors: ich (I), du (you), er/sie/es (he/she/it), wir (we), ihr (you pl), sie/Sie (they/Formal).", example: "Ich bin hier. Du lernst Deutsch." },
+      { id: "g3", title: "3. Sein Forms", rules: "The irregular baseline tracking auxiliary verb: ich bin, du bist, er ist, wir sind, ihr seid, sie sind.", example: "Wir sind bereit. Du bist ein Meister." },
+      { id: "g4", title: "4. Verb Conjugation", rules: "Standard suffix updates applied to the regular verb base stems: -e, -st, -t, -en, -t, -en.", example: "Ich lerne, du lernst, er lernt, wir lernen." },
+      { id: "g5", title: "5. Possessive Articles", rules: "Indicate item ownership matrix: mein (my), dein (your), sein (his), ihr (her). Feminine objects append '-e'.", example: "Das ist mein Vater. Das ist meine Mutter." },
+      { id: "g6", title: "6. Modal Verbs", rules: "können (can), müssen (must), wollen (want). Modals conjugate and push companion infs to the absolute tail.", example: "Ich kann Deutsch sprechen. (Infinitive locks at sentence tail.)" },
+      { id: "g7", title: "7. Trennbar (Separable) Verbs", rules: "Prefix particles detach from active stem structures and land cleanly at the far terminal boundary node.", example: "aufstehen -> Ich stehe jeden Tag um 7:00 Uhr auf." },
+      { id: "g8", title: "8. Imperativ Commands", rules: "Declare action tasks. Informal commands drop pronouns and the baseline trait suffix -st formatting.", example: "Komm hierher! Hör gut zu!" },
+
+      { id: "g9", title: "9. Degrees of Comparison", rules: "Adjective grading follows standard suffix additions: -er for comparative, 'am ...-sten' for supreme state.", example: "klein -> kleiner -> am kleinsten. alt -> älter." },
+      { id: "g10", title: "10. Present Perfect Past", rules: "Past tense frames utilize auxiliary assets (haben/sein) at position 2 and a terminal Partizip II root token.", example: "Ich habe Deutsch gelernt. Wir sind gefahren." },
+      { id: "g11", title: "11. Past Tense Haben & Sein", rules: "Simple narrative past parameters used for auxiliary units. Haben -> hatte. Sein -> war.", example: "Ich hatte Glück. Gestern war ich müde." },
+      { id: "g12", title: "12. Akkusativ & Dativ Cases", rules: "Akkusativ applies to direct target items (den/einem), Dativ maps indirect beneficiaries (dem/der/dem).", example: "Ich gebe dem Vater (Dativ) den Ball (Akkusativ)." },
+      { id: "g13", title: "13. Email-Writing Layout", rules: "CEFR email compliance layers require formal salutations, text arguments, and valid final signature blocks.", example: "Sehr geehrte Damen und Herren, ... Mit freundlichen Grüßen." }
     ];
 
-    // Professional Multi-Question Skills Database System Array Matrix
+    // Pro-Level Skills Laboratory Engine (Multi-Question Arrays)
     const a1SkillsDatabase = {
       listening: [
-        { id: "l1", title: "Train Station Announcement", context: "Tap the audio button below, listen to the native dialogue snippet, then select your platform answer track.", transcript: "Achtung, eine Durchsage: Der Expresszug nach Berlin fährt heute außerordentlich von Gleis 7 ab. Ich wiederhole, Gleis 7.", question: "Which target terminal track platform is verified in the audio stream statement?", options: ["Gleis 4", "Gleis 5", "Gleis 7", "Gleis 9"], correct: 2 },
-        { id: "l2", title: "Airport Departure Update", context: "Listen closely to the automated terminal announcement vector before answering.", transcript: "Passagiere für den Flug LH 432 nach Frankfurt fliegen am Flugsteig B 12 ab.", question: "Identify the verified gate target allocation framework destination:", options: ["Flugsteig A1", "Flugsteig B12", "Flugsteig C3", "Flugsteig D5"], correct: 1 }
+        { id: "l1", title: "Platform Announcement", context: "Tap button to stream sound, listen to native dialogue, and match data metrics.", transcript: "Achtung am Gleis 3: Der Zug nach Berlin fährt jetzt ab.", question: "Where is the train moving towards?", options: ["München", "Berlin", "Hamburg", "Frankfurt"], correct: 1 },
+        { id: "l2", title: "Gate Transition Informational", context: "Listen to flight logistics markers inside the text announcement stream.", transcript: "Flug LH 210 nach Frankfurt startet an Flugsteig A 5.", question: "What gate identifier is declared?", options: ["Flugsteig A5", "Flugsteig B12", "Flugsteig C1"], correct: 0 }
       ],
       reading: [
-        { id: "r1", title: "Doctor Office Schedule Notice", context: "Analyze the operational timeline notice layout parameters and deduce open access availability flags safely.", body: "📍 NOTIZ: Die Arztpraxis Dr. Müller bleibt am Freitagnachmittag geschlossen. Für Notfälle ist die Notaufnahme im Zentralklinikum ganztägig erreichbar.", question: "When is the doctor clinic explicitly unavailable for standard non-emergency visits?", options: ["Freitagvormittag", "Freitagnachmittag", "Samstagmorgen", "Montag ganztägig"], correct: 1 },
-        { id: "r2", title: "Supermarket Delivery Memo", context: "Scan the incoming inventory distribution notification parameters below.", body: "📍 INVENTUR: Frische Milchlieferungen treffen täglich um 07:00 Uhr ein. Kundenbestellungen müssen bis spätestens 18:00 am Vorabend registriert sein.", question: "What is the extreme cut-off timeline window threshold for logging verified customer orders?", options: ["07:00 Uhr morgens", "12:00 Uhr mittags", "18:00 Uhr am Vorabend", "22:00 Uhr nachts"], correct: 2 }],writing: [{ id: "w1", title: "Accusative Direct Object Marker Alignment", context: "Select the grammatically compliant morphological case modification flag required to satisfy the empty string parameter.", text: "Ich habe einen großen Garten, aber ich vermisse hier ___ (masculine object direct target) Balkon.", options: ["den", "dem", "das", "die"], correct: 0 },{ id: "w2", title: "Dative Preposition Matrix Connection", context: "Map out the correct morphological case assignment triggered by spatial location constraints.", text: "Wir sitzen heute Abend gemütlich in ___ (neuter spatial location context) Restaurant.", options: ["das", "dem", "den", "des"], correct: 1 }],speaking: [{ id: "s1", title: "Phonetic Pronunciation Calibration", context: "Tap 'Listen Guide Voice' to calibrate your phrasing rhythm, then test your delivery context aloud.", speechText: "Guten Tag, wie viel kostet dieses Brot?", guide: "Pronounce: Goo-ten tahk, vee feel kos-tet dee-zes broht?" },{ id: "s2", title: "Separable Verb Conversational Cadence", context: "Practice splitting verb structures dynamically across standard punctuation boundaries.", speechText: "Ich fange morgen um acht Uhr mit der Arbeit an.", guide: "Pronounce: Eech fang-eh mor-gen oom acht oohr mit dayr ar-byt ahn." }]};// Full 5 Mock Exam System Pipeline Core Structure Mapping Matrix (12 Questions Per Exam)const mockExamsDatabase = [{id: 0,title: "Mock Exam Arena 1: Goethe A1 Simulation Framework",passingScore: 8,questions: [{ q: "Which core definite article correctly fits: '___ Tisch ist alt'?", o: ["Der", "Die", "Das", "Den"], c: 0, exp: "'Tisch' is masculine nominative." },{ q: "Translate to accurate English format: 'Ich brauche eine Küche.'", o: ["I have a room.", "I need a kitchen.", "I buy a house.", "I like cooking."], c: 1, exp: "'brauche' translates to need; 'Küche' means kitchen." },{ q: "Conjugate properly: 'Du ___ sehr gut Deutsch.'", o: ["spreche", "spricht", "sprechen", "sprichst"], c: 3, exp: "Irregular vowel-shifting verb match for 'du' form is 'sprichst'." },{ q: "Identify the odd vocabulary item out from this collection:", o: ["Mutter", "Vater", "Bruder", "Auto"], c: 3, exp: "'Auto' is a vehicle; all others are family relations." },{ q: "Complete the statement structure: 'Er ___ ein Buch.'", o: ["lese", "liest", "lesen", "liestst"], c: 1, exp: "Third-person singular vowel-shifting conjugation of lesen is 'liest'." },{ q: "What is the opposite descriptive flag of 'groß'?", o: ["klein", "alt", "neu", "gut"], c: 0, exp: "'klein' means small; 'groß' means big." },{ q: "Complete the time tracking structure: 'Es ist zwei ___.'", o: ["Uhr", "Stunden", "Zeit", "Tag"], c: 0, exp: "Time reporting exact hours uses 'Uhr'." },{ q: "Which modal verb signifies ability or capability?", o: ["müssen", "wollen", "können", "dürfen"], c: 2, exp: "'können' indicates capability or can." },{ q: "Identify the direct translation node for 'The water':", o: ["das Wasser", "der Wasser", "die Wasser", "den Wasser"], c: 0, exp: "'Wasser' is grammatically neuter, taking 'das'." },{ q: "Complete the separation directive: 'Ich ___ das Fenster auf.'", o: ["mache", "tue", "schließe", "gehe"], c: 0, exp: "aufmachen means to open up." },{ q: "Identify the plural match for 'die Hand':", o: ["die Hände", "den Hände", "das Hände", "der Handen"], c: 0, exp: "The plural form of Hand is 'die Hände'." },{ q: "Complete the formal address template: 'Wie heißen ?'", o: ["du", "ihr", "Sie", "sie"], c: 2, exp: "Formal context utilizes capitalized 'Sie' structures." }]},{id: 1,title: "Mock Exam Arena 2: Telc A1 Competency Assessment Matrix",passingScore: 8,questions: [{ q: "Complete the statement pattern: 'Wir wohnen ___ Berlin.'", o: ["in", "auf", "aus", "bei"], c: 0, exp: "City localization spatial preposition uses 'in'." },{ q: "What is the appropriate English transformation for 'das Brot'?", o: ["The cheese", "The milk", "The bread", "The water"], c: 2, exp: "'das Brot' translates directly to 'the bread'." },{ q: "Select the accurate feminine assignment descriptor pairing:", o: ["der Mann", "die Frau", "das Kind", "den Jungen"], c: 1, exp: "'Frau' is feminine, taking 'die'." },{ q: "Complete the sentence tracking: 'Ich trinke ein Glas .'", o: ["Brot", "Apfel", "Wasser", "Küche"], c: 2, exp: "'Wasser' is a fluid asset." },{ q: "Which parameter models the direct opposite index of 'heiß'?", o: ["kalt", "warm", "schön", "dunkel"], c: 0, exp: "'kalt' denotes cold conditions." },{ q: "Complete the lexical match: 'Der Arzt arbeitet im .'", o: ["Krankenhaus", "Schule", "Küche", "Auto"], c: 0, exp: "Doctors operate inside hospitals ('Krankenhaus')." },{ q: "What is the digit framework assignment matching 'elf'?", o: ["1", "7", "11", "12"], c: 2, exp: "'elf' corresponds to the integer 11." },{ q: "Conjugate standard regular root: 'Wir ___ Fußball.'", o: ["spiele", "spielst", "spielt", "spielen"], c: 3, exp: "Plural first-person verb form uses '-en' tail suffix." },{ q: "Complete spatial trajectory trace: 'Kommst du ___ Spanien?'", o: ["aus", "von", "in", "nach"], c: 0, exp: "Country origins utilize the 'aus' tracking particle." },{ q: "Which item is a verified member of 'Obst' matrix structures?", o: ["Der Apfel", "Das Brot", "Das Fleisch", "Der Reis"], c: 0, exp: "Apfel is fruit." },{ q: "Complete the greeting vector timeline logic: 'Guten ___ (08:00 AM)'", o: ["Morgen", "Tag", "Abend", "Nacht"], c: 0, exp: "Early day schedules deploy 'Morgen'." },{ q: "Identify the matching parameter for 'Goodbye' (informal):", o: ["Tschüss", "Hallo", "Bitte", "Danke"], c: 0, exp: "'Tschüss' is the standard informal exit token." }]},{id: 2,title: "Mock Exam Arena 3: Goethe A1 Grammar Variant B",passingScore: 8,questions: [{ q: "Conjugate standard anchor verb 'sein': 'Ihr ___ hier.'", o: ["bin", "bist", "sind", "seid"], c: 3, exp: "Second-person plural conjugation requires 'seid'." },{ q: "Identify the Dativ modifier form: 'Ich helfe ___ Kind.'", o: ["das", "dem", "den", "der"], c: 1, exp: "helfen commands the Dative case; neuter shifts das to 'dem'." },{ q: "Complete the direct assignment link: 'Das ist ___ Auto (neuter ownership).'", o: ["mein", "meine", "meinen", "meiner"], c: 0, exp: "Neuter nominative possessive utilizes the 'mein' base structural root." },{ q: "Which term flags temporal weekend positioning properties?", o: ["Montag", "Mittwoch", "Samstag", "Donnerstag"], c: 2, exp: "Samstag means Saturday." },{ q: "Select the compliant plural variant mapping for 'das Buch':", o: ["die Bücher", "die Bucher", "die Buchen", "die Büchern"], c: 0, exp: "The plural modification outputs 'die Bücher' cleanly." },{ q: "Complete the structural requirement syntax: ' du Deutsch?'", o: ["Sprichst", "Spreche", "Sprecht", "Sprechen"], c: 0, exp: "Conjugation of sprechen for 'du' matches 'Sprichst'." },{ q: "Identify the odd color spectrum parameter entity node:", o: ["Grün", "Blau", "Rot", "Kalt"], c: 3, exp: "'Kalt' models sensory temperatures; others model visual light spectra." },{ q: "Complete statement sequence logic: 'Ich ___ Kaffee trinken.'", o: ["möchte", "möchtest", "möchten", "möchtet"], c: 0, exp: "First-person conditional preference utilizes 'möchte' configuration." },{ q: "Identify the translation node for 'Where':", o: ["Wo", "Wer", "Wie", "Wann"], c: 0, exp: "'Wo' maps to spatial locations." },{ q: "Complete spatial placement assignment rules: 'Das Bild hängt an ___ Wand (fem).'", o: ["der", "die", "den", "dem"], c: 0, exp: "Static location inside Dativ shifting parameters rules 'der Wand'." },{ q: "Identify the modal requirement syntax flag: 'Du ___ lernen.'", o: ["musst", "muss", "müssen", "müsst"], c: 0, exp: "Conjugation baseline for 'du' rules 'musst'." },{ q: "What item models the core workspace label 'pencil'?", o: ["Der Bleistift", "Das Buch", "Die Kreide", "Der Tisch"], c: 0, exp: "Bleistift translates to pencil." }]},{id: 3,title: "Mock Exam Arena 4: Telc A1 Practical Communication",passingScore: 8,questions: [{ q: "Complete transactional conversation link: 'Was kostet das?' - ' 5 Euro.'", o: ["Es kostet", "Sie kostet", "Er kostet", "Wir kosten"], c: 0, exp: "Item tracking variables defaults to pricing vector 'Es kostet'." },{ q: "Complete request mapping parameters cleanly: ' mir bitte das Salz.'", o: ["Gib", "Gibst", "Geben", "Gebt"], c: 0, exp: "Informal imperative singular maps directly into 'Gib' forms." },{ q: "Identify the translation node for 'Who':", o: ["Wer", "Wo", "Warum", "Was"], c: 0, exp: "'Wer' identifies human entities." },{ q: "Complete sequence matching metrics: 'Ich ___ gern Musik.'", o: ["höre", "höre", "hören", "hörst"], c: 0, exp: "First-person baseline singular terminal suffix maps '-e'." },{ q: "What does the lexical entry 'Zucker' correspond to in English?", o: ["Sugar", "Salt", "Pepper", "Milk"], c: 0, exp: "Zucker transforms into sugar." },{ q: "Complete standard direction parameters: 'Gehen Sie gerade ___.'", o: ["aus", "nach", "in", "zu"], c: 0, exp: "geradeaus forms the composite tracking block for forward linear movement." },{ q: "Identify the proper response matching greeting vector 'Danke':", o: ["Bitte", "Hallo", "Tschüss", "Nein"], c: 0, exp: "Bitte satisfies response requirements to gratitude." },{ q: "Conjugate past framework variables cleanly: 'Gestern ___ ich müde.'", o: ["war", "warst", "waren", "wart"], c: 0, exp: "First-person past tension deployment matches 'war'." },{ q: "Complete relational connection index keys: 'Das ist die Tasche ___ Mutter.'", o: ["der", "die", "das", "den"], c: 0, exp: "Feminine ownership structures in Genitiv tracking commands 'der'." },{ q: "Identify the odd physical housing compartment out:", o: ["Das Schlafzimmer", "Das Badezimmer", "Der Himmel", "Die Küche"], c: 2, exp: "Himmel states sky structures; others map interior rooms." },{ q: "Complete sequential routine configurations: 'Um 22:00 Uhr ___ ich schlafen.'", o: ["gehe", "gehst", "gehen", "geht"], c: 0, exp: "First-person configuration pairs with 'gehe'." },{ q: "Which parameter maps token requirements for tracking 'Yesterday'?", o: ["Gestern", "Heute", "Morgen", "Jetzt"], c: 0, exp: "Gestern represents the historical solar tracking layer." }]},{id: 4,title: "Mock Exam Arena 5: Unified Comprehensive Synthesis Lab",passingScore: 8,questions: [{ q: "Complete sentence architecture formulas cleanly: 'Ich habe einen Apfel .'", o: ["gegessen", "essen", "gesehen", "trinken"], c: 0, exp: "Past perfect particle block terminal placement rules 'gegessen'." },{ q: "Identify Akkusativ target variable shifts for masculine: 'Ich suche ___ Hund.'", o: ["den", "der", "dem", "das"], c: 0, exp: "Masculine direct objects map der to 'den' inside accusative spaces." },{ q: "What item tracks standard linguistic currency tokens cleanly?", o: ["Euro", "Meter", "Kilo", "Liter"], c: 0, exp: "Euro is the baseline currency parameter marker." },{ q: "Conjugate ownership helpers cleanly: ' ihr ein Haus?'", o: ["Habt", "Habe", "Hast", "Haben"], c: 0, exp: "Conjugation requirement properties matching 'ihr' dictates 'Habt'." },{ q: "Identify the opposite flag of 'langsam':", o: ["schnell", "alt", "neu", "spät"], c: 0, exp: "schnell tracks fast rate updates; langsam tracks slow updates." },{ q: "Complete structural validation loops: 'Wir reisen ___ Bus.'", o: ["mit dem", "mit der", "in das", "zu den"], c: 0, exp: "Transit vectors combine with 'mit dem' for masculine vehicle entities." },{ q: "What temporal season token maps properties tracking 'Winter'?", o: ["Winter", "Sommer", "Frühling", "Herbst"], c: 0, exp: "Winter identifies freeze cycles." },{ q: "Complete dialogue interaction fields: 'Sprechen Sie Englisch?' - 'Ja, ein ___.'", o: ["bisschen", "viel", "groß", "alt"], c: 0, exp: "ein bisschen denotes granular quantities." },{ q: "Identify the translation mapping link for 'Why':", o: ["Warum", "Wie", "Wo", "Wer"], c: 0, exp: "Warum requests rational motivation layers." },{ q: "Complete matching configuration rows: 'Das Kind spielt mit ___ Ball.'", o: ["dem", "den", "der", "das"], c: 0, exp: "Mit commands the Dativ layer, shifting masculine ball configurations into 'dem'." },{ q: "Identify the baseline number matrix assignment index key for 'hundert':", o: ["100", "1000", "10", "50"], c: 0, exp: "hundert converts exactly into 100." },{ q: "Complete formal closing template configurations for business mail routing rules:", o: ["Mit freundlichen Grüßen", "Tschüss", "Hallo", "Bis bald"], c: 0, exp: "'Mit freundlichen Grüßen' tracks formal signoff compliance layers." }]}];// Global Core Architecture Reactivity State Cache Layout Engine Variableslet activeTab = 'dashboard';let currentThemeProfile = localStorage.getItem('sb_theme_profile') || 'midnight-slate';let totalXPAmount = parseInt(localStorage.getItem('sb_total_xp'), 10) || 0;let savedStreakCount = parseInt(localStorage.getItem('sb_streak_count'), 10) || 1;// Sub-Navigation Module Frame Index Trackerslet selectedVocabCategory = "Alphabet (Alphabet)";let activeVocabCardIndex = 0;let isVocabCardFlipped = false;let activeGrammarIndex = 0;// Pro-Level Sequential State Managers for Skills Matrix Array Layout Processinglet skillsActiveSection = 'listening';let skillsItemIndexMap = { listening: 0, reading: 0, writing: 0, speaking: 0 };let skillsSelectedAnswerCache = null;let skillsEvaluationFeedbackFlag = null;// Mini-Games Core Playground State Modelslet activeGameMode = 'none';let matchGamePairs = [];let matchSelectedGermanIdx = null;let matchSelectedEnglishIdx = null;let matchSuccessCount = 0;let genderGameActiveItem = null;let genderGameFeedback = null;// Real-Time Testing Engine Operational State Modelslet selectedActiveExamIndex = 0;let activeExamRunningMode = false;let currentExamQuestionIndex = 0;let activeExamUserAnswersCollected = [];let processingExamEvaluationFeedbackMode = false;// Audio Execution Wrappers explicitly optimized for iOS Safari gesture execution requirementsfunction triggerSpeechSynthesis(text) {if ('speechSynthesis' in window) {window.speechSynthesis.cancel();// Extract plain speech vectors safely by stripping guide hintslet clearVector = text.split('(')[0].split(',')[0].trim();const utterance = new SpeechSynthesisUtterance(clearVector);utterance.lang = 'de-DE';utterance.rate = 0.75;window.speechSynthesis.speak(utterance);} else {alert("Text-to-speech audio streams are unavailable on your runtime shell device browser.");}}function rewardXP(amt) {totalXPAmount += amt;localStorage.setItem('sb_total_xp', totalXPAmount);document.getElementById('xp-amount-val').innerText = totalXPAmount;updateRankTelemetry();}function updateRankTelemetry() {const display = document.getElementById('player-rank-display');if (totalXPAmount >= 500) display.innerText = "Lv.4 Imperial Language Architect";else if (totalXPAmount >= 250) display.innerText = "Lv.3 Master Competitor";else if (totalXPAmount >= 100) display.innerText = "Lv.2 Experienced Challenger";else display.innerText = "Lv.1 Arena Novice";}function switchTab(tabId) {activeTab = tabId;isVocabCardFlipped = false;activeGameMode = 'none';activeExamRunningMode = false;skillsSelectedAnswerCache = null;skillsEvaluationFeedbackFlag = null;renderActiveTabModule();}// --- GAME ENGINE PROCESSORS ---function initWordMatchGame() {activeGameMode = 'match';matchSuccessCount = 0;matchSelectedGermanIdx = null;matchSelectedEnglishIdx = null;const pool = [...a1VocabularyDatabase["Family (Die Familie)"], ...a1VocabularyDatabase["Body Parts (Körperteile)"]];const shuffled = pool.sort(() => 0.5 - Math.random()).slice(0, 4);const germans = shuffled.map((x, i) => ({ text: x.german, id: i, matched: false }));const english = shuffled.map((x, i) => ({ text: x.english, id: i, matched: false }));matchGamePairs = { germans: germans.sort(() => 0.5 - Math.random()), english: english.sort(() => 0.5 - Math.random()) };renderActiveTabModule();}function handleMatchSelection(type, idx) {if (type === 'ger') {if (matchGamePairs.germans[idx].matched) return;matchSelectedGermanIdx = idx;} else {if (matchGamePairs.english[idx].matched) return;matchSelectedEnglishIdx = idx;}if (matchSelectedGermanIdx !== null && matchSelectedEnglishIdx !== null) {const gerItem = matchGamePairs.germans[matchSelectedGermanIdx];const engItem = matchGamePairs.english[matchSelectedEnglishIdx];if (gerItem.id === engItem.id) {gerItem.matched = true;engItem.matched = true;matchSuccessCount++;rewardXP(5);}matchSelectedGermanIdx = null;matchSelectedEnglishIdx = null;}renderActiveTabModule();}function initGenderBlitzGame() {activeGameMode = 'gender';genderGameFeedback = null;const pool = [...a1VocabularyDatabase["Family (Die Familie)"], ...a1VocabularyDatabase["Body Parts (Körperteile)"]].filter(x => ['masculine', 'feminine', 'neuter'].includes(x.gender));genderGameActiveItem = pool[Math.floor(Math.random() * pool.length)];renderActiveTabModule();}function submitGenderStrikeAnswer(chosenGender) {if (genderGameFeedback !== null) return;genderGameFeedback = (genderGameActiveItem.gender === chosenGender) ? 'correct' : 'wrong';if (genderGameFeedback === 'correct') rewardXP(5);renderActiveTabModule();}// --- MAIN VIEW CENTER DISPATCHER ---function renderActiveTabModule() {const container = document.getElementById('main-scroll-view');const tabs = ['dashboard', 'vocabulary', 'grammar', 'skills', 'exams'];// Sync footer highlightstabs.forEach(t => {const el = document.getElementById(tab-${t});if (el) el.className = flex-1 flex flex-col items-center justify-center transition-colors ${t === activeTab ? 'text-indigo-400' : 'text-slate-500'};});if (activeTab === 'dashboard') {if (activeGameMode === 'match') {let leftColHTML = '', rightColHTML = '';matchGamePairs.germans.forEach((g, i) => {let activeStyle = g.matched ? 'bg-emerald-950/40 border-emerald-500 text-emerald-400 opacity-60' : (matchSelectedGermanIdx === i ? 'border-indigo-500 bg-indigo-950/40' : 'bg-slate-800 border-slate-700');leftColHTML += <button onclick="handleMatchSelection('ger', ${i})" class="w-full p-3 border rounded-xl font-bold text-xs text-center ${activeStyle}">${g.text}</button>;});matchGamePairs.english.forEach((e, i) => {let activeStyle = e.matched ? 'bg-emerald-950/40 border-emerald-500 text-emerald-400 opacity-60' : (matchSelectedEnglishIdx === i ? 'border-indigo-500 bg-indigo-950/40' : 'bg-slate-800 border-slate-700');rightColHTML += <button onclick="handleMatchSelection('eng', ${i})" class="w-full p-3 border rounded-xl font-bold text-xs text-center ${activeStyle}">${e.text}</button>;});container.innerHTML = <div class="space-y-4 animate-fadeIn"> <div class="flex justify-between items-center"><h3 class="text-xs font-black uppercase text-indigo-400 tracking-wider">Match Matrix</h3><button onclick="activeGameMode='none'; renderActiveTabModule();" class="text-[10px] bg-slate-800 px-2 py-1 rounded border border-slate-700">✕ Exit</button></div> <div class="grid grid-cols-2 gap-3 pt-2"><div class="space-y-2">${leftColHTML}</div><div class="space-y-2">${rightColHTML}</div></div> ${matchSuccessCount === 4 ?🎉 Matrix Cleared! Match success registered. : ''} </div>;return;}if (activeGameMode === 'gender') {let cleanNoun = genderGameActiveItem.german.replace(/^(der|die|das)\s+/i, '');container.innerHTML = <div class="space-y-4 animate-fadeIn"> <div class="flex justify-between items-center"><h3 class="text-xs font-black uppercase text-indigo-400 tracking-wider">Gender Striker</h3><button onclick="activeGameMode='none'; renderActiveTabModule();" class="text-[10px] bg-slate-800 px-2 py-1 rounded border border-slate-700">✕ Exit</button></div> <div class="bg-slate-800 border border-slate-700 p-6 rounded-2xl text-center"><span class="text-2xl font-black text-amber-400">${cleanNoun}</span></div> <div class="grid grid-cols-3 gap-2"> <button onclick="submitGenderStrikeAnswer('masculine')" class="p-3 bg-blue-950/40 border border-blue-800 text-blue-400 font-bold text-xs rounded-xl">DER</button> <button onclick="submitGenderStrikeAnswer('feminine')" class="p-3 bg-pink-950/40 border border-pink-800 text-pink-400 font-bold text-xs rounded-xl">DIE</button> <button onclick="submitGenderStrikeAnswer('neuter')" class="p-3 bg-amber-950/40 border border-amber-800 text-amber-400 font-bold text-xs rounded-xl">DAS</button> </div> ${genderGameFeedback !== null ?Full Form: ${genderGameActiveItem.german} : ''} </div>;return;}container.innerHTML =  <div class="space-y-5 animate-fadeIn"> <div class="p-5 rounded-2xl bg-gradient-to-br from-indigo-600 to-fuchsia-600 text-white shadow-xl"> <h2 class="text-lg font-extrabold">Welcome Leute ⚡</h2> <p class="text-xs text-indigo-100 mt-1 leading-relaxed">Master Goethe A1 full spectrum curricular frameworks using integrated mobile game layers cleanly.</p> </div> <div class="bg-slate-800 border border-slate-700 p-4 rounded-xl space-y-3"> <h3 class="text-xs font-black text-amber-400 uppercase tracking-wider">⚡ Vocabulary Memory Labs</h3> <div class="grid grid-cols-2 gap-2"> <button onclick="initWordMatchGame()" class="p-3 bg-slate-950 border border-indigo-900 rounded-xl text-left font-bold text-xs text-indigo-300">Word Match Matrix</button> <button onclick="initGenderBlitzGame()" class="p-3 bg-slate-950 border border-fuchsia-900 rounded-xl text-left font-bold text-xs text-fuchsia-300">Gender Striker</button> </div> </div> </div>;}else if (activeTab === 'vocabulary') {const categories = Object.keys(a1VocabularyDatabase);const activeList = a1VocabularyDatabase[selectedVocabCategory];const card = activeList[activeVocabCardIndex];container.innerHTML = <div class="space-y-4 animate-fadeIn"> <select onchange="selectedVocabCategory=this.value; activeVocabCardIndex=0; isVocabCardFlipped=false; renderActiveTabModule();" class="w-full bg-slate-950 border border-slate-800 p-2.5 text-xs font-bold rounded-xl text-slate-200 outline-none"> ${categories.map(cat =><option value="${cat}" ${cat===selectedVocabCategory?'selected':''}>${cat}).join('')} </select> <div class="flashcard-wrapper w-full h-48 cursor-pointer ${isVocabCardFlipped?'flipped':''}" onclick="this.classList.toggle('flipped'); isVocabCardFlipped=!isVocabCardFlipped;"> <div class="flashcard-inner"> <div class="flashcard-front bg-slate-800 border border-slate-700 text-slate-100 shadow-xl"> <span class="text-[9px] uppercase tracking-widest font-black text-indigo-400">${card.gender}</span> <span class="text-xl font-black block my-auto">${card.german}</span> <button onclick="event.stopPropagation(); triggerSpeechSynthesis('${card.german}');" class="mx-auto px-3 py-1.5 bg-indigo-600 text-white font-extrabold text-[10px] rounded-lg">🔊 Listen Audio</button> </div> <div class="flashcard-back bg-indigo-950 border border-indigo-800 text-indigo-200 shadow-xl"> <span class="text-[9px] uppercase font-black tracking-wider text-indigo-300">English Meaning</span> <span class="text-lg font-extrabold block my-auto">${card.english}</span> <span class="text-[10px] text-slate-400 italic">${card.hint}</span> </div> </div> </div> <div class="grid grid-cols-2 gap-2"> <button onclick="activeVocabCardIndex=(activeVocabCardIndex===0)?${activeList.length-1}:activeVocabCardIndex-1; isVocabCardFlipped=false; renderActiveTabModule();" class="p-2 bg-slate-800 text-xs font-bold rounded-xl">← Prev</button> <button onclick="activeVocabCardIndex=(activeVocabCardIndex===${activeList.length-1})?0:activeVocabCardIndex+1; isVocabCardFlipped=false; renderActiveTabModule();" class="p-2 bg-slate-800 text-xs font-bold rounded-xl">Next →</button> </div> </div>;}else if (activeTab === 'grammar') {container.innerHTML = <div class="space-y-2 animate-fadeIn"> ${a1GrammarDatabase.map((item, idx) =>${item.title}${idx===activeGrammarIndex?'▼':'▶'}${idx===activeGrammarIndex?<div class="p-4 space-y-2 bg-slate-900/40"><p class="text-xs text-slate-300">${item.rules}</p><div class="p-2 bg-slate-950 text-emerald-400 font-mono text-xs rounded-lg">${item.example}</div></div>:''}).join('')} </div>;}else if (activeTab === 'skills') {const currentItemIndex = skillsItemIndexMap[skillsActiveSection];const dataset = a1SkillsDatabase[skillsActiveSection];const activeItem = dataset[currentItemIndex];let dynamicSectionContentHTML = '';if (skillsActiveSection === 'listening') {dynamicSectionContentHTML =  <div class="space-y-3"> <div class="p-3 bg-slate-950 rounded-xl border border-slate-800 flex flex-col items-center gap-2"> <span class="text-[10px] uppercase font-black tracking-wider text-slate-400">Audio Terminal System Stream</span> <button onclick="triggerSpeechSynthesis(\${activeItem.transcript}`)" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-500 font-black text-xs text-white rounded-xl shadow-lg flex items-center gap-1">🔊 Play Live Dialogue Announcement${activeItem.question}${activeItem.options.map((o, oIdx) => <button onclick="submitSkillChoice(${oIdx}, ${activeItem.correct})" class="w-full text-left p-3 border text-xs font-bold rounded-xl ${skillsSelectedAnswerCache===oIdx?'border-indigo-500 bg-indigo-950/40':'border-slate-700 bg-slate-900'}" ${skillsEvaluationFeedbackFlag!==null?'disabled':''}>${o}</button>).join('')}; } else if (skillsActiveSection === 'reading') { dynamicSectionContentHTML = ${activeItem.body}${activeItem.question}${activeItem.options.map((o, oIdx) => <button onclick="submitSkillChoice(${oIdx}, ${activeItem.correct})" class="w-full text-left p-3 border text-xs font-bold rounded-xl ${skillsSelectedAnswerCache===oIdx?'border-indigo-500 bg-indigo-950/40':'border-slate-700 bg-slate-900'}" ${skillsEvaluationFeedbackFlag!==null?'disabled':''}>${o}</button>).join('')}; } else if (skillsActiveSection === 'writing') { dynamicSectionContentHTML = ${activeItem.text}${activeItem.options.map((o, oIdx) => <button onclick="submitSkillChoice(${oIdx}, ${activeItem.correct})" class="p-2.5 border text-xs font-mono font-bold text-center rounded-xl ${skillsSelectedAnswerCache===oIdx?'border-indigo-500 bg-indigo-950/40':'border-slate-700 bg-slate-900'}" ${skillsEvaluationFeedbackFlag!==null?'disabled':''}>[ ${o} ]</button>).join('')}; } else if (skillsActiveSection === 'speaking') { dynamicSectionContentHTML = "${activeItem.speechText}"Phonetic Calibrator Guide Map${activeItem.guide}🔊 Listen Guide Voice<button onclick="submitSpeakingPass()" class="flex-1 p-2.5 bg-indigo-600 font-black text-xs text-white rounded-xl shadow-md" ${skillsEvaluationFeedbackFlag!==null?'disabled':''}>🎤 I Stated Sentence Aloud`;}container.innerHTML = <div class="space-y-4 animate-fadeIn"> <div class="grid grid-cols-4 gap-1"> ${['listening', 'reading', 'writing', 'speaking'].map(sec =>${sec}).join('')} </div> <div class="bg-slate-800 border border-slate-700 p-4 rounded-2xl space-y-3"> <div class="flex justify-between items-center text-[10px] font-mono text-slate-400"> <span>ITEM ${currentItemIndex + 1} OF ${dataset.length}</span> <span class="text-indigo-400 font-bold uppercase">${skillsActiveSection} Arena Matrix</span> </div> ${dynamicSectionContentHTML} ${skillsEvaluationFeedbackFlag !== null ? ${skillsEvaluationFeedbackFlag==='pass'?'✓ Correct Match registered! (+15 XP)':'✗ Mismatched selection. Read matrix parameters again.'}Advance Assessment Pipeline → : ''} </div> </div>;}else if (activeTab === 'exams') {if (!activeExamRunningMode) {container.innerHTML = <div class="space-y-3 animate-fadeIn"> ${mockExamsDatabase.map((ex, idx) =>${ex.title}CEFR Pro Assessment Block Framework • ${ex.questions.length} Sequential ItemsLaunch Simulation Module).join('')} </div>;} else {const exam = mockExamsDatabase[selectedActiveExamIndex];if (currentExamQuestionIndex >= exam.questions.length) {let hits = 0;exam.questions.forEach((q, i) => { if(activeExamUserAnswersCollected[i] === q.c) hits++; });const passed = hits >= exam.passingScore;if (passed) setTimeout(() => { rewardXP(50); }, 50);container.innerHTML =  <div class="text-center p-6 bg-slate-950 border border-slate-800 rounded-2xl space-y-4 animate-fadeIn"> <span class="text-4xl block">${passed?'🏆':'⏳'}</span> <h3 class="text-sm font-black text-white">${passed?'Simulation Clearance Passed!':'Remediation Cycle Triggered'}</h3> <p class="text-xs text-slate-400">Score Telemetry Matrix Metrics Checked: <br><span class="text-sm font-black ${passed?'text-emerald-400':'text-rose-400'}">${hits} / ${exam.questions.length} Correct Answers</span></p> <button onclick="activeExamRunningMode=false; renderActiveTabModule();" class="w-full p-2.5 bg-gradient-to-r from-indigo-500 to-fuchsia-500 font-bold text-xs text-white rounded-xl">Return to Exam Selection Shell</button> </div>;return;}const activeQuestion = exam.questions[currentExamQuestionIndex];container.innerHTML = <div class="space-y-4 animate-fadeIn"> <div class="flex justify-between items-center text-[10px] font-mono text-slate-400"> <span>ITEM ${currentExamQuestionIndex + 1} OF ${exam.questions.length}</span> <span class="text-rose-400 font-bold tracking-wider">LIVE ASSESS ROUTING</span> </div> <div class="bg-slate-800 border border-slate-700 p-4 rounded-xl"><p class="text-xs font-bold leading-relaxed text-slate-200">${activeQuestion.q}</p></div> <div class="space-y-2"> ${activeQuestion.o.map((opt, oIdx) => { let optStyle = "bg-slate-800 border-slate-700 text-slate-300"; if (processingExamEvaluationFeedbackMode) { if (oIdx === activeQuestion.c) optStyle = "bg-emerald-950 border-emerald-500 text-emerald-200 font-black"; else if (oIdx === activeExamUserAnswersCollected[currentExamQuestionIndex]) optStyle = "bg-rose-950 border-rose-500 text-rose-200"; else optStyle = "bg-slate-900 border-slate-800 opacity-40"; } return<button onclick="submitExamAnswer(${oIdx})" ${processingExamEvaluationFeedbackMode?'disabled':''} class="w-full text-left p-3 border text-xs font-bold rounded-xl transition-all ${optStyle}">${opt}; }).join('')} </div> ${processingExamEvaluationFeedbackMode ? Grammar Analytics Verification${activeQuestion.exp}Next Assessment Step → : ''} </div>;}}}// --- PRO PIPELINE AUXILIARY INTERACTION CONTROLLERS ---function submitSkillChoice(idx, correctIdx) {if (skillsEvaluationFeedbackFlag !== null) return;skillsSelectedAnswerCache = idx;skillsEvaluationFeedbackFlag = (idx === correctIdx) ? 'pass' : 'fail';if (skillsEvaluationFeedbackFlag === 'pass') rewardXP(15);renderActiveTabModule();}function submitSpeakingPass() {if (skillsEvaluationFeedbackFlag !== null) return;skillsEvaluationFeedbackFlag = 'pass';rewardXP(15);renderActiveTabModule();}function advanceSkillItemStep(totalLength) {let currentIdx = skillsItemIndexMap[skillsActiveSection];skillsItemIndexMap[skillsActiveSection] = (currentIdx === totalLength - 1) ? 0 : currentIdx + 1;skillsSelectedAnswerCache = null;skillsEvaluationFeedbackFlag = null;renderActiveTabModule();}function startMockExamSuite(idx) {selectedActiveExamIndex = idx;activeExamRunningMode = true;currentExamQuestionIndex = 0;activeExamUserAnswersCollected = [];processingExamEvaluationFeedbackMode = false;renderActiveTabModule();}function submitExamAnswer(ansIdx) {if (processingExamEvaluationFeedbackMode) return;activeExamUserAnswersCollected[currentExamQuestionIndex] = ansIdx;processingExamEvaluationFeedbackMode = true;renderActiveTabModule();}function advanceExamQuestionPipeline() {processingExamEvaluationFeedbackMode = false;currentExamQuestionIndex++;renderActiveTabModule();}
+        { id: "r1", title: "Store Schedule Notice", context: "Analyze the operational timeline notice layout parameters.", body: "📍 NOTIZ: Der Supermarkt schließt am Samstag bereits um 16:00 Uhr wegen Renovierung.", question: "What time does the store close on Saturday?", options: ["14:00", "16:00", "18:00"], correct: 1 },
+        { id: "r2", title: "Restaurant Invitation Info", context: "Scan the menu availability notes carefully.", body: "📍 MENU: Warmes Essen servieren wir täglich von 12:00 bis 21:00 Uhr.", question: "When does warm food service terminate?", options: ["12:00 Uhr", "18:00 Uhr", "21:00 Uhr"], correct: 2 }
+      ],
+      writing: [
+        { id: "w1", title: "Accusative Alignment", context: "Select the compliant article to satisfy masculine direct object properties.", text: "Ich suche ___ (masculine direct object) Schlüssel für mein Auto.", options: ["den", "dem", "das", "die"], correct: 0 },
+
+        { id: "w2", title: "Pronoun Selection Layer", context: "Fill the blank space with standard nominative tracking pronouns.", text: "Hier ist Maria. ___ kommt aus Österreich.", options: ["Er", "Es", "Sie", "Wir"], correct: 2 }
+      ],
+      speaking: [
+        { id: "s1", title: "Pronunciation Phonics Check", context: "Tap Listen Guide to hear native rhythm, then click verified stating button.", speechText: "Wie viel kostet dieses Brot?", guide: "Pronounce: Vee feel kos-tet dee-zes broht?" },
+        { id: "s2", title: "Introductions Cadence Calibration", context: "Practice introducing yourself clearly aloud.", speechText: "Ich wohne in Berlin.", guide: "Pronounce: Eech vohn-eh in Behr-leen." }
+      ]
+    };
+
+    // Full 5 Mock Exam System Pipeline Core Structure Mapping Matrix (12 Questions Per Exam)
+    const mockExamsDatabase = [
+      {
+        id: 0,
+        title: "Mock Exam Arena 1: Goethe A1 Simulation Framework",
+        passingScore: 8,
+        questions: [
+          { q: "Which article fits: '___ Tisch ist alt'?", o: ["Der", "Die", "Das", "Den"], c: 0, exp: "'Tisch' is masculine nominative." },
+          { q: "Translate: 'Ich brauche eine Küche.'", o: ["I have a room.", "I need a kitchen.", "I buy a house."], c: 1, exp: "'Küche' means kitchen." },
+          { q: "Conjugate: 'Du ___ sehr gut Deutsch.'", o: ["spreche", "spricht", "sprichst"], c: 2, exp: "Matching form for du is 'sprichst'." },
+          { q: "Identify the odd vocabulary item out:", o: ["Mutter", "Vater", "Auto"], c: 2, exp: "'Auto' is a vehicle." },
+
+          { q: "Complete structure: 'Er ___ ein Buch.'", o: ["lese", "liest", "lesen"], c: 1, exp: "Singular conjugation of lesen is 'liest'." },
+          { q: "What is the opposite of 'groß'?", o: ["klein", "alt", "neu"], c: 0, exp: "'klein' tracks small dimensions." },
+          { q: "Complete time string: 'Es ist zwei ___.'", o: ["Uhr", "Stunden", "Zeit"], c: 0, exp: "Time uses 'Uhr'." },
+          { q: "Which modal verb signifies ability?", o: ["müssen", "wollen", "können"], c: 2, exp: "'können' is capability." },
+          { q: "Identify translation for 'The water':", o: ["das Wasser", "der Wasser", "die Wasser"], c: 0, exp: "Wasser is neuter." },
+          { q: "Complete directive: 'Ich ___ das Fenster auf.'", o: ["mache", "tue", "schließe"], c: 0, exp: "aufmachen means to open." },
+          { q: "Identify plural for 'die Hand':", o: ["die Hände", "das Hände", "der Handen"], c: 0, exp: "Plural is 'die Hände'." },
+          { q: "Complete template: 'Wie heißen ___?'", o: ["du", "ihr", "Sie"], c: 2, exp: "Formal form commands 'Sie'." }
+        ]
+      },
+      {
+        id: 1,
+        title: "Mock Exam Arena 2: Telc A1 Competency Assessment Matrix",
+        passingScore: 8,
+        questions: [
+          { q: "Complete pattern: 'Wir wohnen ___ Berlin.'", o: ["in", "auf", "aus"], c: 0, exp: "Cities use 'in'." },
+          { q: "What is 'das Brot' in English?", o: ["The cheese", "The milk", "The bread"], c: 2, exp: "Brot is bread." },
+          { q: "Select the accurate feminine descriptor:", o: ["der Mann", "die Frau", "das Kind"], c: 1, exp: "Frau uses 'die'." },
+          { q: "Complete phrase: 'Ich trinke ein Glas ___.'", o: ["Brot", "Apfel", "Wasser"], c: 2, exp: "Wasser is fluid." },
+
+          { q: "Opposite of 'heiß'?", o: ["kalt", "warm", "schön"], c: 0, exp: "kalt means cold." },
+          { q: "Where does a doctor work?", o: ["Krankenhaus", "Schule", "Küche"], c: 0, exp: "Works in a 'Krankenhaus'." },
+          { q: "What digit maps to 'elf'?", o: ["1", "7", "11"], c: 2, exp: "'elf' is 11." },
+          { q: "Conjugate: 'Wir ___ Fußball.'", o: ["spiele", "spielst", "spielen"], c: 2, exp: "Wir takes standard -en suffix." },
+          { q: "Country origin phrase: 'Kommst du ___ Spanien?'", o: ["aus", "von", "in"], c: 0, exp: "Origins use 'aus'." },
+          { q: "Which item is member of 'Obst'?", o: ["Der Apfel", "Das Brot", "Der Reis"], c: 0, exp: "Apfel is fruit." },
+          { q: "Greeting at 08:00 AM:", o: ["Morgen", "Tag", "Nacht"], c: 0, exp: "Morning maps to Morgen." },
+          { q: "Goodbye (informal):", o: ["Tschüss", "Hallo", "Bitte"], c: 0, exp: "Informal exit is Tschüss." }
+        ]
+      },
+      {
+        id: 2,
+        title: "Mock Exam Arena 3: Goethe A1 Grammar Variant B",
+        passingScore: 8,
+        questions: [
+          { q: "Conjugate: 'Ihr ___ hier.'", o: ["bin", "sind", "seid"], c: 2, exp: "Ihr form requires 'seid'." },
+          { q: "Identify Dativ form: 'Ich helfe ___ Kind.'", o: ["das", "dem", "den"], c: 1, exp: "helfen commands Dativ." },
+          { q: "Possessive neuter object: 'Das ist ___ Auto.'", o: ["mein", "meine", "meinen"], c: 0, exp: "Neuter matches 'mein'." },
+          { q: "Which denotes a weekend day?", o: ["Montag", "Mittwoch", "Samstag"], c: 2, exp: "Samstag means Saturday." },
+
+          { q: "Plural variant for 'das Buch':", o: ["die Bücher", "die Bucher", "die Buchen"], c: 0, exp: "Plural is 'die Bücher'." },
+          { q: "Complete syntax: '___ du Deutsch?'", o: ["Sprichst", "Spreche", "Sprecht"], c: 0, exp: "Matching du is 'Sprichst'." },
+          { q: "Identify the odd item out from colors:", o: ["Grün", "Blau", "Kalt"], c: 2, exp: "Kalt is a temperature." },
+          { q: "Preference expression: 'Ich ___ Kaffee trinken.'", o: ["möchte", "möchtest", "möchten"], c: 0, exp: "First person takes 'möchte'." },
+          { q: "Identify word for 'Where':", o: ["Wo", "Wer", "Wie"], c: 0, exp: "Wo tracks location." },
+          { q: "Complete rule: 'Das Bild hängt an ___ Wand (fem location).'", o: ["der", "die", "den"], c: 0, exp: "Static location in Dativ filters to 'der'." },
+          { q: "Complete structure: 'Du ___ lernen.'", o: ["musst", "muss", "müssen"], c: 0, exp: "du dictates 'musst'." },
+          { q: "What is 'pencil' in German?", o: ["Der Bleistift", "Das Buch", "Der Tisch"], c: 0, exp: "Bleistift means pencil." }
+        ]
+      },
+      {
+        id: 3,
+        title: "Mock Exam Arena 4: Telc A1 Practical Communication",
+        passingScore: 8,
+        questions: [
+          { q: "Complete link: 'Was kostet das?' - '___ 5 Euro.'", o: ["Es kostet", "Sie kostet", "Er kostet"], c: 0, exp: "Pricing defaults to 'Es kostet'." },
+          { q: "Request form: '___ mir bitte das Salz.'", o: ["Gib", "Gibst", "Geben"], c: 0, exp: "Imperativ informal singular is 'Gib'." },
+          { q: "Identify item for 'Who':", o: ["Wer", "Wo", "Warum"], c: 0, exp: "Wer targets human identities." },
+          { q: "Complete sequence: 'Ich ___ gern Musik.'", o: ["höre", "hören", "hörst"], c: 0, exp: "First person matches 'höre'." },
+
+          { q: "What is 'Zucker' in English?", o: ["Sugar", "Salt", "Milk"], c: 0, exp: "Zucker translates to sugar." },
+          { q: "Directional parameter: 'Gehen Sie gerade ___.'", o: ["aus", "nach", "in"], c: 0, exp: "geradeaus forms straight ahead." },
+          { q: "Response matching gratitude 'Danke':", o: ["Bitte", "Hallo", "Tschüss"], c: 0, exp: "Bitte answers thank you." },
+          { q: "Past auxiliary tense: 'Gestern ___ ich müde.'", o: ["war", "warst", "waren"], c: 0, exp: "First person singular maps to 'war'." },
+          { q: "Feminine ownership modifier: 'Das ist die Tasche ___ Mutter.'", o: ["der", "die", "das"], c: 0, exp: "Feminine Genitiv commands 'der'." },
+          { q: "Identify the odd housing item out:", o: ["Das Schlafzimmer", "Der Himmel", "Die Küche"], c: 1, exp: "Himmel means sky." },
+          { q: "Routine string: 'Um 22:00 Uhr ___ ich schlafen.'", o: ["gehe", "gehst", "geht"], c: 0, exp: "First person matches 'gehe'." },
+          { q: "Which parameters track 'Yesterday'?", o: ["Gestern", "Heute", "Morgen"], c: 0, exp: "Gestern represents yesterday." }
+        ]
+      },
+      {
+        id: 4,
+        title: "Mock Exam Arena 5: Unified Comprehensive Synthesis Lab",
+        passingScore: 8,
+        questions: [
+          { q: "Complete structure: 'Ich habe einen Apfel ___.'", o: ["gegessen", "essen", "gesehen"], c: 0, exp: "Past Partizip II anchors terminal tail: 'gegessen'." },
+          { q: "Accusative object shift: 'Ich suche ___ Hund (masc object).'", o: ["den", "der", "dem"], c: 0, exp: "Masculine direct objects map to 'den'." },
+          { q: "Linguistic currency token:", o: ["Euro", "Meter", "Kilo"], c: 0, exp: "Euro matches currency tokens." },
+          { q: "Conjugate ownership: '___ ihr ein Haus?'", o: ["Habt", "Habe", "Hast"], c: 0, exp: "Conjugation suffix matching ihr is 'Habt'." },
+
+          { q: "Opposite of 'langsam'?", o: ["schnell", "alt", "neu"], c: 0, exp: "schnell tracks fast velocity metrics." },
+          { q: "Transit configuration rule: 'Wir reisen mit ___ Bus (masc object).'", o: ["dem", "der", "den"], c: 0, exp: "Preposition mit triggers Dativ: 'mit dem'." },
+          { q: "What calendar segment tracks 'Winter'?", o: ["Winter", "Sommer", "Herbst"], c: 0, exp: "Winter identifies the cold cycle." },
+          { q: "Linguistic capacity: 'Sprechen Sie Englisch?' - 'Ja, ein ___.'", o: ["bisschen", "viel", "groß"], c: 0, exp: "ein bisschen means a little." },
+          { q: "Identify term for 'Why':", o: ["Warum", "Wie", "Wo"], c: 0, exp: "Warum targets logical motivations." },
+          { q: "Indirect beneficiary modifier: 'Das Kind spielt mit ___ Ball (masc).'", o: ["dem", "den", "der"], c: 0, exp: "Mit requires Dativ case format: 'dem'." },
+          { q: "Numerical conversion rule for 'hundert':", o: ["100", "1000", "10"], c: 0, exp: "hundert translates to 100." },
+          { q: "Formal email signoff template compliance layer:", o: ["Mit freundlichen Grüßen", "Tschüss", "Hallo"], c: 0, exp: "Mit freundlichen Grüßen is the standard pro signoff." }
+        ]
+      }
+    ];
+
+    // Global Core Architecture Reactivity State Cache Layout Engine Variables
+    let activeTab = 'dashboard';
+    let currentThemeProfile = localStorage.getItem('sb_theme_profile') || 'midnight-slate';
+    let totalXPAmount = parseInt(localStorage.getItem('sb_total_xp'), 10) || 0;
+    let savedStreakCount = parseInt(localStorage.getItem('sb_streak_count'), 10) || 1;
+
+    // Sub-Navigation Module Frame Index Trackers
+
+    let selectedVocabCategory = "Basics & Greetings";
+    let activeVocabCardIndex = 0;
+    let isVocabCardFlipped = false;
+    let activeGrammarIndex = 0;
+
+    // Pro-Level Sequential State Managers for Skills Matrix Array Layout Processing
+    let skillsActiveSection = 'listening';
+    let skillsItemIndexMap = { listening: 0, reading: 0, writing: 0, speaking: 0 };
+    let skillsSelectedAnswerCache = null;
+    let skillsEvaluationFeedbackFlag = null;
+
+    // Mini-Games Core Playground State Models
+    let activeGameMode = 'none';
+    let matchGamePairs = [];
+    let matchSelectedGermanIdx = null;
+    let matchSelectedEnglishIdx = null;
+    let matchSuccessCount = 0;
+    let genderGameActiveItem = null;
+    let genderGameFeedback = null;
+
+
+    // Real-Time Testing Engine Operational State Models
+    let selectedActiveExamIndex = 0;
+    let activeExamRunningMode = false;
+    let currentExamQuestionIndex = 0;
+    let activeExamUserAnswersCollected = [];
+    let processingExamEvaluationFeedbackMode = false;
+
+    // Audio Execution Wrappers explicitly optimized for mobile user gesture loops
+    function playDirectMobileVoice(txt) {
+      if ('speechSynthesis' in window) {
+        window.speechSynthesis.cancel();
+        let cleanText = txt.split('(')[0].split('-')[0].trim();
+        let utterance = new SpeechSynthesisUtterance(cleanText);
+        utterance.lang = 'de-DE';
+        utterance.rate = 0.75;
+        window.speechSynthesis.speak(utterance);
+      }
+    }
+
+
+    function rewardXP(amt) {
+      totalXPAmount += amt;
+      localStorage.setItem('sb_total_xp', totalXPAmount);
+      document.getElementById('xp-amount-val').innerText = totalXPAmount;
+      updateRankTelemetry();
+    }
+
+    function updateRankTelemetry() {
+      const display = document.getElementById('player-rank-display');
+      if (totalXPAmount >= 500) display.innerText = "Lv.4 Imperial Language Architect";
+      else if (totalXPAmount >= 250) display.innerText = "Lv.3 Master Competitor";
+      else if (totalXPAmount >= 100) display.innerText = "Lv.2 Experienced Challenger";
+      else display.innerText = "Lv.1 Arena Novice";
+    }
+
+    function switchTab(tabId) {
+      activeTab = tabId;
+      isVocabCardFlipped = false;
+      activeGameMode = 'none';
+
+      activeExamRunningMode = false;
+      skillsSelectedAnswerCache = null;
+      skillsEvaluationFeedbackFlag = null;
+      renderActiveTabModule();
+    }
+
+    // --- GAME ENGINE PROCESSORS ---
+    function initWordMatchGame() {
+      activeGameMode = 'match';
+      matchSuccessCount = 0;
+      matchSelectedGermanIdx = null;
+      matchSelectedEnglishIdx = null;
+      const pool = [...a1VocabularyDatabase["Family & People"], ...a1VocabularyDatabase["Body Parts (Körperteile)"]];
+      const shuffled = pool.sort(() => 0.5 - Math.random()).slice(0, 4);
+      const germans = shuffled.map((x, i) => ({ text: x.german, id: i, matched: false }));
+      const english = shuffled.map((x, i) => ({ text: x.english, id: i, matched: false }));
+      matchGamePairs = { germans: germans.sort(() => 0.5 - Math.random()), english: english.sort(() => 0.5 - Math.random()) };
+      renderActiveTabModule();
+    }
+
+
+    function handleMatchSelection(type, idx) {
+      if (type === 'ger') {
+        if (matchGamePairs.germans[idx].matched) return;
+        matchSelectedGermanIdx = idx;
+      } else {
+        if (matchGamePairs.english[idx].matched) return;
+        matchSelectedEnglishIdx = idx;
+      }
+      if (matchSelectedGermanIdx !== null && matchSelectedEnglishIdx !== null) {
+        const gerItem = matchGamePairs.germans[matchSelectedGermanIdx];
+        const engItem = matchGamePairs.english[matchSelectedEnglishIdx];
+        if (gerItem.id === engItem.id) {
+          gerItem.matched = true;
+          engItem.matched = true;
+          matchSuccessCount++;
+          rewardXP(5);
+        }
+        matchSelectedGermanIdx = null;
+        matchSelectedEnglishIdx = null;
+
+      }
+      renderActiveTabModule();
+    }
+
+    function initGenderBlitzGame() {
+      activeGameMode = 'gender';
+      genderGameFeedback = null;
+      const pool = [...a1VocabularyDatabase["Family & People"], ...a1VocabularyDatabase["Body Parts (Körperteile)"]].filter(x => ['masculine', 'feminine', 'neuter'].includes(x.gender));
+      genderGameActiveItem = pool[Math.floor(Math.random() * pool.length)];
+      renderActiveTabModule();
+    }
+
+    function submitGenderStrikeAnswer(chosenGender) {
+      if (genderGameFeedback !== null) return;
+      genderGameFeedback = (genderGameActiveItem.gender === chosenGender) ? 'correct' : 'wrong';
+      if (genderGameFeedback === 'correct') rewardXP(5);
+      renderActiveTabModule();
+    }
+
+
+    // --- MAIN VIEW CENTER DISPATCHER ---
+    function renderActiveTabModule() {
+      const container = document.getElementById('main-scroll-view');
+      const tabs = ['dashboard', 'vocabulary', 'grammar', 'skills', 'exams'];
+      
+      // Sync footer highlights
+      tabs.forEach(t => {
+        const el = document.getElementById(`tab-${t}`);
+        if (el) el.className = `flex-1 flex flex-col items-center justify-center transition-colors ${t === activeTab ? 'text-indigo-400' : 'text-slate-500'}`;
+      });
+
+      if (activeTab === 'dashboard') {
+        if (activeGameMode === 'match') {
+          let leftColHTML = '', rightColHTML = '';
+          matchGamePairs.germans.forEach((g, i) => {
+            let activeStyle = g.matched ? 'bg-emerald-950/40 border-emerald-500 text-emerald-400 opacity-60' : (matchSelectedGermanIdx === i ? 'border-indigo-500 bg-indigo-950/40 text-indigo-300' : 'bg-slate-800 border-slate-700');
+            leftColHTML += `<button onclick="handleMatchSelection('ger', ${i})" class="w-full p-3 border rounded-xl font-bold text-xs text-center ${activeStyle}">${g.text}</button>`;
+          });
+          matchGamePairs.english.forEach((e, i) => {
+
+            let activeStyle = e.matched ? 'bg-emerald-950/40 border-emerald-500 text-emerald-400 opacity-60' : (matchSelectedEnglishIdx === i ? 'border-indigo-500 bg-indigo-950/40 text-indigo-300' : 'bg-slate-800 border-slate-700');
+            rightColHTML += `<button onclick="handleMatchSelection('eng', ${i})" class="w-full p-3 border rounded-xl font-bold text-xs text-center ${activeStyle}">${e.text}</button>`;
+          });
+          container.innerHTML = `
+            <div class="space-y-4">
+              <div class="flex justify-between items-center"><h3 class="text-xs font-black uppercase text-indigo-400 tracking-wider">Match Matrix</h3><button onclick="activeGameMode='none'; renderActiveTabModule();" class="text-[10px] bg-slate-800 px-2 py-1 rounded border border-slate-700">✕ Exit</button></div>
+              <div class="grid grid-cols-2 gap-3 pt-2"><div class="space-y-2">${leftColHTML}</div><div class="space-y-2">${rightColHTML}</div></div>
+              ${matchSuccessCount === 4 ? `<div class="p-3 bg-slate-950 border border-emerald-800 rounded-xl text-center text-xs font-bold text-emerald-400">🎉 Matrix Cleared! Match success registered.</div>` : ''}
+            </div>`;
+          return;
+        }
+
+        if (activeGameMode === 'gender') {
+          let cleanNoun = genderGameActiveItem.german.replace(/^(der|die|das)\s+/i, '');
+          container.innerHTML = `
+            <div class="space-y-4">
+              <div class="flex justify-between items-center"><h3 class="text-xs font-black uppercase text-indigo-400 tracking-wider">Gender Striker</h3><button onclick="activeGameMode='none'; renderActiveTabModule();" class="text-[10px] bg-slate-800 px-2 py-1 rounded border border-slate-700">✕ Exit</button></div>
+              <div class="bg-slate-800 border border-slate-700 p-6 rounded-2xl text-center"><span class="text-2xl font-black text-amber-400">${cleanNoun}</span></div>
+              <div class="grid grid-cols-3 gap-2">
+
+                <button onclick="submitGenderStrikeAnswer('masculine')" class="p-3 bg-blue-950/40 border border-blue-800 text-blue-400 font-bold text-xs rounded-xl">DER</button>
+                <button onclick="submitGenderStrikeAnswer('feminine')" class="p-3 bg-pink-950/40 border border-pink-800 text-pink-400 font-bold text-xs rounded-xl">DIE</button>
+                <button onclick="submitGenderStrikeAnswer('neuter')" class="p-3 bg-amber-950/40 border border-amber-800 text-amber-400 font-bold text-xs rounded-xl">DAS</button>
+              </div>
+              ${genderGameFeedback !== null ? `<div class="p-3 bg-slate-950 text-center text-xs rounded-xl border ${genderGameFeedback==='correct'?'border-emerald-800 text-emerald-400':'border-rose-800 text-rose-400'}">Full Form: ${genderGameActiveItem.german}</div>` : ''}
+            </div>`;
+          return;
+        }
+
+        container.innerHTML = `
+          <div class="space-y-5">
+            <div class="p-5 rounded-2xl bg-gradient-to-br from-indigo-600 to-fuchsia-600 text-white shadow-xl">
+              <h2 class="text-lg font-extrabold">Welcome Leute ⚡</h2>
+              <p class="text-xs text-indigo-100 mt-1 leading-relaxed">Master Goethe A1 full spectrum curricular frameworks using integrated mobile game layers cleanly.</p>
+            </div>
+            <div class="bg-slate-800 border border-slate-700 p-4 rounded-xl space-y-3">
+              <h3 class="text-xs font-black text-amber-400 uppercase tracking-wider">⚡ Vocabulary Memory Labs</h3>
+              <div class="grid grid-cols-2 gap-2">
+                <button onclick="initWordMatchGame()" class="p-3 bg-slate-950 border border-indigo-900 rounded-xl text-left font-bold text-xs text-indigo-300">Word Match Matrix</button>
+
+                <button onclick="initGenderBlitzGame()" class="p-3 bg-slate-950 border border-fuchsia-900 rounded-xl text-left font-bold text-xs text-fuchsia-300">Gender Striker</button>
+              </div>
+            </div>
+          </div>`;
+      }
+
+      else if (activeTab === 'vocabulary') {
+        const categories = Object.keys(a1VocabularyDatabase);
+        const activeList = a1VocabularyDatabase[selectedVocabCategory];
+        const card = activeList[activeVocabCardIndex];
+        container.innerHTML = `
+          <div class="space-y-4">
+            <select onchange="selectedVocabCategory=this.value; activeVocabCardIndex=0; isVocabCardFlipped=false; renderActiveTabModule();" class="w-full bg-slate-950 border border-slate-800 p-2.5 text-xs font-bold rounded-xl text-slate-200 outline-none">
+              ${categories.map(cat => `<option value="${cat}" ${cat===selectedVocabCategory?'selected':''}>${cat}</option>`).join('')}
+            </select>
+            <div class="flashcard-wrapper w-full h-48 cursor-pointer ${isVocabCardFlipped?'flipped':''}" onclick="this.classList.toggle('flipped'); isVocabCardFlipped=!isVocabCardFlipped;">
+              <div class="flashcard-inner">
+                <div class="flashcard-front bg-slate-800 border border-slate-700 text-slate-100 shadow-xl">
+                  <span class="text-[9px] uppercase tracking-widest font-black text-indigo-400">${card.gender}</span>
+
+                  <span class="text-xl font-black block my-auto">${card.german}</span>
+                  <button onclick="event.stopPropagation(); playDirectMobileVoice(\`${card.german}\`);" class="mx-auto px-3 py-1.5 bg-indigo-600 text-white font-extrabold text-[10px] rounded-lg">🔊 Listen Audio</button>
+                </div>
+                <div class="flashcard-back bg-indigo-950 border border-indigo-800 text-indigo-200 shadow-xl">
+                  <span class="text-[9px] uppercase font-black tracking-wider text-indigo-300">English Meaning</span>
+                  <span class="text-lg font-extrabold block my-auto">${card.english}</span>
+                  <span class="text-[10px] text-slate-400 italic">${card.hint}</span>
+                </div>
+              </div>
+            </div>
+            <div class="grid grid-cols-2 gap-2">
+              <button onclick="activeVocabCardIndex=(activeVocabCardIndex===0)?${activeList.length-1}:activeVocabCardIndex-1; isVocabCardFlipped=false; renderActiveTabModule();" class="p-2 bg-slate-800 text-xs font-bold rounded-xl">← Prev</button>
+              <button onclick="activeVocabCardIndex=(activeVocabCardIndex===${activeList.length-1})?0:activeVocabCardIndex+1; isVocabCardFlipped=false; renderActiveTabModule();" class="p-2 bg-slate-800 text-xs font-bold rounded-xl">Next →</button>
+            </div>
+          </div>`;
+      }
+
+      else if (activeTab === 'grammar') {
+        container.innerHTML = `
+
+          <div class="space-y-2">
+            ${a1GrammarDatabase.map((item, idx) => `
+              <div class="border border-slate-800 rounded-xl overflow-hidden bg-slate-950/40">
+                <button onclick="activeGrammarIndex=${idx}; renderActiveTabModule();" class="w-full text-left p-3.5 text-xs font-black flex justify-between items-center bg-slate-950 text-slate-200">
+                  <span>${item.title}</span><span>${idx===activeGrammarIndex?'▼':'▶'}</span>
+                </button>
+                ${idx===activeGrammarIndex?`<div class="p-4 space-y-2 bg-slate-900/40"><p class="text-xs text-slate-300">${item.rules}</p><div class="p-2 bg-slate-950 text-emerald-400 font-mono text-xs rounded-lg">${item.example}</div></div>`:''}
+              </div>
+            `).join('')}
+          </div>`;
+      }
+
+      else if (activeTab === 'skills') {
+        const currentItemIndex = skillsItemIndexMap[skillsActiveSection];
+        const dataset = a1SkillsDatabase[skillsActiveSection];
+        const activeItem = dataset[currentItemIndex];
+        
+        let dynamicSectionContentHTML = '';
+        if (skillsActiveSection === 'listening') {
+
+          dynamicSectionContentHTML = `
+            <div class="space-y-3">
+              <div class="p-3 bg-slate-950 rounded-xl border border-slate-800 flex flex-col items-center gap-2">
+                <span class="text-[10px] uppercase font-black tracking-wider text-slate-400">Audio System Stream</span>
+                <button onclick="playDirectMobileVoice(\`${activeItem.transcript}\`)" class="px-4 py-2 bg-emerald-600 font-black text-xs text-white rounded-xl shadow-lg flex items-center gap-1">🔊 Play Dialogue Announcement</button>
+              </div>
+              <p class="text-xs font-bold py-1">${activeItem.question}</p>
+              <div class="space-y-2">
+                ${activeItem.options.map((o, oIdx) => `
+                  <button onclick="submitSkillChoice(${oIdx}, ${activeItem.correct})" class="w-full text-left p-3 border text-xs font-bold rounded-xl ${skillsSelectedAnswerCache===oIdx?'border-indigo-500 bg-indigo-950/40':'border-slate-700 bg-slate-900'}" ${skillsEvaluationFeedbackFlag!==null?'disabled':''}>${o}</button>
+                `).join('')}
+              </div>
+            </div>`;
+        } else if (skillsActiveSection === 'reading') {
+          dynamicSectionContentHTML = `
+            <div class="space-y-3">
+              <div class="p-3.5 bg-slate-950 border border-slate-800 rounded-xl text-xs font-mono leading-relaxed text-slate-300 italic">${activeItem.body}</div>
+              <p class="text-xs font-bold py-1">${activeItem.question}</p>
+              <div class="space-y-2">
+
+                ${activeItem.options.map((o, oIdx) => `
+                  <button onclick="submitSkillChoice(${oIdx}, ${activeItem.correct})" class="w-full text-left p-3 border text-xs font-bold rounded-xl ${skillsSelectedAnswerCache===oIdx?'border-indigo-500 bg-indigo-950/40':'border-slate-700 bg-slate-900'}" ${skillsEvaluationFeedbackFlag!==null?'disabled':''}>${o}</button>
+                `).join('')}
+              </div>
+            </div>`;
+        } else if (skillsActiveSection === 'writing') {
+          dynamicSectionContentHTML = `
+            <div class="space-y-3">
+              <div class="p-3 bg-slate-950 border border-slate-800 font-mono text-xs text-center rounded-xl text-indigo-300">${activeItem.text}</div>
+              <div class="grid grid-cols-2 gap-2">
+                ${activeItem.options.map((o, oIdx) => `
+                  <button onclick="submitSkillChoice(${oIdx}, ${activeItem.correct})" class="p-2.5 border text-xs font-mono font-bold text-center rounded-xl ${skillsSelectedAnswerCache===oIdx?'border-indigo-500 bg-indigo-950/40':'border-slate-700 bg-slate-900'}" ${skillsEvaluationFeedbackFlag!==null?'disabled':''}>[ ${o} ]</button>
+                `).join('')}
+              </div>
+            </div>`;
+        } else if (skillsActiveSection === 'speaking') {
+          dynamicSectionContentHTML = `
+            <div class="space-y-4 text-center py-2">
+              <p class="text-base font-black text-indigo-300">"${activeItem.speechText}"</p>
+
+              <div class="p-2.5 bg-slate-950 text-left border border-slate-800 rounded-lg">
+                <span class="text-[9px] uppercase font-black block text-slate-500 tracking-wider">Phonetic Calibrator Guide Map</span>
+                <p class="text-xs text-amber-400 font-mono font-bold mt-0.5">${activeItem.guide}</p>
+              </div>
+              <div class="flex gap-2">
+                <button onclick="playDirectMobileVoice(\`${activeItem.speechText}\`)" class="flex-1 p-2.5 bg-slate-800 text-xs font-bold border border-slate-700 rounded-xl">🔊 Listen Guide Voice</button>
+                <button onclick="submitSpeakingPass()" class="flex-1 p-2.5 bg-indigo-600 font-black text-xs text-white rounded-xl shadow-md" ${skillsEvaluationFeedbackFlag!==null?'disabled':''}>🎤 I Spated Aloud</button>
+              </div>
+            </div>`;
+        }
+
+        container.innerHTML = `
+          <div class="space-y-4">
+            <div class="grid grid-cols-4 gap-1">
+              ${['listening', 'reading', 'writing', 'speaking'].map(sec => `
+                <button onclick="skillsActiveSection='${sec}'; skillsSelectedAnswerCache=null; skillsEvaluationFeedbackFlag=null; renderActiveTabModule();" class="py-2 rounded-xl text-[10px] font-black uppercase tracking-tight border text-center ${skillsActiveSection===sec?'bg-indigo-600 border-indigo-500 text-white':'bg-slate-800 border-slate-700 text-slate-400'}">${sec}</button>
+              `).join('')}
+            </div>
+            <div class="bg-slate-800 border border-slate-700 p-4 rounded-2xl space-y-3">
+
+              <div class="flex justify-between items-center text-[10px] font-mono text-slate-400">
+                <span>ITEM ${currentItemIndex + 1} OF ${dataset.length}</span>
+                <span class="text-indigo-400 font-bold uppercase">${skillsActiveSection} Arena Matrix</span>
+              </div>
+              ${dynamicSectionContentHTML}
+              ${skillsEvaluationFeedbackFlag !== null ? `
+                <div class="p-2.5 text-xs font-bold rounded-xl text-center bg-slate-950 ${skillsEvaluationFeedbackFlag==='pass'?'text-emerald-400 border border-emerald-950':'text-rose-400 border border-rose-950'}">
+                  ${skillsEvaluationFeedbackFlag==='pass'?'✓ Correct Match registered! (+15 XP)':'✗ Mismatched selection. Read matrix parameters again.'}
+                </div>
+                <button onclick="advanceSkillItemStep(${dataset.length})" class="w-full p-2.5 bg-slate-950 border border-slate-700 text-xs font-bold rounded-xl">Advance Assessment Pipeline →</button>
+              ` : ''}
+            </div>
+          </div>`;
+      }
+
+      else if (activeTab === 'exams') {
+        if (!activeExamRunningMode) {
+          container.innerHTML = `
+            <div class="space-y-3">
+
+              ${mockExamsDatabase.map((ex, idx) => `
+                <div class="bg-slate-800 border border-slate-700 p-4 rounded-xl flex flex-col justify-between space-y-3">
+                  <div>
+                    <h4 class="text-xs font-black text-white">${ex.title}</h4>
+                    <p class="text-[10px] text-slate-400 mt-0.5">CEFR Pro Assessment Block Framework • ${ex.questions.length} Sequential Items</p>
+                  </div>
+                  <button onclick="startMockExamSuite(${idx})" class="w-full py-2 bg-slate-950 border border-indigo-900 text-indigo-400 font-extrabold text-[11px] rounded-lg">Launch Simulation Module</button>
+                </div>
+              `).join('')}
+            </div>`;
+        } else {
+          const exam = mockExamsDatabase[selectedActiveExamIndex];
+          if (currentExamQuestionIndex >= exam.questions.length) {
+            let hits = 0;
+            exam.questions.forEach((q, i) => { if(activeExamUserAnswersCollected[i] === q.c) hits++; });
+            const passed = hits >= exam.passingScore;
+            if (passed) setTimeout(() => { rewardXP(50); }, 50);
+            container.innerHTML = `
+              <div class="text-center p-6 bg-slate-950 border border-slate-800 rounded-2xl space-y-4">
+
+                <span class="text-4xl block">${passed?'🏆':'⏳'}</span>
+                <h3 class="text-sm font-black text-white">${passed?'Simulation Clearance Passed!':'Remediation Cycle Triggered'}</h3>
+                <p class="text-xs text-slate-400">Score Telemetry Matrix Metrics Checked: <br><span class="text-sm font-black ${passed?'text-emerald-400':'text-rose-400'}">${hits} / ${exam.questions.length} Correct Answers</span></p>
+                <button onclick="activeExamRunningMode=false; renderActiveTabModule();" class="w-full p-2.5 bg-gradient-to-r from-indigo-500 to-fuchsia-500 font-bold text-xs text-white rounded-xl">Return to Exam Selection Shell</button>
+              </div>`;
+            return;
+          }
+          const activeQuestion = exam.questions[currentExamQuestionIndex];
+          container.innerHTML = `
+            <div class="space-y-4">
+              <div class="flex justify-between items-center text-[10px] font-mono text-slate-400">
+                <span>ITEM ${currentExamQuestionIndex + 1} OF ${exam.questions.length}</span>
+                <span class="text-rose-400 font-bold tracking-wider">LIVE ASSESS ROUTING</span>
+              </div>
+              <div class="bg-slate-800 border border-slate-700 p-4 rounded-xl"><p class="text-xs font-bold leading-relaxed text-slate-200">${activeQuestion.q}</p></div>
+              <div class="space-y-2">
+                ${activeQuestion.o.map((opt, oIdx) => {
+                  let optStyle = "bg-slate-800 border-slate-700 text-slate-300";
+                  if (processingExamEvaluationFeedbackMode) {
+
+                    if (oIdx === activeQuestion.c) optStyle = "bg-emerald-950 border-emerald-500 text-emerald-200 font-black";
+                    else if (oIdx === activeExamUserAnswersCollected[currentExamQuestionIndex]) optStyle = "bg-rose-950 border-rose-500 text-rose-200";
+                    else optStyle = "bg-slate-900 border-slate-800 opacity-40";
+                  }
+                  return `<button onclick="submitExamAnswer(${oIdx})" ${processingExamEvaluationFeedbackMode?'disabled':''} class="w-full text-left p-3 border text-xs font-bold rounded-xl transition-all ${optStyle}">${opt}</button>`;
+                }).join('')}
+              </div>
+              ${processingExamEvaluationFeedbackMode ? `
+                <div class="p-3 bg-slate-950 border border-slate-800 rounded-xl space-y-1.5">
+                  <span class="text-[9px] uppercase font-black text-slate-500 block">Grammar Analytics Verification</span>
+                  <p class="text-[11px] text-slate-300">${activeQuestion.exp}</p>
+                  <button onclick="advanceExamQuestionPipeline()" class="w-full mt-1 py-2 bg-indigo-600 text-white font-bold text-xs rounded-xl">Next Assessment Step →</button>
+                </div>` : ''}
+            </div>`;
+        }
+      }
+    }
+
+    // --- PRO PIPELINE AUXILIARY INTERACTION CONTROLLERS ---
+
+    function submitSkillChoice(idx, correctIdx) {
+      if (skillsEvaluationFeedbackFlag !== null) return;
+      skillsSelectedAnswerCache = idx;
+      skillsEvaluationFeedbackFlag = (idx === correctIdx) ? 'pass' : 'fail';
+      if (skillsEvaluationFeedbackFlag === 'pass') rewardXP(15);
+      renderActiveTabModule();
+    }
+    function submitSpeakingPass() {
+      if (skillsEvaluationFeedbackFlag !== null) return;
+      skillsEvaluationFeedbackFlag = 'pass';
+      rewardXP(15);
+      renderActiveTabModule();
+    }
+    function advanceSkillItemStep(totalLength) {
+      let currentIdx = skillsItemIndexMap[skillsActiveSection];
+      skillsItemIndexMap[skillsActiveSection] = (currentIdx === totalLength - 1) ? 0 : currentIdx + 1;
+      skillsSelectedAnswerCache = null;
+      skillsEvaluationFeedbackFlag = null;
+      renderActiveTabModule();
+
+    }
+    function startMockExamSuite(idx) {
+      selectedActiveExamIndex = idx;
+      activeExamRunningMode = true;
+      currentExamQuestionIndex = 0;
+      activeExamUserAnswersCollected = [];
+      processingExamEvaluationFeedbackMode = false;
+      renderActiveTabModule();
+    }
+    function submitExamAnswer(ansIdx) {
+      if (processingExamEvaluationFeedbackMode) return;
+      activeExamUserAnswersCollected[currentExamQuestionIndex] = ansIdx;
+      processingExamEvaluationFeedbackMode = true;
+      renderActiveTabModule();
+    }
+    function advanceExamQuestionPipeline() {
+      processingExamEvaluationFeedbackMode = false;
+      currentExamQuestionIndex++;
+      renderActiveTabModule();
+
+    }
+  </script>
+</body>
+</html>
+
+
