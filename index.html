@@ -1,4 +1,4 @@
-# Sprachblitz - Complete A1 Full Curriculum Single File
+# Welcome Leute
 
 <!DOCTYPE html>
 <html lang="en">
@@ -728,7 +728,6 @@
         }
 
         if (activeGameMode === 'gender') {
-          // STRIP OUT THE LEADING ARTICLE PREFIX EXPLICITLY TO STOP SPOILING THE CHALLENGE WORD
           let rawGerman = genderGameActiveItem ? genderGameActiveItem.german : 'N/A';
           let cleanGermanNoun = rawGerman.replace(/^(der|die|das)\s+/i, '');
           cleanGermanNoun = cleanGermanNoun.charAt(0).toUpperCase() + cleanGermanNoun.slice(1);
@@ -741,9 +740,8 @@
               </div>
               <p class="text-[11px] text-slate-400">Select the correct matching definite root article gender token structure for the German noun displayed.</p>
               
-
               <div class="${conf.cardBg} border p-8 rounded-2xl shadow-xl text-center flex flex-col items-center justify-center space-y-2">
-                <!-- NOW PROPERLY HIDES THE ARTICLE FOR THE CHALLENGE -->
+
                 <span class="text-2xl font-black text-amber-400 tracking-tight">${cleanGermanNoun}</span>
                 <span class="text-xs text-slate-400 font-medium font-mono">[ Meaning: ${genderGameActiveItem ? genderGameActiveItem.english : ''} ]</span>
               </div>
@@ -761,9 +759,9 @@
                   <button onclick="initGenderBlitzGame()" class="px-4 py-1.5 bg-indigo-600 text-white font-bold text-xs rounded-lg">Next Word →</button>
                 </div>
               ` : ''}
-
             </div>
           `;
+
           return;
         }
 
@@ -781,9 +779,9 @@
             <div class="${conf.cardBg} border p-4 rounded-xl space-y-3">
               <div>
                 <h3 class="text-xs font-black text-amber-400 uppercase tracking-wider">⚡ Interactive Vocabulary Memory Games</h3>
-
                 <p class="text-[10px] text-slate-400 mt-0.5">Accelerate item retention using targeted cognitive game mechanics loops.</p>
               </div>
+
               <div class="grid grid-cols-2 gap-2">
                 <button onclick="initWordMatchGame()" class="p-3 bg-slate-950 hover:bg-slate-900 border border-indigo-900/60 rounded-xl text-left flex flex-col justify-between transition-all transform active:scale-95">
                   <span class="text-xs font-black text-indigo-300">Word Match Matrix</span>
@@ -801,9 +799,9 @@
                 <span class="text-[10px] uppercase font-bold text-slate-400 tracking-wider">A1 Framework Core</span>
                 <span class="text-base font-black text-emerald-400 mt-1">100% Validated</span>
               </div>
-
               <div class="${conf.cardBg} border p-4 rounded-xl flex flex-col justify-between">
                 <span class="text-[10px] uppercase font-bold text-slate-400 tracking-wider">Exam Status Modules</span>
+
                 <span class="text-base font-black text-indigo-400 mt-1">5 Simulations</span>
               </div>
             </div>
@@ -821,9 +819,9 @@
 
       else if (activeTab === 'vocabulary') {
         const categories = Object.keys(a1VocabularyDatabase);
-
         const activeList = a1VocabularyDatabase[selectedVocabCategory];
         const card = activeList ? activeList[activeVocabCardIndex] : null;
+
 
         let selectOptionsHTML = '';
         categories.forEach(cat => {
@@ -841,10 +839,10 @@
               <input type="number" id="numerical-matrix-input" min="0" max="100000000" placeholder="Type integer... (e.g. 984520)" oninput="runLiveIntegerConversionCheck()" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 text-sm font-mono font-bold text-amber-400 outline-none" />
               <div class="p-3 bg-slate-950 border border-slate-800 rounded-xl min-h-[50px] flex items-center justify-center">
                 <p id="numerical-matrix-output-string" class="text-xs font-bold text-emerald-400 font-mono text-center">null</p>
-
               </div>
             </div>
           `;
+
         } else if (card) {
           coreDisplayBodyHTML = `
             <div class="w-full flex justify-between items-center text-[11px] font-bold text-slate-400 px-1">
@@ -860,11 +858,11 @@
                     <span class="text-[9px] font-mono text-amber-400/80 font-bold bg-slate-950/40 px-1.5 py-0.5 rounded">📄 Front</span>
                   </div>
                   <div class="flex flex-col my-auto items-center">
-                    <span class="text-2xl font-black tracking-tight select-none">${card.german}</span>
-
+                    <span class="text-xl font-black tracking-tight select-none">${card.german}</span>
                     <span class="text-xs font-mono font-bold text-indigo-300 mt-2 bg-indigo-950/40 px-2 py-1 rounded border border-indigo-900/40">🗣️ [ ${card.pronunciation || 'N/A'} ]</span>
                     
                     <button onclick="event.stopPropagation(); triggerSpeechSynthesis('${card.german}');" class="mt-3 px-3 py-1.5 bg-indigo-600 hover:bg-indigo-500 text-white font-extrabold text-[10px] rounded-lg shadow-md flex items-center gap-1 transition-transform active:scale-95">
+
                       🔊 Listen Audio
                     </button>
                   </div>
@@ -881,10 +879,10 @@
             <div class="w-full grid grid-cols-2 gap-2">
               <button onclick="activeVocabCardIndex = (activeVocabCardIndex === 0) ? ${activeList.length - 1} : activeVocabCardIndex - 1; isVocabCardFlipped=false; renderActiveTabModule();" class="p-3 bg-slate-800 border border-slate-700 text-xs font-bold rounded-xl active:scale-95 transition-transform">← Prev</button>
               <button onclick="activeVocabCardIndex = (activeVocabCardIndex === ${activeList.length - 1}) ? 0 : activeVocabCardIndex + 1; isVocabCardFlipped=false; renderActiveTabModule();" class="p-3 bg-slate-800 border border-slate-700 text-xs font-bold rounded-xl active:scale-95 transition-transform">Next →</button>
-
             </div>
           `;
         }
+
 
         container.innerHTML = `
           <div class="space-y-4 flex flex-col items-center">
@@ -901,11 +899,11 @@
 
       else if (activeTab === 'grammar') {
         let structuralAccordionHTML = '';
-
         a1GrammarDatabase.forEach((item, idx) => {
           const isOpen = (idx === activeGrammarIndex);
           structuralAccordionHTML += `
             <div class="border border-slate-800 rounded-xl overflow-hidden ${isOpen ? 'bg-slate-950/40' : 'bg-slate-950/10'}">
+
               <button onclick="activeGrammarIndex=${idx}; renderActiveTabModule();" class="w-full text-left p-3.5 text-xs font-black flex justify-between items-center transition-colors bg-slate-950 border-b border-slate-800/60 text-slate-200">
                 <span>${item.title}</span>
                 <span>${isOpen ? '▼' : '▶'}</span>
@@ -921,11 +919,11 @@
                     <p class="text-xs font-mono font-bold text-emerald-300 leading-snug">${item.example}</p>
                   </div>
                 </div>
-
               ` : ''}
             </div>
           `;
         });
+
 
         container.innerHTML = `
           <div class="space-y-3">
@@ -941,12 +939,12 @@
       else if (activeTab === 'skills') {
         let skillsHTML = `<div class="space-y-4">
           <div class="grid grid-cols-4 gap-1.5">
-
             ${['listening', 'reading', 'writing', 'speaking'].map(s => `
               <button onclick="activeSkillSection='${s}'; skillSelectedAnswer=null; renderActiveTabModule();" class="py-2 px-1 rounded-xl text-[10px] font-black uppercase tracking-tight border text-center transition-all ${activeSkillSection === s ? 'bg-indigo-600 border-indigo-500 text-white' : 'bg-slate-800 border-slate-700 text-slate-400'}" >${s}</button>
             `).join('')}
           </div>
           <div class="${conf.cardBg} border p-4 rounded-2xl space-y-3">
+
             <h3 class="text-xs font-black uppercase tracking-wider text-indigo-400">${activeSkillSection.toUpperCase()} LAB IMMERSION</h3>`;
 
         if (activeSkillSection === 'listening') {
@@ -961,12 +959,12 @@
                 `).join('')}
               </div>
               ${skillSelectedAnswer !== null ? `
-
                 <div class="p-2 text-xs rounded bg-slate-950 text-center font-bold ${skillSelectedAnswer === lData.correct ? 'text-emerald-400' : 'text-rose-400'}" >
                   ${skillSelectedAnswer === lData.correct ? '✓ Correct! (+10 XP)' : '✗ Incorrect! Try listening again.'}
                 </div>
               ` : ''}
             </div>`;
+
         } else if (activeSkillSection === 'reading') {
           const rData = a1SkillsDatabase.reading[0];
           skillsHTML += `
@@ -981,12 +979,12 @@
               ${skillSelectedAnswer !== null ? `
                 <div class="p-2 text-xs rounded bg-slate-950 text-center font-bold ${skillSelectedAnswer === rData.correct ? 'text-emerald-400' : 'text-rose-400'}" >
                   ${skillSelectedAnswer === rData.correct ? '✓ Correct! (+10 XP)' : '✗ Incorrect. Look for closure timestamps.'}
-
                 </div>
               ` : ''}
             </div>`;
         } else if (activeSkillSection === 'writing') {
           const wData = a1SkillsDatabase.writing[0];
+
           skillsHTML += `
             <div class="space-y-3">
               <p class="text-xs font-medium leading-relaxed">${wData.context}</p>
@@ -1001,12 +999,12 @@
                   ${skillSelectedAnswer === wData.correct ? '✓ Success Matrix Match (+15 XP)' : '✗ Case grammar mismatches identified.'}
                 </div>
               ` : ''}
-
             </div>`;
         } else if (activeSkillSection === 'speaking') {
           const sData = a1SkillsDatabase.speaking[0];
           skillsHTML += `
             <div class="space-y-3 text-center py-2">
+
               <p class="text-xs font-bold text-slate-300">Target Statement Structure Challenge</p>
               <p class="text-xl font-black text-indigo-300">"${sData.text}"</p>
               <div class="p-2.5 bg-slate-950 text-left border border-slate-800 rounded-lg">
@@ -1021,12 +1019,12 @@
         container.innerHTML = skillsHTML;
       }
 
-
       else if (activeTab === 'exams') {
         if (!activeExamRunningMode) {
           let selectionRowsHTML = '';
           mockExamsDatabase.forEach((ex, idx) => {
             selectionRowsHTML += `
+
               <div class="${conf.cardBg} border p-4 rounded-xl flex flex-col justify-between space-y-3">
                 <div>
                   <h4 class="text-xs font-black text-white">${ex.title}</h4>
@@ -1041,12 +1039,12 @@
             <div class="space-y-4">
               <div class="px-1">
                 <h3 class="text-sm font-black tracking-tight text-white">Goethe / Telc A1 Mock Exam Arena</h3>
-
                 <p class="text-[11px] text-slate-400 font-medium">Verify your cross-dimension capabilities using full runtime testing models.</p>
               </div>
               <div class="space-y-3">${selectionRowsHTML}</div>
             </div>
           `;
+
         } else {
           const exam = mockExamsDatabase[selectedActiveExamIndex];
           
@@ -1061,12 +1059,12 @@
             container.innerHTML = `
               <div class="text-center p-6 bg-slate-950 border border-slate-800 rounded-2xl space-y-4 shadow-2xl">
                 <span class="text-5xl block">${passed ? '🏆' : '⏳'}</span>
-
                 <h3 class="text-lg font-black text-white">${passed ? 'Examination Passed!' : 'Requires Review'}</h3>
                 <p class="text-xs text-slate-400 font-semibold leading-relaxed">Performance Output Score metrics tracking evaluated: <br><span class="text-base font-black ${passed ? 'text-emerald-400' : 'text-rose-400'}">${correctCounter} / ${exam.questions.length} Correct</span></p>
                 <div class="text-left bg-slate-900 p-3 rounded-lg border border-slate-800 text-[11px] space-y-1 text-slate-300">
                   <p><strong>Passing Constraint Target:</strong> ${exam.passingScore} Correct options</p>
                   <p><strong>Rewards Awarded:</strong> ${passed ? '+50 XP Milestone Achieved!' : '0 XP. Please run remediation rules.'}</p>
+
                 </div>
                 <button onclick="activeExamRunningMode=false; renderActiveTabModule();" class="w-full p-3 bg-gradient-to-r from-indigo-500 to-fuchsia-500 font-black text-xs text-white rounded-xl" >Return to Exam Selection Shell</button>
               </div>
@@ -1082,10 +1080,10 @@
                 <span class="text-[10px] font-mono bg-rose-950 border border-rose-800 px-2 py-0.5 text-rose-400 rounded-md font-bold">LIVE ASSESS MODE</span>
               </div>
 
-
               <div class="${conf.cardBg} border p-5 rounded-2xl shadow-xl">
                 <p class="text-xs font-bold leading-relaxed text-slate-200">${activeQuestion.q}</p>
               </div>
+
 
               <div class="space-y-2">
                 ${activeQuestion.o.map((opt, oIdx) => {
@@ -1102,11 +1100,11 @@
               </div>
 
               ${processingExamEvaluationFeedbackMode ? `
-
                 <div class="p-4 bg-slate-950 border border-slate-800 rounded-xl space-y-2">
                   <span class="text-[9px] uppercase font-black text-slate-400 tracking-wider">Grammar Logic Correction Analysis</span>
                   <p class="text-xs text-slate-300 font-medium">${activeQuestion.exp}</p>
                   <button onclick="advanceActiveExamQuestionStep()" class="w-full mt-1 py-2.5 bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs rounded-xl" >Next Question →</button>
+
                 </div>
               ` : ''}
             </div>
@@ -1122,11 +1120,11 @@
       currentExamQuestionIndex = 0;
       activeExamUserAnswersCollected = [];
       processingExamEvaluationFeedbackMode = false;
-
       renderActiveTabModule();
     }
 
     function submitActiveExamOptionAnswer(ansIdx) {
+
       if (processingExamEvaluationFeedbackMode) return;
       activeExamUserAnswersCollected[currentExamQuestionIndex] = ansIdx;
       processingExamEvaluationFeedbackMode = true;
