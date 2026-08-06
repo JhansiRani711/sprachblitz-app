@@ -1,9 +1,11 @@
+# Sprachblitz - Complete Single File A1 App
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Sprachblitz - Learn Like a Game</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Sprachblitz - A1 Language Arena & Exam Center</title>
   <!-- Tailwind CSS Core Setup -->
   <script src="https://cdn.tailwindcss.com"></script>
   <!-- External Font Family Tracking -->
@@ -13,166 +15,217 @@
       font-family: 'Plus Jakarta Sans', sans-serif;
       transition: background-color 0.3s ease, color 0.3s ease;
     }
-    /* Smooth 3D Cartesian Flip System Layout Configurations */
-    .flashcard-wrapper {
-      perspective: 1000px;
-    }
+    .flashcard-wrapper { perspective: 1000px; }
     .flashcard-inner {
       position: relative;
       width: 100%;
+
       height: 100%;
       text-align: center;
-      transition: transform 0.6s;
+      transition: transform 0.5s;
       transform-style: preserve-3d;
     }
-    .flashcard-wrapper.flipped .flashcard-inner {
-      transform: rotateY(180deg);
-    }
+    .flashcard-wrapper.flipped .flashcard-inner { transform: rotateY(180deg); }
     .flashcard-front, .flashcard-back {
       position: absolute;
       width: 100%;
       height: 100%;
       -webkit-backface-visibility: hidden;
       backface-visibility: hidden;
-      border-radius: 0.75rem;
-      padding: 1.25rem;
+      border-radius: 1rem;
+      padding: 1.5rem;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
     }
-    .flashcard-back {
-      transform: rotateY(180deg);
-    }
-    
-    /* Theme Transition Rule Helper Packages */
-    .theme-transition {
-      transition: all 0.3s ease;
-    }
-    
-    /* Custom Scrollbar Styling */
-    ::-webkit-scrollbar {
-      width: 6px;
-    }
-    ::-webkit-scrollbar-track {
-      background: transparent;
-    }
-    ::-webkit-scrollbar-thumb {
-      background: rgba(156, 163, 175, 0.5);
-      border-radius: 3px;
-    }
+    .flashcard-back { transform: rotateY(180deg); }
+
+    .theme-transition { transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+    ::-webkit-scrollbar { width: 4px; }
+    ::-webkit-scrollbar-thumb { background: rgba(156, 163, 175, 0.3); border-radius: 2px; }
   </style>
 </head>
 <body class="min-h-screen flex flex-col bg-slate-950 text-slate-100">
 
-  <!-- Core App Shell Container -->
+  <!-- Main Responsive Application Container Shell -->
   <div id="app-shell-container" class="w-full max-w-md mx-auto min-h-screen shadow-2xl flex flex-col justify-between relative border-x border-slate-800 bg-slate-900 theme-transition">
     
-    <!-- Top Brand Navbar Navigation Header -->
+    <!-- Top Global Status Header Tracking Engine -->
     <header id="app-header-nav" class="p-4 border-b border-slate-800 bg-slate-950 text-white flex justify-between items-center sticky top-0 z-50 theme-transition">
       <div class="flex flex-col">
-        <h1 id="app-main-title" class="text-lg font-extrabold tracking-tight">Sprachblitz ⚡</h1>
-        <div id="player-rank-display" class="text-[10px] font-bold uppercase tracking-wider mt-0.5 text-indigo-400">Lv.1 Learner</div>
+        <h1 class="text-base font-extrabold tracking-tight">Sprachblitz ⚡ <span class="text-xs font-black text-indigo-400 bg-indigo-950/60 border border-indigo-800/80 px-1.5 py-0.5 rounded ml-1">A1 PRO</span></h1>
+        <div id="player-rank-display" class="text-[9px] font-black uppercase tracking-wider mt-0.5 text-indigo-400">Lv.1 Arena Novice</div>
       </div>
-      <div class="flex items-center gap-3">
-        <div id="streak-counter" class="font-extrabold text-sm flex items-center gap-1 px-2.5 py-1 rounded-lg border border-slate-800 bg-slate-900 text-amber-500 theme-transition">
-          🔥 <span id="streak-days-val">1</span> Day
+      <div class="flex items-center gap-2">
+        <div id="streak-counter" class="font-bold text-xs flex items-center gap-1 px-2 py-1 rounded-lg border border-slate-800 bg-slate-900 text-amber-500">
+          🔥 <span id="streak-days-val">1</span> d
+
         </div>
-        <div id="xp-counter-badge" class="font-bold text-xs bg-indigo-950 text-indigo-300 border border-indigo-800 px-2 py-1 rounded-lg">
+        <div class="font-bold text-xs bg-indigo-950 text-indigo-300 border border-indigo-800 px-2 py-1 rounded-lg">
           ✨ <span id="xp-amount-val">0</span> XP
         </div>
       </div>
     </header>
 
-    <!-- Main Dynamic Scrolling View Surface -->
+    <!-- Main Dynamic Scrolling Workspace Window View Surface -->
     <main id="main-scroll-view" class="flex-1 overflow-y-auto p-4 bg-slate-900 theme-transition">
-      <!-- Active dynamic app panel screens injected here programmatically -->
+      <!-- Programmatic Screen Modules Are Injected Universally Here -->
     </main>
 
-    <!-- Bottom App Navigation Control Grid Bar Layout -->
+    <!-- Persistent Global Footer Navigation Control Dock Grid Layout -->
     <footer id="app-footer-nav" class="border-t border-slate-800 bg-slate-950 h-16 flex sticky bottom-0 z-50 theme-transition">
       <button onclick="switchTab('dashboard')" class="flex-1 flex flex-col items-center justify-center navigation-tab-btn transition-colors text-indigo-400" id="tab-dashboard">
-        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="mb-1"><rect width="7" height="9" x="3" y="3" rx="1"/><rect width="7" height="5" x="14" y="3" rx="1"/><rect width="7" height="9" x="14" y="12" rx="1"/><rect width="7" height="5" x="3" y="16" rx="1"/></svg>
-        <span class="text-[10px] font-bold">Arena</span>
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="mb-1"><rect width="7" height="9" x="3" y="3" rx="1"/><rect width="7" height="5" x="14" y="3" rx="1"/><rect width="7" height="9" x="14" y="12" rx="1"/><rect width="7" height="5" x="3" y="16" rx="1"/></svg>
+        <span class="text-[9px] font-bold">Arena</span>
       </button>
-      <button onclick="switchTab('vocabulary')" class="flex-1 flex flex-col items-center justify-center navigation-tab-btn transition-colors text-slate-400" id="tab-vocabulary">
-        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="mb-1"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z"/><path d="M6 6h10M6 10h10"/></svg>
-        <span class="text-[10px] font-semibold">Cards</span>
+      <button onclick="switchTab('vocabulary')" class="flex-1 flex flex-col items-center justify-center navigation-tab-btn transition-colors text-slate-500" id="tab-vocabulary">
+
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="mb-1"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z"/><path d="M6 6h10M6 10h10"/></svg>
+        <span class="text-[9px] font-bold">Lexicon</span>
       </button>
-      <button onclick="switchTab('grammar')" class="flex-1 flex flex-col items-center justify-center navigation-tab-btn transition-colors text-slate-400" id="tab-grammar">
-        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="mb-1"><path d="M21.42 10.922a1 1 0 0 0-.019-1.838L12.83 5.18a2 2 0 0 0-1.66 0L2.6 9.08a1 1 0 0 0 0 1.832l8.57 3.908a2 2 0 0 0 1.66 0z"/><path d="M6 18.8v-4L12 18l6-3.2v4"/></svg>
-        <span class="text-[10px] font-semibold">Cheats</span>
+      <button onclick="switchTab('grammar')" class="flex-1 flex flex-col items-center justify-center navigation-tab-btn transition-colors text-slate-500" id="tab-grammar">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="mb-1"><path d="M21.42 10.922a1 1 0 0 0-.019-1.838L12.83 5.18a2 2 0 0 0-1.66 0L2.6 9.08a1 1 0 0 0 0 1.832l8.57 3.908a2 2 0 0 0 1.66 0z"/><path d="M6 18.8v-4L12 18l6-3.2v4"/></svg>
+        <span class="text-[9px] font-bold">Grammar</span>
       </button>
-      <button onclick="switchTab('quiz')" class="flex-1 flex flex-col items-center justify-center navigation-tab-btn transition-colors text-slate-400" id="tab-quiz">
-        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="mb-1"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3M12 17h.01"/></svg>
-        <span class="text-[10px] font-semibold">Battles</span>
+      <button onclick="switchTab('skills')" class="flex-1 flex flex-col items-center justify-center navigation-tab-btn transition-colors text-slate-500" id="tab-skills">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="mb-1"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/><path d="M19 10v1a7 7 0 0 1-14 0v-1M12 19v4M8 23h8"/></svg>
+        <span class="text-[9px] font-bold">Skills</span>
+      </button>
+      <button onclick="switchTab('exams')" class="flex-1 flex flex-col items-center justify-center navigation-tab-btn transition-colors text-slate-500" id="tab-exams">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="mb-1"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/><polyline points="14 2 14 8 20 8"/><path d="m9 15 2 2 4-4"/></svg>
+        <span class="text-[9px] font-bold">Exams</span>
       </button>
     </footer>
-
   </div>
 
-  <!-- Master System Application Core Operations Script Stack -->
+  <!-- Master Application Logic & Core Datastructure Matrices -->
+
   <script>
-    // Dataset for Language Systems
-    const coreVocabulary = [
-      { id: 1, german: "der Hund", gender: "masculine", english: "the dog", audioText: "der Hund", hint: "Man's best friend." },
-      { id: 2, german: "die Katze", gender: "feminine", english: "the cat", audioText: "die Katze", hint: "Likes chasing mice." },
-      { id: 3, german: "das Auto", gender: "neuter", english: "the car", audioText: "das Auto", hint: "Has four wheels." },
-      { id: 4, german: "das Buch", gender: "neuter", english: "the book", audioText: "das Buch", hint: "You can read it." },
-      { id: 5, german: "die Blume", gender: "feminine", english: "the flower", audioText: "die Blume", hint: "Smells nice in spring." }
+    // Comprehensive A1 Categorized Vocabulary Dataset Matrix
+    const a1VocabularyDatabase = {
+      "Alphabets Phonics": [
+        { id: "a1", german: "A", gender: "letter", english: "Ah (as in father)", hint: "Example word: Apfel" },
+        { id: "a2", german: "B", gender: "letter", english: "Beh", hint: "Example word: Brot" },
+        { id: "a3", german: "C", gender: "letter", english: "Tseh", hint: "Example word: Cafe" },
+        { id: "a4", german: "Ä", gender: "umlaut", english: "Air", hint: "Example word: Äpfel" },
+        { id: "a5", german: "Ö", gender: "umlaut", english: "Uh (rounded lips)", hint: "Example word: Österreich" },
+        { id: "a6", german: "Ü", gender: "umlaut", english: "Ee (rounded lips)", hint: "Example word: Übung" },
+        { id: "a7", german: "ß", gender: "ligature", english: "Eszett (double S sound)", hint: "Example word: heiß" }
+      ],
+      "Numbers (Zahlen)": [
+        { id: "n1", german: "eins", gender: "number", english: "one", hint: "1" },
+        { id: "n2", german: "zwei", gender: "number", english: "two", hint: "2" },
+        { id: "n3", german: "drei", gender: "number", english: "three", hint: "3" },
+        { id: "n4", german: "vier", gender: "number", english: "four", hint: "4" },
+        { id: "n5", german: "fünf", gender: "number", english: "five", hint: "5" },
+        { id: "n6", german: "zehn", gender: "number", english: "ten", hint: "10" },
+
+        { id: "n7", german: "zwanzig", gender: "number", english: "twenty", hint: "20" },
+        { id: "n8", german: "einundzwanzig", gender: "number", english: "twenty-one", hint: "1 + 20 layout order structure" }
+      ],
+      "Seasons & Weather": [
+        { id: "s_e1", german: "der Frühling", gender: "masculine", english: "the spring", hint: "When flowers start to bloom." },
+        { id: "s_e2", german: "der Sommer", gender: "masculine", english: "the summer", hint: "The warmest season." },
+        { id: "s_e3", german: "der Herbst", gender: "masculine", english: "the autumn / fall", hint: "When leaves turn brown." },
+        { id: "s_e4", german: "der Winter", gender: "masculine", english: "the winter", hint: "Coldest time, often brings snow." },
+        { id: "s_e5", german: "das Wetter", gender: "neuter", english: "the weather", hint: "Overall climate state descriptor." }
+      ],
+      "Household (Haushalt)": [
+        { id: "h1", german: "das Haus", gender: "neuter", english: "the house", hint: "Residential building layout structure." },
+        { id: "h2", german: "das Zimmer", gender: "neuter", english: "the room", hint: "A compartmental partition within a house." },
+        { id: "h3", german: "die Küche", gender: "feminine", english: "the kitchen", hint: "Where hot meals are prepared and cooked." },
+        { id: "h4", german: "der Tisch", gender: "masculine", english: "the table", hint: "Flat furniture piece used for dining." },
+        { id: "h5", german: "der Stuhl", gender: "masculine", english: "the chair", hint: "Something you sit on at the table." },
+        { id: "h6", german: "das Bett", gender: "neuter", english: "the bed", hint: "Where you sleep at night." },
+        { id: "h7", german: "die Lampe", gender: "feminine", english: "the lamp", hint: "Provides illumination for the room." }
+      ],
+
+      "Greetings & Basics": [
+        { id: "v1", german: "Hallo", gender: "expression", english: "Hello", hint: "Standard friendly greeting." },
+        { id: "v2", german: "Bitte", gender: "expression", english: "Please / You're welcome", hint: "Universal polite response phrase." },
+        { id: "v3", german: "Danke", gender: "expression", english: "Thank you", hint: "Expressing gratitude." },
+        { id: "v4", german: "Auf Wiedersehen", gender: "expression", english: "Goodbye", hint: "Formal split farewell statement." }
+      ]
+    };
+
+    // Comprehensive A1 Structural Grammar Matrix Blueprint System
+    const a1GrammarDatabase = [
+      { id: "g1", title: "Definite Articles & Gender Tracking", rules: "German nouns carry 3 precise grammatical genders: Masculine (der), Feminine (die), Neuter (das). Plural forms uniformly use 'die'.", example: "Der Tisch, die Küche, das Haus, die Kinder." },
+      { id: "g2", title: "The Nominative Case System", rules: "Used exclusively for the primary subject of sentences performing an action. Unchanging root foundational structure form.", example: "Der Hund schläft hier. (The dog is sleeping here.)" },
+      { id: "g3", title: "The Accusative Direct Object Shifts", rules: "Used for direct actions objects. Only Masculine changes article forms (der becomes den / ein becomes einen). Feminine & Neuter stay unchanged.", example: "Ich habe einen Tisch (Masculine Accusative modification match)." },
+      { id: "g4", title: "Present Tense Verb Conjugation rules", rules: "Regular verbs drop their standard root infinitive ending (-en) and apply personal pronoun suffixes: -e, -st, -t, -en, -t, -en.", example: "ich lerne, du lernst, er/sie/es lernt, wir lernen." }
     ];
 
-    const coreGrammarCheats = [
-      { title: "Nominative vs Accusative", rules: "The subject is Nominative. The direct object changes to Accusative.", example: "Der Hund (Nom) isst einen Apfel (Acc)." },
-      { title: "Definite Articles", rules: "Masculine: der, Feminine: die, Neuter: das, Plural: die.", example: "Der Vater, die Mutter, das Kind." },
-      { title: "Verb Conjugation (sein)", rules: "ich bin, du bist, er/sie/es ist, wir sind, ihr seid, sie sind.", example: "Du bist ein kluger Spieler!" }
+    // Comprehensive 4-Dimension A1 Immersive Training Laboratory Matrix
+    const a1SkillsDatabase = {
+      listening: [
+
+        { id: "l1", title: "Train Station Announcement Dialogue", context: "Listen carefully to the audio sample clip and determine which structural track the train departures layout updates from.", transcript: "Achtung am Gleis 4: Der Zug nach Berlin fährt jetzt ab.", question: "Where is the train moving towards?", options: ["München", "Berlin", "Hamburg", "Frankfurt"], correct: 1 }
+      ],
+      reading: [
+        { id: "r1", title: "Supermarket Invitation Email parsing", context: "Read the formal communication text below and verify what timing operational limitations are enforced.", body: "Liebe Grüße! Unser Laden schließt heute bereits um 18:00 Uhr wegen Renovierung. Bitte kommen Sie früher vorbei.", question: "At what time sequence does the shop close today?", options: ["16:00", "18:00", "20:00", "22:00"], correct: 1 }
+      ],
+      writing: [
+        { id: "w1", title: "Goethe A1 Form Completion Challenge", context: "Fill in the correct blank article option missing from this formal notification snippet block.", text: "Ich möchte ___ (neuter) Buch kaufen, aber ich habe kein Geld dabei.", options: ["das", "die", "den", "der"], correct: 0 }
+      ],
+      speaking: [
+        { id: "s1", title: "Pronunciation Phonetics Calibration Engine", context: "Review the phonetic structures statement and practice matching target native cadence patterns out loud.", text: "Wie geht es Ihnen heute Morgen?", guide: "Pronounce: Vee gayt es ee-nen hoy-te mor-gen?" }
+      ]
+    };
+
+    // Full 5 Mock Exam System Pipeline Core Structure Mapping Matrix
+    const mockExamsDatabase = [
+      { id: 0, title: "Mock Exam Arena 1: Goethe A1 Simulation Framework", passingScore: 3, questions: [
+        { q: "Which core definite article correctly fits: '___ Tisch ist alt'?", o: ["Der", "Die", "Das", "Den"], c: 0, exp: "'Tisch' is masculine nominative." },
+        { q: "Translate to accurate English format: 'Ich brauche eine Küche.'", o: ["I have a room.", "I need a kitchen.", "I buy a house.", "I like cooking."], c: 1, exp: "'brauche' translates to need; 'Küche' means kitchen." },
+        { q: "Conjugate properly: 'Du ___ (to speak) sehr gut Deutsch.'", o: ["spreche", "spricht", "sprechen", "sprichst"], c: 3, exp: "Irregular vowel-shifting verb match for 'du' form is 'sprichst'." },
+
+        { q: "Identify the odd vocabulary item out from this collection:", o: ["Mutter", "Vater", "Bruder", "Auto"], c: 3, exp: "'Auto' is a vehicle; all others are direct family relation identifiers." }
+      ]},
+      { id: 1, title: "Mock Exam Arena 2: Telc A1 Competency Assessment Matrix", passingScore: 3, questions: [
+        { q: "Complete the statement pattern: 'Wir wohnen ___ Berlin.'", o: ["in", "auf", "aus", "bei"], c: 0, exp: "City localization spatial preposition uses 'in'." },
+        { q: "What is the appropriate English transformation for 'das Brot'?", o: ["The cheese", "The milk", "The bread", "The water"], c: 2, exp: "'das Brot' translates directly to 'the bread'." },
+        { q: "Select the accurate feminine assignment descriptor pairing:", o: ["der Mann", "die Frau", "das Kind", "den Jungen"], c: 1, exp: "'Frau' is feminine, taking 'die'." },
+        { q: "Complete the sentence tracking: 'Ich trinke ein Glas ___.'", o: ["Brot", "Apfel", "Wasser", "Küche"], c: 2, exp: "'Wasser' is the only consumable liquid option listed." }
+      ]},
+      { id: 2, title: "Mock Exam Arena 3: Structural Navigation Grammar Core", passingScore: 3, questions: [
+        { q: "Identify the direct object Accusative shift modification:", o: ["Ich esse der Apfel.", "Ich esse den Apfel.", "Ich esse dem Apfel.", "Ich esse das Apfel."], c: 1, exp: "Masculine object 'der Apfel' changes to 'den Apfel' in accusative." },
+        { q: "Which possessive pronoun denotes 'my parent' correctly?", o: ["mein Vater", "meine Vater", "meinen Vater", "meines Vater"], c: 0, exp: "Masculine subject use matches 'mein Vater'." }
+      ]},
+      { id: 3, title: "Mock Exam Arena 4: Daily Conversational Dialogue Proficiency", passingScore: 3, questions: [
+        { q: "Select the standard reply for 'Danke schön':", o: ["Bitte sehr", "Guten Morgen", "Hallo", "Tschüss"], c: 0, exp: "'Bitte sehr' is the conventional matching response for gratitude." }
+      ]},
+      { id: 4, title: "Mock Exam Arena 5: Advanced Comprehensive Baseline Synthesis", passingScore: 3, questions: [
+        { q: "Conjugate root operational verb 'haben': 'Ihr ___ ein Haus.'", o: ["habe", "hast", "hat", "habt"], c: 3, exp: "The plural pronoun form for 'ihr' takes the 'habt' configuration suffix." }
+      ]}
     ];
 
-    const coreQuizBattles = [
-      {
-        question: "Which article completes: '___ Katze schläft'?",
-        options: ["Der", "Die", "Das", "Den"],
-        correct: 1,
-        explanation: "'Katze' is a feminine noun, so it takes 'die'."
-      },
-      {
-        question: "What is the correct English translation for 'das Buch'?",
-        options: ["The dog", "The table", "The book", "The window"],
-        correct: 2,
-        explanation: "'das Buch' translates accurately to 'the book'."
-      },
-      {
-        question: "Conjugate: 'Wir ___ (to be) hier.'",
-        options: ["bin", "bist", "ist", "sind"],
-        correct: 3,
-        explanation: "'Wir' matches with the plural verb form 'sind'."
-      }
-    ];
 
-    // Gamified Global App State Layer Models
+    // Global Core Architecture Reactivity State Cache Layout Engine Variables
     let activeTab = 'dashboard';
-    let currentCardIndex = 0;
-    let currentGrammarIndex = 0;
-    let currentQuizIndex = 0;
-    let activeQuizFeedback = null;
-    
-    // Core Local Progress Arrays Caching
-    let masteredWordsList = JSON.parse(localStorage.getItem('sb_mastered_words')) || [];
-    let savedBattleScores = JSON.parse(localStorage.getItem('sb_battle_scores')) || { Rookie: 0, Challenger: 0, Elite: 0, Master: 0 };
-    let unlockedBadgesList = JSON.parse(localStorage.getItem('sb_unlocked_badges')) || [];
-    let missedQuestionsList = JSON.parse(localStorage.getItem('sb_missed_questions')) || [];
-    
-    // Custom Active UI Palette Skin Token
-    let activeThemeProfile = localStorage.getItem('sb_theme_profile') || 'midnight-slate';
-    
-    // Audio Customization Config Caching
-    let ttsSpeechRate = parseFloat(localStorage.getItem('sb_tts_rate')) || 0.85;
-    let ttsSpeechPitch = parseFloat(localStorage.getItem('sb_tts_pitch')) || 1.0;
-    
-    // Level & XP System Storage Engine Variables
-    let totalXPAmount = parseInt(localStorage.getItem('sb_total_xp')) || 0;
-    let savedStreakCount = parseInt(localStorage.getItem('sb_streak_count')) || 1;
+    let currentThemeProfile = localStorage.getItem('sb_theme_profile') || 'midnight-slate';
+    let totalXPAmount = parseInt(localStorage.getItem('sb_total_xp'), 10) || 0;
+    let savedStreakCount = parseInt(localStorage.getItem('sb_streak_count'), 10) || 1;
 
-    // Theme Class Configuration Map Definitions (Fixed System Crash Configuration)
+    // Sub-Navigation Module Frame Index Trackers
+    let selectedVocabCategory = "Alphabets Phonics";
+    let activeVocabCardIndex = 0;
+    let isVocabCardFlipped = false;
+    let activeGrammarIndex = 0;
+
+    // Skills Interactive Assessment Tracker Arrays
+    let activeSkillSection = 'listening';
+    let skillSelectedAnswer = null;
+
+    // Real-Time Testing Engine Operational State Models
+    let selectedActiveExamIndex = 0;
+    let activeExamRunningMode = false;
+
+    let currentExamQuestionIndex = 0;
+    let activeExamUserAnswersCollected = [];
+    let processingExamEvaluationFeedbackMode = false;
+
+    // Theme Class Configurations Engine Object Profiles Map
     const systemThemeProfiles = {
       'midnight-slate': {
         shellBg: 'bg-slate-900 border-slate-800',
@@ -187,63 +240,38 @@
       'cyberpunk-neon': {
         shellBg: 'bg-indigo-950 border-fuchsia-500',
         headerBg: 'bg-slate-950 border-fuchsia-500 text-cyan-400',
+
         footerBg: 'bg-slate-950 border-fuchsia-500',
         viewSurfaceBg: 'bg-indigo-950 text-cyan-100',
         cardBg: 'bg-slate-900 border-cyan-500 text-cyan-300',
         cardBackBg: 'bg-fuchsia-950 border-fuchsia-500 text-fuchsia-300',
         tabActive: 'text-lime-400',
         tabInactive: 'text-fuchsia-400'
-      },
-      'autumn-wood': {
-        shellBg: 'bg-stone-800 border-amber-700',
-        headerBg: 'bg-stone-900 border-amber-800 text-amber-100',
-        footerBg: 'bg-stone-900 border-amber-800',
-        viewSurfaceBg: 'bg-stone-800 text-stone-100',
-        cardBg: 'bg-stone-700 border-amber-600 text-stone-100',
-        cardBackBg: 'bg-amber-900 border-amber-700 text-amber-100',
-        tabActive: 'text-amber-400',
-        tabInactive: 'text-stone-400'
       }
     };
 
-    // System Startup Initializers
+    // Main Startup Setup System Directives
     window.onload = function() {
-      applyThemeProfile(activeThemeProfile);
+      applyThemeProfile(currentThemeProfile);
       updateDashboardTelemetry();
-      renderActiveTab();
+      renderActiveTabModule();
     };
 
     function applyThemeProfile(themeKey) {
-      activeThemeProfile = themeKey;
+      currentThemeProfile = themeKey;
       localStorage.setItem('sb_theme_profile', themeKey);
+
       const conf = systemThemeProfiles[themeKey] || systemThemeProfiles['midnight-slate'];
       
-      const shell = document.getElementById('app-shell-container');
-      const header = document.getElementById('app-header-nav');
-      const viewSurface = document.getElementById('main-scroll-view');
-      const footer = document.getElementById('app-footer-nav');
+      document.getElementById('app-shell-container').className = `w-full max-w-md mx-auto min-h-screen shadow-2xl flex flex-col justify-between relative border-x theme-transition ${conf.shellBg}`;
+      document.getElementById('app-header-nav').className = `p-4 border-b flex justify-between items-center sticky top-0 z-50 theme-transition ${conf.headerBg}`;
+      document.getElementById('main-scroll-view').className = `flex-1 overflow-y-auto p-4 theme-transition ${conf.viewSurfaceBg}`;
+      document.getElementById('app-footer-nav').className = `border-t h-16 flex sticky bottom-0 z-50 theme-transition ${conf.footerBg}`;
       
-      // Update primary layout framework nodes classes
-      shell.className = `w-full max-w-md mx-auto min-h-screen shadow-2xl flex flex-col justify-between relative border-x theme-transition ${conf.shellBg}`;
-      header.className = `p-4 border-b flex justify-between items-center sticky top-0 z-50 theme-transition ${conf.headerBg}`;
-      viewSurface.className = `flex-1 overflow-y-auto p-4 theme-transition ${conf.viewSurfaceBg}`;
-      footer.className = `border-t h-16 flex sticky bottom-0 z-50 theme-transition ${conf.footerBg}`;
-      
-      // Re-render tabs highlights
-      updateTabButtonHighlights(conf);
-    }
-
-    function updateTabButtonHighlights(conf) {
-      const tabs = ['dashboard', 'vocabulary', 'grammar', 'quiz'];
+      const tabs = ['dashboard', 'vocabulary', 'grammar', 'skills', 'exams'];
       tabs.forEach(t => {
-        const btn = document.getElementById(`tab-${t}`);
-        if (btn) {
-          if (t === activeTab) {
-            btn.className = `flex-1 flex flex-col items-center justify-center navigation-tab-btn transition-colors ${conf.tabActive}`;
-          } else {
-            btn.className = `flex-1 flex flex-col items-center justify-center navigation-tab-btn transition-colors ${conf.tabInactive}`;
-          }
-        }
+        const node = document.getElementById(`tab-${t}`);
+        if (node) node.className = `flex-1 flex flex-col items-center justify-center transition-colors ${t === activeTab ? conf.tabActive : conf.tabInactive}`;
       });
     }
 
@@ -251,337 +279,351 @@
       document.getElementById('streak-days-val').innerText = savedStreakCount;
       document.getElementById('xp-amount-val').innerText = totalXPAmount;
       
-      const rankDisplay = document.getElementById('player-rank-display');
-      if (totalXPAmount >= 300) {
-        rankDisplay.innerText = "Lv.4 Language Master";
-        rankDisplay.className = "text-[10px] font-bold uppercase tracking-wider mt-0.5 text-amber-400";
-      } else if (totalXPAmount >= 150) {
-        rankDisplay.innerText = "Lv.3 Elite Competitor";
-        rankDisplay.className = "text-[10px] font-bold uppercase tracking-wider mt-0.5 text-cyan-400";
-      } else if (totalXPAmount >= 50) {
-        rankDisplay.innerText = "Lv.2 Challenger";
-        rankDisplay.className = "text-[10px] font-bold uppercase tracking-wider mt-0.5 text-lime-400";
-      } else {
-        rankDisplay.innerText = "Lv.1 Rookie Learner";
-        rankDisplay.className = "text-[10px] font-bold uppercase tracking-wider mt-0.5 text-indigo-400";
-      }
+      const display = document.getElementById('player-rank-display');
+
+      if (totalXPAmount >= 500) display.innerText = "Lv.4 Imperial Language Architect";
+      else if (totalXPAmount >= 250) display.innerText = "Lv.3 Master Competitor";
+      else if (totalXPAmount >= 100) display.innerText = "Lv.2 Experienced Challenger";
+      else display.innerText = "Lv.1 Arena Novice";
     }
 
-    function rewardXP(amount) {
-      totalXPAmount += amount;
+    function rewardXP(amt) {
+      totalXPAmount += amt;
       localStorage.setItem('sb_total_xp', totalXPAmount);
       updateDashboardTelemetry();
     }
 
     function switchTab(tabId) {
       activeTab = tabId;
-      applyThemeProfile(activeThemeProfile);
-      renderActiveTab();
+      isVocabCardFlipped = false;
+      skillSelectedAnswer = null;
+      if (tabId !== 'exams') activeExamRunningMode = false;
+      applyThemeProfile(currentThemeProfile);
+      renderActiveTabModule();
+
     }
 
-    function triggerSpeechSynthesis(text) {
-      if ('speechSynthesis' in window) {
-        window.speechSynthesis.cancel();
-        const utterance = new SpeechSynthesisUtterance(text);
-        utterance.lang = 'de-DE';
-        utterance.rate = ttsSpeechRate;
-        utterance.pitch = ttsSpeechPitch;
-        window.speechSynthesis.speak(utterance);
-      } else {
-        alert("Text-to-speech option not fully supported in this environment browser view.");
-      }
-    }
-
-    // View Layer Rendering Route Distribution Hub
-    function renderActiveTab() {
+    // View Route Processing Center Hub
+    function renderActiveTabModule() {
       const container = document.getElementById('main-scroll-view');
-      const conf = systemThemeProfiles[activeThemeProfile] || systemThemeProfiles['midnight-slate'];
+      const conf = systemThemeProfiles[currentThemeProfile] || systemThemeProfiles['midnight-slate'];
       
       if (activeTab === 'dashboard') {
         container.innerHTML = `
-          <div class="space-y-6">
-            <!-- App Banner Welcome Greeting Card -->
-            <div class="p-5 rounded-2xl bg-gradient-to-br from-indigo-600 to-fuchsia-600 text-white shadow-lg">
-              <h2 class="text-xl font-black">Willkommen im Arena! ⚡</h2>
-              <p class="text-xs text-indigo-100 mt-1 font-medium">Level up your German capabilities using modular, accelerated learning algorithms.</p>
+          <div class="space-y-5">
+            <div class="p-5 rounded-2xl bg-gradient-to-br from-indigo-600 to-fuchsia-600 text-white shadow-xl">
+              <h2 class="text-lg font-extrabold">Welcome to A1 Language Training Ground ⚡</h2>
+              <p class="text-xs text-indigo-100 mt-1 leading-relaxed">Master standard Goethe or Telc proficiency variants cleanly using accelerated game interface metrics.</p>
               <div class="mt-4 flex gap-2">
-                <button onclick="switchTab('quiz')" class="bg-white text-indigo-950 font-bold text-xs px-4 py-2 rounded-xl shadow-md hover:bg-indigo-50 transition-transform active:scale-95">Start Battle</button>
-                <button onclick="switchTab('vocabulary')" class="bg-indigo-500 bg-opacity-30 text-white border border-indigo-400 border-opacity-40 font-bold text-xs px-4 py-2 rounded-xl transition-transform active:scale-95">Review Cards</button>
+                <button onclick="switchTab('exams')" class="bg-white text-indigo-950 font-black text-[11px] px-3.5 py-2 rounded-xl shadow-md transform active:scale-95 transition-transform">Run Mock Test</button>
+                <button onclick="switchTab('vocabulary')" class="bg-indigo-500/30 border border-indigo-400/40 text-white font-bold text-[11px] px-3.5 py-2 rounded-xl">Lexicon Hub</button>
               </div>
             </div>
 
-            <!-- Global Architecture Progress System Tracker Matrix -->
+
             <div class="grid grid-cols-2 gap-3">
-              <div class="${conf.cardBg} p-4 rounded-xl border flex flex-col justify-between">
-                <div class="text-xs font-semibold text-slate-400">Cards Learned</div>
-                <div class="text-2xl font-black mt-2 text-indigo-400">${masteredWordsList.length} / ${coreVocabulary.length}</div>
+              <div class="${conf.cardBg} border p-4 rounded-xl flex flex-col justify-between">
+                <span class="text-[10px] uppercase font-bold text-slate-400 tracking-wider">A1 Framework Core</span>
+                <span class="text-base font-black text-emerald-400 mt-1">100% Validated</span>
               </div>
-              <div class="${conf.cardBg} p-4 rounded-xl border flex flex-col justify-between">
-                <div class="text-xs font-semibold text-slate-400">Streak Defense</div>
-                <div class="text-xs font-bold text-amber-500 mt-2 flex items-center gap-1">🛡️ Active Secure</div>
+              <div class="${conf.cardBg} border p-4 rounded-xl flex flex-col justify-between">
+                <span class="text-[10px] uppercase font-bold text-slate-400 tracking-wider">Exam Status Modules</span>
+                <span class="text-base font-black text-indigo-400 mt-1">5 Simulations</span>
               </div>
             </div>
 
-            <!-- Appearance Theme Modification Skins Node Control Matrix -->
-            <div class="${conf.cardBg} p-4 rounded-xl border">
-              <h3 class="text-xs font-extrabold uppercase tracking-wider mb-3 text-slate-400">Select Interface Skin Architecture</h3>
-              <div class="space-y-2">
-                <button onclick="applyThemeProfile('midnight-slate')" class="w-full text-left p-2.5 rounded-lg border text-xs font-bold flex justify-between items-center transition-all bg-slate-900 border-slate-700 text-slate-200">
-                  <span>Midnight Slate (Default Code)</span>
-                  ${activeThemeProfile === 'midnight-slate' ? '✨' : ''}
-                </button>
-                <button onclick="applyThemeProfile('cyberpunk-neon')" class="w-full text-left p-2.5 rounded-lg border text-xs font-bold flex justify-between items-center transition-all bg-indigo-950 border-indigo-800 text-cyan-300">
-                  <span>Cyberpunk Neon (Luminescence)</span>
-                  ${activeThemeProfile === 'cyberpunk-neon' ? '✨' : ''}
-                </button>
-                <button onclick="applyThemeProfile('autumn-wood')" class="w-full text-left p-2.5 rounded-lg border text-xs font-bold flex justify-between items-center transition-all bg-stone-700 border-stone-600 text-amber-100">
-                  <span>Autumn Wood (Warm Timber)</span>
-                  ${activeThemeProfile === 'autumn-wood' ? '✨' : ''}
-                </button>
-              </div>
-            </div>
-            
-            <!-- TTS Options Settings Configuration System Panel -->
-            <div class="${conf.cardBg} p-4 rounded-xl border">
-              <h3 class="text-xs font-extrabold uppercase tracking-wider mb-3 text-slate-400">Audio Speech Engine Configuration</h3>
-              <div class="space-y-3">
-                <div>
-                  <div class="flex justify-between text-[11px] font-bold mb-1">
-                    <span>Speed Frequency Modulation</span>
-                    <span id="rate-display-lbl">${ttsSpeechRate}x</span>
-                  </div>
-                  <input type="range" min="0.5" max="1.5" step="0.05" value="${ttsSpeechRate}" oninput="adjustTTSSettings('rate', this.value)" class="w-full accent-indigo-500">
-                </div>
-                <div>
-                  <div class="flex justify-between text-[11px] font-bold mb-1">
-                    <span>Vocal Pitch Tone Elevation</span>
-                    <span id="pitch-display-lbl">${ttsSpeechPitch}x</span>
-                  </div>
-                  <input type="range" min="0.7" max="1.3" step="0.05" value="${ttsSpeechPitch}" oninput="adjustTTSSettings('pitch', this.value)" class="w-full accent-indigo-500">
-                </div>
+            <div class="${conf.cardBg} border p-4 rounded-xl">
+              <h3 class="text-xs font-black text-slate-400 uppercase tracking-wider mb-2">System Theme Core Profile</h3>
+              <div class="grid grid-cols-2 gap-2">
+                <button onclick="applyThemeProfile('midnight-slate')" class="p-2.5 rounded-lg border text-[11px] font-bold text-center bg-slate-900 border-slate-700">Slate Mode</button>
+                <button onclick="applyThemeProfile('cyberpunk-neon')" class="p-2.5 rounded-lg border text-[11px] font-bold text-center bg-indigo-950 border-fuchsia-800 text-cyan-300">Neon Mode</button>
               </div>
             </div>
           </div>
+
         `;
-      } 
-      
+      }
+
       else if (activeTab === 'vocabulary') {
-        const item = coreVocabulary[currentCardIndex];
-        const isMastered = masteredWordsList.includes(item.id);
-        
-        container.innerHTML = `
-          <div class="space-y-4 flex flex-col items-center">
-            <div class="w-full flex justify-between items-center px-1">
-              <span class="text-xs font-bold text-slate-400">Card ${currentCardIndex + 1} of ${coreVocabulary.length}</span>
-              <span class="text-xs font-bold ${isMastered ? 'text-emerald-400' : 'text-amber-400'}">${isMastered ? '✓ Mastered' : '⏳ Reviewing'}</span>
-            </div>
+        const categories = Object.keys(a1VocabularyDatabase);
+        const activeList = a1VocabularyDatabase[selectedVocabCategory];
+        const card = activeList[activeVocabCardIndex];
 
-            <!-- Flashcard Arena Stage Core 3D Base Elements -->
-            <div id="flashcard-system-node" class="flashcard-wrapper w-full h-64 cursor-pointer" onclick="this.classList.toggle('flipped')">
-              <div class="flashcard-inner">
-                <!-- Front Frame Elements -->
-                <div class="flashcard-front ${conf.cardBg} border shadow-md">
-                  <div class="text-[10px] tracking-widest font-extrabold uppercase bg-slate-900 bg-opacity-40 px-2 py-1 rounded self-start ${item.gender === 'masculine' ? 'text-blue-400' : item.gender === 'feminine' ? 'text-pink-400' : 'text-amber-400'}">${item.gender}</div>
-                  <div class="text-3xl font-black my-auto tracking-tight select-none">${item.german}</div>
-                  <div class="text-xs text-slate-400 font-medium italic flex items-center justify-center gap-1">
-                    💡 Click Card frame surface layout to flip
-                  </div>
-                </div>
-                <!-- Back Frame Elements -->
-                <div class="flashcard-back ${conf.cardBackBg} border shadow-md">
-                  <span class="text-[10px] tracking-widest font-extrabold uppercase text-indigo-300 self-start">English Translation Translation</span>
-                  <div class="text-2xl font-extrabold my-auto select-none">${item.english}</div>
-                  <p class="text-xs text-indigo-200 opacity-80 px-4">${item.hint}</p>
-                </div>
-              </div>
-            </div>
-
-            <!-- Flashcard Matrix Interaction Footers Controls Navigation -->
-            <div class="w-full grid grid-cols-3 gap-2 mt-2">
-              <button onclick="navigateFlashcardSystem(-1)" class="p-3 font-bold text-xs rounded-xl bg-slate-800 text-slate-200 border border-slate-700 active:scale-95 transition-transform">← Prev</button>
-              <button onclick="triggerSpeechSynthesis('${item.audioText}')" class="p-3 font-bold text-xs rounded-xl bg-indigo-600 text-white shadow-md active:scale-95 transition-transform flex items-center justify-center gap-1">🔊 Audio</button>
-              <button onclick="navigateFlashcardSystem(1)" class="p-3 font-bold text-xs rounded-xl bg-slate-800 text-slate-200 border border-slate-700 active:scale-95 transition-transform">Next →</button>
-            </div>
-
-            <button onclick="toggleWordMasteryStatus(${item.id})" class="w-full mt-2 p-3 font-extrabold text-xs rounded-xl transition-all border ${isMastered ? 'bg-emerald-950 border-emerald-800 text-emerald-300' : 'bg-slate-800 border-slate-700 text-slate-400'}">
-              ${isMastered ? 'Remove from Mastered Repository' : '✓ Mark as Mastered (+10 XP)'}
-            </button>
-          </div>
-        `;
-      } 
-      
-      else if (activeTab === 'grammar') {
-        const block = coreGrammarCheats[currentGrammarIndex];
-        container.innerHTML = `
-          <div class="space-y-4">
-            <div class="flex justify-between items-center px-1">
-              <span class="text-xs font-bold text-slate-400">Cheat Module ${currentGrammarIndex + 1} of ${coreGrammarCheats.length}</span>
-            </div>
-
-            <div class="${conf.cardBg} border p-5 rounded-2xl shadow-xl space-y-4">
-              <div class="flex items-center gap-2">
-                <span class="text-2xl">💡</span>
-                <h3 class="text-lg font-black tracking-tight">${block.title}</h3>
-              </div>
-              <div class="h-px bg-slate-800 w-full"></div>
-              <div>
-                <h4 class="text-[10px] uppercase font-extrabold tracking-wider text-indigo-400 mb-1">Structural Directives</h4>
-                <p class="text-sm font-medium leading-relaxed opacity-90">${block.rules}</p>
-              </div>
-              <div class="p-3 rounded-xl bg-slate-950 border border-slate-800">
-                <h4 class="text-[10px] uppercase font-extrabold tracking-wider text-emerald-400 mb-1">Contextual Formulation Usage Template</h4>
-                <p class="text-sm font-mono text-emerald-300 font-bold">${block.example}</p>
-              </div>
-            </div>
-
-            <div class="grid grid-cols-2 gap-2">
-              <button onclick="navigateGrammarHub(-1)" class="p-3 font-bold text-xs rounded-xl bg-slate-800 text-slate-200 border border-slate-700 active:scale-95 transition-transform">Previous Rule</button>
-              <button onclick="navigateGrammarHub(1)" class="p-3 font-bold text-xs rounded-xl bg-slate-800 text-slate-200 border border-slate-700 active:scale-95 transition-transform">Next Rule</button>
-            </div>
-          </div>
-        `;
-      } 
-      
-      else if (activeTab === 'quiz') {
-        if (currentQuizIndex >= coreQuizBattles.length) {
-          container.innerHTML = `
-            <div class="text-center p-6 bg-slate-950 rounded-2xl border border-slate-800 space-y-4">
-              <span class="text-5xl block animate-bounce">🏆</span>
-              <h3 class="text-xl font-black text-white">Battle Finished!</h3>
-              <p class="text-xs text-slate-400 font-medium">You completed all active modular assessment engines successfully.</p>
-              <button onclick="resetQuizBattleModule()" class="w-full p-3 bg-gradient-to-r from-indigo-500 to-fuchsia-500 text-white font-extrabold text-xs rounded-xl shadow-md transition-transform active:scale-95">Restart Battle Arena Pipeline</button>
-            </div>
-          `;
-          return;
-        }
-
-        const quizItem = coreQuizBattles[currentQuizIndex];
-        
-        let optionsHTML = '';
-        quizItem.options.forEach((opt, idx) => {
-          let optionStyle = `bg-slate-800 border-slate-700 text-slate-200 hover:bg-slate-700`;
-          let statusAddon = '';
-          
-          if (activeQuizFeedback !== null) {
-            if (idx === quizItem.correct) {
-              optionStyle = `bg-emerald-950 border-emerald-500 text-emerald-200 font-black`;
-              statusAddon = ` <span class="text-emerald-400 text-xs float-right">✓ Correct</span>`;
-            } else if (idx === activeQuizFeedback.selected) {
-              optionStyle = `bg-rose-950 border-rose-500 text-rose-200`;
-              statusAddon = ` <span class="text-rose-400 text-xs float-right">✗ Wrong</span>`;
-            } else {
-              optionStyle = `bg-slate-900 border-slate-800 text-slate-500 opacity-50`;
-            }
-          }
-
-          optionsHTML += `
-            <button onclick="submitQuizOptionVerification(${idx})" ${activeQuizFeedback !== null ? 'disabled' : ''} class="w-full text-left p-3.5 rounded-xl border text-xs font-bold transition-all transform active:scale-98 ${optionStyle}">
-              <span>${opt}</span>${statusAddon}
-            </button>
-          `;
+        let selectOptionsHTML = '';
+        categories.forEach(cat => {
+          selectOptionsHTML += `<option value="${cat}" ${cat === selectedVocabCategory ? 'selected' : ''}>${cat}</option>`;
         });
 
         container.innerHTML = `
-          <div class="space-y-4">
-            <div class="flex justify-between items-center px-1">
-              <span class="text-xs font-bold text-slate-400">Question ${currentQuizIndex + 1} of ${coreQuizBattles.length}</span>
-              <span class="text-xs font-extrabold text-indigo-400 bg-indigo-950 px-2 py-0.5 rounded-md border border-indigo-900">Battle Matrix</span>
+          <div class="space-y-4 flex flex-col items-center">
+            <div class="w-full">
+              <label for="lexicon-category-selector" class="text-[10px] uppercase font-black tracking-wider text-slate-400 block mb-1">Lexicon Category Matrix</label>
+              <select id="lexicon-category-selector" onchange="selectedVocabCategory=this.value; activeVocabCardIndex=0; isVocabCardFlipped=false; renderActiveTabModule();" class="w-full bg-slate-950 border border-slate-800 p-2.5 text-xs font-bold rounded-xl text-slate-200 outline-none">
+                ${selectOptionsHTML}
+
+              </select>
             </div>
 
-            <div class="${conf.cardBg} border p-5 rounded-2xl shadow-lg space-y-4">
-              <p class="text-sm font-bold leading-snug">${quizItem.question}</p>
+            <div class="w-full flex justify-between items-center text-[11px] font-bold text-slate-400 px-1">
+              <span>Card ${activeVocabCardIndex + 1} of ${activeList.length}</span>
+              <span class="text-indigo-400 font-extrabold uppercase">A1 Lexicon Library</span>
             </div>
 
-            <div class="space-y-2">
-              ${optionsHTML}
-            </div>
+            <div class="flashcard-wrapper w-full h-60 cursor-pointer ${isVocabCardFlipped ? 'flipped' : ''}" onclick="this.classList.toggle('flipped'); isVocabCardFlipped=!isVocabCardFlipped;">
+              <div class="flashcard-inner">
+                <div class="flashcard-front ${conf.cardBg} border shadow-xl">
+                  <span class="text-[9px] uppercase tracking-widest font-black px-2 py-0.5 rounded bg-slate-950/50 self-start text-indigo-400">${card.gender}</span>
+                  <span class="text-3xl font-black tracking-tight my-auto select-none">${card.german}</span>
+                  <span class="text-[10px] text-slate-400 font-medium italic">💡 Tap to reveal English context</span>
+                </div>
+                <div class="flashcard-back ${conf.cardBackBg} border shadow-xl">
+                  <span class="text-[9px] uppercase tracking-widest font-black self-start text-indigo-300">English Translation Mapping</span>
+                  <span class="text-2xl font-extrabold tracking-tight my-auto select-none">${card.english}</span>
+                  <p class="text-xs text-indigo-200/80 px-4">${card.hint}</p>
 
-            ${activeQuizFeedback !== null ? `
-              <div class="p-4 rounded-xl bg-slate-950 border border-slate-800 space-y-2 animate-fadeIn">
-                <div class="text-[10px] font-extrabold uppercase tracking-wider text-slate-400">Grammatical Explanation Analysis</div>
-                <p class="text-xs text-slate-300 font-medium">${quizItem.explanation}</p>
-                <button onclick="advanceQuizBattleSequence()" class="w-full mt-2 p-2.5 bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs rounded-lg transition-transform active:scale-95">
-                  ${currentQuizIndex + 1 === coreQuizBattles.length ? 'Complete Battle Pipeline' : 'Next Question →'}
-                </button>
+                </div>
               </div>
-            ` : ''}
+            </div>
+
+            <div class="w-full grid grid-cols-2 gap-2">
+              <button onclick="activeVocabCardIndex = (activeVocabCardIndex === 0) ? ${activeList.length - 1} : activeVocabCardIndex - 1; isVocabCardFlipped=false; renderActiveTabModule();" class="p-3 bg-slate-800 border border-slate-700 text-xs font-bold rounded-xl active:scale-95 transition-transform">← Prev</button>
+              <button onclick="activeVocabCardIndex = (activeVocabCardIndex === ${activeList.length - 1}) ? 0 : activeVocabCardIndex + 1; isVocabCardFlipped=false; renderActiveTabModule();" class="p-3 bg-slate-800 border border-slate-700 text-xs font-bold rounded-xl active:scale-95 transition-transform">Next →</button>
+            </div>
           </div>
         `;
       }
-    }
 
-    // Flashcard Controller Module Actions
-    function navigateFlashcardSystem(dir) {
-      currentCardIndex += dir;
-      if (currentCardIndex < 0) currentCardIndex = coreVocabulary.length - 1;
-      if (currentCardIndex >= coreVocabulary.length) currentCardIndex = 0;
-      renderActiveTab();
-    }
+      else if (activeTab === 'grammar') {
+        const item = a1GrammarDatabase[activeGrammarIndex];
+        container.innerHTML = `
+          <div class="space-y-4">
+            <span class="text-[11px] font-bold text-slate-400 block px-1">Structural Framework Matrix Blueprint ${activeGrammarIndex + 1} of ${a1GrammarDatabase.length}</span>
+            <div class="${conf.cardBg} border p-5 rounded-2xl shadow-xl space-y-4">
+              <div class="flex items-center gap-2">
 
-    function toggleWordMasteryStatus(wordId) {
-      const idx = masteredWordsList.indexOf(wordId);
-      if (idx > -1) {
-        masteredWordsList.splice(idx, 1);
-      } else {
-        masteredWordsList.push(wordId);
-        rewardXP(10);
+                <span class="text-xl">💡</span>
+                <h3 class="text-base font-black tracking-tight">${item.title}</h3>
+              </div>
+              <div class="h-px bg-slate-800" />
+              <div>
+                <span class="text-[9px] uppercase tracking-wider font-extrabold text-indigo-400 block mb-0.5">Core Syntax Rules Directives</span>
+                <p class="text-xs font-medium leading-relaxed opacity-95">${item.rules}</p>
+              </div>
+              <div class="p-3 rounded-xl bg-slate-950 border border-slate-800">
+                <span class="text-[9px] uppercase tracking-wider font-extrabold text-emerald-400 block mb-0.5">Contextual Usage Template Formulation</span>
+                <p class="text-xs font-mono font-bold text-emerald-300 leading-snug">${item.example}</p>
+              </div>
+            </div>
+            <div class="grid grid-cols-2 gap-2">
+              <button onclick="activeGrammarIndex = (activeGrammarIndex === 0) ? ${a1GrammarDatabase.length - 1} : activeGrammarIndex - 1; renderActiveTabModule();" class="p-3 bg-slate-800 text-xs font-bold rounded-xl border border-slate-700">Previous</button>
+              <button onclick="activeGrammarIndex = (activeGrammarIndex === ${a1GrammarDatabase.length - 1}) ? 0 : activeGrammarIndex + 1; renderActiveTabModule();" class="p-3 bg-slate-800 text-xs font-bold rounded-xl border border-slate-700">Next Rule</button>
+            </div>
+          </div>
+        `;
+
       }
-      localStorage.setItem('sb_mastered_words', JSON.stringify(masteredWordsList));
-      renderActiveTab();
-    }
 
-    // Grammar Controller Actions
-    function navigateGrammarHub(dir) {
-      currentGrammarIndex += dir;
-      if (currentGrammarIndex < 0) currentGrammarIndex = coreGrammarCheats.length - 1;
-      if (currentGrammarIndex >= coreGrammarCheats.length) currentGrammarIndex = 0;
-      renderActiveTab();
-    }
+      else if (activeTab === 'skills') {
+        let skillsHTML = `<div class="space-y-4">
+          <div class="grid grid-cols-4 gap-1.5">
+            ${['listening', 'reading', 'writing', 'speaking'].map(s => `
+              <button onclick="activeSkillSection='${s}'; skillSelectedAnswer=null; renderActiveTabModule();" class="py-2 px-1 rounded-xl text-[10px] font-black uppercase tracking-tight border text-center transition-all ${activeSkillSection === s ? 'bg-indigo-600 border-indigo-500 text-white' : 'bg-slate-800 border-slate-700 text-slate-400'}" >${s}</button>
+            `).join('')}
+          </div>
+          <div class="${conf.cardBg} border p-4 rounded-2xl space-y-3">
+            <h3 class="text-xs font-black uppercase tracking-wider text-indigo-400">${activeSkillSection.toUpperCase()} LAB IMMERSION</h3>`;
 
-    // Quiz Processing Core Verification Algorithms
-    function submitQuizOptionVerification(selectedIdx) {
-      if (activeQuizFeedback !== null) return;
-      
-      const quizItem = coreQuizBattles[currentQuizIndex];
-      const isCorrect = (selectedIdx === quizItem.correct);
-      
-      if (isCorrect) {
-        rewardXP(15);
-      } else {
-        if (!missedQuestionsList.includes(currentQuizIndex)) {
-          missedQuestionsList.push(currentQuizIndex);
-          localStorage.setItem('sb_missed_questions', JSON.stringify(missedQuestionsList));
+        if (activeSkillSection === 'listening') {
+          const lData = a1SkillsDatabase.listening[0];
+          skillsHTML += `
+            <div class="space-y-3">
+              <p class="text-xs text-slate-400 font-mono italic">Audio simulation text: "${lData.transcript}"</p>
+              <p class="text-xs font-bold">${lData.question}</p>
+              <div class="space-y-2">
+
+                ${lData.options.map((o, idx) => `
+                  <button onclick="skillSelectedAnswer=${idx}; renderActiveTabModule();" class="w-full text-left p-2.5 border rounded-xl text-xs font-bold ${skillSelectedAnswer === idx ? 'border-indigo-500 bg-indigo-950/40' : 'border-slate-700 bg-slate-900'}" >${o}</button>
+                `).join('')}
+              </div>
+              ${skillSelectedAnswer !== null ? `
+                <div class="p-2 text-xs rounded bg-slate-950 text-center font-bold ${skillSelectedAnswer === lData.correct ? 'text-emerald-400' : 'text-rose-400'}" >
+                  ${skillSelectedAnswer === lData.correct ? '✓ Correct! (+10 XP)' : '✗ Incorrect! Try listening again.'}
+                </div>
+              ` : ''}
+            </div>`;
+        } else if (activeSkillSection === 'reading') {
+          const rData = a1SkillsDatabase.reading[0];
+          skillsHTML += `
+            <div class="space-y-3">
+              <div class="p-3 bg-slate-950 border border-slate-800 rounded-xl font-mono text-xs leading-relaxed italic text-slate-300">"${rData.body}"</div>
+              <p class="text-xs font-bold">${rData.question}</p>
+              <div class="space-y-2">
+                ${rData.options.map((o, idx) => `
+                  <button onclick="skillSelectedAnswer=${idx}; renderActiveTabModule();" class="w-full text-left p-2.5 border rounded-xl text-xs font-bold ${skillSelectedAnswer === idx ? 'border-indigo-500 bg-indigo-950/40' : 'border-slate-700 bg-slate-900'}" >${o}</button>
+
+                `).join('')}
+              </div>
+              ${skillSelectedAnswer !== null ? `
+                <div class="p-2 text-xs rounded bg-slate-950 text-center font-bold ${skillSelectedAnswer === rData.correct ? 'text-emerald-400' : 'text-rose-400'}" >
+                  ${skillSelectedAnswer === rData.correct ? '✓ Correct! (+10 XP)' : '✗ Incorrect. Look for closure timestamps.'}
+                </div>
+              ` : ''}
+            </div>`;
+        } else if (activeSkillSection === 'writing') {
+          const wData = a1SkillsDatabase.writing[0];
+          skillsHTML += `
+            <div class="space-y-3">
+              <p class="text-xs font-medium leading-relaxed">${wData.context}</p>
+              <div class="p-3 bg-slate-950 border border-slate-800 font-mono text-xs rounded-xl">${wData.text}</div>
+              <div class="grid grid-cols-2 gap-2">
+                ${wData.options.map((o, idx) => `
+                  <button onclick="skillSelectedAnswer=${idx}; renderActiveTabModule();" class="p-2.5 border rounded-xl text-xs font-mono font-bold text-center ${skillSelectedAnswer === idx ? 'border-indigo-500 bg-indigo-950/40' : 'border-slate-700 bg-slate-900'}" >${o}</button>
+                `).join('')}
+              </div>
+
+              ${skillSelectedAnswer !== null ? `
+                <div class="p-2 text-xs rounded bg-slate-950 text-center font-bold ${skillSelectedAnswer === wData.correct ? 'text-emerald-400' : 'text-rose-400'}" >
+                  ${skillSelectedAnswer === wData.correct ? '✓ Success Matrix Match (+15 XP)' : '✗ Case grammar mismatches identified.'}
+                </div>
+              ` : ''}
+            </div>`;
+        } else if (activeSkillSection === 'speaking') {
+          const sData = a1SkillsDatabase.speaking[0];
+          skillsHTML += `
+            <div class="space-y-3 text-center py-2">
+              <p class="text-xs font-bold text-slate-300">Target Statement Structure Challenge</p>
+              <p class="text-xl font-black text-indigo-300">"${sData.text}"</p>
+              <div class="p-2.5 bg-slate-950 text-left border border-slate-800 rounded-lg">
+                <span class="text-[9px] uppercase font-black block text-slate-400 tracking-wider">Phonetics Suffix Guide Map</span>
+                <p class="text-xs text-amber-400 font-mono font-bold mt-0.5">${sData.guide}</p>
+              </div>
+              <button onclick="rewardXP(5);" class="w-full mt-2 p-3 bg-indigo-600 font-black text-xs text-white rounded-xl shadow-md active:scale-95 transition-all">🎤 Verify Speaking Pronunciation</button>
+            </div>`;
+        }
+
+
+        skillsHTML += `</div></div>`;
+        container.innerHTML = skillsHTML;
+      }
+
+      else if (activeTab === 'exams') {
+        if (!activeExamRunningMode) {
+          let selectionRowsHTML = '';
+          mockExamsDatabase.forEach((ex, idx) => {
+            selectionRowsHTML += `
+              <div class="${conf.cardBg} border p-4 rounded-xl flex flex-col justify-between space-y-3">
+                <div>
+                  <h4 class="text-xs font-black text-white">${ex.title}</h4>
+                  <p class="text-[10px] text-slate-400 mt-0.5">Comprehensive Standard Assessment Block • ${ex.questions.length} Questions</p>
+                </div>
+                <button onclick="startSpecificMockExamSuite(${idx})" class="w-full py-2 bg-slate-950 hover:bg-slate-900 border border-indigo-900 text-indigo-400 font-extrabold text-[11px] rounded-lg transition-transform active:scale-95" >Launch Simulation</button>
+              </div>
+            `;
+          });
+
+
+          container.innerHTML = `
+            <div class="space-y-4">
+              <div class="px-1">
+                <h3 class="text-sm font-black tracking-tight text-white">Goethe / Telc A1 Mock Exam Arena</h3>
+                <p class="text-[11px] text-slate-400 font-medium">Verify your cross-dimension capabilities using full runtime testing models.</p>
+              </div>
+              <div class="space-y-3">${selectionRowsHTML}</div>
+            </div>
+          `;
+        } else {
+          const exam = mockExamsDatabase[selectedActiveExamIndex];
+          
+          if (currentExamQuestionIndex >= exam.questions.length) {
+            let correctCounter = 0;
+            exam.questions.forEach((q, idx) => {
+              if (activeExamUserAnswersCollected[idx] === q.c) correctCounter++;
+            });
+            const passed = correctCounter >= exam.passingScore;
+            if (passed) setTimeout(() => { rewardXP(50); }, 100);
+
+
+            container.innerHTML = `
+              <div class="text-center p-6 bg-slate-950 border border-slate-800 rounded-2xl space-y-4 shadow-2xl">
+                <span class="text-5xl block">${passed ? '🏆' : '⏳'}</span>
+                <h3 class="text-lg font-black text-white">${passed ? 'Examination Passed!' : 'Requires Review'}</h3>
+                <p class="text-xs text-slate-400 font-semibold leading-relaxed">Performance Output Score metrics tracking evaluated: <br><span class="text-base font-black ${passed ? 'text-emerald-400' : 'text-rose-400'}">${correctCounter} / ${exam.questions.length} Correct</span></p>
+                <div class="text-left bg-slate-900 p-3 rounded-lg border border-slate-800 text-[11px] space-y-1 text-slate-300">
+                  <p><strong>Passing Constraint Target:</strong> ${exam.passingScore} Correct options</p>
+                  <p><strong>Rewards Awarded:</strong> ${passed ? '+50 XP Milestone Achieved!' : '0 XP. Please run remediation rules.'}</p>
+                </div>
+                <button onclick="activeExamRunningMode=false; renderActiveTabModule();" class="w-full p-3 bg-gradient-to-r from-indigo-500 to-fuchsia-500 font-black text-xs text-white rounded-xl" >Return to Exam Selection Shell</button>
+              </div>
+            `;
+            return;
+          }
+
+          const activeQuestion = exam.questions[currentExamQuestionIndex];
+          container.innerHTML = `
+            <div class="space-y-4">
+              <div class="flex justify-between items-center px-1">
+
+                <span class="text-xs font-black text-slate-400">Exam Question ${currentExamQuestionIndex + 1} of ${exam.questions.length}</span>
+                <span class="text-[10px] font-mono bg-rose-950 border border-rose-800 px-2 py-0.5 text-rose-400 rounded-md font-bold">LIVE ASSESS MODE</span>
+              </div>
+
+              <div class="${conf.cardBg} border p-5 rounded-2xl shadow-xl">
+                <p class="text-xs font-bold leading-relaxed text-slate-200">${activeQuestion.q}</p>
+              </div>
+
+              <div class="space-y-2">
+                ${activeQuestion.o.map((opt, oIdx) => {
+                  let optStyle = "bg-slate-800 border-slate-700 text-slate-300";
+                  if (processingExamEvaluationFeedbackMode) {
+                    if (oIdx === activeQuestion.c) optStyle = "bg-emerald-950 border-emerald-500 text-emerald-200 font-black";
+                    else if (oIdx === activeExamUserAnswersCollected[currentExamQuestionIndex]) optStyle = "bg-rose-950 border-rose-500 text-rose-200";
+                    else optStyle = "bg-slate-900 border-slate-800 opacity-40 text-slate-600";
+                  }
+                  return `
+                    <button onclick="submitActiveExamOptionAnswer(${oIdx})" ${processingExamEvaluationFeedbackMode ? 'disabled' : ''} class="w-full text-left p-3.5 border rounded-xl text-xs font-bold transition-all ${optStyle}" >${opt}</button>
+                  `;
+
+                }).join('')}
+              </div>
+
+              ${processingExamEvaluationFeedbackMode ? `
+                <div class="p-4 bg-slate-950 border border-slate-800 rounded-xl space-y-2">
+                  <span class="text-[9px] uppercase font-black text-slate-400 tracking-wider">Grammar Logic Correction Analysis</span>
+                  <p class="text-xs text-slate-300 font-medium">${activeQuestion.exp}</p>
+                  <button onclick="advanceActiveExamQuestionStep()" class="w-full mt-1 py-2.5 bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs rounded-xl" >Next Question →</button>
+                </div>
+              ` : ''}
+            </div>
+          `;
         }
       }
-      
-      activeQuizFeedback = { selected: selectedIdx, correct: quizItem.correct };
-      renderActiveTab();
     }
 
-    function advanceQuizBattleSequence() {
-      activeQuizFeedback = null;
-      currentQuizIndex++;
-      renderActiveTab();
+    // Exam State Handler Methods
+    function startSpecificMockExamSuite(idx) {
+      selectedActiveExamIndex = idx;
+
+      activeExamRunningMode = true;
+      currentExamQuestionIndex = 0;
+      activeExamUserAnswersCollected = [];
+      processingExamEvaluationFeedbackMode = false;
+      renderActiveTabModule();
     }
 
-    function resetQuizBattleModule() {
-      currentQuizIndex = 0;
-      activeQuizFeedback = null;
-      renderActiveTab();
+    function submitActiveExamOptionAnswer(ansIdx) {
+      if (processingExamEvaluationFeedbackMode) return;
+      activeExamUserAnswersCollected[currentExamQuestionIndex] = ansIdx;
+      processingExamEvaluationFeedbackMode = true;
+      renderActiveTabModule();
     }
 
-    function adjustTTSSettings(type, val) {
-      const parsedVal = parseFloat(val);
-      if (type === 'rate') {
-        ttsSpeechRate = parsedVal;
-        localStorage.setItem('sb_tts_rate', parsedVal);
-        document.getElementById('rate-display-lbl').innerText = parsedVal + 'x';
-      } else if (type === 'pitch') {
-        ttsSpeechPitch = parsedVal;
-        localStorage.setItem('sb_tts_pitch', parsedVal);
-        document.getElementById('pitch-display-lbl').innerText = parsedVal + 'x';
-      }
+    function advanceActiveExamQuestionStep() {
+      processingExamEvaluationFeedbackMode = false;
+      currentExamQuestionIndex++;
+      renderActiveTabModule();
     }
+
   </script>
 </body>
 </html>
+
