@@ -75,7 +75,7 @@
       </button>
       <button onclick="switchTab('vocabulary')" class="flex-1 flex flex-col items-center justify-center navigation-tab-btn transition-colors text-slate-500" id="tab-vocabulary">
         <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="mb-1"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z"/><path d="M6 6h10M6 10h10"/></svg>
-        <span class="text-[9px] font-bold">Lexicon</span>
+        <span class="text-[9px] font-bold">Vocabulary</span>
       </button>
       <button onclick="switchTab('grammar')" class="flex-1 flex flex-col items-center justify-center navigation-tab-btn transition-colors text-slate-500" id="tab-grammar">
         <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="mb-1"><path d="M21.42 10.922a1 1 0 0 0-.019-1.838L12.83 5.18a2 2 0 0 0-1.66 0L2.6 9.08a1 1 0 0 0 0 1.832l8.57 3.908a2 2 0 0 0 1.66 0z"/><path d="M6 18.8v-4L12 18l6-3.2v4"/></svg>
@@ -231,10 +231,10 @@
         { id: "pdf_b5", german: "Der Mund", gender: "masculine", english: "Mouth", pronunciation: "dayr moont", hint: "Speaking node." },
         { id: "pdf_b6", german: "Die Arm", gender: "masculine", english: "Arm", pronunciation: "dee ahrm", hint: "Upper limb structural part." },
         { id: "pdf_b7", german: "Die hand", gender: "feminine", english: "Hand", pronunciation: "dee hahnt", hint: "Limb parameter." },
-        { id: "pdf_b8", german: "Das Bein", gender: "neuter", english: "Leg", hint: "Lower movement support structure." },
-        { id: "pdf_b9", german: "Der Fuß", gender: "masculine", english: "Foot", hint: "Ground terminal point unit." },
-        { id: "pdf_b10", german: "Der bauch", gender: "masculine", english: "Stomach", hint: "Midsection tracking block." },
-        { id: "pdf_b11", german: "Der Rücken", gender: "masculine", english: "Back", hint: "Rear physical chassis parameter." },
+        { id: "pdf_b8", german: "Das Bein", gender: "neuter", english: "Leg", pronunciation: "das byn", hint: "Lower movement support structure." },
+        { id: "pdf_b9", german: "Der Fuß", gender: "masculine", english: "Foot", pronunciation: "dayr foos", hint: "Ground terminal point unit." },
+        { id: "pdf_b10", german: "Der bauch", gender: "masculine", english: "Stomach", pronunciation: "dayr bowkh", hint: "Midsection tracking block." },
+        { id: "pdf_b11", german: "Der Rücken", gender: "masculine", english: "Back", pronunciation: "dayr ruek-en", hint: "Rear physical chassis parameter." },
         { id: "pdf_b12", german: "Die Haare", gender: "plural", english: "Hair", pronunciation: "dee hah-reh", hint: "Head fibers array." },
         { id: "pdf_b13", german: "Gesicht", gender: "neuter", english: "Face", pronunciation: "geh-zicht", hint: "Front visual cluster." },
         { id: "pdf_b14", german: "Hals", gender: "masculine", english: "Neck", pronunciation: "hahlz", hint: "Throat connection module." },
@@ -280,14 +280,14 @@
         { id: "pdf_cl1", german: "Die Jeans", gender: "feminine", english: "Jeans", pronunciation: "dee djeens", hint: "Denim apparel garments." },
         { id: "pdf_cl2", german: "Der Rock", gender: "masculine", english: "Skirt", pronunciation: "dayr rok", hint: "Lower body apparel garment model." },
         { id: "pdf_cl3", german: "Das Hemd", gender: "neuter", english: "Shirt", pronunciation: "dahs hemt", hint: "Standard buttoned upper torso coverage." },
-        { id: "pdf_cl4", german: "Der Mantel", gender: "masculine", english: "Coat", hint: "Outer boundary cold weather shelter." },
+        { id: "pdf_cl4", german: "Der Mantel", gender: "masculine", english: "Coat", pronunciation: "dayr man-tel", hint: "Outer boundary cold weather shelter." },
         { id: "pdf_cl5", german: "Das T-Shirt", gender: "neuter", english: "T-Shirt", pronunciation: "dahs tee-shurt", hint: "Casual top canvas layout element." }
       ],
       "Household (Hauswesen Tasks)": [
         { id: "pdf_ho1", german: "Das Badzimmer", gender: "neuter", english: "Bathroom", pronunciation: "dahs baht-tsi-mer", hint: "Syllabus exact text layout entry." },
         { id: "pdf_ho2", german: "Das Arbeitzimmer", gender: "neuter", english: "Workroom", pronunciation: "dahs ar-byts-tsi-mer", hint: "Syllabus specific compound spelling." },
         { id: "pdf_ho3", german: "Das Schlafzimmer", gender: "neuter", english: "Bedroom", pronunciation: "dahs shlahf-tsi-mer", hint: "Sleep area localization node." },
-        { id: "pdf_ho4", german: "Das Kinderzimmer", gender: "neuter", english: "Kidsroom", hint: "Play area localization compartment." },
+        { id: "pdf_ho4", german: "Das Kinderzimmer", gender: "neuter", english: "Kidsroom", pronunciation: "das kin-der-tsim-er", hint: "Play area localization compartment." },
         { id: "pdf_ho5", german: "Der Flur", gender: "masculine", english: "Corridor", pronunciation: "dayr floohr", hint: "Connecting hallway transit corridor." }
       ],
       "Shapes (Die Formen)": [
@@ -306,8 +306,8 @@
       ],
       "W-Questions (W-Fragen)": [
         { id: "pdf_wq1", german: "Wo", gender: "query", english: "Where", pronunciation: "voh", hint: "Static geographic localization coordinates." },
-        { id: "pdf_wq2", german: "Wer", gender: "query", english: "Who", hint: "Person entity item target validation identity." },
-        { id: "pdf_wq3", german: "Woher", gender: "query", english: "From Where", hint: "Origin generation coordinate source track trace." },
+        { id: "pdf_wq2", german: "Wer", gender: "query", english: "Who", pronunciation: "vair", hint: "Person entity item target validation identity." },
+        { id: "pdf_wq3", german: "Woher", gender: "query", english: "From Where", pronunciation: "voh-hair", hint: "Origin generation coordinate source track trace." },
         { id: "pdf_wq4", german: "Wie", gender: "query", english: "How", pronunciation: "vee", hint: "Methodology execution efficiency configuration." },
         { id: "pdf_wq5", german: "Welche", gender: "query", english: "Which", pronunciation: "vel-cheh", hint: "Array element selection choice." }
       ],
@@ -732,7 +732,7 @@
               <p class="text-xs text-indigo-100 mt-1 leading-relaxed">Master standard Goethe or Telc proficiency variants cleanly using accelerated game interface metrics.</p>
               <div class="mt-4 flex gap-2">
                 <button onclick="switchTab('exams')" class="bg-white text-indigo-950 font-black text-[11px] px-3.5 py-2 rounded-xl shadow-md transform active:scale-95 transition-transform">Run Mock Test</button>
-                <button onclick="switchTab('vocabulary')" class="bg-indigo-500/30 border border-indigo-400/40 text-white font-bold text-[11px] px-3.5 py-2 rounded-xl">Lexicon Hub</button>
+                <button onclick="switchTab('vocabulary')" class="bg-indigo-500/30 border border-indigo-400/40 text-white font-bold text-[11px] px-3.5 py-2 rounded-xl">Vocabulary Hub</button>
               </div>
             </div>
 
@@ -803,7 +803,7 @@
           coreDisplayBodyHTML = `
             <div class="w-full flex justify-between items-center text-[11px] font-bold text-slate-400 px-1">
               <span>Card ${activeVocabCardIndex + 1} of ${activeList.length}</span>
-              <span class="text-indigo-400 font-extrabold uppercase">A1 Lexicon Library</span>
+              <span class="text-indigo-400 font-extrabold uppercase">A1 Vocabulary Library</span>
             </div>
 
             <div class="flashcard-wrapper w-full h-56 cursor-pointer ${isVocabCardFlipped ? 'flipped' : ''}" onclick="this.classList.toggle('flipped'); isVocabCardFlipped=!isVocabCardFlipped;">
@@ -841,7 +841,7 @@
         container.innerHTML = `
           <div class="space-y-4 flex flex-col items-center">
             <div class="w-full">
-              <label for="lexicon-category-selector" class="text-[10px] uppercase font-black tracking-wider text-slate-400 block mb-1">Lexicon Category Matrix</label>
+              <label for="lexicon-category-selector" class="text-[10px] uppercase font-black tracking-wider text-slate-400 block mb-1">Vocabulary Category Matrix</label>
               <select id="lexicon-category-selector" onchange="selectedVocabCategory=this.value; activeVocabCardIndex=0; isVocabCardFlipped=false; renderActiveTabModule();" class="w-full bg-slate-950 border border-slate-800 p-2.5 text-xs font-bold rounded-xl text-slate-200 outline-none">
                 ${selectOptionsHTML}
               </select>
@@ -1081,4 +1081,3 @@
   </script>
 </body>
 </html>
-
