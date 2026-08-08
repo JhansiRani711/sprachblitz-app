@@ -8,7 +8,14 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#0f172a">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Sprachblitz">
+  <link rel="manifest" href="./manifest.json">
+  <link rel="apple-touch-icon" href="./apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png">
   <title>Sprachblitz - A1 Language Arena & Exam Center</title>
   <!-- Tailwind CSS Core Setup -->
   <script src="https://cdn.tailwindcss.com"></script>
@@ -42,7 +49,24 @@
       justify-content: space-between;
     }
     .flashcard-back { transform: rotateY(180deg); }
-    .theme-transition { transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+   .theme-transition { transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+
+    #splash-screen {
+      position: fixed; inset: 0; z-index: 9999;
+      background: #0f172a;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center; gap: 16px;
+      opacity: 1; transition: opacity .45s ease;
+    }
+    #splash-screen.hide { opacity: 0; pointer-events: none; }
+    #splash-screen img { width: 116px; height: 116px; border-radius: 26px; box-shadow: 0 10px 40px rgba(0,0,0,.5); animation: splash-pop .6s cubic-bezier(.34,1.56,.64,1); }
+    #splash-screen h1 { font-size: 27px; font-weight: 800; color: #f1f5f9; margin: 0; letter-spacing: -.02em; }
+    #splash-screen p { font-size: 13px; color: #818cf8; margin: 0; font-weight: 600; }
+    @keyframes splash-pop { from { transform: scale(.65); opacity: 0 } to { transform: scale(1); opacity: 1 } }
+    @media (prefers-reduced-motion: reduce) { #splash-screen img { animation: none } }
+
+    #app-header-nav { padding-top: max(1rem, env(safe-area-inset-top)); }
+    #app-footer-nav { padding-bottom: env(safe-area-inset-bottom); height: auto; min-height: 4rem; }
     ::-webkit-scrollbar { width: 4px; }
     ::-webkit-scrollbar-thumb { background: rgba(156, 163, 175, 0.3); border-radius: 2px; }
 
@@ -104,8 +128,14 @@
 </head>
 <body class="min-h-screen flex flex-col bg-slate-950 text-slate-100">
 
+  <div id="splash-screen">
+    <img src="./icon-512.png" alt="">
+    <h1>Sprachblitz</h1>
+    <p>A1 Deutsch lernen</p>
+  </div>
+
   <!-- Main Responsive Application Container Shell -->
-  <div id="app-shell-container" class="w-full max-w-md mx-auto min-h-screen shadow-2xl flex flex-col justify-between relative border-x border-slate-800 bg-slate-900 theme-transition">
+  <div id="app-shell-container" class="w-full max-w-md md:max-w-2xl lg:max-w-3xl mx-auto min-h-screen
     
     <!-- Top Global Status Header Tracking Engine -->
     <header id="app-header-nav" class="p-4 border-b border-slate-800 bg-slate-950 text-white flex justify-between items-center sticky top-0 z-50 theme-transition">
@@ -585,10 +615,48 @@
     let schreibenFormShowSolutions = false;
     let sprechenPartIndex = 0; // 0 Vorstellung, 1 Fragen, 2 Bitten
     let sprechenSubIndex = 0;
-    let sprechenChecklist = { intro: false, qa: [false, false, false], requests: [false, false, false] };
+   let sprechenChecklist = { intro: false, qa: [false, false, false, false], requests: [false, false, false] };
 
     // Sub-Navigation Module Frame Index Trackers
-    let selectedVocabCategory = "Alphabet (Alphabet)";
+   let selectedVocabCategory = "Alphabet (Alphabet)";
+    let vocabSheetOpen = false;
+
+    const vocabCategoryIcons = {
+      "Alphabet (Alphabet)": "🔤",
+      "Umlauts & Sound Rules": "🗣️",
+      "Numbers (Zahlen)": "🔢",
+      "Days (Tage)": "📅",
+      "Months (Monate)": "🗓️",
+      "Seasons (Jahreszeiten)": "🌻",
+      "Part of the Day (Teil des Tages)": "🌅",
+      "Family (Die Familie)": "👪",
+      "Body Parts (Körperteile)": "🙋",
+      "Occupation (Berufe)": "👷",
+      "Colours (Farben)": "🎨",
+      "Hobbies (Hobbys)": "⚽",
+      "Clothes (Kleidung)": "👕",
+      "Household (Hauswesen Tasks)": "🏠",
+      "Shapes (Die Formen)": "⭐",
+      "Greetings (Begrüßung)": "👋",
+      "W-Questions (W-Fragen)": "❓",
+      "Time (Uhrzeit Layouts)": "⏰",
+      "Introductions (Vorstellung)": "🧑",
+      "Daily Routine (Tagesablauf)": "☀️",
+      "DYNAM_NUMBERS": "∞"
+    };
+
+    function selectVocabCategory(cat) {
+      selectedVocabCategory = cat;
+      activeVocabCardIndex = 0;
+      isVocabCardFlipped = false;
+      vocabSheetOpen = false;
+      renderActiveTabModule();
+    }
+
+    function toggleVocabSheet() {
+      vocabSheetOpen = !vocabSheetOpen;
+      renderActiveTabModule();
+    }
     let activeVocabCardIndex = 0;
     let isVocabCardFlipped = false;
     let activeGrammarIndex = 0;
@@ -670,16 +738,23 @@
     };
 
     // Native Browser Audio Speech Synthesis Runner
-    function triggerSpeechSynthesis(text) {
-      if ('speechSynthesis' in window) {
-        window.speechSynthesis.cancel();
-        const cleanText = text.split('(')[0].split('-')[0].trim();
-        const utterance = new SpeechSynthesisUtterance(cleanText);
-        utterance.lang = 'de-DE';
-        utterance.rate = 0.8;
-        window.speechSynthesis.speak(utterance);
-      }
+   function speakGerman(text, stripParens) {
+      if (!('speechSynthesis' in window)) return;
+      const synth = window.speechSynthesis;
+      const clean = stripParens ? String(text).split('(')[0].trim() : String(text);
+      if (synth.speaking || synth.pending) synth.cancel();
+      const u = new SpeechSynthesisUtterance(clean);
+      u.lang = 'de-DE';
+      u.rate = 0.85;
+      u.volume = 1;
+      const voices = synth.getVoices();
+      const de = voices.find(v => v.lang === 'de-DE') || voices.find(v => v.lang && v.lang.startsWith('de'));
+      if (de) u.voice = de;
+      u.onerror = (e) => console.error('Speech synthesis error:', e.error);
+      synth.speak(u);
     }
+
+    function triggerSpeechSynthesis(text) { speakGerman(text, true); }
 
     // Safely embed a JS string as an argument inside a single-quoted HTML
     // onclick="'...'" attribute. JSON.stringify alone does NOT escape
@@ -761,18 +836,36 @@
     }
 
     // Main Startup Setup System Directives
-    window.onload = function() {
+   window.onload = function() {
+      registerDailyStreak();
       applyThemeProfile(currentThemeProfile);
       updateDashboardTelemetry();
       renderActiveTabModule();
+      const splash = document.getElementById('splash-screen');
+      if (splash) {
+        setTimeout(() => {
+          splash.classList.add('hide');
+          setTimeout(() => splash.remove(), 500);
+        }, 1400);
+      }
     };
+
+    function registerDailyStreak() {
+      const today = new Date().toDateString();
+      const last = localStorage.getItem('sb_last_visit');
+      if (last === today) return;
+      const yesterday = new Date(Date.now() - 86400000).toDateString();
+      savedStreakCount = (last === yesterday) ? savedStreakCount + 1 : 1;
+      localStorage.setItem('sb_streak_count', savedStreakCount);
+      localStorage.setItem('sb_last_visit', today);
+    }
 
     function applyThemeProfile(themeKey) {
       currentThemeProfile = themeKey;
       localStorage.setItem('sb_theme_profile', themeKey);
       const conf = systemThemeProfiles[themeKey] || systemThemeProfiles['midnight-slate'];
       
-      document.getElementById('app-shell-container').className = `w-full max-w-md mx-auto min-h-screen shadow-2xl flex flex-col justify-between relative border-x theme-transition ${conf.shellBg}`;
+      document.getElementById('app-shell-container').className = `w-full max-w-md md:max-w-2xl lg:max-w-3xl mx-auto min-h-screen shadow-2xl flex flex-col justify-between relative border-x theme-transition ${conf.shellBg}`;
       document.getElementById('app-shell-container').setAttribute('data-theme', conf.isLight ? 'light' : 'dark');
       document.getElementById('app-header-nav').className = `p-4 border-b flex justify-between items-center sticky top-0 z-50 theme-transition ${conf.headerBg}`;
       document.getElementById('main-scroll-view').className = `flex-1 overflow-y-auto p-4 theme-transition ${conf.viewSurfaceBg}`;
@@ -1377,12 +1470,21 @@
         const activeList = a1VocabularyDatabase[selectedVocabCategory];
         const card = activeList ? activeList[activeVocabCardIndex] : null;
 
-        let selectOptionsHTML = '';
-        categories.forEach(cat => {
-          selectOptionsHTML += `<option value="${cat}" ${cat === selectedVocabCategory ? 'selected' : ''}>${cat}</option>`;
-        });
-        selectOptionsHTML += `<option value="DYNAM_NUMBERS" ${selectedVocabCategory === 'DYNAM_NUMBERS' ? 'selected' : ''}>Numbers (0 to 100 Million Engine)</option>`;
+       const allCategories = categories.concat(['DYNAM_NUMBERS']);
+        const labelFor = (c) => c === 'DYNAM_NUMBERS' ? 'Numbers 0-100 Million' : c;
+        const iconFor = (c) => vocabCategoryIcons[c] || '📘';
+        const countFor = (c) => c === 'DYNAM_NUMBERS' ? '∞' : (a1VocabularyDatabase[c] ? a1VocabularyDatabase[c].length + ' cards' : '');
 
+        let categoryButtonsHTML = '';
+        allCategories.forEach(cat => {
+          const on = cat === selectedVocabCategory;
+          categoryButtonsHTML += `
+            <button onclick="selectVocabCategory(${safeOnclickArg(cat)})" class="p-3 rounded-2xl border text-left flex flex-col gap-1 transition-all active:scale-95 ${on ? 'bg-indigo-600 border-indigo-400 text-white' : 'bg-slate-800 border-slate-700 text-slate-200'}">
+              <span class="text-lg leading-none">${iconFor(cat)}</span>
+              <span class="text-[11px] font-black leading-tight">${labelFor(cat)}</span>
+              <span class="text-[9px] font-bold ${on ? 'text-indigo-100' : 'text-slate-500'}">${countFor(cat)}</span>
+            </button>`;
+        });
         let coreDisplayBodyHTML = '';
 
         if (selectedVocabCategory === "DYNAM_NUMBERS") {
@@ -1437,13 +1539,23 @@
 
         container.innerHTML = `
           <div class="space-y-4 flex flex-col items-center">
-            <div class="w-full">
-              <label for="lexicon-category-selector" class="text-[10px] uppercase font-black tracking-wider text-slate-400 block mb-1">Vocabulary Category Matrix</label>
-              <select id="lexicon-category-selector" onchange="selectedVocabCategory=this.value; activeVocabCardIndex=0; isVocabCardFlipped=false; renderActiveTabModule();" class="w-full bg-slate-950 border border-slate-800 p-2.5 text-xs font-bold rounded-xl text-slate-200 outline-none">
-                ${selectOptionsHTML}
-              </select>
-            </div>
-            ${coreDisplayBodyHTML}
+            <button onclick="toggleVocabSheet()" class="w-full flex items-center justify-between gap-2 p-3 rounded-2xl border bg-slate-800 border-slate-700 active:scale-[0.99] transition-transform">
+              <span class="flex items-center gap-2 min-w-0">
+                <span class="text-lg leading-none">${iconFor(selectedVocabCategory)}</span>
+                <span class="flex flex-col items-start min-w-0">
+                  <span class="text-[9px] uppercase font-black tracking-wider text-slate-400">Topic</span>
+                  <span class="text-xs font-black text-slate-100 truncate">${labelFor(selectedVocabCategory)}</span>
+                </span>
+              </span>
+              <span class="text-[10px] font-black text-indigo-400 whitespace-nowrap">${vocabSheetOpen ? 'Close ✕' : 'Change ▾'}</span>
+            </button>
+
+            ${vocabSheetOpen ? `
+              <div class="w-full p-3 rounded-2xl border bg-slate-950 border-slate-800">
+                <p class="text-[10px] uppercase font-black tracking-wider text-slate-400 mb-2 px-0.5">Choose a topic</p>
+                <div class="grid grid-cols-2 md:grid-cols-3 gap-2">${categoryButtonsHTML}</div>
+              </div>
+            ` : coreDisplayBodyHTML}
           </div>
         `;
       }
