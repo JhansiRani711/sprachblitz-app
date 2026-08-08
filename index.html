@@ -1,10 +1,4 @@
 <!DOCTYPE html>
-<!--
-  Sprachblitz — Copyright (c) 2026 Jhansirani. All rights reserved.
-  Viewable for reference only. Reuse, redistribution, or hosting
-  of this code or its datasets is not permitted without written
-  permission. See LICENSE.
--->
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -49,8 +43,9 @@
       justify-content: space-between;
     }
     .flashcard-back { transform: rotateY(180deg); }
-   .theme-transition { transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+    .theme-transition { transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
 
+    /* Splash screen shown on first paint, faded out by window.onload */
     #splash-screen {
       position: fixed; inset: 0; z-index: 9999;
       background: #0f172a;
@@ -65,6 +60,7 @@
     @keyframes splash-pop { from { transform: scale(.65); opacity: 0 } to { transform: scale(1); opacity: 1 } }
     @media (prefers-reduced-motion: reduce) { #splash-screen img { animation: none } }
 
+    /* Respect the iPhone notch and home indicator */
     #app-header-nav { padding-top: max(1rem, env(safe-area-inset-top)); }
     #app-footer-nav { padding-bottom: env(safe-area-inset-bottom); height: auto; min-height: 4rem; }
     ::-webkit-scrollbar { width: 4px; }
@@ -128,6 +124,7 @@
 </head>
 <body class="min-h-screen flex flex-col bg-slate-950 text-slate-100">
 
+  <!-- Startup splash: app icon + name, removed once the app has rendered -->
   <div id="splash-screen">
     <img src="./icon-512.png" alt="">
     <h1>Sprachblitz</h1>
@@ -135,7 +132,7 @@
   </div>
 
   <!-- Main Responsive Application Container Shell -->
-  <div id="app-shell-container" class="w-full max-w-md md:max-w-2xl lg:max-w-3xl mx-auto min-h-screen
+  <div id="app-shell-container" class="w-full max-w-md md:max-w-2xl lg:max-w-3xl mx-auto min-h-screen shadow-2xl flex flex-col justify-between relative border-x border-slate-800 bg-slate-900 theme-transition">
     
     <!-- Top Global Status Header Tracking Engine -->
     <header id="app-header-nav" class="p-4 border-b border-slate-800 bg-slate-950 text-white flex justify-between items-center sticky top-0 z-50 theme-transition">
@@ -236,13 +233,13 @@
         { id: "pdf_n10", german: "Zehn", gender: "number", english: "ten", pronunciation: "tsehn", hint: "10" },
         { id: "pdf_n11", german: "Elf", gender: "number", english: "eleven", pronunciation: "elf", hint: "11" },
         { id: "pdf_n12", german: "Zwölf", gender: "number", english: "twelve", pronunciation: "tsvuelf", hint: "12" },
-        { id: "pdf_n13", german: "Drei Zehn", gender: "number", english: "thirteen", pronunciation: "dry-tsehn", hint: "13" },
-        { id: "pdf_n14", german: "Vier Zehn", gender: "number", english: "fourteen", pronunciation: "feer-tsehn", hint: "14" },
-        { id: "pdf_n15", german: "Fünf Zehn", gender: "number", english: "fifteen", pronunciation: "fuenf-tsehn", hint: "15" },
-        { id: "pdf_n16", german: "Sech Zehn", gender: "number", english: "sixteen", pronunciation: "zech-tsehn", hint: "16" },
-        { id: "pdf_n17", german: "Sieb Zehn", gender: "number", english: "seventeen", pronunciation: "zeeb-tsehn", hint: "17" },
-        { id: "pdf_n18", german: "Acht Zehn", gender: "number", english: "eighteen", pronunciation: "acht-tsehn", hint: "18" },
-        { id: "pdf_n19", german: "Neun Zehn", gender: "number", english: "nineteen", pronunciation: "noyn-tsehn", hint: "19" },
+        { id: "pdf_n13", german: "Dreizehn", gender: "number", english: "thirteen", pronunciation: "dry-tsehn", hint: "13" },
+        { id: "pdf_n14", german: "Vierzehn", gender: "number", english: "fourteen", pronunciation: "feer-tsehn", hint: "14" },
+        { id: "pdf_n15", german: "Fünfzehn", gender: "number", english: "fifteen", pronunciation: "fuenf-tsehn", hint: "15" },
+        { id: "pdf_n16", german: "Sechzehn", gender: "number", english: "sixteen", pronunciation: "zech-tsehn", hint: "16" },
+        { id: "pdf_n17", german: "Siebzehn", gender: "number", english: "seventeen", pronunciation: "zeeb-tsehn", hint: "17" },
+        { id: "pdf_n18", german: "Achtzehn", gender: "number", english: "eighteen", pronunciation: "acht-tsehn", hint: "18" },
+        { id: "pdf_n19", german: "Neunzehn", gender: "number", english: "nineteen", pronunciation: "noyn-tsehn", hint: "19" },
         { id: "pdf_n20", german: "Zwanzig", gender: "number", english: "twenty", pronunciation: "tsvan-tsig", hint: "20" }
       ],
       "Days (Tage)": [
@@ -256,7 +253,7 @@
       ],
       "Months (Monate)": [
         { id: "pdf_m1", german: "Januar", gender: "month", english: "January", pronunciation: "yan-oo-ahr", hint: "Month 1" },
-        { id: "pdf_m2", german: "Februaur", gender: "month", english: "February", pronunciation: "feb-roo-ahr", hint: "Syllabus spelling tracker node." },
+        { id: "pdf_m2", german: "Februar", gender: "month", english: "February", pronunciation: "feb-roo-ahr", hint: "Syllabus spelling tracker node." },
         { id: "pdf_m3", german: "März", gender: "month", english: "March", pronunciation: "merts", hint: "Month 3" },
         { id: "pdf_m4", german: "April", gender: "month", english: "April", pronunciation: "ah-pril", hint: "Month 4" },
         { id: "pdf_m5", german: "Mai", gender: "month", english: "May", pronunciation: "my", hint: "Month 5" },
@@ -283,7 +280,7 @@
         { id: "pdf_pd5", german: "Nachmittag", gender: "daypart", english: "12 pm - 4 pm", pronunciation: "nach-mit-tahk", hint: "Afternoon window." },
         { id: "pdf_pd6", german: "Abend", gender: "daypart", english: "4 pm - 7 pm", pronunciation: "ah-bent", hint: "Evening time constant." },
         { id: "pdf_pd7", german: "Nacht", gender: "daypart", english: "7 pm - 12 am", pronunciation: "nacht", hint: "Night segment operational view." },
-        { id: "pdf_pd8", german: "Mittenacht", gender: "daypart", english: "12 am - 3 am", pronunciation: "mit-er-nacht", hint: "Midnight frame." }
+        { id: "pdf_pd8", german: "Mitternacht", gender: "daypart", english: "12 am - 3 am", pronunciation: "mit-er-nacht", hint: "Midnight frame." }
       ],
       "Family (Die Familie)": [
         { id: "pdf_f1", german: "Eltern", gender: "plural", english: "Parents", pronunciation: "el-tern", hint: "Father + Mother node setup." },
@@ -299,32 +296,32 @@
         { id: "pdf_f12", german: "Tochter", gender: "feminine", english: "Daughter", pronunciation: "toch-ter", hint: "Female child" },
         { id: "pdf_f13", german: "Mann", gender: "masculine", english: "Husband / Man", pronunciation: "man", hint: "Male spouse entry." },
         { id: "pdf_f14", german: "Frau", gender: "feminine", english: "Wife / Woman", pronunciation: "frow", hint: "Female spouse." },
-        { id: "pdf_f15", german: "Schweigervater", gender: "masculine", english: "Father in Law", pronunciation: "shvee-ger-fah-ter", hint: "Spouse's father." },
-        { id: "pdf_f16", german: "Schweigermutter", gender: "feminine", english: "Mother in Law", pronunciation: "shvee-ger-moot-er", hint: "Spouse's mother." },
-        { id: "pdf_f17", german: "Schwagar", gender: "masculine", english: "Brother in Law", pronunciation: "shvah-gahr", hint: "Syllabus tracking label." },
+        { id: "pdf_f15", german: "Schwiegervater", gender: "masculine", english: "Father in Law", pronunciation: "shvee-ger-fah-ter", hint: "Spouse's father." },
+        { id: "pdf_f16", german: "Schwiegermutter", gender: "feminine", english: "Mother in Law", pronunciation: "shvee-ger-moot-er", hint: "Spouse's mother." },
+        { id: "pdf_f17", german: "Schwager", gender: "masculine", english: "Brother in Law", pronunciation: "shvah-gahr", hint: "Syllabus tracking label." },
         { id: "pdf_f18", german: "Schwägerin", gender: "feminine", english: "Sister in Law", pronunciation: "shvae-ger-in", hint: "Spouse's sister." },
         { id: "pdf_f19", german: "Tante", gender: "feminine", english: "Aunt", pronunciation: "tan-teh", hint: "Parent's sister" },
         { id: "pdf_f20", german: "Onkel", gender: "masculine", english: "Uncle", pronunciation: "on-kel", hint: "Parent's brother" },
         { id: "pdf_f21", german: "Neffe", gender: "masculine", english: "Nephew", pronunciation: "nef-eh", hint: "Sibling's son" },
         { id: "pdf_f22", german: "Nichte", gender: "feminine", english: "Niece", pronunciation: "nich-teh", hint: "Sibling's daughter" },
         { id: "pdf_f25", german: "Enkelin", gender: "feminine", english: "Grand Daughter", pronunciation: "en-kel-in", hint: "Granddaughter" },
-        { id: "pdf_f26", german: "Junge", gender: "masculine", english: "Young", pronunciation: "yoon-geh", hint: "Boy or young profile." },
+        { id: "pdf_f26", german: "Junge", gender: "masculine", english: "Boy", pronunciation: "yoon-geh", hint: "Boy or young profile." },
         { id: "pdf_f27", german: "Alte", gender: "expression", english: "Elder", pronunciation: "al-teh", hint: "Age descriptor." },
         { id: "pdf_f28", german: "Mädchen", gender: "neuter", english: "Girl", pronunciation: "maet-chen", hint: "Takes neuter forms." },
         { id: "pdf_f29", german: "Stief Bruder", gender: "masculine", english: "Step Brother", pronunciation: "shteef broo-der", hint: "Step sibling layout." },
         { id: "pdf_f30", german: "Stief Schwester", gender: "feminine", english: "Step Sister", pronunciation: "shteef shves-ter", hint: "Step sister template." }
       ],
       "Body Parts (Körperteile)": [
-        { id: "pdf_b1", german: "Der kopf", gender: "masculine", english: "Head", pronunciation: "dayr kopf", hint: "Upper command center." },
-        { id: "pdf_b2", german: "Das Augen", gender: "neuter", english: "Eyes", pronunciation: "dahs ow-gen", hint: "Visual sensor." },
+        { id: "pdf_b1", german: "Der Kopf", gender: "masculine", english: "Head", pronunciation: "dayr kopf", hint: "Upper command center." },
+        { id: "pdf_b2", german: "Die Augen", gender: "plural", english: "Eyes", pronunciation: "dahs ow-gen", hint: "Visual sensor." },
         { id: "pdf_b3", german: "Das Ohr", gender: "neuter", english: "Ear", pronunciation: "dahs ohr", hint: "Hearing system." },
         { id: "pdf_b4", german: "Die Nase", gender: "feminine", english: "Nose", pronunciation: "dee nah-zeh", hint: "Olfactory node." },
         { id: "pdf_b5", german: "Der Mund", gender: "masculine", english: "Mouth", pronunciation: "dayr moont", hint: "Speaking node." },
-        { id: "pdf_b6", german: "Die Arm", gender: "masculine", english: "Arm", pronunciation: "dee ahrm", hint: "Upper limb structural part." },
-        { id: "pdf_b7", german: "Die hand", gender: "feminine", english: "Hand", pronunciation: "dee hahnt", hint: "Limb parameter." },
+        { id: "pdf_b6", german: "Der Arm", gender: "masculine", english: "Arm", pronunciation: "dee ahrm", hint: "Upper limb structural part." },
+        { id: "pdf_b7", german: "Die Hand", gender: "feminine", english: "Hand", pronunciation: "dee hahnt", hint: "Limb parameter." },
         { id: "pdf_b8", german: "Das Bein", gender: "neuter", english: "Leg", pronunciation: "das byn", hint: "Lower movement support structure." },
         { id: "pdf_b9", german: "Der Fuß", gender: "masculine", english: "Foot", pronunciation: "dayr foos", hint: "Ground terminal point unit." },
-        { id: "pdf_b10", german: "Der bauch", gender: "masculine", english: "Stomach", pronunciation: "dayr bowkh", hint: "Midsection tracking block." },
+        { id: "pdf_b10", german: "Der Bauch", gender: "masculine", english: "Stomach", pronunciation: "dayr bowkh", hint: "Midsection tracking block." },
         { id: "pdf_b11", german: "Der Rücken", gender: "masculine", english: "Back", pronunciation: "dayr ruek-en", hint: "Rear physical chassis parameter." },
         { id: "pdf_b12", german: "Die Haare", gender: "plural", english: "Hair", pronunciation: "dee hah-reh", hint: "Head fibers array." },
         { id: "pdf_b13", german: "Gesicht", gender: "neuter", english: "Face", pronunciation: "geh-zicht", hint: "Front visual cluster." },
@@ -343,7 +340,7 @@
         { id: "pdf_oc4", german: "Kellner / Kellnerin", gender: "split", english: "Waiter", pronunciation: "kel-ner / kel-ner-in", hint: "Hospitality operation processor." },
         { id: "pdf_oc5", german: "Pilot", gender: "masculine", english: "Pilot", pronunciation: "pee-loht", hint: "Aviation navigation driver." },
         { id: "pdf_oc6", german: "Ingenieur", gender: "masculine", english: "Engineer", pronunciation: "in-jen-yuhr", hint: "Technical builder node model." },
-        { id: "pdf_oc7", german: "Schauspeiler / in", gender: "split", english: "Actor", pronunciation: "show-shpeel-er", hint: "Syllabus spelling row parameter." },
+        { id: "pdf_oc7", german: "Schauspieler / in", gender: "split", english: "Actor", pronunciation: "show-shpeel-er", hint: "Syllabus spelling row parameter." },
         { id: "pdf_oc8", german: "Fahrer", gender: "masculine", english: "Driver", pronunciation: "fah-rer", hint: "Logistics transport execution unit." },
         { id: "pdf_oc9", german: "Politiker", gender: "masculine", english: "Politician", pronunciation: "po-lee-tee-ker", hint: "State regulatory operator logic." },
         { id: "pdf_oc10", german: "Polizist", gender: "masculine", english: "Police", pronunciation: "po-lee-tsist", hint: "Enforcement safety agent." }
@@ -361,7 +358,7 @@
       ],
       "Hobbies (Hobbys)": [
         { id: "pdf_h1", german: "Bücher Lesen", gender: "hobby", english: "Books Reading", pronunciation: "bue-cher lay-zen", hint: "Literature consumption tracking loop." },
-        { id: "pdf_h2", german: "Auto Fahren", gender: "hobby", english: "Car Drinking", pronunciation: "ow-toh fah-ren", hint: "Syllabus text parameter node." },
+        { id: "pdf_h2", german: "Auto Fahren", gender: "hobby", english: "Driving a car", pronunciation: "ow-toh fah-ren", hint: "Syllabus text parameter node." },
         { id: "pdf_h3", german: "Fernsehen", gender: "hobby", english: "Watching TV", pronunciation: "fehrn-zay-hen", hint: "Video broadcasting display data." },
         { id: "pdf_h4", german: "Cricket Spielen", gender: "hobby", english: "Playing Cricket", pronunciation: "krik-et shpeel-en", hint: "Athletic batting coordination." },
         { id: "pdf_h5", german: "Schwimmen", gender: "hobby", english: "Swimming", pronunciation: "shvim-en", hint: "Aquatic movement trajectory loop." },
@@ -375,8 +372,8 @@
         { id: "pdf_cl5", german: "Das T-Shirt", gender: "neuter", english: "T-Shirt", pronunciation: "dahs tee-shurt", hint: "Casual top canvas layout element." }
       ],
       "Household (Hauswesen Tasks)": [
-        { id: "pdf_ho1", german: "Das Badzimmer", gender: "neuter", english: "Bathroom", pronunciation: "dahs baht-tsi-mer", hint: "Syllabus exact text layout entry." },
-        { id: "pdf_ho2", german: "Das Arbeitzimmer", gender: "neuter", english: "Workroom", pronunciation: "dahs ar-byts-tsi-mer", hint: "Syllabus specific compound spelling." },
+        { id: "pdf_ho1", german: "Das Badezimmer", gender: "neuter", english: "Bathroom", pronunciation: "dahs baht-tsi-mer", hint: "Syllabus exact text layout entry." },
+        { id: "pdf_ho2", german: "Das Arbeitszimmer", gender: "neuter", english: "Workroom", pronunciation: "dahs ar-byts-tsi-mer", hint: "Syllabus specific compound spelling." },
         { id: "pdf_ho3", german: "Das Schlafzimmer", gender: "neuter", english: "Bedroom", pronunciation: "dahs shlahf-tsi-mer", hint: "Sleep area localization node." },
         { id: "pdf_ho4", german: "Das Kinderzimmer", gender: "neuter", english: "Kidsroom", pronunciation: "das kin-der-tsim-er", hint: "Play area localization compartment." },
         { id: "pdf_ho5", german: "Der Flur", gender: "masculine", english: "Corridor", pronunciation: "dayr floohr", hint: "Connecting hallway transit corridor." }
@@ -408,14 +405,14 @@
         { id: "pdf_tm5", german: "Es ist Kurz vor drei", gender: "informal time", english: "It is shortly before three", pronunciation: "es ist koorts fohr dry", hint: "Syllabus backward reference hour boundary." }
       ],
       "Introductions (Vorstellung)": [
-        { id: "pdf_in2", german: "Ich Heiße...", gender: "dialogue", english: "My name is...", pronunciation: "eech hy-seh", hint: "Identity injection string presentation model." },
-        { id: "pdf_in4", german: "Ich Komme aus...", gender: "dialogue", english: "I come from...", pronunciation: "eech kom-eh ows", hint: "Country/city of birth tracking deployment." },
-        { id: "pdf_in6", german: "Ich Wohnne in...", gender: "dialogue", english: "I live in...", pronunciation: "eech vohn-eh in", hint: "Active spatial living localization data." }
+        { id: "pdf_in2", german: "Ich heiße...", gender: "dialogue", english: "My name is...", pronunciation: "eech hy-seh", hint: "Identity injection string presentation model." },
+        { id: "pdf_in4", german: "Ich komme aus...", gender: "dialogue", english: "I come from...", pronunciation: "eech kom-eh ows", hint: "Country/city of birth tracking deployment." },
+        { id: "pdf_in6", german: "Ich wohne in...", gender: "dialogue", english: "I live in...", pronunciation: "eech vohn-eh in", hint: "Active spatial living localization data." }
       ],
       "Daily Routine (Tagesablauf)": [
-        { id: "pdf_dr1", german: "Ich Stehe um 7.00 uhr auf", gender: "routine", english: "I get up at 7:00", pronunciation: "eech shtay-eh oom zee-ben oohr owf", hint: "Separable verb activation sequence step 1." },
-        { id: "pdf_dr2", german: "Ich mache das bett", gender: "routine", english: "I make the bed", pronunciation: "eech mach-eh dahs bet", hint: "Syllabus spelling specific maintenance task." },
-        { id: "pdf_dr3", german: "Ich putze Die Zähne", gender: "routine", english: "I brush the teeth", pronunciation: "eech poot-seh dee tsae-neh", hint: "Dental sanitation workflow operational component." }
+        { id: "pdf_dr1", german: "Ich stehe um 7.00 Uhr auf", gender: "routine", english: "I get up at 7:00", pronunciation: "eech shtay-eh oom zee-ben oohr owf", hint: "Separable verb activation sequence step 1." },
+        { id: "pdf_dr2", german: "Ich mache das Bett", gender: "routine", english: "I make the bed", pronunciation: "eech mach-eh dahs bet", hint: "Syllabus spelling specific maintenance task." },
+        { id: "pdf_dr3", german: "Ich putze die Zähne", gender: "routine", english: "I brush the teeth", pronunciation: "eech poot-seh dee tsae-neh", hint: "Dental sanitation workflow operational component." }
       ]
     };
 
@@ -423,7 +420,7 @@
     const a1GrammarDatabase = [
       { id: "g_art", title: "1. Definite & Indefinite Articles", rules: "German specifies noun sets through Masculine (der/ein), Feminine (die/eine), Neuter (das/ein). Plurals carry 'die' but no baseline indefinite article.", example: "Der Mann, eine Frau, das Kind." },
       { id: "g_pron", title: "2. Personal Pronouns Matrix", rules: "Subjects are tracked via personal handles: ich (I), du (you), er/sie/es (he/she/it), wir (us), ihr (you plural), sie/Sie (they/Formal You).", example: "Ich bin hier. Du lernst schnell." },
-      { id: "g_sein", title: "3. Irregular Sein (To Be) Forms", rules: "The foundation auxiliary verb 'sein' shifts conjugation fields dynamically: ich bin, du bist, er/sie/es ist, wir sind, ihr seid, sie/Sie sind.", example: "Wir sind im Arena. Ihr seid klug." },
+      { id: "g_sein", title: "3. Irregular Sein (To Be) Forms", rules: "The foundation auxiliary verb 'sein' shifts conjugation fields dynamically: ich bin, du bist, er/sie/es ist, wir sind, ihr seid, sie/Sie sind.", example: "Wir sind in der Arena. Ihr seid klug." },
       { id: "g_conj", title: "4. Regular Verb Conjugation Suffixes", rules: "Drop infinitive tail (-en) and apply standardized pronoun terminations: -e, -st, -t, -en, -t, -en.", example: "Ich spiele, du spielst, er spielt, wir spielen." },
       { id: "g_poss", title: "5. Possessive Articles", rules: "Indicate ownership. Base items follow pronoun structures: mein (my), dein (your), sein (his), ihr (her/their), unser (our), euer (your pl). Appends '-e' if item is feminine/plural.", example: "Das ist mein Tisch. Wo ist meine Jacke?" },
       { id: "g_mod", title: "6. Modal Verbs Structure", rules: "Verbs like 'können' (can), 'müssen' (must), 'wollen' (want) conjugate irregularly in singular positions and push main infinitive companion verbs to the sentence tail.", example: "Ich kann Deutsch sprechen. (Infinitive 'sprechen' anchors at the extreme tail position.)" },
@@ -431,7 +428,7 @@
       { id: "g_imp", title: "8. Imperativ Commands Formulation", rules: "Used to declare instructions/requests. The 'du' command strips away both the pronoun 'du' and the tail standard '-st' suffix tracking.", example: "Komm hierher! (Infinitive 'kommen' drops pronoun and suffix constraints entirely.)" },
       { id: "g_comp", title: "9. Degrees of Comparison Adjectives", rules: "Modifiers escalate structural attributes using baseline rules, adding '-er' for comparative forms and 'am ...-sten' for superlative declarations.", example: "klein -> kleiner -> am kleinsten. alt -> älter -> am ältesten." },
       { id: "g_perf", title: "10. Present Perfect Past Construction", rules: "Form past statements using auxiliary helpers ('haben' or 'sein' based on motion rules) at position 2, placing a 'Partizip II' particle component at sentence tail.", example: "Ich habe Deutsch gelernt. Wir sind nach Berlin gefahren." },
-      { id: "g_habs", title: "11. Past Tense Haben & Sein (Präteritum)", rules: "Simple past framework constants used universally for auxiliary assets. Haben -> hatte. Sein -> war. Conjugates via standardized rules.", example: "Ich hatte ein House. Gestern war ich müde." },
+      { id: "g_habs", title: "11. Past Tense Haben & Sein (Präteritum)", rules: "Simple past framework constants used universally for auxiliary assets. Haben -> hatte. Sein -> war. Conjugates via standardized rules.", example: "Ich hatte ein Haus. Gestern war ich müde." },
       { id: "g_case", title: "12. Akkusativ vs Dativ Case Tracking", rules: "Akkusativ targets direct action receivers (Masculine den/einen). Dativ models indirect benefit targets (dem/der/dem/den).", example: "Ich gebe dem Mann (Dativ indirect object) den Ball (Akkusativ direct item asset)." },
       { id: "g_mail", title: "13. Formal Email Writing Blueprints", rules: "Structured communications require strict CEFR protocols: Greeting ('Sehr geehrte Damen und Herren,'), body block content, and formal signoff lines ('Mit freundlichen Grüßen').", example: "Sehr geehrte Frau Müller, ... Mit freundlichen Grüßen, Jhansi." }
     ];
@@ -615,34 +612,35 @@
     let schreibenFormShowSolutions = false;
     let sprechenPartIndex = 0; // 0 Vorstellung, 1 Fragen, 2 Bitten
     let sprechenSubIndex = 0;
-   let sprechenChecklist = { intro: false, qa: [false, false, false, false], requests: [false, false, false] };
+    let sprechenChecklist = { intro: false, qa: [false, false, false, false], requests: [false, false, false] };
 
     // Sub-Navigation Module Frame Index Trackers
-   let selectedVocabCategory = "Alphabet (Alphabet)";
+    let selectedVocabCategory = "Alphabet (Alphabet)";
     let vocabSheetOpen = false;
 
+    // One icon per topic, used on the topic-picker buttons
     const vocabCategoryIcons = {
-      "Alphabet (Alphabet)": "🔤",
-      "Umlauts & Sound Rules": "🗣️",
-      "Numbers (Zahlen)": "🔢",
-      "Days (Tage)": "📅",
-      "Months (Monate)": "🗓️",
-      "Seasons (Jahreszeiten)": "🌻",
-      "Part of the Day (Teil des Tages)": "🌅",
-      "Family (Die Familie)": "👪",
-      "Body Parts (Körperteile)": "🙋",
-      "Occupation (Berufe)": "👷",
-      "Colours (Farben)": "🎨",
-      "Hobbies (Hobbys)": "⚽",
-      "Clothes (Kleidung)": "👕",
-      "Household (Hauswesen Tasks)": "🏠",
-      "Shapes (Die Formen)": "⭐",
-      "Greetings (Begrüßung)": "👋",
-      "W-Questions (W-Fragen)": "❓",
-      "Time (Uhrzeit Layouts)": "⏰",
-      "Introductions (Vorstellung)": "🧑",
-      "Daily Routine (Tagesablauf)": "☀️",
-      "DYNAM_NUMBERS": "∞"
+      "Alphabet (Alphabet)": "\ud83d\udd24",
+      "Umlauts & Sound Rules": "\ud83d\udde3\ufe0f",
+      "Numbers (Zahlen)": "\ud83d\udd22",
+      "Days (Tage)": "\ud83d\udcc5",
+      "Months (Monate)": "\ud83d\uddd3\ufe0f",
+      "Seasons (Jahreszeiten)": "\ud83c\udf3b",
+      "Part of the Day (Teil des Tages)": "\ud83c\udf05",
+      "Family (Die Familie)": "\ud83d\udc6a",
+      "Body Parts (K\u00f6rperteile)": "\ud83d\udc4b",
+      "Occupation (Berufe)": "\ud83d\udc77",
+      "Colours (Farben)": "\ud83c\udfa8",
+      "Hobbies (Hobbys)": "\u26bd",
+      "Clothes (Kleidung)": "\ud83d\udc55",
+      "Household (Hauswesen Tasks)": "\ud83c\udfe0",
+      "Shapes (Die Formen)": "\u2b50",
+      "Greetings (Begr\u00fc\u00dfung)": "\ud83d\udc4b",
+      "W-Questions (W-Fragen)": "\u2753",
+      "Time (Uhrzeit Layouts)": "\u23f0",
+      "Introductions (Vorstellung)": "\ud83e\uddd1",
+      "Daily Routine (Tagesablauf)": "\u2600\ufe0f",
+      "DYNAM_NUMBERS": "\u221e"
     };
 
     function selectVocabCategory(cat) {
@@ -737,8 +735,10 @@
       }
     };
 
-    // Native Browser Audio Speech Synthesis Runner
-   function speakGerman(text, stripParens) {
+    // Native Browser Audio Speech Synthesis Runner.
+    // stripParens is used for flashcards only ("A (Aa)" should read as "A").
+    // Full sentences (exam dialogues, sample answers) are spoken verbatim.
+    function speakGerman(text, stripParens) {
       if (!('speechSynthesis' in window)) return;
       const synth = window.speechSynthesis;
       const clean = stripParens ? String(text).split('(')[0].trim() : String(text);
@@ -754,6 +754,7 @@
       synth.speak(u);
     }
 
+    // Flashcard helper - keeps the parenthetical stripping behaviour
     function triggerSpeechSynthesis(text) { speakGerman(text, true); }
 
     // Safely embed a JS string as an argument inside a single-quoted HTML
@@ -836,7 +837,7 @@
     }
 
     // Main Startup Setup System Directives
-   window.onload = function() {
+    window.onload = function() {
       registerDailyStreak();
       applyThemeProfile(currentThemeProfile);
       updateDashboardTelemetry();
@@ -850,6 +851,8 @@
       }
     };
 
+    // Real streak tracking: increments once per calendar day, resets after a
+    // missed day. Previously the counter was stored but never updated.
     function registerDailyStreak() {
       const today = new Date().toDateString();
       const last = localStorage.getItem('sb_last_visit');
@@ -1449,7 +1452,7 @@
               </div>
               <div class="${conf.cardBg} border p-4 rounded-xl flex flex-col justify-between">
                 <span class="text-[10px] uppercase font-bold text-slate-400 tracking-wider">Exam Status Modules</span>
-                <span class="text-base font-black text-indigo-400 mt-1">5 Simulations</span>
+                <span class="text-base font-black text-indigo-400 mt-1">${mockExamsDatabase.length} Simulation${mockExamsDatabase.length === 1 ? "" : "s"}</span>
               </div>
             </div>
 
@@ -1470,10 +1473,10 @@
         const activeList = a1VocabularyDatabase[selectedVocabCategory];
         const card = activeList ? activeList[activeVocabCardIndex] : null;
 
-       const allCategories = categories.concat(['DYNAM_NUMBERS']);
+        const allCategories = categories.concat(['DYNAM_NUMBERS']);
         const labelFor = (c) => c === 'DYNAM_NUMBERS' ? 'Numbers 0-100 Million' : c;
-        const iconFor = (c) => vocabCategoryIcons[c] || '📘';
-        const countFor = (c) => c === 'DYNAM_NUMBERS' ? '∞' : (a1VocabularyDatabase[c] ? a1VocabularyDatabase[c].length + ' cards' : '');
+        const iconFor = (c) => vocabCategoryIcons[c] || '\ud83d\udcd8';
+        const countFor = (c) => c === 'DYNAM_NUMBERS' ? '\u221e' : (a1VocabularyDatabase[c] ? a1VocabularyDatabase[c].length + ' cards' : '');
 
         let categoryButtonsHTML = '';
         allCategories.forEach(cat => {
@@ -1485,6 +1488,7 @@
               <span class="text-[9px] font-bold ${on ? 'text-indigo-100' : 'text-slate-500'}">${countFor(cat)}</span>
             </button>`;
         });
+
         let coreDisplayBodyHTML = '';
 
         if (selectedVocabCategory === "DYNAM_NUMBERS") {
@@ -1516,7 +1520,7 @@
                     <span class="text-2xl font-black tracking-tight select-none">${card.german}</span>
                     <span class="text-xs font-mono font-bold text-indigo-300 mt-2 bg-indigo-950/40 px-2 py-1 rounded border border-indigo-900/40">🗣️ [ ${card.pronunciation || 'N/A'} ]</span>
                     
-                    <button onclick="event.stopPropagation(); triggerSpeechSynthesis('${card.german}');" class="mt-3 px-3 py-1.5 bg-indigo-600 hover:bg-indigo-500 text-white font-extrabold text-[10px] rounded-lg shadow-md flex items-center gap-1 transition-transform active:scale-95">
+                    <button onclick='event.stopPropagation(); triggerSpeechSynthesis(${safeOnclickArg(card.german)});' class="mt-3 px-3 py-1.5 bg-indigo-600 hover:bg-indigo-500 text-white font-extrabold text-[10px] rounded-lg shadow-md flex items-center gap-1 transition-transform active:scale-95">
                       🔊 Listen Audio
                     </button>
                   </div>
@@ -1547,7 +1551,7 @@
                   <span class="text-xs font-black text-slate-100 truncate">${labelFor(selectedVocabCategory)}</span>
                 </span>
               </span>
-              <span class="text-[10px] font-black text-indigo-400 whitespace-nowrap">${vocabSheetOpen ? 'Close ✕' : 'Change ▾'}</span>
+              <span class="text-[10px] font-black text-indigo-400 whitespace-nowrap">${vocabSheetOpen ? 'Close \u2715' : 'Change \u25be'}</span>
             </button>
 
             ${vocabSheetOpen ? `
@@ -1772,7 +1776,7 @@
           <div class="space-y-4">
             <div class="px-1">
               <h3 class="text-sm font-black tracking-tight text-white">Goethe / Telc A1 Modellprüfungen</h3>
-              <p class="text-[11px] text-slate-400 font-medium">5 vollständige Prüfungen mit allen vier Teilen: Hören, Lesen, Schreiben, Sprechen.</p>
+              <p class="text-[11px] text-slate-400 font-medium">Vollständige Prüfungen mit allen vier Teilen: Hören, Lesen, Schreiben, Sprechen.</p>
             </div>
             <div class="space-y-3">${rows}</div>
           </div>
@@ -1821,7 +1825,7 @@
             </div>
             ${skillKey === 'hoeren' ? `
               <div class="${conf.cardBg} border p-5 rounded-2xl shadow-xl space-y-3">
-                <button onclick='triggerSpeechSynthesis(${safeOnclickArg(q.audioText)})' class="w-full py-3 bg-indigo-600 hover:bg-indigo-500 text-white font-black text-xs rounded-xl flex items-center justify-center gap-2">🔊 Audio abspielen</button>
+                <button onclick='speakGerman(${safeOnclickArg(q.audioText)})' class="w-full py-3 bg-indigo-600 hover:bg-indigo-500 text-white font-black text-xs rounded-xl flex items-center justify-center gap-2">🔊 Audio abspielen</button>
                 <p class="text-xs font-bold leading-relaxed text-slate-200">${q.question}</p>
               </div>
             ` : `
@@ -1913,7 +1917,7 @@
                 <div class="flex flex-wrap gap-1.5">
                   ${sp.intro.keywords.map(k => `<span class="text-[10px] font-bold bg-indigo-950 text-indigo-300 border border-indigo-800 px-2 py-1 rounded-lg">${k}</span>`).join('')}
                 </div>
-                <button onclick='triggerSpeechSynthesis(${safeOnclickArg(sp.intro.sample)})' class="w-full py-2 bg-indigo-600 hover:bg-indigo-500 text-white font-black text-[11px] rounded-lg">🔊 Beispielantwort anhören</button>
+                <button onclick='speakGerman(${safeOnclickArg(sp.intro.sample)})' class="w-full py-2 bg-indigo-600 hover:bg-indigo-500 text-white font-black text-[11px] rounded-lg">🔊 Beispielantwort anhören</button>
                 <p class="text-xs text-slate-300 italic leading-relaxed">"${sp.intro.sample}"</p>
                 <label class="flex items-center gap-2 text-[11px] text-slate-300 font-bold pt-1">
                   <input type="checkbox" ${sprechenChecklist.intro ? 'checked' : ''} onchange="toggleSprechenChecklistItem('intro')"> Ich habe das geübt
@@ -1931,7 +1935,7 @@
                   <div class="${conf.cardBg} border p-4 rounded-xl space-y-2">
                     <span class="text-[9px] uppercase font-black text-indigo-400 tracking-wider">${item.keyword}</span>
                     <p class="text-xs font-bold text-slate-200">${item.sampleQ}</p>
-                    <button onclick='triggerSpeechSynthesis(${safeOnclickArg(item.sampleA)})' class="text-[10px] font-bold text-indigo-400">🔊 Beispielantwort anhören</button>
+                    <button onclick='speakGerman(${safeOnclickArg(item.sampleA)})' class="text-[10px] font-bold text-indigo-400">🔊 Beispielantwort anhören</button>
                     <p class="text-xs text-slate-400 italic">"${item.sampleA}"</p>
                     <label class="flex items-center gap-2 text-[10px] text-slate-300 font-bold pt-1">
                       <input type="checkbox" ${sprechenChecklist.qa[idx] ? 'checked' : ''} onchange="toggleSprechenChecklistItem('qa', ${idx})"> Geübt
@@ -1950,7 +1954,7 @@
                 ${sp.requests.map((item, idx) => `
                   <div class="${conf.cardBg} border p-4 rounded-xl space-y-2">
                     <p class="text-xs font-bold text-slate-200">${item.prompt}</p>
-                    <button onclick='triggerSpeechSynthesis(${safeOnclickArg(item.sample)})' class="text-[10px] font-bold text-indigo-400">🔊 Beispiel anhören</button>
+                    <button onclick='speakGerman(${safeOnclickArg(item.sample)})' class="text-[10px] font-bold text-indigo-400">🔊 Beispiel anhören</button>
                     <p class="text-xs text-slate-400 italic">"${item.sample}"</p>
                     <label class="flex items-center gap-2 text-[10px] text-slate-300 font-bold pt-1">
                       <input type="checkbox" ${sprechenChecklist.requests[idx] ? 'checked' : ''} onchange="toggleSprechenChecklistItem('requests', ${idx})"> Geübt
