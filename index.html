@@ -1777,7 +1777,7 @@
             const passed = quizCorrect >= Math.min(4, quizQuestions.length);
             container.innerHTML = `
               <div class="text-center p-6 ${conf.cardBg} border rounded-2xl shadow-xl space-y-4">
-                <span class="text-5xl block">${passed ? '\ud83c\udf89' : '\ud83d\udcaa'}</span>
+                <img src="./bear-wave.png" alt="" class="w-24 h-24 mx-auto rounded-full" style="${passed ? '' : 'filter:grayscale(.5); opacity:.75'}">
                 <h3 class="text-base font-black text-white">${passed ? 'Lesson complete!' : 'Almost there'}</h3>
                 <p class="text-xs text-slate-400">${quizCorrect} of ${quizQuestions.length} correct${passed ? ' \u00b7 +10 XP' : ''}</p>
                 <p class="text-[11px] text-slate-500">${passed ? 'The next lesson is unlocked.' : 'You need 4 correct to unlock the next lesson.'}</p>
@@ -1834,10 +1834,13 @@
           let counter = 0;
           curriculumUnits.forEach((unit, ui) => {
             pathHTML += `
-              <div class="rounded-2xl px-4 py-3 mt-2" style="background:${unit.colour}; box-shadow: 0 4px 0 ${unit.dark};">
-                <p class="text-[10px] font-black tracking-widest text-white/70 uppercase">Unit ${ui+1}</p>
-                <p class="text-sm font-black text-white">${unit.title}</p>
-                <p class="text-[10px] font-bold text-white/70">${unit.subtitle}</p>
+              <div class="rounded-2xl px-4 py-3 mt-2 flex items-center gap-3" style="background:${unit.colour}; box-shadow: 0 4px 0 ${unit.dark};">
+                <div class="flex-1 min-w-0">
+                  <p class="text-[10px] font-black tracking-widest text-white/70 uppercase">Unit ${ui+1}</p>
+                  <p class="text-sm font-black text-white">${unit.title}</p>
+                  <p class="text-[10px] font-bold text-white/70">${unit.subtitle}</p>
+                </div>
+                <img src="./bear-wave.png" alt="" class="w-12 h-12 shrink-0 rounded-full" style="background:rgba(255,255,255,.15)">
               </div>
               <div class="flex flex-col items-center gap-4 py-4">`;
             unit.lessons.forEach((les, li) => {
@@ -1848,11 +1851,12 @@
               const offsets = [0, -70, -95, -40, 45, 85];
               const off = offsets[li % offsets.length];
               pathHTML += `
-                <div class="w-full flex items-center justify-center gap-3" style="transform: translateX(${off}px)">
+                <div class="w-full flex items-center justify-center gap-3 relative" style="transform: translateX(${off}px)">
                   <button ${state==='locked'?'disabled':''} onclick="startLesson('${les.id}')" class="stone ${state}" aria-label="${les.label}">
                     ${done ? '\u2713' : les.icon}
                   </button>
                   ${isCurrent ? `<span class="text-[10px] font-black text-indigo-300 whitespace-nowrap">${les.label}</span>` : ''}
+                  ${li === 1 ? `<img src="./bear-wave.png" alt="" class="w-16 h-16 rounded-full absolute" style="left:${off < 0 ? '150px' : '-110px'}; opacity:.9">` : ''}
                 </div>`;
             });
             const unitDone = unit.lessons.every(l => isLessonDone(l.id));
