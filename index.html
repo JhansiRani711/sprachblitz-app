@@ -61,6 +61,28 @@
     @media (prefers-reduced-motion: reduce) { #splash-screen img { animation: none } }
 
     /* Respect the iPhone notch and home indicator */
+    /* Pressable 3D buttons - a solid bottom edge instead of a border */
+    .stone {
+      width: 68px; height: 68px; border-radius: 50%; border: none;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 26px; line-height: 1; cursor: pointer;
+      transition: transform .08s ease, box-shadow .08s ease;
+    }
+    .stone.done    { background:#22c55e; box-shadow: 0 5px 0 #15803d; }
+    .stone.current { background:#4f46e5; box-shadow: 0 5px 0 #3730a3, 0 0 0 6px rgba(99,102,241,.22); width:76px; height:76px; font-size:30px; }
+    .stone.locked  { background:#1e293b; box-shadow: none; opacity:.55; cursor: not-allowed; }
+    .stone.done:active, .stone.current:active { transform: translateY(5px); box-shadow: 0 0 0 #15803d; }
+    .chest { width:56px; height:56px; border-radius:14px; border:none; display:flex; align-items:center; justify-content:center; font-size:26px; }
+    .btn3d { border:none !important; box-shadow: 0 4px 0 rgba(0,0,0,.35); transition: transform .08s, box-shadow .08s; }
+    .btn3d:active { transform: translateY(4px); box-shadow: 0 0 0 rgba(0,0,0,.35); }
+
+    .tab-icon {
+      font-size: 25px; line-height: 1; padding: 7px 10px; border-radius: 14px;
+      border: 2px solid transparent; display: flex; align-items: center; justify-content: center;
+      transition: background .15s, border-color .15s;
+    }
+    .tab-active .tab-icon { border-color:#38bdf8; background: rgba(56,189,248,.12); }
+
     #app-header-nav { padding-top: max(1rem, env(safe-area-inset-top)); }
     #app-footer-nav { padding-bottom: env(safe-area-inset-bottom); height: auto; min-height: 4rem; }
     ::-webkit-scrollbar { width: 4px; }
@@ -147,6 +169,13 @@
         <div class="font-bold text-xs bg-indigo-950 text-indigo-300 border border-indigo-800 px-2 py-1 rounded-lg">
           ✨ <span id="xp-amount-val">0</span> XP
         </div>
+        <div id="daily-goal-ring" class="relative w-9 h-9 shrink-0" title="Daily goal">
+          <svg viewBox="0 0 36 36" class="w-9 h-9 -rotate-90">
+            <circle cx="18" cy="18" r="15" fill="none" stroke="#1e293b" stroke-width="4"></circle>
+            <circle id="goal-arc" cx="18" cy="18" r="15" fill="none" stroke="#f59e0b" stroke-width="4" stroke-linecap="round" stroke-dasharray="94.2" stroke-dashoffset="94.2"></circle>
+          </svg>
+          <span id="goal-label" class="absolute inset-0 flex items-center justify-center text-[8px] font-black text-amber-400">0%</span>
+        </div>
       </div>
     </header>
 
@@ -157,26 +186,11 @@
 
     <!-- Persistent Global Footer Navigation Control Dock Grid Layout -->
     <footer id="app-footer-nav" class="border-t border-slate-800 bg-slate-950 h-16 flex sticky bottom-0 z-50 theme-transition">
-      <button onclick="switchTab('dashboard')" class="flex-1 flex flex-col items-center justify-center navigation-tab-btn transition-colors text-indigo-400" id="tab-dashboard">
-        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="mb-1"><rect width="7" height="9" x="3" y="3" rx="1"/><rect width="7" height="5" x="14" y="3" rx="1"/><rect width="7" height="9" x="14" y="12" rx="1"/><rect width="7" height="5" x="3" y="16" rx="1"/></svg>
-        <span class="text-[9px] font-bold">Arena</span>
-      </button>
-      <button onclick="switchTab('vocabulary')" class="flex-1 flex flex-col items-center justify-center navigation-tab-btn transition-colors text-slate-500" id="tab-vocabulary">
-        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="mb-1"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z"/><path d="M6 6h10M6 10h10"/></svg>
-        <span class="text-[9px] font-bold">Vocabulary</span>
-      </button>
-      <button onclick="switchTab('grammar')" class="flex-1 flex flex-col items-center justify-center navigation-tab-btn transition-colors text-slate-500" id="tab-grammar">
-        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="mb-1"><path d="M21.42 10.922a1 1 0 0 0-.019-1.838L12.83 5.18a2 2 0 0 0-1.66 0L2.6 9.08a1 1 0 0 0 0 1.832l8.57 3.908a2 2 0 0 0 1.66 0z"/><path d="M6 18.8v-4L12 18l6-3.2v4"/></svg>
-        <span class="text-[9px] font-bold">Grammar</span>
-      </button>
-      <button onclick="switchTab('skills')" class="flex-1 flex flex-col items-center justify-center navigation-tab-btn transition-colors text-slate-500" id="tab-skills">
-        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="mb-1"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/><path d="M19 10v1a7 7 0 0 1-14 0v-1M12 19v4M8 23h8"/></svg>
-        <span class="text-[9px] font-bold">Skills</span>
-      </button>
-      <button onclick="switchTab('exams')" class="flex-1 flex flex-col items-center justify-center navigation-tab-btn transition-colors text-slate-500" id="tab-exams">
-        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="mb-1"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/><polyline points="14 2 14 8 20 8"/><path d="m9 15 2 2 4-4"/></svg>
-        <span class="text-[9px] font-bold">Exams</span>
-      </button>
+      <button onclick="switchTab('dashboard')" id="tab-dashboard" class="flex-1 flex items-center justify-center tab-active" aria-label="Path"><span class="tab-icon">🏠</span></button>
+      <button onclick="switchTab('vocabulary')" id="tab-vocabulary" class="flex-1 flex items-center justify-center" aria-label="Practice"><span class="tab-icon">📚</span></button>
+      <button onclick="switchTab('grammar')" id="tab-grammar" class="flex-1 flex items-center justify-center" aria-label="Grammar"><span class="tab-icon">🧩</span></button>
+      <button onclick="switchTab('skills')" id="tab-skills" class="flex-1 flex items-center justify-center" aria-label="Skills"><span class="tab-icon">🎧</span></button>
+      <button onclick="switchTab('exams')" id="tab-exams" class="flex-1 flex items-center justify-center" aria-label="Exams"><span class="tab-icon">🏆</span></button>
     </footer>
   </div>
 
@@ -596,6 +610,160 @@
 
     // Global Core Architecture Reactivity State Cache Layout Engine Variables
     let activeTab = 'dashboard';
+
+    // ===== Curriculum: 7 units, each a list of lessons =====
+    const curriculumUnits = [
+      { title: "First words", subtitle: "Sagen Sie Hallo", colour: "#4f46e5", dark: "#3730a3",
+        lessons: [
+          { id:"u1l1", icon:"\ud83d\udd24", label:"Alphabet", type:"vocab", cat:"Alphabet (Alphabet)" },
+          { id:"u1l2", icon:"\ud83d\udde3\ufe0f", label:"Umlauts", type:"vocab", cat:"Umlauts & Sound Rules" },
+          { id:"u1l3", icon:"\ud83d\udc4b", label:"Greetings", type:"vocab", cat:"Greetings (Begr\u00fc\u00dfung)" }
+        ] },
+      { title: "Der, die, das", subtitle: "Artikel meistern", colour: "#db2777", dark: "#9d174d",
+        lessons: [
+          { id:"u2l1", icon:"\ud83d\udc6a", label:"Family", type:"vocab", cat:"Family (Die Familie)" },
+          { id:"u2l2", icon:"\ud83d\ude4b", label:"Body parts", type:"vocab", cat:"Body Parts (K\u00f6rperteile)" },
+          { id:"u2l3", icon:"\ud83c\udfae", label:"Gender Blitz", type:"game" },
+          { id:"u2l4", icon:"\ud83d\udcd6", label:"Articles", type:"grammar", idx:0 }
+        ] },
+      { title: "Numbers and time", subtitle: "Zahlen und Zeit", colour: "#0891b2", dark: "#155e75",
+        lessons: [
+          { id:"u3l1", icon:"\ud83d\udd22", label:"Numbers", type:"vocab", cat:"Numbers (Zahlen)" },
+          { id:"u3l2", icon:"\ud83d\udcc5", label:"Days", type:"vocab", cat:"Days (Tage)" },
+          { id:"u3l3", icon:"\ud83d\uddd3\ufe0f", label:"Months", type:"vocab", cat:"Months (Monate)" },
+          { id:"u3l4", icon:"\u23f0", label:"Time", type:"vocab", cat:"Time (Uhrzeit Layouts)" }
+        ] },
+      { title: "About you", subtitle: "\u00dcber dich", colour: "#7c3aed", dark: "#5b21b6",
+        lessons: [
+          { id:"u4l1", icon:"\ud83e\uddd1", label:"Introductions", type:"vocab", cat:"Introductions (Vorstellung)" },
+          { id:"u4l2", icon:"\ud83d\udc77", label:"Jobs", type:"vocab", cat:"Occupation (Berufe)" },
+          { id:"u4l3", icon:"\u2753", label:"W-questions", type:"vocab", cat:"W-Questions (W-Fragen)" }
+        ] },
+      { title: "Your world", subtitle: "Deine Welt", colour: "#ea580c", dark: "#9a3412",
+        lessons: [
+          { id:"u5l1", icon:"\ud83c\udfa8", label:"Colours", type:"vocab", cat:"Colours (Farben)" },
+          { id:"u5l2", icon:"\ud83d\udc55", label:"Clothes", type:"vocab", cat:"Clothes (Kleidung)" },
+          { id:"u5l3", icon:"\ud83c\udfe0", label:"Household", type:"vocab", cat:"Household (Hauswesen Tasks)" },
+          { id:"u5l4", icon:"\u2b50", label:"Shapes", type:"vocab", cat:"Shapes (Die Formen)" }
+        ] },
+      { title: "Everyday life", subtitle: "Der Alltag", colour: "#059669", dark: "#065f46",
+        lessons: [
+          { id:"u6l1", icon:"\u2600\ufe0f", label:"Daily routine", type:"vocab", cat:"Daily Routine (Tagesablauf)" },
+          { id:"u6l2", icon:"\u26bd", label:"Hobbies", type:"vocab", cat:"Hobbies (Hobbys)" },
+          { id:"u6l3", icon:"\ud83c\udf3b", label:"Seasons", type:"vocab", cat:"Seasons (Jahreszeiten)" },
+          { id:"u6l4", icon:"\ud83c\udf05", label:"Day parts", type:"vocab", cat:"Part of the Day (Teil des Tages)" }
+        ] },
+      { title: "Exam", subtitle: "Die Pr\u00fcfung", colour: "#b45309", dark: "#78350f",
+        lessons: [
+          { id:"u7l1", icon:"\ud83c\udfa7", label:"H\u00f6ren", type:"skill", skill:"listening" },
+          { id:"u7l2", icon:"\ud83d\udcd6", label:"Lesen", type:"skill", skill:"reading" },
+          { id:"u7l3", icon:"\u270d\ufe0f", label:"Schreiben", type:"skill", skill:"writing" },
+          { id:"u7l4", icon:"\ud83c\udfc6", label:"Mock exam", type:"exam" }
+        ] }
+    ];
+
+    let lessonProgress = JSON.parse(localStorage.getItem('sb_lesson_progress') || '{}');
+    const DAILY_GOAL_XP = 30;
+    let dailyXP = 0;
+
+    function flatLessons() {
+      const out = [];
+      curriculumUnits.forEach((u, ui) => u.lessons.forEach((l, li) => out.push({ ...l, ui, li, unit: u })));
+      return out;
+    }
+    function isLessonDone(id) { return !!lessonProgress[id]; }
+    function firstUnlockedIndex() {
+      const all = flatLessons();
+      for (let i = 0; i < all.length; i++) if (!isLessonDone(all[i].id)) return i;
+      return all.length - 1;
+    }
+    function markLessonDone(id) {
+      lessonProgress[id] = true;
+      localStorage.setItem('sb_lesson_progress', JSON.stringify(lessonProgress));
+    }
+
+    // ===== Daily goal =====
+    function loadDailyXP() {
+      const today = new Date().toDateString();
+      if (localStorage.getItem('sb_daily_date') !== today) {
+        localStorage.setItem('sb_daily_date', today);
+        localStorage.setItem('sb_daily_xp', '0');
+        dailyXP = 0;
+      } else {
+        dailyXP = parseInt(localStorage.getItem('sb_daily_xp'), 10) || 0;
+      }
+    }
+    function updateGoalRing() {
+      const arc = document.getElementById('goal-arc');
+      const lab = document.getElementById('goal-label');
+      if (!arc || !lab) return;
+      const pct = Math.min(1, dailyXP / DAILY_GOAL_XP);
+      arc.setAttribute('stroke-dashoffset', (94.2 * (1 - pct)).toFixed(1));
+      lab.innerText = pct >= 1 ? '\u2713' : Math.round(pct * 100) + '%';
+      arc.setAttribute('stroke', pct >= 1 ? '#22c55e' : '#f59e0b');
+      lab.className = 'absolute inset-0 flex items-center justify-center text-[8px] font-black ' + (pct >= 1 ? 'text-emerald-400' : 'text-amber-400');
+    }
+
+    // ===== Lesson quiz: 5 questions from the topic, 4 to pass =====
+    let quizActive = false;
+    let quizLesson = null;
+    let quizQuestions = [];
+    let quizIndex = 0;
+    let quizCorrect = 0;
+    let quizPicked = null;
+    let quizFinished = false;
+
+    function buildQuizQuestions(cat) {
+      const pool = (a1VocabularyDatabase[cat] || []).slice();
+      if (pool.length < 4) return [];
+      const picked = pool.slice().sort(() => 0.5 - Math.random()).slice(0, Math.min(5, pool.length));
+      return picked.map(item => {
+        const wrong = pool.filter(x => x.id !== item.id).sort(() => 0.5 - Math.random()).slice(0, 3).map(x => x.english);
+        const opts = wrong.concat([item.english]).sort(() => 0.5 - Math.random());
+        return { prompt: item.german, hint: item.pronunciation, options: opts, correct: opts.indexOf(item.english) };
+      });
+    }
+
+    function startLesson(id) {
+      const lesson = flatLessons().find(l => l.id === id);
+      if (!lesson) return;
+      if (lesson.type === 'vocab') {
+        quizQuestions = buildQuizQuestions(lesson.cat);
+        if (!quizQuestions.length) { selectedVocabCategory = lesson.cat; switchTab('vocabulary'); return; }
+        quizActive = true; quizLesson = lesson; quizIndex = 0; quizCorrect = 0; quizPicked = null; quizFinished = false;
+        renderActiveTabModule();
+      } else if (lesson.type === 'game') {
+        markLessonDone(lesson.id); initGenderBlitzGame();
+      } else if (lesson.type === 'grammar') {
+        markLessonDone(lesson.id); activeGrammarIndex = lesson.idx || 0; switchTab('grammar');
+      } else if (lesson.type === 'skill') {
+        markLessonDone(lesson.id); activeSkillSection = lesson.skill; activeSkillQuestionIndex = 0; resetSkillProgress(); switchTab('skills');
+      } else if (lesson.type === 'exam') {
+        markLessonDone(lesson.id); switchTab('exams');
+      }
+    }
+
+    function answerQuiz(i) {
+      if (quizPicked !== null) return;
+      quizPicked = i;
+      if (i === quizQuestions[quizIndex].correct) { quizCorrect++; rewardXP(5); }
+      renderActiveTabModule();
+    }
+    function nextQuizStep() {
+      quizPicked = null;
+      if (quizIndex < quizQuestions.length - 1) { quizIndex++; }
+      else {
+        quizFinished = true;
+        if (quizCorrect >= Math.min(4, quizQuestions.length)) { markLessonDone(quizLesson.id); rewardXP(10); }
+      }
+      renderActiveTabModule();
+    }
+    function exitQuiz() { quizActive = false; quizFinished = false; renderActiveTabModule(); }
+    function retryQuiz() {
+      quizQuestions = buildQuizQuestions(quizLesson.cat);
+      quizIndex = 0; quizCorrect = 0; quizPicked = null; quizFinished = false;
+      renderActiveTabModule();
+    }
     let currentThemeProfile = localStorage.getItem('sb_theme_profile') || 'midnight-slate';
     let totalXPAmount = parseInt(localStorage.getItem('sb_total_xp'), 10) || 0;
     let savedStreakCount = parseInt(localStorage.getItem('sb_streak_count'), 10) || 1;
@@ -839,7 +1007,9 @@
     // Main Startup Setup System Directives
     window.onload = function() {
       registerDailyStreak();
+      loadDailyXP();
       applyThemeProfile(currentThemeProfile);
+      updateGoalRing();
       updateDashboardTelemetry();
       renderActiveTabModule();
       const splash = document.getElementById('splash-screen');
@@ -877,7 +1047,7 @@
       const tabs = ['dashboard', 'vocabulary', 'grammar', 'skills', 'exams'];
       tabs.forEach(t => {
         const node = document.getElementById(`tab-${t}`);
-        if (node) node.className = `flex-1 flex flex-col items-center justify-center transition-colors ${t === activeTab ? conf.tabActive : conf.tabInactive}`;
+        if (node) node.className = `flex-1 flex items-center justify-center ${t === activeTab ? 'tab-active' : ''}`;
       });
     }
 
@@ -895,11 +1065,15 @@
     function rewardXP(amt) {
       totalXPAmount += amt;
       localStorage.setItem('sb_total_xp', totalXPAmount);
+      dailyXP += amt;
+      localStorage.setItem('sb_daily_xp', dailyXP);
       updateDashboardTelemetry();
+      updateGoalRing();
     }
 
     function switchTab(tabId) {
       activeTab = tabId;
+      quizActive = false;
       isVocabCardFlipped = false;
       skillSelectedAnswer = null;
       activeGameMode = 'none';
@@ -1343,6 +1517,124 @@
       const conf = systemThemeProfiles[currentThemeProfile] || systemThemeProfiles['midnight-slate'];
       
       if (activeTab === 'dashboard') {
+
+        // ---- Lesson quiz overlay ----
+        if (quizActive) {
+          if (quizFinished) {
+            const passed = quizCorrect >= Math.min(4, quizQuestions.length);
+            container.innerHTML = `
+              <div class="text-center p-6 ${conf.cardBg} border rounded-2xl shadow-xl space-y-4">
+                <span class="text-5xl block">${passed ? '\ud83c\udf89' : '\ud83d\udcaa'}</span>
+                <h3 class="text-base font-black text-white">${passed ? 'Lesson complete!' : 'Almost there'}</h3>
+                <p class="text-xs text-slate-400">${quizCorrect} of ${quizQuestions.length} correct${passed ? ' \u00b7 +10 XP' : ''}</p>
+                <p class="text-[11px] text-slate-500">${passed ? 'The next lesson is unlocked.' : 'You need 4 correct to unlock the next lesson.'}</p>
+                <div class="grid grid-cols-2 gap-2">
+                  <button onclick="retryQuiz()" class="btn3d py-3 bg-slate-700 text-white font-black text-xs rounded-xl">Try again</button>
+                  <button onclick="exitQuiz()" class="btn3d py-3 bg-indigo-600 text-white font-black text-xs rounded-xl">Back to path</button>
+                </div>
+              </div>`;
+            return;
+          }
+          const q = quizQuestions[quizIndex];
+          container.innerHTML = `
+            <div class="space-y-4">
+              <div class="flex items-center gap-3">
+                <button onclick="exitQuiz()" class="text-slate-500 text-lg font-black">\u2715</button>
+                <div class="flex-1 h-3 bg-slate-800 rounded-full overflow-hidden">
+                  <div class="h-full bg-emerald-500 rounded-full transition-all" style="width:${Math.round((quizIndex/quizQuestions.length)*100)}%"></div>
+                </div>
+                <span class="text-[11px] font-black text-slate-400">${quizIndex+1}/${quizQuestions.length}</span>
+              </div>
+              <p class="text-[11px] font-black uppercase tracking-wider text-slate-400">What does this mean?</p>
+              <div class="${conf.cardBg} border p-6 rounded-2xl text-center space-y-2">
+                <p class="text-2xl font-black text-white">${q.prompt}</p>
+                <p class="text-xs font-mono text-indigo-300">[ ${q.hint || ''} ]</p>
+                <button onclick='triggerSpeechSynthesis(${safeOnclickArg(q.prompt)})' class="btn3d mt-1 px-4 py-2 bg-indigo-600 text-white font-black text-[11px] rounded-xl">\ud83d\udd0a Listen</button>
+              </div>
+              <div class="space-y-2">
+                ${q.options.map((o,i) => {
+                  let st = 'bg-slate-800 text-slate-200';
+                  if (quizPicked !== null) {
+                    if (i === q.correct) st = 'bg-emerald-600 text-white';
+                    else if (i === quizPicked) st = 'bg-rose-600 text-white';
+                    else st = 'bg-slate-900 text-slate-600 opacity-50';
+                  }
+                  return `<button onclick="answerQuiz(${i})" ${quizPicked!==null?'disabled':''} class="btn3d w-full text-left p-3.5 rounded-xl text-sm font-bold ${st}">${o}</button>`;
+                }).join('')}
+              </div>
+              ${quizPicked !== null ? `
+                <button onclick="nextQuizStep()" class="btn3d w-full py-3.5 bg-indigo-600 text-white font-black text-sm rounded-xl">
+                  ${quizIndex < quizQuestions.length-1 ? 'Continue' : 'Finish'}
+                </button>` : ''}
+            </div>`;
+          return;
+        }
+
+        if (activeGameMode === 'none' && !activeExamRunningMode) {
+          const all = flatLessons();
+          const currentIdx = firstUnlockedIndex();
+          const goalPct = Math.min(100, Math.round((dailyXP / DAILY_GOAL_XP) * 100));
+          const doneCount = all.filter(l => isLessonDone(l.id)).length;
+
+          let pathHTML = '';
+          let counter = 0;
+          curriculumUnits.forEach((unit, ui) => {
+            pathHTML += `
+              <div class="rounded-2xl px-4 py-3 mt-2" style="background:${unit.colour}; box-shadow: 0 4px 0 ${unit.dark};">
+                <p class="text-[10px] font-black tracking-widest text-white/70 uppercase">Unit ${ui+1}</p>
+                <p class="text-sm font-black text-white">${unit.title}</p>
+                <p class="text-[10px] font-bold text-white/70">${unit.subtitle}</p>
+              </div>
+              <div class="flex flex-col items-center gap-4 py-4">`;
+            unit.lessons.forEach((les, li) => {
+              const idx = counter++;
+              const done = isLessonDone(les.id);
+              const isCurrent = idx === currentIdx;
+              const state = done ? 'done' : (isCurrent ? 'current' : 'locked');
+              const offsets = [0, -70, -95, -40, 45, 85];
+              const off = offsets[li % offsets.length];
+              pathHTML += `
+                <div class="w-full flex items-center justify-center gap-3" style="transform: translateX(${off}px)">
+                  <button ${state==='locked'?'disabled':''} onclick="startLesson('${les.id}')" class="stone ${state}" aria-label="${les.label}">
+                    ${done ? '\u2713' : les.icon}
+                  </button>
+                  ${isCurrent ? `<span class="text-[10px] font-black text-indigo-300 whitespace-nowrap">${les.label}</span>` : ''}
+                </div>`;
+            });
+            const unitDone = unit.lessons.every(l => isLessonDone(l.id));
+            pathHTML += `
+                <div class="chest" style="background:${unitDone ? unit.colour : '#1e293b'}; opacity:${unitDone ? 1 : .45}">${unitDone ? '\ud83c\udf81' : '\ud83d\udd12'}</div>
+              </div>`;
+          });
+
+          container.innerHTML = `
+            <div class="space-y-3">
+              <div class="${conf.cardBg} border p-4 rounded-2xl flex items-center justify-between gap-3">
+                <div>
+                  <p class="text-xs font-black text-white">Daily goal</p>
+                  <p class="text-[11px] text-slate-400">${dailyXP} of ${DAILY_GOAL_XP} XP today</p>
+                </div>
+                <div class="text-right">
+                  <p class="text-lg font-black ${goalPct>=100?'text-emerald-400':'text-amber-400'}">${goalPct}%</p>
+                  <p class="text-[10px] text-slate-500">${doneCount}/${all.length} lessons</p>
+                </div>
+              </div>
+              <div class="h-2.5 bg-slate-800 rounded-full overflow-hidden">
+                <div class="h-full ${goalPct>=100?'bg-emerald-500':'bg-amber-500'} rounded-full transition-all" style="width:${goalPct}%"></div>
+              </div>
+              ${pathHTML}
+              <div class="${conf.cardBg} border p-4 rounded-xl">
+                <h3 class="text-xs font-black text-slate-400 uppercase tracking-wider mb-2">Theme</h3>
+                <div class="grid grid-cols-3 gap-2">
+                  <button onclick="applyThemeProfile('midnight-slate')" class="btn3d p-2.5 rounded-lg text-[11px] font-bold text-center" style="background-color:#0f172a; color:#ffffff;">Slate</button>
+                  <button onclick="applyThemeProfile('cyberpunk-neon')" class="btn3d p-2.5 rounded-lg text-[11px] font-bold text-center" style="background-color:#1e1b4b; color:#67e8f9;">Neon</button>
+                  <button onclick="applyThemeProfile('daylight-white')" class="btn3d p-2.5 rounded-lg text-[11px] font-bold text-center" style="background-color:#ffffff; color:#0f172a;">Light</button>
+                </div>
+              </div>
+            </div>`;
+          return;
+        }
+
         if (activeGameMode === 'match') {
           let leftColHTML = '';
           let rightColHTML = '';
