@@ -1997,6 +1997,49 @@
       night:   { sky:"#1e2a4a", sun:"#dbe6ff", wall:"#4a4560", wallDark:"#3a3550", floor:"#4a3b52", glow:"#ffd98a", label:"Gute Nacht" }
     };
 
+    // ===== Seasons: drives the window view, a colour wash and falling particles =====
+    function seasonNow() {
+      const m = new Date().getMonth(); // 0 = January
+      if (m === 11 || m < 2) return 'winter';
+      if (m < 5)  return 'spring';
+      if (m < 8)  return 'summer';
+      return 'autumn';
+    }
+
+    const seasonProfiles = {
+      winter: { de:'Winter',   en:'Winter', tint:'#cfe6ff', tintA:.20, hill:'#eef4fb', tree:'#7d9bb5', leaf:'#ffffff',
+                particle:'snow', note:'Es schneit.' },
+      spring: { de:'Fr\u00fchling', en:'Spring', tint:'#d8f3d0', tintA:.16, hill:'#a8d99a', tree:'#5f9e57', leaf:'#f7b8d8',
+                particle:'petal', note:'Die Blumen bl\u00fchen.' },
+      summer: { de:'Sommer',   en:'Summer', tint:'#ffe9a8', tintA:.14, hill:'#8fc96f', tree:'#3f8b46', leaf:'#ffd447',
+                particle:'none',  note:'Es ist warm.' },
+      autumn: { de:'Herbst',   en:'Autumn', tint:'#ffd9a8', tintA:.18, hill:'#c9a45e', tree:'#a4632c', leaf:'#e07b39',
+                particle:'leaf',  note:'Die Bl\u00e4tter fallen.' }
+    };
+
+    // Falling snow / petals / leaves, drawn as SVG so no images are needed
+    function seasonParticles(sp) {
+      if (sp.particle === 'none') return '';
+      const n = sp.particle === 'snow' ? 16 : 10;
+      let out = '';
+      for (let i = 0; i < n; i++) {
+        const x = 6 + (i * 37) % 388;
+        const dur = (6 + (i % 5) * 1.6).toFixed(1);
+        const delay = ((i * 0.7) % 6).toFixed(1);
+        const r = sp.particle === 'snow' ? 2.2 : 3.2;
+        const shape = sp.particle === 'snow'
+          ? `<circle r="${r}" fill="#ffffff" opacity=".85"/>`
+          : `<ellipse rx="${r}" ry="${r*0.6}" fill="${sp.leaf}" opacity=".85"/>`;
+        out += `<g transform="translate(${x},-10)">${shape}
+          <animateTransform attributeName="transform" type="translate" additive="sum"
+            values="0,-10; ${(i%2?14:-14)},300" dur="${dur}s" begin="${delay}s" repeatCount="indefinite"/>
+          <animateTransform attributeName="transform" type="rotate" additive="sum"
+            values="0;360" dur="${dur}s" begin="${delay}s" repeatCount="indefinite"/>
+        </g>`;
+      }
+      return `<g pointer-events="none">${out}</g>`;
+    }
+
     function roomBearPose() {
       const t = timeOfDay();
       if (t === 'night') return 'bear-sleep';
@@ -2013,6 +2056,66 @@
       if (learned < 3)   return pal.label + "!";
       if (learned < 6)   return pal.label + "! Wie geht's?";
       return pal.label + "! Sch\u00f6n, dass du da bist.";
+    }
+
+    // ===== Small things Bruno gets up to. One per day, each opening a micro-lesson =====
+    const brunoMoments = [
+      { id:'toast',  pose:'bear-think', de:'Oh nein, mein Toast!',        en:'Bruno burnt the toast again.',        obj:'kitchen'  },
+      { id:'keys',   pose:'bear-think', de:'Wo sind meine Schl\u00fcssel?', en:'Bruno has lost his keys.',            obj:'door'     },
+      { id:'plant',  pose:'bear-stand', de:'Meine Pflanze braucht Wasser.', en:'Bruno is watering his plant.',      obj:'window'   },
+      { id:'book',   pose:'bear-sit',   de:'Ein gutes Buch!',             en:'Bruno is deep in a book.',            obj:'books'    },
+      { id:'mirror', pose:'bear-wave',  de:'Wie sehe ich aus?',           en:'Bruno is checking the mirror.',       obj:'mirror'   },
+      { id:'tidy',   pose:'bear-walk',  de:'Ich r\u00e4ume auf.',           en:'Bruno is tidying the wardrobe.',      obj:'wardrobe' },
+      { id:'late',   pose:'bear-run',   de:'Ich bin sp\u00e4t dran!',        en:'Bruno has overslept.',                obj:'bed'      },
+      { id:'letter', pose:'bear-sit',   de:'Post f\u00fcr mich?',            en:'Bruno is writing at his desk.',       obj:'desk'     },
+      { id:'dance',  pose:'bear-dance', de:'Musik! Tanzen wir!',          en:'Bruno is dancing to the radio.',      obj:'shelf'    },
+      { id:'plan',   pose:'bear-think', de:'Was mache ich heute?',        en:'Bruno is planning his day.',          obj:'calendar' }
+    ];
+
+    function momentOfTheDay() {
+      const day = Math.floor(Date.now() / 86400000);
+      return brunoMoments[day % brunoMoments.length];
+    }
+
+    function dismissMoment() {
+      localStorage.setItem('sb_moment_seen', new Date().toDateString());
+      renderActiveTabModule();
+    }
+    function momentSeenToday() {
+      return localStorage.getItem('sb_moment_seen') === new Date().toDateString();
+    }
+
+    // ===== Bruno's journal: entries unlock as more of the room comes to life =====
+    const journalEntries = [
+      { need:1,  title:'Tag 1',  de:'Hallo! Ich bin Bruno.',
+                 en:'Hello! I am Bruno.' },
+      { need:2,  title:'Tag 2',  de:'Guten Morgen. Heute lerne ich Deutsch.',
+                 en:'Good morning. Today I am learning German.' },
+      { need:3,  title:'Tag 3',  de:'Mein Zimmer ist klein, aber sch\u00f6n. Ich habe ein Bett und einen Tisch.',
+                 en:'My room is small but nice. I have a bed and a table.' },
+      { need:4,  title:'Tag 4',  de:'Meine Familie wohnt weit weg. Meine Mutter hei\u00dft Ada. Mein Vater hei\u00dft Emil.',
+                 en:'My family lives far away. My mother is called Ada. My father is called Emil.' },
+      { need:5,  title:'Tag 5',  de:'Heute ist Montag. Um sieben Uhr stehe ich auf. Dann putze ich die Z\u00e4hne.',
+                 en:'Today is Monday. At seven o\u2019clock I get up. Then I brush my teeth.' },
+      { need:6,  title:'Tag 6',  de:'Ich trage gern mein blaues Hemd. Blau ist meine Lieblingsfarbe.',
+                 en:'I like wearing my blue shirt. Blue is my favourite colour.' },
+      { need:7,  title:'Tag 7',  de:'Am Wochenende lese ich B\u00fccher und h\u00f6re Musik. Manchmal tanze ich auch.',
+                 en:'At the weekend I read books and listen to music. Sometimes I dance too.' },
+      { need:8,  title:'Tag 8',  de:'Mein Freund fragt: \u201eWoher kommst du?\u201c Ich sage: \u201eIch komme aus dem Wald.\u201c',
+                 en:'My friend asks: \u201cWhere are you from?\u201d I say: \u201cI come from the forest.\u201d' },
+      { need:9,  title:'Tag 9',  de:'Gestern war ich m\u00fcde. Ich hatte viel zu tun. Aber heute geht es mir gut.',
+                 en:'Yesterday I was tired. I had a lot to do. But today I am well.' },
+      { need:10, title:'Tag 10', de:'Ich kann jetzt viel sagen. Ich lerne jeden Tag ein bisschen mehr. Das macht mir Spa\u00df!',
+                 en:'I can say a lot now. I learn a little more every day. I enjoy it!' },
+      { need:11, title:'Tag 11', de:'Bald mache ich die Pr\u00fcfung. Ich habe ein bisschen Angst, aber ich \u00fcbe fleissig.',
+                 en:'Soon I will take the exam. I am a little nervous, but I am practising hard.' }
+    ];
+
+    let journalOpen = false;
+    function toggleJournal() { journalOpen = !journalOpen; renderActiveTabModule(); }
+    function journalUnlockedCount() {
+      const learned = roomObjects.filter(o => objProgress(o).frac === 1).length;
+      return journalEntries.filter(e => e.need <= learned).length;
     }
 
     function wordOfTheDay() {
@@ -2039,6 +2142,10 @@
       const O = {}; roomObjects.forEach(o => O[o.id] = o);
       const lampOn = (tod === 'evening' || tod === 'night');
       const wotd = wordOfTheDay();
+      const season = seasonNow();
+      const sp = seasonProfiles[season];
+      const moment = momentOfTheDay();
+      const showMoment = !momentSeenToday();
       const totalDone = roomObjects.filter(o => objProgress(o).frac === 1).length;
 
       const g = (id, inner) => {
@@ -2080,6 +2187,42 @@
           </div>`;
       }
 
+      let journalSheet = '';
+      if (journalOpen) {
+        const unlocked = journalUnlockedCount();
+        journalSheet = `
+          <div class="fixed inset-0 z-40 flex items-end justify-center" style="background:rgba(2,6,23,.65)" onclick="toggleJournal()">
+            <div class="w-full max-w-md md:max-w-2xl rounded-t-3xl p-5 space-y-3" style="background:#111827" onclick="event.stopPropagation()">
+              <div class="flex items-start gap-3">
+                <img src="./bears/bear-sit.png" alt="" class="h-14 w-auto shrink-0" onerror="this.style.display='none'">
+                <div class="flex-1 min-w-0">
+                  <p class="text-lg font-black text-white">Brunos Tagebuch</p>
+                  <p class="text-[11px] font-bold text-slate-400">${unlocked} of ${journalEntries.length} entries \u00b7 he writes more as your room fills up</p>
+                </div>
+                <button onclick="toggleJournal()" class="text-slate-500 text-xl font-black leading-none">\u2715</button>
+              </div>
+              <div class="space-y-2 max-h-[52vh] overflow-y-auto pt-1">
+                ${journalEntries.map((e, i) => {
+                  if (i >= unlocked) {
+                    return `<div class="p-3 rounded-2xl flex items-center gap-2" style="background:#1a2030">
+                      <span class="text-sm">\ud83d\udd12</span>
+                      <span class="text-[11px] font-bold text-slate-600">Bring ${e.need} corner${e.need === 1 ? '' : 's'} to life to read this</span>
+                    </div>`;
+                  }
+                  return `<div class="p-3 rounded-2xl space-y-1" style="background:#1b2436">
+                    <div class="flex items-center justify-between gap-2">
+                      <p class="text-[10px] font-black uppercase tracking-wider text-amber-400">${e.title}</p>
+                      <button onclick='speakGerman(${'$'}{safeOnclickArg(e.de)}, false)' class="text-[10px] font-black text-indigo-400">\ud83d\udd0a</button>
+                    </div>
+                    <p class="text-xs font-bold text-slate-100 leading-relaxed">${e.de}</p>
+                    <p class="text-[11px] text-slate-500 leading-relaxed">${e.en}</p>
+                  </div>`;
+                }).join('')}
+              </div>
+            </div>
+          </div>`;
+      }
+
       return `
         <div class="space-y-4">
           <div class="flex items-center gap-3 px-1">
@@ -2087,11 +2230,28 @@
               <p class="text-base font-black text-white truncate">${bearGreeting()}</p>
               <p class="text-[11px] font-bold text-slate-400">${totalDone} of ${roomObjects.length} corners brought to life</p>
             </div>
+            <button onclick="toggleJournal()" class="btn3d shrink-0 px-3 py-2 rounded-2xl text-left" style="background:#3f3a5c">
+              <span class="text-base leading-none block">\ud83d\udcd3</span>
+              <span class="text-[9px] font-black text-slate-300">${journalUnlockedCount()}/${journalEntries.length}</span>
+            </button>
             <div class="text-right shrink-0">
               <p class="text-[10px] font-black uppercase tracking-wider text-slate-500">Today</p>
               <p class="text-sm font-black ${dailyXP >= DAILY_GOAL_XP ? 'text-emerald-400' : 'text-amber-400'}">${dailyXP}/${DAILY_GOAL_XP} XP</p>
             </div>
           </div>
+
+          ${showMoment ? `
+            <div class="rounded-3xl p-3 flex items-center gap-3" style="background:#2a2440; box-shadow:0 4px 0 #1c1830">
+              <img src="./bears/${moment.pose}.png" alt="" class="h-16 w-auto shrink-0" onerror="this.style.display='none'">
+              <div class="flex-1 min-w-0">
+                <p class="text-xs font-black text-white">${moment.de}</p>
+                <p class="text-[10px] font-bold text-slate-400">${moment.en}</p>
+                <div class="flex gap-2 mt-2">
+                  <button onclick="dismissMoment(); toggleRoomObject('${moment.obj}')" class="btn3d px-3 py-1.5 rounded-xl bg-indigo-600 text-white text-[10px] font-black">Help Bruno</button>
+                  <button onclick="dismissMoment()" class="btn3d px-3 py-1.5 rounded-xl bg-slate-700 text-slate-300 text-[10px] font-black">Later</button>
+                </div>
+              </div>
+            </div>` : ''}
 
           <div class="relative rounded-3xl overflow-hidden" style="box-shadow:0 6px 0 rgba(0,0,0,.35)">
             <svg viewBox="0 0 760 470" class="w-full block" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="The bear's room">
@@ -2125,11 +2285,24 @@
 
               <!-- ===== CENTRE: living and working ===== -->
               ${g('window', `
+                <clipPath id="winclip"><rect x="292" y="46" width="184" height="140" rx="8"/></clipPath>
                 <rect x="292" y="46" width="184" height="140" rx="8" fill="${pal.sky}"/>
+                <g clip-path="url(#winclip)">
+                  <circle cx="436" cy="80" r="18" fill="${pal.sun}"/>
+                  <ellipse cx="330" cy="182" rx="70" ry="42" fill="${sp.hill}"/>
+                  <ellipse cx="446" cy="188" rx="58" ry="34" fill="${sp.hill}" opacity=".8"/>
+                  <rect x="356" y="140" width="9" height="34" fill="#7a5638"/>
+                  <circle cx="360" cy="132" r="22" fill="${sp.tree}"/>
+                  <circle cx="346" cy="142" r="15" fill="${sp.tree}" opacity=".9"/>
+                  <circle cx="375" cy="143" r="14" fill="${sp.tree}" opacity=".9"/>
+                  ${sp.particle !== 'none' ? `
+                    <circle cx="352" cy="126" r="4" fill="${sp.leaf}"/>
+                    <circle cx="370" cy="136" r="4" fill="${sp.leaf}"/>
+                    <circle cx="358" cy="146" r="4" fill="${sp.leaf}"/>` : ''}
+                </g>
                 <rect x="292" y="46" width="184" height="140" rx="8" fill="none" stroke="#8a6b4f" stroke-width="9"/>
                 <line x1="384" y1="46" x2="384" y2="186" stroke="#8a6b4f" stroke-width="7"/>
                 <line x1="292" y1="116" x2="476" y2="116" stroke="#8a6b4f" stroke-width="7"/>
-                <circle cx="436" cy="80" r="18" fill="${pal.sun}"/>
               `)}
               ${g('desk', `
                 <rect x="288" y="252" width="192" height="14" rx="4" fill="#b5804f"/>
@@ -2193,11 +2366,18 @@
 
               <ellipse cx="380" cy="440" rx="150" ry="24" fill="${pal.wallDark}" opacity=".45"/>
               ${lampOn ? `<ellipse cx="380" cy="300" rx="270" ry="190" fill="${pal.glow}" opacity=".15"/>` : ''}
+              <rect x="0" y="0" width="760" height="470" fill="${sp.tint}" opacity="${sp.tintA}" pointer-events="none"/>
+              ${seasonParticles(sp)}
             </svg>
 
             <img src="./bears/${roomBearPose()}.png" alt=""
                  class="absolute pointer-events-none"
                  style="height:34%; left:50%; transform:translateX(-50%); bottom:7%;">
+          </div>
+
+          <div class="flex items-center justify-between gap-2 px-1">
+            <p class="text-[10px] font-black uppercase tracking-wider text-slate-500">${sp.de} \u00b7 ${sp.en}</p>
+            <p class="text-[10px] font-bold text-slate-400">${sp.note}</p>
           </div>
 
           <div class="${conf.cardBg} border p-4 rounded-2xl flex items-center gap-3">
@@ -2219,7 +2399,7 @@
             </div>
           </div>
         </div>
-        ${sheet}`;
+        ${sheet}${journalSheet}`;
     }
 
     // Games render as a full-screen overlay from any tab
