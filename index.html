@@ -54,7 +54,7 @@
       opacity: 1; transition: opacity .45s ease;
     }
     #splash-screen.hide { opacity: 0; pointer-events: none; }
-    #splash-screen img { width: 116px; height: 116px; border-radius: 26px; box-shadow: 0 10px 40px rgba(0,0,0,.5); animation: splash-pop .6s cubic-bezier(.34,1.56,.64,1); }
+    #splash-screen img { animation: splash-pop .6s cubic-bezier(.34,1.56,.64,1); }
     #splash-screen h1 { font-size: 27px; font-weight: 800; color: #f1f5f9; margin: 0; letter-spacing: -.02em; }
     #splash-screen p { font-size: 13px; color: #818cf8; margin: 0; font-weight: 600; }
     @keyframes splash-pop { from { transform: scale(.65); opacity: 0 } to { transform: scale(1); opacity: 1 } }
@@ -148,7 +148,7 @@
 
   <!-- Startup splash: app icon + name, removed once the app has rendered -->
   <div id="splash-screen">
-    <img src="./icon-512.png" alt="">
+    <img src="./bears/bear-stand.png" alt="" style="border-radius:0; box-shadow:none; width:150px; height:auto">
     <h1>Sprachblitz</h1>
     <p>A1 Deutsch lernen</p>
   </div>
@@ -1714,7 +1714,8 @@
             </div>
             ${matchSuccessCount === 4 ? `
               <div class="p-4 ${conf.cardBg} border rounded-xl text-center space-y-3">
-                <p class="text-sm font-black text-emerald-400">\ud83c\udf89 All matched! +30 XP</p>
+                <img src="./bears/bear-dance.png" alt="" class="h-24 w-auto mx-auto">
+                <p class="text-sm font-black text-emerald-400">All matched! +30 XP</p>
                 <div class="grid grid-cols-2 gap-2">
                   <button onclick="initWordMatchGame()" class="btn3d py-3 bg-indigo-600 text-white font-black text-xs rounded-xl">Play again</button>
                   <button onclick="closeGame()" class="btn3d py-3 bg-slate-700 text-white font-black text-xs rounded-xl">Done</button>
@@ -1746,6 +1747,7 @@
             </div>
             ${genderGameFeedback !== null ? `
               <div class="p-4 ${conf.cardBg} border rounded-xl text-center space-y-3">
+                <img src="./bears/${genderGameFeedback === 'correct' ? 'bear-run' : 'bear-think'}.png" alt="" class="h-20 w-auto mx-auto">
                 <p class="text-xs font-black ${genderGameFeedback === 'correct' ? 'text-emerald-400' : 'text-rose-400'}">
                   ${genderGameFeedback === 'correct' ? '\u2713 Correct! +5 XP' : '\u2717 Not quite.'}
                 </p>
@@ -1777,7 +1779,7 @@
             const passed = quizCorrect >= Math.min(4, quizQuestions.length);
             container.innerHTML = `
               <div class="text-center p-6 ${conf.cardBg} border rounded-2xl shadow-xl space-y-4">
-                <img src="./bear-wave.png" alt="" class="w-24 h-24 mx-auto rounded-full" style="${passed ? '' : 'filter:grayscale(.5); opacity:.75'}">
+                <img src="./bears/${passed ? 'bear-jump' : 'bear-think'}.png" alt="" class="h-28 w-auto mx-auto">
                 <h3 class="text-base font-black text-white">${passed ? 'Lesson complete!' : 'Almost there'}</h3>
                 <p class="text-xs text-slate-400">${quizCorrect} of ${quizQuestions.length} correct${passed ? ' \u00b7 +10 XP' : ''}</p>
                 <p class="text-[11px] text-slate-500">${passed ? 'The next lesson is unlocked.' : 'You need 4 correct to unlock the next lesson.'}</p>
@@ -1816,7 +1818,10 @@
                 }).join('')}
               </div>
               ${quizPicked !== null ? `
-                ${q.explain ? `<div class="p-3 rounded-xl ${quizPicked === q.correct ? 'bg-emerald-950/50 text-emerald-300' : 'bg-amber-950/50 text-amber-300'} text-[11px] font-bold text-center">${q.explain}</div>` : ''}
+                ${q.explain ? `<div class="p-3 rounded-xl ${quizPicked === q.correct ? 'bg-emerald-950/50 text-emerald-300' : 'bg-amber-950/50 text-amber-300'} text-[11px] font-bold flex items-center gap-2">
+                  <img src="./bears/${quizPicked === q.correct ? 'bear-hug' : 'bear-think'}.png" alt="" class="h-12 w-auto shrink-0">
+                  <span class="flex-1">${q.explain}</span>
+                </div>` : ''}
                 <button onclick="nextQuizStep()" class="btn3d w-full py-3.5 bg-indigo-600 text-white font-black text-sm rounded-xl">
                   ${quizIndex < quizQuestions.length-1 ? 'Continue' : 'Finish'}
                 </button>` : ''}
@@ -1833,6 +1838,7 @@
           let pathHTML = '';
           let counter = 0;
           curriculumUnits.forEach((unit, ui) => {
+            const unitDoneAlready = unit.lessons.every(l => isLessonDone(l.id));
             pathHTML += `
               <div class="rounded-2xl px-4 py-3 mt-2 flex items-center gap-3" style="background:${unit.colour}; box-shadow: 0 4px 0 ${unit.dark};">
                 <div class="flex-1 min-w-0">
@@ -1840,7 +1846,7 @@
                   <p class="text-sm font-black text-white">${unit.title}</p>
                   <p class="text-[10px] font-bold text-white/70">${unit.subtitle}</p>
                 </div>
-                <img src="./bear-wave.png" alt="" class="w-12 h-12 shrink-0 rounded-full" style="background:rgba(255,255,255,.15)">
+                <img src="./bears/${unitDoneAlready ? 'bear-dance' : 'bear-wave'}.png" alt="" class="h-14 w-auto shrink-0">
               </div>
               <div class="flex flex-col items-center gap-4 py-4">`;
             unit.lessons.forEach((les, li) => {
@@ -1856,7 +1862,7 @@
                     ${done ? '\u2713' : les.icon}
                   </button>
                   ${isCurrent ? `<span class="text-[10px] font-black text-indigo-300 whitespace-nowrap">${les.label}</span>` : ''}
-                  ${li === 1 ? `<img src="./bear-wave.png" alt="" class="w-16 h-16 rounded-full absolute" style="left:${off < 0 ? '150px' : '-110px'}; opacity:.9">` : ''}
+                  ${li === 1 ? `<img src="./bears/${done ? 'bear-jump' : (isCurrent ? 'bear-walk' : 'bear-sleep')}.png" alt="" class="h-20 w-auto absolute pointer-events-none" style="left:${off < 0 ? '150px' : '-130px'}; opacity:${done || isCurrent ? '1' : '.45'}">` : ''}
                 </div>`;
             });
             const unitDone = unit.lessons.every(l => isLessonDone(l.id));
@@ -2019,6 +2025,13 @@
 
         container.innerHTML = `
           <div class="space-y-4 flex flex-col items-center">
+            <div class="w-full flex items-center gap-3 px-1">
+              <img src="./bears/bear-sit.png" alt="" class="h-16 w-auto shrink-0">
+              <div class="min-w-0">
+                <p class="text-xs font-black text-white">Free practice</p>
+                <p class="text-[10px] text-slate-400">Play a game or browse any topic. Nothing is locked here.</p>
+              </div>
+            </div>
             <div class="w-full grid grid-cols-2 gap-2">
               <button onclick="initWordMatchGame()" class="btn3d p-3 bg-indigo-600 rounded-2xl text-left">
                 <span class="text-xl block leading-none mb-1">\ud83e\udde9</span>
