@@ -167,25 +167,8 @@
     
     <!-- Top Global Status Header Tracking Engine -->
     <header id="app-header-nav" class="p-4 border-b border-slate-800 bg-slate-950 text-white flex justify-between items-center sticky top-0 z-50 theme-transition">
-      <div class="flex flex-col">
-        <h1 class="text-base font-extrabold tracking-tight">Sprachblitz ⚡ <span class="text-xs font-black text-indigo-400 bg-indigo-950/60 border border-indigo-800/80 px-1.5 py-0.5 rounded ml-1">A1 MASTER</span></h1>
-        <div id="player-rank-display" class="text-[9px] font-black uppercase tracking-wider mt-0.5 text-indigo-400">Lv.1 Arena Novice</div>
-      </div>
-      <div class="flex items-center gap-2">
-        <div id="streak-counter" class="font-bold text-xs flex items-center gap-1 px-2 py-1 rounded-lg border border-slate-800 bg-slate-900 text-amber-500">
-          🔥 <span id="streak-days-val">1</span> d
-        </div>
-        <div class="font-bold text-xs bg-indigo-950 text-indigo-300 border border-indigo-800 px-2 py-1 rounded-lg">
-          ✨ <span id="xp-amount-val">0</span> XP
-        </div>
-        <div id="daily-goal-ring" class="relative w-9 h-9 shrink-0" title="Daily goal">
-          <svg viewBox="0 0 36 36" class="w-9 h-9 -rotate-90">
-            <circle cx="18" cy="18" r="15" fill="none" stroke="#1e293b" stroke-width="4"></circle>
-            <circle id="goal-arc" cx="18" cy="18" r="15" fill="none" stroke="#f59e0b" stroke-width="4" stroke-linecap="round" stroke-dasharray="94.2" stroke-dashoffset="94.2"></circle>
-          </svg>
-          <span id="goal-label" class="absolute inset-0 flex items-center justify-center text-[8px] font-black text-amber-400">0%</span>
-        </div>
-      </div>
+      <h1 class="text-base font-extrabold tracking-tight">Sprachblitz</h1>
+      <p id="header-note" class="text-[10px] font-bold text-slate-500"></p>
     </header>
 
     <!-- Main Dynamic Scrolling Workspace Window View Surface -->
@@ -894,7 +877,7 @@
     function updateGoalRing() {
       const arc = document.getElementById('goal-arc');
       const lab = document.getElementById('goal-label');
-      if (!arc || !lab) return;
+      if (!arc || !lab) return; // ring removed - kept as a no-op
       const pct = Math.min(1, dailyXP / DAILY_GOAL_XP);
       arc.setAttribute('stroke-dashoffset', (94.2 * (1 - pct)).toFixed(1));
       lab.innerText = pct >= 1 ? '\u2713' : Math.round(pct * 100) + '%';
@@ -1415,15 +1398,13 @@
       });
     }
 
+    // No streak flame, no XP ring, no level titles - the room is the progress.
+    // XP still accumulates quietly and surfaces only where it is earned.
     function updateDashboardTelemetry() {
-      document.getElementById('streak-days-val').innerText = savedStreakCount;
-      document.getElementById('xp-amount-val').innerText = totalXPAmount;
-      
-      const display = document.getElementById('player-rank-display');
-      if (totalXPAmount >= 500) display.innerText = "Lv.4 Imperial Language Architect";
-      else if (totalXPAmount >= 250) display.innerText = "Lv.3 Master Competitor";
-      else if (totalXPAmount >= 100) display.innerText = "Lv.2 Experienced Challenger";
-      else display.innerText = "Lv.1 Arena Novice";
+      const note = document.getElementById('header-note');
+      if (!note) return;
+      const learned = roomObjects.filter(o => objProgress(o).frac === 1).length;
+      note.innerText = learned === 0 ? '' : learned + (learned === 1 ? ' corner alive' : ' corners alive');
     }
 
     function rewardXP(amt) {
@@ -2148,10 +2129,18 @@
       const showMoment = !momentSeenToday();
       const totalDone = roomObjects.filter(o => objProgress(o).frac === 1).length;
 
-      const g = (id, inner) => {
+      // Once a corner is fully learned its German name is written onto the room,
+      // so the finished picture reads as a labelled vocabulary scene.
+      const g = (id, inner, lx, ly) => {
         const o = O[id];
+        const label = (objProgress(o).frac === 1 && lx !== undefined) ? `
+          <g pointer-events="none">
+            <rect x="${lx - 52}" y="${ly - 13}" width="104" height="21" rx="10" fill="#0f172a" opacity=".78"/>
+            <text x="${lx}" y="${ly + 2}" text-anchor="middle" font-family="'Plus Jakarta Sans',sans-serif"
+                  font-size="13" font-weight="700" fill="#fde68a">${o.de}</text>
+          </g>` : '';
         return `<g class="room-obj ${suggest === id ? 'room-suggest' : ''}" opacity="${objOpacity(o)}"
-                   onclick="toggleRoomObject('${id}')" role="button" tabindex="0" aria-label="${o.en}">${inner}</g>`;
+                   onclick="toggleRoomObject('${id}')" role="button" tabindex="0" aria-label="${o.en}">${inner}${label}</g>`;
       };
 
       let sheet = '';
@@ -2234,10 +2223,7 @@
               <span class="text-base leading-none block">\ud83d\udcd3</span>
               <span class="text-[9px] font-black text-slate-300">${journalUnlockedCount()}/${journalEntries.length}</span>
             </button>
-            <div class="text-right shrink-0">
-              <p class="text-[10px] font-black uppercase tracking-wider text-slate-500">Today</p>
-              <p class="text-sm font-black ${dailyXP >= DAILY_GOAL_XP ? 'text-emerald-400' : 'text-amber-400'}">${dailyXP}/${DAILY_GOAL_XP} XP</p>
-            </div>
+
           </div>
 
           ${showMoment ? `
@@ -2273,7 +2259,7 @@
                 <rect x="150" y="160" width="66" height="36" rx="4" fill="#cfd8de"/>
                 <circle cx="167" cy="178" r="6" fill="#8a9aa6"/>
                 <circle cx="199" cy="178" r="6" fill="#8a9aa6"/>
-              `)}
+              `, 96, 404)}
               ${g('table', `
                 <ellipse cx="132" cy="382" rx="94" ry="24" fill="#c08a56"/>
                 <rect x="124" y="382" width="16" height="54" fill="#a06f42"/>
@@ -2281,7 +2267,7 @@
                 <ellipse cx="106" cy="373" rx="17" ry="9" fill="#fdfaf4"/>
                 <path d="M124 370 q11 -2 11 6 q0 7 -11 6" fill="none" stroke="#fdfaf4" stroke-width="4"/>
                 <ellipse cx="164" cy="374" rx="20" ry="10" fill="#f2d06b"/>
-              `)}
+              `, 150, 392)}
 
               <!-- ===== CENTRE: living and working ===== -->
               ${g('window', `
@@ -2303,7 +2289,7 @@
                 <rect x="292" y="46" width="184" height="140" rx="8" fill="none" stroke="#8a6b4f" stroke-width="9"/>
                 <line x1="384" y1="46" x2="384" y2="186" stroke="#8a6b4f" stroke-width="7"/>
                 <line x1="292" y1="116" x2="476" y2="116" stroke="#8a6b4f" stroke-width="7"/>
-              `)}
+              `, 384, 206)}
               ${g('desk', `
                 <rect x="288" y="252" width="192" height="14" rx="4" fill="#b5804f"/>
                 <rect x="298" y="266" width="13" height="70" fill="#9a6a45"/>
@@ -2313,7 +2299,7 @@
                 <rect x="426" y="224" width="32" height="28" rx="3" fill="#e0715f"/>
                 <rect x="336" y="356" width="88" height="12" rx="4" fill="#8a6b4f"/>
                 <rect x="372" y="368" width="14" height="46" fill="#8a6b4f"/>
-              `)}
+              `, 384, 352)}
               ${g('shelf', `
                 <rect x="308" y="196" width="152" height="10" rx="3" fill="#8a6b4f"/>
                 <rect x="320" y="158" width="18" height="38" rx="3" fill="#5b8def"/>
@@ -2322,7 +2308,7 @@
                 <rect x="386" y="164" width="15" height="32" rx="3" fill="#e8b84b"/>
                 <circle cx="428" cy="180" r="16" fill="#7cb87c"/>
                 <rect x="422" y="182" width="12" height="14" rx="3" fill="#b07a4a"/>
-              `)}
+              `, 384, 190)}
 
               <!-- ===== BACK WALL items ===== -->
               ${g('door', `
@@ -2330,24 +2316,24 @@
                 <rect x="548" y="126" width="74" height="94" rx="4" fill="#845a3a"/>
                 <rect x="548" y="232" width="74" height="90" rx="4" fill="#845a3a"/>
                 <circle cx="620" cy="230" r="7" fill="#e8c46a"/>
-              `)}
+              `, 96, 300)}
               ${g('calendar', `
                 <rect x="656" y="60" width="76" height="86" rx="6" fill="#fdfaf4"/>
                 <rect x="656" y="60" width="76" height="23" rx="6" fill="#d64545"/>
                 <text x="694" y="122" text-anchor="middle" font-family="sans-serif" font-size="32" font-weight="700" fill="#3b3b3b">${new Date().getDate()}</text>
-              `)}
+              `, 596, 150)}
               ${g('mirror', `
                 <ellipse cx="694" cy="216" rx="40" ry="52" fill="#cfe6ee"/>
                 <ellipse cx="694" cy="216" rx="40" ry="52" fill="none" stroke="#b98a5c" stroke-width="8"/>
                 <path d="M676 190 l14 -10 l6 12 z" fill="#ffffff" opacity=".7"/>
-              `)}
+              `, 628, 300)}
               ${g('books', `
                 <rect x="640" y="300" width="104" height="11" rx="4" fill="#8a6b4f"/>
                 <rect x="650" y="262" width="18" height="38" rx="3" fill="#8e6bbf"/>
                 <rect x="672" y="270" width="16" height="30" rx="3" fill="#4fa3a3"/>
                 <rect x="692" y="258" width="20" height="42" rx="3" fill="#d97b53"/>
                 <rect x="716" y="268" width="17" height="32" rx="3" fill="#5b8def"/>
-              `)}
+              `, 690, 392)}
 
               <!-- ===== RIGHT: sleeping area ===== -->
               ${g('bed', `
@@ -2356,13 +2342,13 @@
                 <rect x="712" y="352" width="22" height="66" rx="8" fill="#a9744a"/>
                 <rect x="572" y="356" width="60" height="26" rx="10" fill="#fdfaf4"/>
                 <rect x="620" y="372" width="106" height="42" rx="8" fill="#7fa8d4"/>
-              `)}
+              `, 636, 410)}
               ${g('wardrobe', `
                 <rect x="466" y="188" width="46" height="148" rx="7" fill="#a9744a"/>
                 <line x1="489" y1="192" x2="489" y2="332" stroke="#8a5c38" stroke-width="3"/>
                 <circle cx="483" cy="262" r="4" fill="#e8c46a"/>
                 <circle cx="495" cy="262" r="4" fill="#e8c46a"/>
-              `)}
+              `, 212, 300)}
 
               <ellipse cx="380" cy="440" rx="150" ry="24" fill="${pal.wallDark}" opacity=".45"/>
               ${lampOn ? `<ellipse cx="380" cy="300" rx="270" ry="190" fill="${pal.glow}" opacity=".15"/>` : ''}
