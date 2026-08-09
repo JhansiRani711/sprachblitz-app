@@ -148,7 +148,7 @@
 
   <!-- Startup splash: app icon + name, removed once the app has rendered -->
   <div id="splash-screen">
-    <img src="./bears/bear-stand.png" alt="" style="border-radius:0; box-shadow:none; width:150px; height:auto">
+    <img src="./icon-512.png" alt="" style="width:140px; height:140px; border-radius:30px; box-shadow:0 10px 40px rgba(0,0,0,.5)">
     <h1>Sprachblitz</h1>
     <p>A1 Deutsch lernen</p>
   </div>
@@ -1874,7 +1874,8 @@
           container.innerHTML = `
             <div class="space-y-3">
               <div class="${conf.cardBg} border p-4 rounded-2xl flex items-center justify-between gap-3">
-                <div>
+                <img src="./bears/bear-stand.png" alt="" class="h-14 w-auto shrink-0">
+                <div class="flex-1 min-w-0">
                   <p class="text-xs font-black text-white">Daily goal</p>
                   <p class="text-[11px] text-slate-400">${dailyXP} of ${DAILY_GOAL_XP} XP today</p>
                 </div>
