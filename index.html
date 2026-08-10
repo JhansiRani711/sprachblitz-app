@@ -1035,7 +1035,7 @@
     ];
 
     // Global Core Architecture Reactivity State Cache Layout Engine Variables
-    const APP_BUILD = 'v16';
+    const APP_BUILD = 'v19';
     // Which level the room screen is showing. Progress is stored per lesson,
     // so switching levels never loses anything.
     let activeLevel = localStorage.getItem('sb_level') || 'A1';
@@ -1255,11 +1255,11 @@
       return all.length - 1;
     }
     function markLessonDone(id) {
-      const wasComplete = roomObjects.filter(o => objProgress(o).frac === 1).length;
+      const wasComplete = allSceneObjects().filter(o => objProgress(o).frac === 1).length;
       lessonProgress[id] = true;
       localStorage.setItem('sb_lesson_progress', JSON.stringify(lessonProgress));
       // finishing the last lesson of a corner is worth a bonus
-      const nowComplete = roomObjects.filter(o => objProgress(o).frac === 1).length;
+      const nowComplete = allSceneObjects().filter(o => objProgress(o).frac === 1).length;
       if (nowComplete > wasComplete) rewardXP(25);
     }
 
@@ -1759,27 +1759,28 @@
 
     let speechPrimed = false;
     let speechEverStarted = false;
+    let speechFinished = false;
     let speechHintShown = false;
 
-    // Called synchronously from the first tap anywhere in the app.
-    function primeSpeech() {
-      if (speechPrimed || !('speechSynthesis' in window)) return;
-      try {
-        const u = new SpeechSynthesisUtterance(' ');
-        u.volume = 0;
-        u.lang = 'de-DE';
-        window.speechSynthesis.speak(u);
-        speechPrimed = true;
-      } catch (e) { /* nothing useful to do */ }
-    }
+    // Deliberately a no-op. A silent priming utterance leaves the synth busy,
+    // which forced the next real call down a deferred path that iOS blocks.
+    // Every speak() in this app already runs inside a click handler.
+    function primeSpeech() { speechPrimed = true; }
 
     function showSilentSwitchHint() {
-      if (speechHintShown || !isAppleMobile) return;
+      if (speechHintShown || speechEverStarted || !isAppleMobile) return;
       speechHintShown = true;
       const el = document.createElement('div');
-      el.innerHTML = '\ud83d\udd07 <b>No sound?</b> On iPhone and iPad, flip the ringer switch on '
-        + '(or open Control Centre and unmute), and turn the volume up. '
-        + 'German voices: Settings \u2192 Accessibility \u2192 Spoken Content \u2192 Voices \u2192 Deutsch.';
+      let vcount = 0, hasDe = false;
+      try {
+        const vs = window.speechSynthesis.getVoices() || [];
+        vcount = vs.length;
+        hasDe = vs.some(v => v.lang && v.lang.toLowerCase().startsWith('de'));
+      } catch (e) {}
+      el.innerHTML = '\ud83d\udd07 <b>No sound?</b> Check the ringer switch is ON and turn the volume up '
+        + 'while the page is speaking.<br><br>German voice: Settings \u2192 Accessibility \u2192 Spoken Content '
+        + '\u2192 Voices \u2192 Deutsch.<br><br><span style="opacity:.7">Voices found: ' + vcount
+        + ' \u00b7 German available: ' + (hasDe ? 'yes' : 'no') + '</span>';
       el.style.cssText = 'position:fixed;left:12px;right:12px;bottom:84px;z-index:9997;background:#1e293b;'
         + 'color:#e2e8f0;font-size:12px;line-height:1.5;padding:12px 14px;border-radius:14px;'
         + 'box-shadow:0 8px 24px rgba(0,0,0,.45);border:1px solid #334155';
@@ -1805,20 +1806,30 @@
         const voices = synth.getVoices();
         const de = voices.find(v => v.lang === 'de-DE') || voices.find(v => v.lang && v.lang.startsWith('de'));
         if (de) u.voice = de;
-        u.onstart = () => { speechEverStarted = true; };
+        u.onstart = () => { speechEverStarted = true; speechFinished = false; };
+        u.onend   = () => { speechEverStarted = true; speechFinished = true; };
         u.onerror = (e) => {
-          if (e && e.error === 'interrupted') return;
+          if (e && e.error === 'interrupted' || e && e.error === 'canceled') return;
           showSilentSwitchHint();
         };
         synth.speak(u);
-        // If nothing has ever started playing, the ringer switch is the usual cause
-        setTimeout(() => { if (!speechEverStarted) showSilentSwitchHint(); }, 1200);
+        // Only warn when the engine truly never engaged. iOS can take well over
+        // a second to start the first utterance, and synth.speaking stays true
+        // while it is working, so both are checked before showing anything.
+        setTimeout(() => {
+          const busy = synth.speaking || synth.pending;
+          if (!speechEverStarted && !busy) showSilentSwitchHint();
+        }, 2600);
       };
 
-      // cancel() then speak() in the same tick loses the utterance in WebKit
-      if (synth.speaking || synth.pending) {
+      if (isAppleMobile) {
+        // Must stay inside the user gesture - no timers allowed here
+        try { if (synth.speaking || synth.pending) synth.cancel(); } catch (e) {}
+        fire();
+      } else if (synth.speaking || synth.pending) {
+        // Desktop WebKit loses an utterance if cancel() and speak() share a tick
         synth.cancel();
-        setTimeout(fire, isAppleMobile ? 120 : 40);
+        setTimeout(fire, 40);
       } else {
         fire();
       }
@@ -1962,7 +1973,7 @@
       if (xpNode) xpNode.innerText = totalXPAmount;
       if (stNode) stNode.innerText = savedStreakCount;
       if (!note) return;
-      const learned = roomObjects.filter(o => objProgress(o).frac === 1).length;
+      const learned = allSceneObjects().filter(o => objProgress(o).frac === 1).length;
       // A number that only ever goes up - no streak to break, no guilt.
       const days = daysLearned > 0 ? daysLearned + (daysLearned === 1 ? ' Tag gelernt \u00b7 ' : ' Tage gelernt \u00b7 ') : '';
       note.innerText = days + APP_BUILD;
@@ -2526,6 +2537,7 @@
 
     // Whichever level is showing, these helpers return its places.
     function sceneObjects() { return activeLevel === 'A2' ? streetObjects : roomObjects; }
+    function allSceneObjects() { return roomObjects.concat(streetObjects); }
     function objectById(id) { return sceneObjects().find(o => o.id === id) || roomObjects.concat(streetObjects).find(o => o.id === id); }
 
     const roomObjects = [
@@ -2572,7 +2584,7 @@
       return { done, total: obj.lessons.length, frac: obj.lessons.length ? done / obj.lessons.length : 0 };
     }
     function suggestedObjectId() {
-      for (const o of roomObjects) { if (objProgress(o).frac < 1) return o.id; }
+      for (const o of sceneObjects()) { if (objProgress(o).frac < 1) return o.id; }
       return null;
     }
 
@@ -2670,7 +2682,7 @@
 
     function bearGreeting() {
       const pal = roomPalettes[timeOfDay()];
-      const learned = roomObjects.filter(o => objProgress(o).frac === 1).length;
+      const learned = sceneObjects().filter(o => objProgress(o).frac === 1).length;
       if (learned === 0) return "Hallo!";
       if (learned < 3)   return pal.label + "!";
       if (learned < 6)   return pal.label + "! Wie geht's?";
@@ -2744,7 +2756,7 @@
     function toggleJournal() { journalOpen = !journalOpen; renderActiveTabModule(); }
 
     function journalUnlockedCount() {
-      const learned = roomObjects.filter(o => objProgress(o).frac === 1).length;
+      const learned = sceneObjects().filter(o => objProgress(o).frac === 1).length;
       return journalEntries.filter(e => e.need <= learned).length;
     }
 
@@ -2833,14 +2845,15 @@
     }
 
     function renderBearRoom(conf) {
-      const O = {}; roomObjects.forEach(o => O[o.id] = o);
+      const SCENE = sceneObjects();
+      const O = {}; SCENE.forEach(o => O[o.id] = o);
       const pal = roomPalettes[timeOfDay()];
       const wotd = wordOfTheDay();
       const season = seasonNow();
       const sp = seasonProfiles[season];
       const moment = momentOfTheDay();
       const showMoment = !momentSeenToday();
-      const totalDone = roomObjects.filter(o => objProgress(o).frac === 1).length;
+      const totalDone = SCENE.filter(o => objProgress(o).frac === 1).length;
       const suggest = suggestedObjectId();
 
       // Outlines first: an unlearned object is a clear line drawing, not a ghost.
@@ -2862,7 +2875,12 @@
       };
       // A small tap button sits on every item so nothing has to be hunted for.
       // Amber = not started, half-ring = in progress, green tick = finished.
-      const PIN = {
+      const PIN_STREET = {
+        station:[112,150], shop:[268,196], cafe:[404,196], office:[540,150],
+        flat:[676,132], clinic:[806,196], work:[196,300], school:[458,300],
+        bench:[628,404], park:[812,330]
+      };
+      const PIN = activeLevel === 'A2' ? PIN_STREET : {
         fridge:[104,188], cupboard:[252,180], stove:[254,262], ktable:[200,382],
         door:[646,134], calendar:[750,88], mirror:[842,96], coatrack:[302,132],
         shelf:[430,198], desk:[500,278], window:[500,72], rug:[592,424],
@@ -2883,7 +2901,7 @@
         </g>`;
       };
 
-      const pins = () => roomObjects.map(o => {
+      const pins = () => SCENE.map(o => {
         const c = PIN[o.id]; if (!c) return '';
         const p = objProgress(o);
         const done = p.frac === 1;
@@ -2914,7 +2932,86 @@
                    onclick="toggleRoomObject('${id}')" role="button" tabindex="0" aria-label="${o.en}">${inner}${label}</g>`;
       };
 
-      const svg = `
+      // ============ A2: Bruno's street ============
+      const streetSvg = () => {
+        const b = brunoInRoom();
+        const building = (id, x, w, h, colour, roof) => {
+          const y = 340 - h;
+          const f = objProgress(O[id]).frac;
+          const body = f === 1 ? colour : 'none';
+          const line = f === 1 ? 'none' : INK;
+          const lw = f === 1 ? 0 : 2.4;
+          let win = '';
+          for (let r = 0; r < Math.floor(h / 60); r++) {
+            for (let c = 0; c < Math.floor(w / 46); c++) {
+              win += `<rect x="${x + 14 + c * 46}" y="${y + 20 + r * 60}" width="26" height="30" rx="4"
+                        fill="${f === 1 ? (pal.lampOn ? '#fde68a' : '#cfe3ee') : 'none'}"
+                        stroke="${f === 1 ? 'rgba(0,0,0,.15)' : INK}" stroke-width="2"/>`;
+            }
+          }
+          return `<g>
+            <rect x="${x}" y="${y}" width="${w}" height="${h}" rx="6" fill="${body}" stroke="${line}" stroke-width="${lw}"/>
+            <path d="M${x - 8} ${y} L${x + w / 2} ${y - 26} L${x + w + 8} ${y} Z" fill="${f === 1 ? roof : 'none'}" stroke="${line || INK}" stroke-width="2.4"/>
+            ${win}
+            <rect x="${x + w / 2 - 16}" y="${340 - 44}" width="32" height="44" rx="4"
+                  fill="${f === 1 ? roof : 'none'}" stroke="${line || INK}" stroke-width="2.2"/>
+          </g>`;
+        };
+        const treeAt = (x) => `<g><rect x="${x - 4}" y="352" width="9" height="26" fill="${sp.tree}" opacity=".8"/>
+          <circle cx="${x}" cy="344" r="20" fill="${sp.tree}"/></g>`;
+        return `
+        <svg viewBox="0 0 900 480" width="100%" style="display:block" xmlns="http://www.w3.org/2000/svg">
+          <rect x="0" y="0" width="900" height="480" fill="${pal.sky}"/>
+          <ellipse cx="740" cy="120" rx="26" ry="26" fill="${pal.sun}"/>
+          <rect x="0" y="340" width="900" height="140" fill="${pal.floor}"/>
+          <rect x="0" y="336" width="900" height="8" fill="${pal.wallDark}"/>
+          <rect x="0" y="392" width="900" height="6" fill="#ffffff" opacity=".35"/>
+
+          <text x="20" y="30" font-family="'Plus Jakarta Sans',sans-serif" font-size="12" font-weight="800" fill="${ZONE}">BRUNOS STRASSE</text>
+
+          ${grp('station', building('station', 40, 150, 180, '#bcd0e0', '#5b7c99'), 115, 372)}
+          ${grp('shop',    building('shop',   208, 118, 132, '#f0c987', '#c07a3e'), 267, 372)}
+          ${grp('cafe',    building('cafe',   344, 118, 132, '#e6b3b8', '#a9515c'), 403, 372)}
+          ${grp('office',  building('office', 480, 118, 180, '#cfd6de', '#6b7684'), 539, 372)}
+          ${grp('flat',    building('flat',   616, 118, 200, '#d8c7ae', '#8a6b4f'), 675, 372)}
+          ${grp('clinic',  building('clinic', 752, 118, 132, '#c8e0d2', '#4d8c6b'), 811, 372)}
+
+          ${grp('work', `
+            <rect x="150" y="252" width="92" height="86" rx="6" fill="${fill('work','#b8c4d6')}" stroke="${st('work').stroke || INK}" stroke-width="2.4"/>
+            <rect x="164" y="268" width="26" height="24" rx="3" fill="${fill('work','#cfe3ee')}" stroke="${st('work').stroke || INK}" stroke-width="2"/>
+            <rect x="202" y="268" width="26" height="24" rx="3" fill="${fill('work','#cfe3ee')}" stroke="${st('work').stroke || INK}" stroke-width="2"/>
+            <rect x="182" y="306" width="28" height="32" rx="3" fill="${fill('work','#6b7684')}" stroke="${st('work').stroke || INK}" stroke-width="2"/>`, 196, 372)}
+
+          ${grp('school', `
+            <rect x="412" y="252" width="92" height="86" rx="6" fill="${fill('school','#e8d9a8')}" stroke="${st('school').stroke || INK}" stroke-width="2.4"/>
+            <path d="M404 252 L458 224 L512 252 Z" fill="${fill('school','#b08b3e')}" stroke="${st('school').stroke || INK}" stroke-width="2.4"/>
+            <circle cx="458" cy="282" r="13" fill="${fill('school','#ffffff')}" stroke="${st('school').stroke || INK}" stroke-width="2"/>
+            <line x1="458" y1="282" x2="458" y2="274" stroke="${st('school').f===1?'#334155':INK}" stroke-width="2"/>
+            <rect x="444" y="308" width="28" height="30" rx="3" fill="${fill('school','#b08b3e')}" stroke="${st('school').stroke || INK}" stroke-width="2"/>`, 458, 372)}
+
+          ${grp('bench', `
+            <rect x="576" y="410" width="104" height="9" rx="4" fill="${fill('bench','#a06f42')}" stroke="${st('bench').stroke || INK}" stroke-width="2.2"/>
+            <rect x="576" y="392" width="104" height="8" rx="4" fill="${fill('bench','#a06f42')}" stroke="${st('bench').stroke || INK}" stroke-width="2.2"/>
+            <rect x="586" y="419" width="8" height="22" fill="${fill('bench','#7a5638')}" stroke="${st('bench').stroke || INK}" stroke-width="1.8"/>
+            <rect x="662" y="419" width="8" height="22" fill="${fill('bench','#7a5638')}" stroke="${st('bench').stroke || INK}" stroke-width="1.8"/>`, 628, 462)}
+
+          ${grp('park', `
+            <ellipse cx="812" cy="404" rx="76" ry="30" fill="${fill('park', sp.hill)}" stroke="${st('park').stroke || INK}" stroke-width="2.4"/>
+            ${st('park').f === 1 ? treeAt(786) + treeAt(834) : `
+              <path d="M786 396 v-22 M774 380 a12 12 0 0 1 24 0" fill="none" stroke="${INK}" stroke-width="2.4"/>
+              <path d="M834 396 v-22 M822 380 a12 12 0 0 1 24 0" fill="none" stroke="${INK}" stroke-width="2.4"/>`}`, 812, 452)}
+
+          <image href="./bears/${b.pose}.png" x="404" y="352" height="104" pointer-events="none"/>
+          <ellipse cx="448" cy="460" rx="44" ry="9" fill="#000000" opacity=".14" pointer-events="none"/>
+
+          ${pins()}
+          <rect x="0" y="0" width="900" height="480" fill="${sp.tint}" opacity="${sp.tintA}" pointer-events="none"/>
+          ${seasonParticles(sp)}
+        </svg>`;
+      };
+
+      // built lazily so the inactive scene never looks up objects it does not have
+      const roomSvg = () => `
         <svg viewBox="0 0 900 480" width="100%" style="display:block" xmlns="http://www.w3.org/2000/svg">
           <defs>
             <clipPath id="winclip"><rect x="356" y="60" width="150" height="112" rx="6"/></clipPath>
@@ -3071,6 +3168,8 @@
           ${seasonParticles(sp)}
         </svg>`;
 
+      const svg = activeLevel === 'A2' ? streetSvg() : roomSvg();
+
       let sheet = '';
       if (openRoomObject && O[openRoomObject]) {
         const o = O[openRoomObject];
@@ -3182,7 +3281,7 @@
             <img src="./bears/${roomBearPose()}.png" alt="Bruno" class="h-14 w-auto shrink-0" onerror="this.style.display='none'">
             <div class="flex-1 min-w-0">
               <p class="text-base font-black text-white truncate" translate="no" lang="de">${bearGreeting()}</p>
-              <p class="text-[11px] font-bold text-slate-400">${totalDone} of ${roomObjects.length} corners brought to life${daysLearned > 0 ? ' \u00b7 <span translate="no" lang="de">' + daysLearned + ' Tage gelernt</span>' : ''}</p>
+              <p class="text-[11px] font-bold text-slate-400">${totalDone} of ${SCENE.length} corners brought to life${daysLearned > 0 ? ' \u00b7 <span translate="no" lang="de">' + daysLearned + ' Tage gelernt</span>' : ''}</p>
             </div>
             <button onclick="toggleJournal()" class="btn3d shrink-0 px-3 py-2 rounded-2xl text-center" style="background:#3f3a5c">
               <span class="text-base leading-none block">\ud83d\udcd3</span>
@@ -3202,6 +3301,26 @@
                 </div>
               </div>
             </div>` : ''}
+
+          <div class="grid grid-cols-2 gap-2">
+            ${['A1','A2'].map(lv => {
+              const pr = levelProgress(lv);
+              const on = activeLevel === lv;
+              const locked = lv === 'A2' && !a1Complete() && pr.done === 0;
+              return `<button onclick="setLevel('${lv}')" class="btn3d p-3 rounded-2xl text-left"
+                        style="background:${on ? '#4f46e5' : '#1e293b'}">
+                <div class="flex items-center justify-between gap-2">
+                  <span class="text-sm font-black text-white">${lv}</span>
+                  <span class="text-[10px] font-black" style="color:${on ? '#c7d2fe' : '#64748b'}">${pr.done}/${pr.total}</span>
+                </div>
+                <p class="text-[10px] font-bold" style="color:${on ? '#c7d2fe' : '#64748b'}">
+                  ${lv === 'A1' ? "Bruno's room" : 'The street outside'}</p>
+                <div class="h-1.5 rounded-full mt-1.5 overflow-hidden" style="background:rgba(148,163,184,.25)">
+                  <div class="h-full rounded-full" style="width:${Math.round(pr.frac*100)}%; background:${on ? '#ffffff' : '#4f46e5'}"></div>
+                </div>
+              </button>`;
+            }).join('')}
+          </div>
 
           <div class="relative rounded-3xl overflow-hidden" style="box-shadow:0 6px 0 rgba(0,0,0,.35)">
             ${svg}
@@ -4017,8 +4136,7 @@
     }
 
     // The first tap anywhere unlocks speech for the rest of the session on iOS
-    document.addEventListener('touchend', primeSpeech, { once: true, passive: true });
-    document.addEventListener('click', primeSpeech, { once: true });
+    // (speech no longer needs priming - see primeSpeech)
 
     // Preload speech synthesis voices so German audio is ready on first play
     if ('speechSynthesis' in window) {
