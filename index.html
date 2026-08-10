@@ -2148,19 +2148,21 @@
         const o = O[openRoomObject];
         const pr = objProgress(o);
         sheet = `
-          <div class="fixed inset-0 z-40 flex items-end justify-center" style="background:rgba(2,6,23,.65)" onclick="toggleRoomObject('${o.id}')">
-            <div class="w-full max-w-md md:max-w-2xl rounded-t-3xl p-5 space-y-3" style="background:#111827" onclick="event.stopPropagation()">
+          <div class="fixed inset-0 z-[60] flex items-end justify-center" style="background:rgba(2,6,23,.65)" onclick="toggleRoomObject('${o.id}')">
+            <div class="w-full max-w-md md:max-w-2xl rounded-t-3xl p-5 space-y-3 max-h-[88vh] overflow-y-auto"
+                 style="background:#111827; padding-bottom:calc(1.25rem + env(safe-area-inset-bottom))" onclick="event.stopPropagation()">
               <div class="flex items-start gap-3">
                 <div class="flex-1 min-w-0">
                   <p class="text-lg font-black text-white">${o.de}</p>
                   <p class="text-[11px] font-bold text-slate-400">${o.blurb}</p>
+                  <p class="text-[10px] font-black text-amber-400 mt-0.5">${pr.done} of ${pr.total} finished</p>
                 </div>
                 <button onclick="toggleRoomObject('${o.id}')" class="text-slate-500 text-xl font-black leading-none">\u2715</button>
               </div>
               <div class="h-2 rounded-full overflow-hidden" style="background:#1f2937">
                 <div class="h-full rounded-full" style="width:${Math.round(pr.frac*100)}%; background:#f59e0b"></div>
               </div>
-              <div class="space-y-2 max-h-[46vh] overflow-y-auto pt-1">
+              <div class="space-y-2 pt-1">
                 ${o.lessons.map(id => {
                   const les = lessonById(id);
                   if (!les) return '';
@@ -2180,8 +2182,9 @@
       if (journalOpen) {
         const unlocked = journalUnlockedCount();
         journalSheet = `
-          <div class="fixed inset-0 z-40 flex items-end justify-center" style="background:rgba(2,6,23,.65)" onclick="toggleJournal()">
-            <div class="w-full max-w-md md:max-w-2xl rounded-t-3xl p-5 space-y-3" style="background:#111827" onclick="event.stopPropagation()">
+          <div class="fixed inset-0 z-[60] flex items-end justify-center" style="background:rgba(2,6,23,.65)" onclick="toggleJournal()">
+            <div class="w-full max-w-md md:max-w-2xl rounded-t-3xl p-5 space-y-3 max-h-[88vh] overflow-y-auto"
+                 style="background:#111827; padding-bottom:calc(1.25rem + env(safe-area-inset-bottom))" onclick="event.stopPropagation()">
               <div class="flex items-start gap-3">
                 <img src="./bears/bear-sit.png" alt="" class="h-14 w-auto shrink-0" onerror="this.style.display='none'">
                 <div class="flex-1 min-w-0">
