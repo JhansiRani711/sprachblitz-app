@@ -629,6 +629,221 @@
       ]
     };
 
+
+    // ===================== A2 VOCABULARY =====================
+    // Twelve topics following the Goethe-Zertifikat A2 curriculum. A1 is life
+    // inside Bruno's room; A2 is the world outside it.
+    const a2VocabularyDatabase = {
+      "Travel (Reisen)": [
+        { id:"a2r1",  german:"Der Bahnhof",     gender:"masculine", english:"Train station", pronunciation:"dayr bahn-hohf",   hint:"Where trains arrive." },
+        { id:"a2r2",  german:"Der Flughafen",   gender:"masculine", english:"Airport",       pronunciation:"dayr floog-hah-fen",hint:"Where planes leave." },
+        { id:"a2r3",  german:"Die Fahrkarte",   gender:"feminine",  english:"Ticket",        pronunciation:"dee fahr-kar-teh", hint:"Buy it before boarding." },
+        { id:"a2r4",  german:"Der Koffer",      gender:"masculine", english:"Suitcase",      pronunciation:"dayr kof-er",      hint:"You pack it." },
+        { id:"a2r5",  german:"Die Reise",       gender:"feminine",  english:"Journey",       pronunciation:"dee ry-zeh",       hint:"Gute Reise!" },
+        { id:"a2r6",  german:"Der Zug",         gender:"masculine", english:"Train",         pronunciation:"dayr tsook",       hint:"Plural: die Zuege." },
+        { id:"a2r7",  german:"Das Gleis",       gender:"neuter",    english:"Platform",      pronunciation:"dahs glys",        hint:"Gleis 4." },
+        { id:"a2r8",  german:"Die Abfahrt",     gender:"feminine",  english:"Departure",     pronunciation:"dee ap-fahrt",     hint:"Opposite of Ankunft." },
+        { id:"a2r9",  german:"Die Ankunft",     gender:"feminine",  english:"Arrival",       pronunciation:"dee an-koonft",    hint:"Opposite of Abfahrt." },
+        { id:"a2r10", german:"Die Unterkunft",  gender:"feminine",  english:"Accommodation", pronunciation:"dee oon-ter-koonft",hint:"Hotel, hostel, flat." },
+        { id:"a2r11", german:"Die Grenze",      gender:"feminine",  english:"Border",        pronunciation:"dee gren-tseh",    hint:"Between countries." },
+        { id:"a2r12", german:"Der Ausweis",     gender:"masculine", english:"ID card",       pronunciation:"dayr ows-vys",     hint:"Show it at the border." },
+        { id:"a2r13", german:"Buchen",          gender:"verb",      english:"to book",       pronunciation:"boo-chen",         hint:"ich buche ein Zimmer" },
+        { id:"a2r14", german:"Umsteigen",       gender:"verb",      english:"to change trains",pronunciation:"oom-shty-gen",   hint:"Separable: ich steige um" },
+        { id:"a2r15", german:"Die Verspaetung", gender:"feminine",  english:"Delay",         pronunciation:"dee fer-shpay-toong",hint:"Der Zug hat Verspaetung." }
+      ],
+      "Shopping (Einkaufen)": [
+        { id:"a2e1",  german:"Das Geschaeft",   gender:"neuter",    english:"Shop",          pronunciation:"dahs geh-sheft",   hint:"Also der Laden." },
+        { id:"a2e2",  german:"Die Kasse",       gender:"feminine",  english:"Checkout",      pronunciation:"dee kas-eh",       hint:"Where you pay." },
+        { id:"a2e3",  german:"Der Preis",       gender:"masculine", english:"Price",         pronunciation:"dayr prys",        hint:"Wie viel kostet das?" },
+        { id:"a2e4",  german:"Das Angebot",     gender:"neuter",    english:"Special offer", pronunciation:"dahs an-geh-boht", hint:"Im Angebot = on sale." },
+        { id:"a2e5",  german:"Der Kunde",       gender:"masculine", english:"Customer",      pronunciation:"dayr koon-deh",    hint:"Feminine: die Kundin." },
+        { id:"a2e6",  german:"Die Quittung",    gender:"feminine",  english:"Receipt",       pronunciation:"dee kvit-oong",    hint:"Keep it to return things." },
+        { id:"a2e7",  german:"Die Groesse",     gender:"feminine",  english:"Size",          pronunciation:"dee gruer-seh",    hint:"Welche Groesse?" },
+        { id:"a2e8",  german:"Umtauschen",      gender:"verb",      english:"to exchange",   pronunciation:"oom-tow-shen",     hint:"Separable: ich tausche um" },
+        { id:"a2e9",  german:"Bezahlen",        gender:"verb",      english:"to pay",        pronunciation:"beh-tsah-len",     hint:"Bar oder mit Karte?" },
+        { id:"a2e10", german:"Der Markt",       gender:"masculine", english:"Market",        pronunciation:"dayr markt",       hint:"Wochenmarkt on Saturdays." },
+        { id:"a2e11", german:"Die Tuete",       gender:"feminine",  english:"Bag",           pronunciation:"dee tue-teh",      hint:"Brauchen Sie eine Tuete?" },
+        { id:"a2e12", german:"Guenstig",        gender:"adjective", english:"Cheap, good value",pronunciation:"guens-tikh",    hint:"Nicer than 'billig'." },
+        { id:"a2e13", german:"Teuer",           gender:"adjective", english:"Expensive",     pronunciation:"toy-er",           hint:"Das ist zu teuer." },
+        { id:"a2e14", german:"Die Abteilung",   gender:"feminine",  english:"Department",    pronunciation:"dee ap-ty-loong",  hint:"In a big shop." },
+        { id:"a2e15", german:"Der Rabatt",      gender:"masculine", english:"Discount",      pronunciation:"dayr ra-bat",      hint:"10 Prozent Rabatt." }
+      ],
+      "Health (Gesundheit)": [
+        { id:"a2g1",  german:"Die Praxis",      gender:"feminine",  english:"Doctor's surgery",pronunciation:"dee prak-sis",   hint:"Where the doctor works." },
+        { id:"a2g2",  german:"Der Termin",      gender:"masculine", english:"Appointment",   pronunciation:"dayr ter-meen",    hint:"Einen Termin machen." },
+        { id:"a2g3",  german:"Die Apotheke",    gender:"feminine",  english:"Pharmacy",      pronunciation:"dee a-po-tay-keh", hint:"Where medicine is sold." },
+        { id:"a2g4",  german:"Das Rezept",      gender:"neuter",    english:"Prescription",  pronunciation:"dahs reh-tsept",   hint:"Also means recipe." },
+        { id:"a2g5",  german:"Die Versicherung",gender:"feminine",  english:"Insurance",     pronunciation:"dee fer-zikh-er-oong",hint:"Krankenversicherung." },
+        { id:"a2g6",  german:"Krank",           gender:"adjective", english:"Ill",           pronunciation:"krank",            hint:"Ich bin krank." },
+        { id:"a2g7",  german:"Gesund",          gender:"adjective", english:"Healthy",       pronunciation:"geh-zoont",        hint:"Opposite of krank." },
+        { id:"a2g8",  german:"Die Schmerzen",   gender:"plural",    english:"Pain",          pronunciation:"dee shmer-tsen",   hint:"Ich habe Schmerzen." },
+        { id:"a2g9",  german:"Sich fuehlen",    gender:"verb",      english:"to feel",       pronunciation:"zikh fue-len",     hint:"Reflexive: ich fuehle mich gut." },
+        { id:"a2g10", german:"Sich erholen",    gender:"verb",      english:"to recover",    pronunciation:"zikh er-hoh-len",  hint:"Reflexive verb." },
+        { id:"a2g11", german:"Die Untersuchung",gender:"feminine",  english:"Examination",   pronunciation:"dee oon-ter-zoo-choong",hint:"At the doctor's." },
+        { id:"a2g12", german:"Die Krankheit",   gender:"feminine",  english:"Illness",       pronunciation:"dee krank-hyt",    hint:"From 'krank'." },
+        { id:"a2g13", german:"Das Krankenhaus", gender:"neuter",    english:"Hospital",      pronunciation:"dahs kran-ken-hows",hint:"Also die Klinik." },
+        { id:"a2g14", german:"Die Behandlung",  gender:"feminine",  english:"Treatment",     pronunciation:"dee beh-hand-loong",hint:"What the doctor gives." },
+        { id:"a2g15", german:"Sich ausruhen",   gender:"verb",      english:"to rest",       pronunciation:"zikh ows-roo-en",  hint:"Reflexive and separable." }
+      ],
+      "Work (Arbeit & Beruf)": [
+        { id:"a2a1",  german:"Die Stelle",      gender:"feminine",  english:"Job, position", pronunciation:"dee shtel-eh",     hint:"Eine Stelle suchen." },
+        { id:"a2a2",  german:"Die Bewerbung",   gender:"feminine",  english:"Application",   pronunciation:"dee beh-ver-boong",hint:"You send it for a job." },
+        { id:"a2a3",  german:"Der Lebenslauf",  gender:"masculine", english:"CV",            pronunciation:"dayr lay-bens-lowf",hint:"Literally: life course." },
+        { id:"a2a4",  german:"Das Gehalt",      gender:"neuter",    english:"Salary",        pronunciation:"dahs geh-halt",    hint:"Paid monthly." },
+        { id:"a2a5",  german:"Der Kollege",     gender:"masculine", english:"Colleague",     pronunciation:"dayr ko-lay-geh",  hint:"Feminine: die Kollegin." },
+        { id:"a2a6",  german:"Die Besprechung", gender:"feminine",  english:"Meeting",       pronunciation:"dee beh-shprekh-oong",hint:"At work." },
+        { id:"a2a7",  german:"Die Erfahrung",   gender:"feminine",  english:"Experience",    pronunciation:"dee er-fah-roong", hint:"Berufserfahrung." },
+        { id:"a2a8",  german:"Der Vertrag",     gender:"masculine", english:"Contract",      pronunciation:"dayr fer-trahk",   hint:"You sign it." },
+        { id:"a2a9",  german:"Die Ausbildung",  gender:"feminine",  english:"Training",      pronunciation:"dee ows-bil-doong",hint:"German apprenticeship." },
+        { id:"a2a10", german:"Der Urlaub",      gender:"masculine", english:"Holiday leave", pronunciation:"dayr oor-lowp",    hint:"Time off work." },
+        { id:"a2a11", german:"Die Firma",       gender:"feminine",  english:"Company",       pronunciation:"dee fir-mah",      hint:"Plural: die Firmen." },
+        { id:"a2a12", german:"Verdienen",       gender:"verb",      english:"to earn",       pronunciation:"fer-dee-nen",      hint:"Geld verdienen." },
+        { id:"a2a13", german:"Sich bewerben",   gender:"verb",      english:"to apply",      pronunciation:"zikh beh-ver-ben", hint:"Reflexive: ich bewerbe mich." },
+        { id:"a2a14", german:"Die Kollegin",    gender:"feminine",  english:"Colleague (f)", pronunciation:"dee ko-lay-gin",   hint:"Feminine of Kollege." },
+        { id:"a2a15", german:"Der Chef",        gender:"masculine", english:"Boss",          pronunciation:"dayr shef",        hint:"Feminine: die Chefin." }
+      ],
+      "City & Directions (Stadt & Wege)": [
+        { id:"a2s1",  german:"Die Strasse",     gender:"feminine",  english:"Street",        pronunciation:"dee shtrah-seh",   hint:"Written Strasse or Stra\u00dfe." },
+        { id:"a2s2",  german:"Die Kreuzung",    gender:"feminine",  english:"Crossroads",    pronunciation:"dee kroy-tsoong",  hint:"Where streets meet." },
+        { id:"a2s3",  german:"Die Ampel",       gender:"feminine",  english:"Traffic light", pronunciation:"dee am-pel",       hint:"An der Ampel links." },
+        { id:"a2s4",  german:"Die Haltestelle", gender:"feminine",  english:"Bus stop",      pronunciation:"dee hal-teh-shtel-eh",hint:"Where the bus stops." },
+        { id:"a2s5",  german:"Die Bruecke",     gender:"feminine",  english:"Bridge",        pronunciation:"dee brue-keh",     hint:"Over the river." },
+        { id:"a2s6",  german:"Das Rathaus",     gender:"neuter",    english:"Town hall",     pronunciation:"dahs raht-hows",   hint:"City administration." },
+        { id:"a2s7",  german:"Die Kirche",      gender:"feminine",  english:"Church",        pronunciation:"dee keer-cheh",    hint:"Often in the centre." },
+        { id:"a2s8",  german:"Geradeaus",       gender:"direction", english:"Straight ahead",pronunciation:"geh-rah-deh-ows",  hint:"Gehen Sie geradeaus." },
+        { id:"a2s9",  german:"Links",           gender:"direction", english:"Left",          pronunciation:"links",            hint:"Nach links." },
+        { id:"a2s10", german:"Rechts",          gender:"direction", english:"Right",         pronunciation:"rekhts",           hint:"Nach rechts." },
+        { id:"a2s11", german:"Die Ecke",        gender:"feminine",  english:"Corner",        pronunciation:"dee ek-eh",        hint:"An der Ecke." },
+        { id:"a2s12", german:"Gegenueber",      gender:"preposition",english:"Opposite",     pronunciation:"gay-gen-ue-ber",   hint:"Gegenueber der Post." },
+        { id:"a2s13", german:"Die Richtung",    gender:"feminine",  english:"Direction",     pronunciation:"dee rikh-toong",   hint:"In Richtung Zentrum." },
+        { id:"a2s14", german:"Abbiegen",        gender:"verb",      english:"to turn off",   pronunciation:"ap-bee-gen",       hint:"Separable: biegen Sie ab." },
+        { id:"a2s15", german:"Die Fussgaengerzone",gender:"feminine",english:"Pedestrian zone",pronunciation:"dee foos-geng-er-tsoh-neh",hint:"No cars." }
+      ],
+      "Housing (Wohnen)": [
+        { id:"a2w1",  german:"Die Miete",       gender:"feminine",  english:"Rent",          pronunciation:"dee mee-teh",      hint:"Paid monthly." },
+        { id:"a2w2",  german:"Der Vermieter",   gender:"masculine", english:"Landlord",      pronunciation:"dayr fer-mee-ter", hint:"Feminine: die Vermieterin." },
+        { id:"a2w3",  german:"Der Nachbar",     gender:"masculine", english:"Neighbour",     pronunciation:"dayr nach-bar",    hint:"Next door." },
+        { id:"a2w4",  german:"Der Umzug",       gender:"masculine", english:"House move",    pronunciation:"dayr oom-tsook",   hint:"From umziehen." },
+        { id:"a2w5",  german:"Die Nebenkosten", gender:"plural",    english:"Utility costs", pronunciation:"dee nay-ben-kos-ten",hint:"On top of the rent." },
+        { id:"a2w6",  german:"Der Balkon",      gender:"masculine", english:"Balcony",       pronunciation:"dayr bal-kohn",    hint:"Outside space." },
+        { id:"a2w7",  german:"Der Keller",      gender:"masculine", english:"Cellar",        pronunciation:"dayr kel-er",      hint:"Below the flat." },
+        { id:"a2w8",  german:"Der Aufzug",      gender:"masculine", english:"Lift",          pronunciation:"dayr owf-tsook",   hint:"Also der Fahrstuhl." },
+        { id:"a2w9",  german:"Die Wohnung",     gender:"feminine",  english:"Flat",          pronunciation:"dee voh-noong",    hint:"Apartment." },
+        { id:"a2w10", german:"Moebliert",       gender:"adjective", english:"Furnished",     pronunciation:"muer-bleert",      hint:"With furniture." },
+        { id:"a2w11", german:"Die Heizung",     gender:"feminine",  english:"Heating",       pronunciation:"dee hy-tsoong",    hint:"Important in winter." },
+        { id:"a2w12", german:"Umziehen",        gender:"verb",      english:"to move house", pronunciation:"oom-tsee-en",      hint:"Separable: ich ziehe um." },
+        { id:"a2w13", german:"Der Mieter",      gender:"masculine", english:"Tenant",        pronunciation:"dayr mee-ter",     hint:"Opposite of Vermieter." },
+        { id:"a2w14", german:"Die Kaution",     gender:"feminine",  english:"Deposit",       pronunciation:"dee kow-tsyohn",   hint:"Paid at the start." },
+        { id:"a2w15", german:"Der Hausmeister", gender:"masculine", english:"Caretaker",     pronunciation:"dayr hows-mys-ter",hint:"Fixes things in the building." }
+      ],
+      "Leisure & Media (Freizeit)": [
+        { id:"a2f1",  german:"Die Zeitung",     gender:"feminine",  english:"Newspaper",     pronunciation:"dee tsy-toong",    hint:"Read daily." },
+        { id:"a2f2",  german:"Die Nachrichten", gender:"plural",    english:"The news",      pronunciation:"dee nach-rikh-ten",hint:"On TV at 8pm." },
+        { id:"a2f3",  german:"Die Sendung",     gender:"feminine",  english:"Programme",     pronunciation:"dee zen-doong",    hint:"A TV show." },
+        { id:"a2f4",  german:"Der Verein",      gender:"masculine", english:"Club",          pronunciation:"dayr fer-yn",      hint:"Sportverein." },
+        { id:"a2f5",  german:"Die Ausstellung", gender:"feminine",  english:"Exhibition",    pronunciation:"dee ows-shtel-oong",hint:"At a museum." },
+        { id:"a2f6",  german:"Die Eintrittskarte",gender:"feminine",english:"Entry ticket",  pronunciation:"dee yn-trits-kar-teh",hint:"For a concert." },
+        { id:"a2f7",  german:"Das Konzert",     gender:"neuter",    english:"Concert",       pronunciation:"dahs kon-tsert",   hint:"Live music." },
+        { id:"a2f8",  german:"Die Mannschaft",  gender:"feminine",  english:"Team",          pronunciation:"dee man-shaft",    hint:"In sport." },
+        { id:"a2f9",  german:"Sich treffen",    gender:"verb",      english:"to meet up",    pronunciation:"zikh tref-en",     hint:"Reflexive: wir treffen uns." },
+        { id:"a2f10", german:"Sich interessieren",gender:"verb",    english:"to be interested",pronunciation:"zikh in-ter-es-ee-ren",hint:"sich interessieren fuer + Akk." },
+        { id:"a2f11", german:"Die Freizeit",    gender:"feminine",  english:"Free time",     pronunciation:"dee fry-tsyt",     hint:"After work." },
+        { id:"a2f12", german:"Der Roman",       gender:"masculine", english:"Novel",         pronunciation:"dayr ro-mahn",     hint:"A long book." },
+        { id:"a2f13", german:"Das Hobby",       gender:"neuter",    english:"Hobby",         pronunciation:"dahs hob-ee",      hint:"Plural: die Hobbys." },
+        { id:"a2f14", german:"Wandern",         gender:"verb",      english:"to hike",       pronunciation:"van-dern",         hint:"Popular in Germany." },
+        { id:"a2f15", german:"Der Eintritt",    gender:"masculine", english:"Admission",     pronunciation:"dayr yn-trit",     hint:"Eintritt frei = free entry." }
+      ],
+      "Weather & Environment (Umwelt)": [
+        { id:"a2u1",  german:"Das Wetter",      gender:"neuter",    english:"Weather",       pronunciation:"dahs vet-er",      hint:"Wie ist das Wetter?" },
+        { id:"a2u2",  german:"Die Temperatur",  gender:"feminine",  english:"Temperature",   pronunciation:"dee tem-per-a-toor",hint:"In Grad Celsius." },
+        { id:"a2u3",  german:"Der Regen",       gender:"masculine", english:"Rain",          pronunciation:"dayr ray-gen",     hint:"Es regnet." },
+        { id:"a2u4",  german:"Der Schnee",      gender:"masculine", english:"Snow",          pronunciation:"dayr shnay",       hint:"Es schneit." },
+        { id:"a2u5",  german:"Der Wind",        gender:"masculine", english:"Wind",          pronunciation:"dayr vint",        hint:"Es ist windig." },
+        { id:"a2u6",  german:"Das Gewitter",    gender:"neuter",    english:"Thunderstorm",  pronunciation:"dahs geh-vit-er",  hint:"Thunder and lightning." },
+        { id:"a2u7",  german:"Die Umwelt",      gender:"feminine",  english:"Environment",   pronunciation:"dee oom-velt",     hint:"Umweltschutz." },
+        { id:"a2u8",  german:"Der Muell",       gender:"masculine", english:"Rubbish",       pronunciation:"dayr muel",        hint:"Muell trennen = sort waste." },
+        { id:"a2u9",  german:"Die Luft",        gender:"feminine",  english:"Air",           pronunciation:"dee looft",        hint:"Frische Luft." },
+        { id:"a2u10", german:"Der Klimawandel", gender:"masculine", english:"Climate change",pronunciation:"dayr klee-mah-van-del",hint:"A common A2 topic." },
+        { id:"a2u11", german:"Sparen",          gender:"verb",      english:"to save",       pronunciation:"shpah-ren",        hint:"Energie sparen." },
+        { id:"a2u12", german:"Die Sonne",       gender:"feminine",  english:"Sun",           pronunciation:"dee zon-eh",       hint:"Die Sonne scheint." },
+        { id:"a2u13", german:"Die Wolke",       gender:"feminine",  english:"Cloud",         pronunciation:"dee vol-keh",      hint:"Bewoelkt = cloudy." },
+        { id:"a2u14", german:"Der Nebel",       gender:"masculine", english:"Fog",           pronunciation:"dayr nay-bel",     hint:"Neblig = foggy." },
+        { id:"a2u15", german:"Trennen",         gender:"verb",      english:"to separate",   pronunciation:"tren-en",          hint:"Muell trennen." }
+      ],
+      "Restaurant (Im Restaurant)": [
+        { id:"a2t1",  german:"Die Speisekarte", gender:"feminine",  english:"Menu",          pronunciation:"dee shpy-zeh-kar-teh",hint:"What you order from." },
+        { id:"a2t2",  german:"Die Vorspeise",   gender:"feminine",  english:"Starter",       pronunciation:"dee fohr-shpy-zeh",hint:"Before the main." },
+        { id:"a2t3",  german:"Die Hauptspeise", gender:"feminine",  english:"Main course",   pronunciation:"dee howpt-shpy-zeh",hint:"The main dish." },
+        { id:"a2t4",  german:"Die Nachspeise",  gender:"feminine",  english:"Dessert",       pronunciation:"dee nach-shpy-zeh",hint:"Also der Nachtisch." },
+        { id:"a2t5",  german:"Die Rechnung",    gender:"feminine",  english:"Bill",          pronunciation:"dee rekh-noong",   hint:"Die Rechnung, bitte." },
+        { id:"a2t6",  german:"Das Trinkgeld",   gender:"neuter",    english:"Tip",           pronunciation:"dahs trink-gelt",  hint:"Usually 5 to 10 percent." },
+        { id:"a2t7",  german:"Der Kellner",     gender:"masculine", english:"Waiter",        pronunciation:"dayr kel-ner",     hint:"Feminine: die Kellnerin." },
+        { id:"a2t8",  german:"Reservieren",     gender:"verb",      english:"to reserve",    pronunciation:"reh-zer-vee-ren",  hint:"Einen Tisch reservieren." },
+        { id:"a2t9",  german:"Bestellen",       gender:"verb",      english:"to order",      pronunciation:"beh-shtel-en",     hint:"Ich moechte bestellen." },
+        { id:"a2t10", german:"Empfehlen",       gender:"verb",      english:"to recommend",  pronunciation:"emp-fay-len",      hint:"Was empfehlen Sie?" },
+        { id:"a2t11", german:"Vegetarisch",     gender:"adjective", english:"Vegetarian",    pronunciation:"veh-geh-tah-rish", hint:"Ich esse vegetarisch." },
+        { id:"a2t12", german:"Die Bedienung",   gender:"feminine",  english:"Service",       pronunciation:"dee beh-dee-noong",hint:"Also means the waiter." },
+        { id:"a2t13", german:"Der Tisch",       gender:"masculine", english:"Table",         pronunciation:"dayr tish",        hint:"Ein Tisch fuer zwei." },
+        { id:"a2t14", german:"Lecker",          gender:"adjective", english:"Tasty",         pronunciation:"lek-er",           hint:"Das schmeckt lecker!" },
+        { id:"a2t15", german:"Satt",            gender:"adjective", english:"Full (not hungry)",pronunciation:"zat",           hint:"Ich bin satt." }
+      ],
+      "Appointments & Offices (Termine)": [
+        { id:"a2b1",  german:"Das Amt",         gender:"neuter",    english:"Public office", pronunciation:"dahs amt",         hint:"Buergeramt, Finanzamt." },
+        { id:"a2b2",  german:"Das Formular",    gender:"neuter",    english:"Form",          pronunciation:"dahs for-moo-lahr",hint:"You fill it in." },
+        { id:"a2b3",  german:"Die Anmeldung",   gender:"feminine",  english:"Registration",  pronunciation:"dee an-mel-doong", hint:"Required when you move." },
+        { id:"a2b4",  german:"Der Antrag",      gender:"masculine", english:"Application form",pronunciation:"dayr an-trahk",  hint:"Einen Antrag stellen." },
+        { id:"a2b5",  german:"Die Unterschrift",gender:"feminine",  english:"Signature",     pronunciation:"dee oon-ter-shrift",hint:"Sign here." },
+        { id:"a2b6",  german:"Die Bescheinigung",gender:"feminine", english:"Certificate",   pronunciation:"dee beh-shy-nee-goong",hint:"Official confirmation." },
+        { id:"a2b7",  german:"Ausfuellen",      gender:"verb",      english:"to fill in",    pronunciation:"ows-fue-len",      hint:"Separable: ich fuelle aus." },
+        { id:"a2b8",  german:"Der Termin",      gender:"masculine", english:"Appointment",   pronunciation:"dayr ter-meen",    hint:"Einen Termin vereinbaren." },
+        { id:"a2b9",  german:"Verschieben",     gender:"verb",      english:"to postpone",   pronunciation:"fer-shee-ben",     hint:"Den Termin verschieben." },
+        { id:"a2b10", german:"Absagen",         gender:"verb",      english:"to cancel",     pronunciation:"ap-zah-gen",       hint:"Separable: ich sage ab." },
+        { id:"a2b11", german:"Die Gebuehr",     gender:"feminine",  english:"Fee",           pronunciation:"dee geh-buer",     hint:"What the office charges." },
+        { id:"a2b12", german:"Die Frist",       gender:"feminine",  english:"Deadline",      pronunciation:"dee frist",        hint:"Bis wann?" },
+        { id:"a2b13", german:"Der Schalter",    gender:"masculine", english:"Counter",       pronunciation:"dayr shal-ter",    hint:"Schalter 3." },
+        { id:"a2b14", german:"Die Wartezeit",   gender:"feminine",  english:"Waiting time",  pronunciation:"dee var-teh-tsyt", hint:"How long you wait." },
+        { id:"a2b15", german:"Zustaendig",      gender:"adjective", english:"Responsible for",pronunciation:"tsoo-shten-dikh", hint:"Wer ist zustaendig?" }
+      ],
+      "Feelings & Opinions (Meinungen)": [
+        { id:"a2m1",  german:"Die Meinung",     gender:"feminine",  english:"Opinion",       pronunciation:"dee my-noong",     hint:"Meiner Meinung nach..." },
+        { id:"a2m2",  german:"Der Vorschlag",   gender:"masculine", english:"Suggestion",    pronunciation:"dayr fohr-shlahk", hint:"Einen Vorschlag machen." },
+        { id:"a2m3",  german:"Der Grund",       gender:"masculine", english:"Reason",        pronunciation:"dayr groont",      hint:"Used with weil." },
+        { id:"a2m4",  german:"Einverstanden",   gender:"adjective", english:"In agreement",  pronunciation:"yn-fer-shtan-den", hint:"Ich bin einverstanden." },
+        { id:"a2m5",  german:"Zufrieden",       gender:"adjective", english:"Satisfied",     pronunciation:"tsoo-free-den",    hint:"zufrieden mit + Dativ." },
+        { id:"a2m6",  german:"Enttaeuscht",     gender:"adjective", english:"Disappointed",  pronunciation:"ent-toysht",       hint:"Opposite of zufrieden." },
+        { id:"a2m7",  german:"Aufgeregt",       gender:"adjective", english:"Excited, nervous",pronunciation:"owf-geh-raykt",  hint:"Before an exam." },
+        { id:"a2m8",  german:"Stolz",           gender:"adjective", english:"Proud",         pronunciation:"shtolts",          hint:"stolz auf + Akkusativ." },
+        { id:"a2m9",  german:"Sich freuen",     gender:"verb",      english:"to be glad",    pronunciation:"zikh froy-en",     hint:"sich freuen auf + Akk." },
+        { id:"a2m10", german:"Sich aergern",    gender:"verb",      english:"to be annoyed", pronunciation:"zikh er-gern",     hint:"sich aergern ueber + Akk." },
+        { id:"a2m11", german:"Glauben",         gender:"verb",      english:"to believe",    pronunciation:"glow-ben",         hint:"Ich glaube, dass..." },
+        { id:"a2m12", german:"Finden",          gender:"verb",      english:"to think, find",pronunciation:"fin-den",          hint:"Ich finde das gut." },
+        { id:"a2m13", german:"Vielleicht",      gender:"adverb",    english:"Maybe",         pronunciation:"fee-lykht",        hint:"Softens an opinion." },
+        { id:"a2m14", german:"Wahrscheinlich",  gender:"adverb",    english:"Probably",      pronunciation:"vahr-shyn-likh",   hint:"Stronger than vielleicht." },
+        { id:"a2m15", german:"Der Streit",      gender:"masculine", english:"Argument",      pronunciation:"dayr shtryt",      hint:"Einen Streit haben." }
+      ],
+      "Education (Schule & Lernen)": [
+        { id:"a2l1",  german:"Der Kurs",        gender:"masculine", english:"Course",        pronunciation:"dayr koors",       hint:"Ein Deutschkurs." },
+        { id:"a2l2",  german:"Die Pruefung",    gender:"feminine",  english:"Exam",          pronunciation:"dee prue-foong",   hint:"Eine Pruefung machen." },
+        { id:"a2l3",  german:"Das Zeugnis",     gender:"neuter",    english:"Certificate, report",pronunciation:"dahs tsoyk-nis",hint:"Shows your results." },
+        { id:"a2l4",  german:"Die Note",        gender:"feminine",  english:"Grade",         pronunciation:"dee noh-teh",      hint:"1 is best in Germany." },
+        { id:"a2l5",  german:"Die Universitaet",gender:"feminine",  english:"University",    pronunciation:"dee oo-nee-ver-zee-tayt",hint:"Short: die Uni." },
+        { id:"a2l6",  german:"Das Studium",     gender:"neuter",    english:"Degree studies",pronunciation:"dahs shtoo-dee-oom",hint:"From studieren." },
+        { id:"a2l7",  german:"Die Hausaufgabe", gender:"feminine",  english:"Homework",      pronunciation:"dee hows-owf-gah-beh",hint:"Usually plural." },
+        { id:"a2l8",  german:"Der Unterricht",  gender:"masculine", english:"Lessons",       pronunciation:"dayr oon-ter-rikht",hint:"No plural." },
+        { id:"a2l9",  german:"Bestehen",        gender:"verb",      english:"to pass",       pronunciation:"beh-shtay-en",     hint:"Die Pruefung bestehen." },
+        { id:"a2l10", german:"Wiederholen",     gender:"verb",      english:"to repeat",     pronunciation:"vee-der-hoh-len",  hint:"Not separable here." },
+        { id:"a2l11", german:"Sich vorbereiten",gender:"verb",      english:"to prepare",    pronunciation:"zikh fohr-beh-ry-ten",hint:"sich vorbereiten auf + Akk." },
+        { id:"a2l12", german:"Die Kenntnisse",  gender:"plural",    english:"Knowledge, skills",pronunciation:"dee kent-nis-eh",hint:"Deutschkenntnisse." },
+        { id:"a2l13", german:"Der Fehler",      gender:"masculine", english:"Mistake",       pronunciation:"dayr fay-ler",     hint:"Einen Fehler machen." },
+        { id:"a2l14", german:"Die Aufgabe",     gender:"feminine",  english:"Task",          pronunciation:"dee owf-gah-beh",  hint:"An exercise." },
+        { id:"a2l15", german:"Erklaeren",       gender:"verb",      english:"to explain",    pronunciation:"er-klay-ren",      hint:"Koennen Sie das erklaeren?" }
+      ]
+    };
+
+    // A1 and A2 words live in one lookup so quizzes, the topic picker and the
+    // word of the day all work the same way across both levels.
+    const allVocabularyDatabase = Object.assign({}, a1VocabularyDatabase, a2VocabularyDatabase);
+
     // Refactored Adjective / Conjugation / Article Grammar Database Array
     const a1GrammarDatabase = [
       { id: "g_art", title: "1. Definite & Indefinite Articles", rules: "German specifies noun sets through Masculine (der/ein), Feminine (die/eine), Neuter (das/ein). Plurals carry 'die' but no baseline indefinite article.", example: "Der Mann, eine Frau, das Kind." },
@@ -643,7 +858,19 @@
       { id: "g_perf", title: "10. Present Perfect Past Construction", rules: "Form past statements using auxiliary helpers ('haben' or 'sein' based on motion rules) at position 2, placing a 'Partizip II' particle component at sentence tail.", example: "Ich habe Deutsch gelernt. Wir sind nach Berlin gefahren." },
       { id: "g_habs", title: "11. Past Tense Haben & Sein (Präteritum)", rules: "Simple past framework constants used universally for auxiliary assets. Haben -> hatte. Sein -> war. Conjugates via standardized rules.", example: "Ich hatte ein Haus. Gestern war ich müde." },
       { id: "g_case", title: "12. Akkusativ vs Dativ Case Tracking", rules: "Akkusativ targets direct action receivers (Masculine den/einen). Dativ models indirect benefit targets (dem/der/dem/den).", example: "Ich gebe dem Mann (Dativ indirect object) den Ball (Akkusativ direct item asset)." },
-      { id: "g_mail", title: "13. Formal Email Writing Blueprints", rules: "Structured communications require strict CEFR protocols: Greeting ('Sehr geehrte Damen und Herren,'), body block content, and formal signoff lines ('Mit freundlichen Grüßen').", example: "Sehr geehrte Frau Müller, ... Mit freundlichen Grüßen, Jhansi." }
+      { id: "g_mail", title: "13. Formal Email Writing Blueprints", rules: "Structured communications require strict CEFR protocols: Greeting ('Sehr geehrte Damen und Herren,'), body block content, and formal signoff lines ('Mit freundlichen Grüßen').", example: "Sehr geehrte Frau Müller, ... Mit freundlichen Grüßen, Jhansi." },
+      { id: "a2_weil", title: "A2.1 Nebensatz mit 'weil'", rules: "'weil' gives a reason and pushes the conjugated verb to the very end of its clause.", example: "Ich bleibe zu Hause, weil ich krank bin." },
+      { id: "a2_dass", title: "A2.2 Nebensatz mit 'dass'", rules: "'dass' reports a thought or statement. As with 'weil', the verb moves to the end.", example: "Ich glaube, dass er heute kommt." },
+      { id: "a2_wenn", title: "A2.3 Nebensatz mit 'wenn'", rules: "'wenn' means 'if' or 'whenever'. Verb last. If the wenn-clause comes first, the main clause starts with its verb.", example: "Wenn es regnet, bleibe ich zu Hause." },
+      { id: "a2_praet", title: "A2.4 Perfekt oder Praeteritum", rules: "Spoken German uses the Perfekt for the past. Written German, and the verbs sein, haben and the modals, prefer the Praeteritum.", example: "Gestern war ich muede. Ich habe lange geschlafen." },
+      { id: "a2_wechsel", title: "A2.5 Wechselpraepositionen", rules: "in, an, auf, ueber, unter, vor, hinter, neben, zwischen take the Akkusativ for movement (wohin?) and the Dativ for position (wo?).", example: "Ich gehe in die Kueche. Ich bin in der Kueche." },
+      { id: "a2_reflex", title: "A2.6 Reflexive Verben", rules: "Reflexive verbs carry a pronoun that points back at the subject: mich, dich, sich, uns, euch, sich.", example: "Ich freue mich. Wir treffen uns um acht." },
+      { id: "a2_adj", title: "A2.7 Adjektivendungen", rules: "After a definite article the adjective takes -e in the nominative singular and -en almost everywhere else.", example: "der grosse Mann, die kleine Frau, das alte Haus, den grossen Mann" },
+      { id: "a2_komp", title: "A2.8 Komparativ vor dem Nomen", rules: "A comparative before a noun still needs its adjective ending on top of the -er.", example: "Ich suche eine groessere Wohnung. Das ist der bessere Weg." },
+      { id: "a2_konj", title: "A2.9 Konjunktiv II: hoefliche Bitten", rules: "wuerde, koennte, haette and waere make requests polite and express wishes.", example: "Koennten Sie mir bitte helfen? Ich haette gern einen Kaffee." },
+      { id: "a2_passiv", title: "A2.10 Passiv Praesens", rules: "The passive is formed with 'werden' plus the Partizip II. It puts the action, not the doer, in focus.", example: "Das Formular wird hier ausgefuellt. Die Tuer wird geschlossen." },
+      { id: "a2_genitiv", title: "A2.11 Genitiv", rules: "The Genitiv shows possession: des/eines + -s for masculine and neuter, der/einer for feminine and plural.", example: "das Auto des Mannes, die Farbe der Tuer" },
+      { id: "a2_verbprep", title: "A2.12 Verben mit Praeposition", rules: "Many verbs are locked to one preposition and one case, and have to be learned as a pair.", example: "warten auf + Akk, sich freuen auf + Akk, helfen bei + Dat" }
     ];
 
     // Comprehensive A1 Skills Laboratory Array Matrix
@@ -808,7 +1035,28 @@
     ];
 
     // Global Core Architecture Reactivity State Cache Layout Engine Variables
-    const APP_BUILD = 'v14';
+    const APP_BUILD = 'v16';
+    // Which level the room screen is showing. Progress is stored per lesson,
+    // so switching levels never loses anything.
+    let activeLevel = localStorage.getItem('sb_level') || 'A1';
+    function setLevel(lv) {
+      activeLevel = lv;
+      localStorage.setItem('sb_level', lv);
+      openRoomObject = null;
+      renderActiveTabModule();
+    }
+    function unitsForLevel(lv) { return curriculumUnits.filter(u => (u.level || 'A1') === lv); }
+    function levelLessonIds(lv) {
+      const out = [];
+      unitsForLevel(lv).forEach(u => u.lessons.forEach(l => out.push(l.id)));
+      return out;
+    }
+    function levelProgress(lv) {
+      const ids = levelLessonIds(lv);
+      const done = ids.filter(id => isLessonDone(id)).length;
+      return { done, total: ids.length, frac: ids.length ? done / ids.length : 0 };
+    }
+    function a1Complete() { return levelProgress('A1').frac === 1; }
 
     // Days you have actually studied. Only ever goes up - no streak to break.
     let daysLearned = parseInt(localStorage.getItem('sb_days_learned'), 10) || 0;
@@ -841,14 +1089,14 @@
 
     // ===== Curriculum: 7 units, each a list of lessons =====
     const curriculumUnits = [
-      { title: "First words", subtitle: "Sagen Sie Hallo", colour: "#4f46e5", dark: "#3730a3",
+      { title: "First words", subtitle: "Sagen Sie Hallo", colour: "#4f46e5", dark: "#3730a3", level: "A1",
         lessons: [
           { id:"u1l1", icon:"\ud83d\udd24", label:"Alphabet", type:"vocab", cat:"Alphabet (Alphabet)" },
           { id:"u1l2", icon:"\ud83d\udde3\ufe0f", label:"Umlauts", type:"vocab", cat:"Umlauts & Sound Rules" },
           { id:"u1l3", icon:"\ud83d\udc4b", label:"Greetings", type:"vocab", cat:"Greetings (Begr\u00fc\u00dfung)" },
           { id:"gr_g_pron", icon:"\ud83d\udcd0", label:"Pronouns", type:"grammar", gid:"g_pron", idx:1 }
         ] },
-      { title: "Der, die, das", subtitle: "Artikel meistern", colour: "#db2777", dark: "#9d174d",
+      { title: "Der, die, das", subtitle: "Artikel meistern", colour: "#db2777", dark: "#9d174d", level: "A1",
         lessons: [
           { id:"u2l1", icon:"\ud83d\udc6a", label:"Family", type:"vocab", cat:"Family (Die Familie)" },
           { id:"u2l2", icon:"\ud83d\ude4b", label:"Body parts", type:"vocab", cat:"Body Parts (K\u00f6rperteile)" },
@@ -856,7 +1104,7 @@
           { id:"gr_g_art", icon:"\ud83d\udcd0", label:"Articles", type:"grammar", gid:"g_art", idx:0 },
           { id:"gr_g_case", icon:"\ud83d\udcd0", label:"Akkusativ & Dativ", type:"grammar", gid:"g_case", idx:11 }
         ] },
-      { title: "Numbers and time", subtitle: "Zahlen und Zeit", colour: "#0891b2", dark: "#155e75",
+      { title: "Numbers and time", subtitle: "Zahlen und Zeit", colour: "#0891b2", dark: "#155e75", level: "A1",
         lessons: [
           { id:"u3l1", icon:"\ud83d\udd22", label:"Numbers", type:"vocab", cat:"Numbers (Zahlen)" },
           { id:"u3l2", icon:"\ud83d\udcc5", label:"Days", type:"vocab", cat:"Days (Tage)" },
@@ -865,7 +1113,7 @@
           { id:"gr_g_sein", icon:"\ud83d\udcd0", label:"Sein (to be)", type:"grammar", gid:"g_sein", idx:2 },
           { id:"gr_g_habs", icon:"\ud83d\udcd0", label:"War & hatte", type:"grammar", gid:"g_habs", idx:10 }
         ] },
-      { title: "About you", subtitle: "\u00dcber dich", colour: "#7c3aed", dark: "#5b21b6",
+      { title: "About you", subtitle: "\u00dcber dich", colour: "#7c3aed", dark: "#5b21b6", level: "A1",
         lessons: [
           { id:"u4l1", icon:"\ud83e\uddd1", label:"Introductions", type:"vocab", cat:"Introductions (Vorstellung)" },
           { id:"u4l2", icon:"\ud83d\udc77", label:"Jobs", type:"vocab", cat:"Occupation (Berufe)" },
@@ -873,7 +1121,7 @@
           { id:"gr_g_conj", icon:"\ud83d\udcd0", label:"Verb endings", type:"grammar", gid:"g_conj", idx:3 },
           { id:"gr_g_poss", icon:"\ud83d\udcd0", label:"Mein & dein", type:"grammar", gid:"g_poss", idx:4 }
         ] },
-      { title: "Your world", subtitle: "Deine Welt", colour: "#ea580c", dark: "#9a3412",
+      { title: "Your world", subtitle: "Deine Welt", colour: "#ea580c", dark: "#9a3412", level: "A1",
         lessons: [
           { id:"u5l1", icon:"\ud83c\udfa8", label:"Colours", type:"vocab", cat:"Colours (Farben)" },
           { id:"u5l2", icon:"\ud83d\udc55", label:"Clothes", type:"vocab", cat:"Clothes (Kleidung)" },
@@ -882,7 +1130,7 @@
           { id:"gr_g_mod", icon:"\ud83d\udcd0", label:"Modal verbs", type:"grammar", gid:"g_mod", idx:5 },
           { id:"gr_g_comp", icon:"\ud83d\udcd0", label:"Comparison", type:"grammar", gid:"g_comp", idx:8 }
         ] },
-      { title: "Everyday life", subtitle: "Der Alltag", colour: "#059669", dark: "#065f46",
+      { title: "Everyday life", subtitle: "Der Alltag", colour: "#059669", dark: "#065f46", level: "A1",
         lessons: [
           { id:"u6l1", icon:"\u2600\ufe0f", label:"Daily routine", type:"vocab", cat:"Daily Routine (Tagesablauf)" },
           { id:"u6l2", icon:"\u26bd", label:"Hobbies", type:"vocab", cat:"Hobbies (Hobbys)" },
@@ -892,18 +1140,61 @@
           { id:"gr_g_imp", icon:"\ud83d\udcd0", label:"Commands", type:"grammar", gid:"g_imp", idx:7 },
           { id:"gr_g_perf", icon:"\ud83d\udcd0", label:"Perfekt", type:"grammar", gid:"g_perf", idx:9 }
         ] },
-      { title: "In the kitchen", subtitle: "In der K\u00fcche", colour: "#c2410c", dark: "#7c2d12",
+      { title: "In the kitchen", subtitle: "In der K\u00fcche", colour: "#c2410c", dark: "#7c2d12", level: "A1",
         lessons: [
           { id:"u8l1", icon:"\ud83c\udf5e", label:"Food", type:"vocab", cat:"Food (Essen)" },
           { id:"u8l2", icon:"\u2615", label:"Drinks", type:"vocab", cat:"Drinks (Getr\u00e4nke)" }
         ] },
-      { title: "Exam", subtitle: "Die Pr\u00fcfung", colour: "#b45309", dark: "#78350f",
+      { title: "Exam", subtitle: "Die Pr\u00fcfung", colour: "#b45309", dark: "#78350f", level: "A1",
         lessons: [
           { id:"u7l1", icon:"\ud83c\udfa7", label:"H\u00f6ren", type:"skill", skill:"listening" },
           { id:"u7l2", icon:"\ud83d\udcd6", label:"Lesen", type:"skill", skill:"reading" },
           { id:"u7l3", icon:"\u270d\ufe0f", label:"Schreiben", type:"skill", skill:"writing" },
           { id:"gr_g_mail", icon:"\ud83d\udcd0", label:"Formal email", type:"grammar", gid:"g_mail", idx:12 },
           { id:"u7l4", icon:"\ud83c\udfc6", label:"Mock exam", type:"exam" }
+        ] },
+      // ===== A2: the world outside Bruno's room =====
+      { title: "Out and about", subtitle: "Unterwegs", colour: "#0e7490", dark: "#155e75", level: "A2",
+        lessons: [
+          { id:"a2u1l1", icon:"\ud83d\ude82", label:"Travel", type:"vocab", cat:"Travel (Reisen)" },
+          { id:"a2u1l2", icon:"\ud83d\uddfa\ufe0f", label:"City & directions", type:"vocab", cat:"City & Directions (Stadt & Wege)" },
+          { id:"gr_a2_wechsel", icon:"\ud83d\udcd0", label:"Wo? Wohin?", type:"grammar", gid:"a2_wechsel", idx:17 },
+          { id:"gr_a2_verbprep", icon:"\ud83d\udcd0", label:"Verbs + preposition", type:"grammar", gid:"a2_verbprep", idx:24 }
+        ] },
+      { title: "Everyday errands", subtitle: "Alltag erledigen", colour: "#b45309", dark: "#78350f", level: "A2",
+        lessons: [
+          { id:"a2u2l1", icon:"\ud83d\uded2", label:"Shopping", type:"vocab", cat:"Shopping (Einkaufen)" },
+          { id:"a2u2l2", icon:"\ud83c\udf7d\ufe0f", label:"Restaurant", type:"vocab", cat:"Restaurant (Im Restaurant)" },
+          { id:"a2u2l3", icon:"\ud83c\udfe2", label:"Offices & appointments", type:"vocab", cat:"Appointments & Offices (Termine)" },
+          { id:"gr_a2_konj", icon:"\ud83d\udcd0", label:"Polite requests", type:"grammar", gid:"a2_konj", idx:21 }
+        ] },
+      { title: "Home and health", subtitle: "Zuhause und Gesundheit", colour: "#be123c", dark: "#881337", level: "A2",
+        lessons: [
+          { id:"a2u3l1", icon:"\ud83c\udfe1", label:"Housing", type:"vocab", cat:"Housing (Wohnen)" },
+          { id:"a2u3l2", icon:"\ud83e\ude7a", label:"Health", type:"vocab", cat:"Health (Gesundheit)" },
+          { id:"gr_a2_reflex", icon:"\ud83d\udcd0", label:"Reflexive verbs", type:"grammar", gid:"a2_reflex", idx:18 },
+          { id:"gr_a2_adj", icon:"\ud83d\udcd0", label:"Adjective endings", type:"grammar", gid:"a2_adj", idx:19 }
+        ] },
+      { title: "Work and study", subtitle: "Arbeit und Lernen", colour: "#4338ca", dark: "#312e81", level: "A2",
+        lessons: [
+          { id:"a2u4l1", icon:"\ud83d\udcbc", label:"Work", type:"vocab", cat:"Work (Arbeit & Beruf)" },
+          { id:"a2u4l2", icon:"\ud83c\udf93", label:"Education", type:"vocab", cat:"Education (Schule & Lernen)" },
+          { id:"gr_a2_praet", icon:"\ud83d\udcd0", label:"Perfekt or Praeteritum", type:"grammar", gid:"a2_praet", idx:16 },
+          { id:"gr_a2_passiv", icon:"\ud83d\udcd0", label:"Passive", type:"grammar", gid:"a2_passiv", idx:22 }
+        ] },
+      { title: "Saying what you think", subtitle: "Meinung sagen", colour: "#7c3aed", dark: "#5b21b6", level: "A2",
+        lessons: [
+          { id:"a2u5l1", icon:"\ud83d\udcac", label:"Feelings & opinions", type:"vocab", cat:"Feelings & Opinions (Meinungen)" },
+          { id:"gr_a2_weil", icon:"\ud83d\udcd0", label:"weil", type:"grammar", gid:"a2_weil", idx:13 },
+          { id:"gr_a2_dass", icon:"\ud83d\udcd0", label:"dass", type:"grammar", gid:"a2_dass", idx:14 },
+          { id:"gr_a2_wenn", icon:"\ud83d\udcd0", label:"wenn", type:"grammar", gid:"a2_wenn", idx:15 }
+        ] },
+      { title: "The wider world", subtitle: "Die weite Welt", colour: "#047857", dark: "#064e3b", level: "A2",
+        lessons: [
+          { id:"a2u6l1", icon:"\ud83c\udf3f", label:"Weather & environment", type:"vocab", cat:"Weather & Environment (Umwelt)" },
+          { id:"a2u6l2", icon:"\ud83d\udcfa", label:"Leisure & media", type:"vocab", cat:"Leisure & Media (Freizeit)" },
+          { id:"gr_a2_komp", icon:"\ud83d\udcd0", label:"Comparatives", type:"grammar", gid:"a2_komp", idx:20 },
+          { id:"gr_a2_genitiv", icon:"\ud83d\udcd0", label:"Genitiv", type:"grammar", gid:"a2_genitiv", idx:23 }
         ] }
     ];
 
@@ -1027,7 +1318,7 @@
     }
 
     function buildVocabQuestions(cat) {
-      const pool = (a1VocabularyDatabase[cat] || []).slice();
+      const pool = (allVocabularyDatabase[cat] || []).slice();
       if (pool.length < 4) return [];
       const topicByEar = audioOnlyTopics.indexOf(cat) !== -1;
       const picked = shuffle(pool).slice(0, Math.min(5, pool.length));
@@ -1052,8 +1343,8 @@
     function buildArticleQuestions() {
       const genderWord = { masculine: 'der', feminine: 'die', neuter: 'das' };
       let pool = [];
-      Object.keys(a1VocabularyDatabase).forEach(cat => {
-        a1VocabularyDatabase[cat].forEach(item => {
+      Object.keys(allVocabularyDatabase).forEach(cat => {
+        allVocabularyDatabase[cat].forEach(item => {
           if (genderWord[item.gender]) {
             const noun = item.german.replace(/^(der|die|das)\s+/i, '').trim();
             if (noun && noun.indexOf(' ') === -1) pool.push({ noun, g: item.gender, en: item.english });
@@ -1160,6 +1451,90 @@
         { prompt: "___ Anna, wie geht es dir?", ask: "Informal opening", options: ["Sehr geehrte","Liebe","Mit freundlichen","Hochachtungsvoll"], correct: 1, explain: "Liebe Anna - informal" },
         { prompt: "Which closing suits a friend?", ask: "Choose the register", options: ["Mit freundlichen Grussen","Hochachtungsvoll","Liebe Grusse","Sehr geehrte"], correct: 2, explain: "Liebe Grusse is informal." },
         { prompt: "Vielen ___ im Voraus.", ask: "Complete the phrase", options: ["Dank","Danke","Gruss","Bitte"], correct: 0, explain: "Vielen Dank im Voraus." }
+      ],
+      a2_weil: [
+        { prompt:"Ich bleibe zu Hause, weil ich krank ___.", ask:"Where does the verb go?", options:["bin","ist","sein","bist"], correct:0, explain:"weil sends the verb to the end: ...weil ich krank bin." },
+        { prompt:"Er kommt nicht, weil er arbeiten ___.", ask:"Complete the clause", options:["muss","musst","muessen","gemusst"], correct:0, explain:"The modal goes last: ...weil er arbeiten muss." },
+        { prompt:"Wir gehen ins Cafe, weil wir Hunger ___.", ask:"Complete the clause", options:["haben","habt","hat","hast"], correct:0, explain:"wir haben - and it sits at the end." },
+        { prompt:"Sie lernt Deutsch, weil sie in Berlin ___.", ask:"Complete the clause", options:["wohnt","wohnen","wohne","gewohnt"], correct:0, explain:"sie wohnt, verb last." },
+        { prompt:"Which word order is right after 'weil'?", ask:"Choose the pattern", options:["Subjekt + Verb am Ende","Verb + Subjekt","Verb an Position 2","Nur Infinitiv"], correct:0, explain:"weil is a subordinating conjunction: verb goes last." }
+      ],
+      a2_dass: [
+        { prompt:"Ich glaube, dass er heute ___.", ask:"Complete the clause", options:["kommt","kommen","kommst","gekommen"], correct:0, explain:"er kommt, at the end of the dass-clause." },
+        { prompt:"Sie sagt, dass sie muede ___.", ask:"Complete the clause", options:["ist","sein","bist","sind"], correct:0, explain:"sie ist - verb last." },
+        { prompt:"Ich hoffe, ___ du bald gesund bist.", ask:"Which conjunction?", options:["dass","weil","wenn","denn"], correct:0, explain:"dass reports what you hope." },
+        { prompt:"Es ist gut, dass du gekommen ___.", ask:"Complete the clause", options:["bist","hast","ist","sein"], correct:0, explain:"kommen takes sein: du bist gekommen." },
+        { prompt:"Ich denke, dass wir uns morgen ___.", ask:"Complete the clause", options:["treffen","trifft","treffe","getroffen"], correct:0, explain:"wir treffen uns - verb at the end." }
+      ],
+      a2_wenn: [
+        { prompt:"Wenn es regnet, ___ ich zu Hause.", ask:"What comes first in the main clause?", options:["bleibe","ich bleibe","bleiben","zu Hause bleibe"], correct:0, explain:"After a wenn-clause the main clause starts with its verb." },
+        { prompt:"___ ich Zeit habe, besuche ich dich.", ask:"Which conjunction?", options:["Wenn","Dass","Weil","Aber"], correct:0, explain:"Wenn = if / whenever." },
+        { prompt:"Ich rufe dich an, wenn ich zu Hause ___.", ask:"Complete the clause", options:["bin","ist","sein","bist"], correct:0, explain:"ich bin, at the end." },
+        { prompt:"Wenn du Hunger ___, koennen wir essen.", ask:"Complete the clause", options:["hast","habe","hat","haben"], correct:0, explain:"du hast - verb last in the wenn-clause." },
+        { prompt:"Wenn das Wetter gut ist, ___ wir wandern.", ask:"Main clause word order", options:["gehen","wir gehen","zu gehen","gegangen"], correct:0, explain:"Verb first in the main clause after a front wenn-clause." }
+      ],
+      a2_praet: [
+        { prompt:"Gestern ___ ich sehr muede. (sein)", ask:"Which past form?", options:["war","bin gewesen","werde","bin"], correct:0, explain:"sein prefers the Praeteritum: war." },
+        { prompt:"Ich ___ gestern lange geschlafen.", ask:"Which auxiliary?", options:["habe","bin","hatte","war"], correct:0, explain:"schlafen takes haben in the Perfekt." },
+        { prompt:"Wir ___ letztes Jahr nach Italien gefahren.", ask:"Which auxiliary?", options:["sind","haben","waren","hatten"], correct:0, explain:"Movement verbs take sein." },
+        { prompt:"Er ___ keine Zeit. (haben, Praeteritum)", ask:"Which past form?", options:["hatte","hat","hat gehabt","haette"], correct:0, explain:"haben prefers the Praeteritum: hatte." },
+        { prompt:"In speech, which past is normal for 'machen'?", ask:"Choose the usual form", options:["Ich habe gemacht","Ich machte","Ich werde machen","Ich mache"], correct:0, explain:"Spoken German uses the Perfekt for most verbs." }
+      ],
+      a2_wechsel: [
+        { prompt:"Ich gehe ___ die Kueche.", ask:"Movement or position?", options:["in","in der","im","an der"], correct:0, explain:"Movement (wohin?) takes the Akkusativ: in die Kueche." },
+        { prompt:"Ich bin ___ der Kueche.", ask:"Movement or position?", options:["in","in die","ins","an die"], correct:0, explain:"Position (wo?) takes the Dativ: in der Kueche." },
+        { prompt:"Das Buch liegt ___ dem Tisch.", ask:"Which case?", options:["auf","auf den","auf die","aufs"], correct:0, explain:"Position: auf dem Tisch (Dativ)." },
+        { prompt:"Ich lege das Buch ___ den Tisch.", ask:"Which case?", options:["auf","auf dem","aufs dem","an dem"], correct:0, explain:"Movement: auf den Tisch (Akkusativ)." },
+        { prompt:"Das Bild haengt ___ der Wand.", ask:"Which case?", options:["an","an die","ans","auf die"], correct:0, explain:"Position: an der Wand (Dativ)." }
+      ],
+      a2_reflex: [
+        { prompt:"Ich freue ___ auf das Wochenende.", ask:"Which reflexive pronoun?", options:["mich","mir","sich","dich"], correct:0, explain:"ich freue mich - Akkusativ." },
+        { prompt:"Wir treffen ___ um acht Uhr.", ask:"Which reflexive pronoun?", options:["uns","sich","euch","mich"], correct:0, explain:"wir treffen uns." },
+        { prompt:"Er interessiert ___ fuer Musik.", ask:"Which reflexive pronoun?", options:["sich","ihn","mich","uns"], correct:0, explain:"er interessiert sich fuer + Akk." },
+        { prompt:"Wie fuehlst ___ heute?", ask:"Which reflexive pronoun?", options:["du dich","du dir","dich du","du sich"], correct:0, explain:"du fuehlst dich." },
+        { prompt:"Bitte setzen Sie ___!", ask:"Which reflexive pronoun?", options:["sich","Ihnen","euch","uns"], correct:0, explain:"Formal Sie uses sich." }
+      ],
+      a2_adj: [
+        { prompt:"der ___ Mann (gross)", ask:"Adjective ending", options:["grosse","grossen","grosser","gross"], correct:0, explain:"Nominative masculine after 'der': -e." },
+        { prompt:"Ich sehe den ___ Mann. (gross)", ask:"Adjective ending", options:["grossen","grosse","grosser","gross"], correct:0, explain:"Akkusativ masculine after 'den': -en." },
+        { prompt:"die ___ Frau (klein)", ask:"Adjective ending", options:["kleine","kleinen","kleiner","klein"], correct:0, explain:"Nominative feminine after 'die': -e." },
+        { prompt:"das ___ Haus (alt)", ask:"Adjective ending", options:["alte","alten","alter","alt"], correct:0, explain:"Nominative neuter after 'das': -e." },
+        { prompt:"mit dem ___ Auto (neu)", ask:"Adjective ending", options:["neuen","neue","neuer","neu"], correct:0, explain:"Dativ after 'dem': -en." }
+      ],
+      a2_komp: [
+        { prompt:"Ich suche eine ___ Wohnung. (gross)", ask:"Comparative before a noun", options:["groessere","groesser","groessten","grosse"], correct:0, explain:"groesser + adjective ending -e." },
+        { prompt:"Das ist der ___ Weg. (gut)", ask:"Comparative before a noun", options:["bessere","besser","beste","gute"], correct:0, explain:"gut becomes besser, then takes -e." },
+        { prompt:"Er hat ein ___ Auto als ich. (schnell)", ask:"Comparative before a noun", options:["schnelleres","schneller","schnellste","schnelle"], correct:0, explain:"Neuter after 'ein': schnelleres." },
+        { prompt:"Berlin ist ___ als Bonn.", ask:"Plain comparative", options:["groesser","groessere","am groessten","gross"], correct:0, explain:"No noun follows, so no ending." },
+        { prompt:"Das ist die ___ Loesung. (einfach, superlative)", ask:"Superlative before a noun", options:["einfachste","einfacher","am einfachsten","einfach"], correct:0, explain:"die einfachste Loesung." }
+      ],
+      a2_konj: [
+        { prompt:"___ Sie mir bitte helfen?", ask:"Polite request", options:["Koennten","Koennen Sie mussten","Kann","Konnten"], correct:0, explain:"Koennten is the polite Konjunktiv II." },
+        { prompt:"Ich ___ gern einen Kaffee.", ask:"Polite wish", options:["haette","habe","hatte","haben"], correct:0, explain:"Ich haette gern - the standard polite order." },
+        { prompt:"___ du mir bitte das Salz geben?", ask:"Polite request", options:["Wuerdest","Wirst","Wurdest","Werdest"], correct:0, explain:"wuerdest = would you." },
+        { prompt:"Es ___ schoen, wenn du kommst.", ask:"Konjunktiv II of sein", options:["waere","war","ist","wird"], correct:0, explain:"waere = would be." },
+        { prompt:"Which is the most polite?", ask:"Choose the register", options:["Koennten Sie mir helfen?","Hilf mir!","Sie helfen mir.","Helfen!"], correct:0, explain:"Konjunktiv II softens a request." }
+      ],
+      a2_passiv: [
+        { prompt:"Das Formular ___ hier ausgefuellt.", ask:"Passive auxiliary", options:["wird","ist","hat","war"], correct:0, explain:"Passive Praesens: werden + Partizip II." },
+        { prompt:"Die Tueren ___ um 20 Uhr geschlossen.", ask:"Passive auxiliary (plural)", options:["werden","wird","sind","haben"], correct:0, explain:"Plural subject: werden." },
+        { prompt:"Hier ___ Deutsch gesprochen.", ask:"Passive auxiliary", options:["wird","ist","hat","wurde"], correct:0, explain:"Hier wird Deutsch gesprochen." },
+        { prompt:"Das Haus wird ___. (bauen)", ask:"Partizip II", options:["gebaut","baut","bauen","gebauen"], correct:0, explain:"bauen -> gebaut." },
+        { prompt:"Der Brief wird heute ___. (schreiben)", ask:"Partizip II", options:["geschrieben","schreibt","schreiben","geschreibt"], correct:0, explain:"schreiben -> geschrieben." }
+      ],
+      a2_genitiv: [
+        { prompt:"das Auto ___ Mannes", ask:"Genitiv article", options:["des","der","dem","den"], correct:0, explain:"Masculine Genitiv: des Mannes." },
+        { prompt:"die Farbe ___ Tuer", ask:"Genitiv article", options:["der","des","dem","die"], correct:0, explain:"Feminine Genitiv: der Tuer." },
+        { prompt:"das Ende ___ Films", ask:"Genitiv article", options:["des","der","dem","den"], correct:0, explain:"Masculine Genitiv: des Films." },
+        { prompt:"die Namen ___ Kinder", ask:"Genitiv article (plural)", options:["der","des","den","dem"], correct:0, explain:"Plural Genitiv: der Kinder." },
+        { prompt:"Masculine and neuter nouns add what in the Genitiv?", ask:"Choose the ending", options:["-s or -es","-n","-e","nothing"], correct:0, explain:"des Mannes, des Kindes." }
+      ],
+      a2_verbprep: [
+        { prompt:"Ich warte ___ den Bus.", ask:"Which preposition and case?", options:["auf","an","fuer","mit"], correct:0, explain:"warten auf + Akkusativ." },
+        { prompt:"Ich freue mich ___ das Wochenende.", ask:"Which preposition?", options:["auf","ueber","fuer","an"], correct:0, explain:"sich freuen auf + Akk (something coming)." },
+        { prompt:"Er interessiert sich ___ Musik.", ask:"Which preposition?", options:["fuer","auf","an","mit"], correct:0, explain:"sich interessieren fuer + Akk." },
+        { prompt:"Sie hilft mir ___ den Hausaufgaben.", ask:"Which preposition?", options:["bei","fuer","auf","mit"], correct:0, explain:"helfen bei + Dativ." },
+        { prompt:"Ich denke oft ___ dich.", ask:"Which preposition?", options:["an","auf","ueber","fuer"], correct:0, explain:"denken an + Akkusativ." }
       ]
     };
 
@@ -1194,9 +1569,14 @@
       }
     }
 
+    // Audio-only questions play themselves everywhere except Apple mobile,
+    // where a delayed speak() is outside the user gesture and is dropped.
+    // There, the learner taps the big Play button instead.
     function maybeAutoPlayQuiz() {
       const q = quizQuestions[quizIndex];
-      if (quizActive && q && !q.prompt && q.speak) setTimeout(() => speakGerman(q.speak, true), 250);
+      if (!quizActive || !q || q.prompt || !q.speak) return;
+      if (isAppleMobile) return;
+      setTimeout(() => speakGerman(q.speak, true), 250);
     }
 
     function answerQuiz(i) {
@@ -1364,20 +1744,84 @@
     // Native Browser Audio Speech Synthesis Runner.
     // stripParens is used for flashcards only ("A (Aa)" should read as "A").
     // Full sentences (exam dialogues, sample answers) are spoken verbatim.
+    // ===== Speech on iOS =====
+    // iPhone and iPad impose four rules that desktop browsers do not:
+    //   1. the very first speak() must happen inside a real user gesture,
+    //   2. the queue silently pauses and has to be resume()d,
+    //   3. cancel() immediately followed by speak() swallows the utterance,
+    //   4. the ringer switch mutes speech entirely, with no error raised.
+    // This layer handles 1-3 and warns the user about 4.
+    const isAppleMobile = (function () {
+      const ua = (typeof navigator !== 'undefined' && navigator.userAgent) || '';
+      return /iPad|iPhone|iPod/.test(ua)
+          || (ua.includes('Macintosh') && typeof navigator !== 'undefined' && navigator.maxTouchPoints > 1);
+    })();
+
+    let speechPrimed = false;
+    let speechEverStarted = false;
+    let speechHintShown = false;
+
+    // Called synchronously from the first tap anywhere in the app.
+    function primeSpeech() {
+      if (speechPrimed || !('speechSynthesis' in window)) return;
+      try {
+        const u = new SpeechSynthesisUtterance(' ');
+        u.volume = 0;
+        u.lang = 'de-DE';
+        window.speechSynthesis.speak(u);
+        speechPrimed = true;
+      } catch (e) { /* nothing useful to do */ }
+    }
+
+    function showSilentSwitchHint() {
+      if (speechHintShown || !isAppleMobile) return;
+      speechHintShown = true;
+      const el = document.createElement('div');
+      el.innerHTML = '\ud83d\udd07 <b>No sound?</b> On iPhone and iPad, flip the ringer switch on '
+        + '(or open Control Centre and unmute), and turn the volume up. '
+        + 'German voices: Settings \u2192 Accessibility \u2192 Spoken Content \u2192 Voices \u2192 Deutsch.';
+      el.style.cssText = 'position:fixed;left:12px;right:12px;bottom:84px;z-index:9997;background:#1e293b;'
+        + 'color:#e2e8f0;font-size:12px;line-height:1.5;padding:12px 14px;border-radius:14px;'
+        + 'box-shadow:0 8px 24px rgba(0,0,0,.45);border:1px solid #334155';
+      el.onclick = () => el.remove();
+      document.body.appendChild(el);
+      setTimeout(() => el.remove(), 9000);
+    }
+
     function speakGerman(text, stripParens) {
       if (!('speechSynthesis' in window)) return;
       const synth = window.speechSynthesis;
       const clean = stripParens ? String(text).split('(')[0].trim() : String(text);
-      if (synth.speaking || synth.pending) synth.cancel();
-      const u = new SpeechSynthesisUtterance(clean);
-      u.lang = 'de-DE';
-      u.rate = 0.85;
-      u.volume = 1;
-      const voices = synth.getVoices();
-      const de = voices.find(v => v.lang === 'de-DE') || voices.find(v => v.lang && v.lang.startsWith('de'));
-      if (de) u.voice = de;
-      u.onerror = (e) => console.error('Speech synthesis error:', e.error);
-      synth.speak(u);
+      if (!clean) return;
+
+      // iOS parks the queue; resume() is required before anything will play
+      try { synth.resume(); } catch (e) {}
+
+      const fire = () => {
+        const u = new SpeechSynthesisUtterance(clean);
+        u.lang = 'de-DE';
+        u.rate = 0.85;
+        u.volume = 1;
+        const voices = synth.getVoices();
+        const de = voices.find(v => v.lang === 'de-DE') || voices.find(v => v.lang && v.lang.startsWith('de'));
+        if (de) u.voice = de;
+        u.onstart = () => { speechEverStarted = true; };
+        u.onerror = (e) => {
+          if (e && e.error === 'interrupted') return;
+          showSilentSwitchHint();
+        };
+        synth.speak(u);
+        // If nothing has ever started playing, the ringer switch is the usual cause
+        setTimeout(() => { if (!speechEverStarted) showSilentSwitchHint(); }, 1200);
+      };
+
+      // cancel() then speak() in the same tick loses the utterance in WebKit
+      if (synth.speaking || synth.pending) {
+        synth.cancel();
+        setTimeout(fire, isAppleMobile ? 120 : 40);
+      } else {
+        fire();
+      }
     }
 
     // Flashcard helper - keeps the parenthetical stripping behaviour
@@ -2055,6 +2499,34 @@
     // fill with colour. The light changes with the real clock.
 
     let openRoomObject = null;
+
+    // A2 lives outside: the street Bruno walks down once A1 is behind him.
+    const streetObjects = [
+      { id:"station",  de:"der Bahnhof",   en:"Station",     zone:"Street",
+        blurb:"Travel, and finding your way around town", lessons:["a2u1l1","a2u1l2","gr_a2_wechsel","gr_a2_verbprep"] },
+      { id:"shop",     de:"das Gesch\u00e4ft", en:"Shop",     zone:"Street",
+        blurb:"Shopping, and asking politely", lessons:["a2u2l1","gr_a2_konj"] },
+      { id:"cafe",     de:"das Caf\u00e9",    en:"Cafe",       zone:"Street",
+        blurb:"Ordering, eating out, paying the bill", lessons:["a2u2l2"] },
+      { id:"office",   de:"das Amt",       en:"Public office", zone:"Street",
+        blurb:"Forms, appointments and registration", lessons:["a2u2l3"] },
+      { id:"flat",     de:"die Wohnung",   en:"Flat",        zone:"Street",
+        blurb:"Renting, moving, neighbours", lessons:["a2u3l1","gr_a2_adj"] },
+      { id:"clinic",   de:"die Praxis",    en:"Surgery",     zone:"Street",
+        blurb:"At the doctor's, and reflexive verbs", lessons:["a2u3l2","gr_a2_reflex"] },
+      { id:"work",     de:"das B\u00fcro",    en:"Office",      zone:"Street",
+        blurb:"Jobs, applications and the past tense", lessons:["a2u4l1","gr_a2_praet","gr_a2_passiv"] },
+      { id:"school",   de:"die Schule",    en:"School",      zone:"Street",
+        blurb:"Courses, exams and studying", lessons:["a2u4l2"] },
+      { id:"bench",    de:"die Bank",      en:"Bench",       zone:"Street",
+        blurb:"Saying what you think, and why", lessons:["a2u5l1","gr_a2_weil","gr_a2_dass","gr_a2_wenn"] },
+      { id:"park",     de:"der Park",      en:"Park",        zone:"Street",
+        blurb:"Weather, nature and free time", lessons:["a2u6l1","a2u6l2","gr_a2_komp","gr_a2_genitiv"] }
+    ];
+
+    // Whichever level is showing, these helpers return its places.
+    function sceneObjects() { return activeLevel === 'A2' ? streetObjects : roomObjects; }
+    function objectById(id) { return sceneObjects().find(o => o.id === id) || roomObjects.concat(streetObjects).find(o => o.id === id); }
 
     const roomObjects = [
       // ---- KITCHEN CORNER (left) ----
@@ -2879,7 +3351,7 @@
               <div class="${conf.cardBg} border p-6 rounded-2xl text-center space-y-2">
                 ${q.prompt ? `<p class="text-2xl font-black text-white" translate="no" lang="de">${q.prompt}</p>` : `<p class="text-4xl">\ud83d\udc42</p>`}
                 ${q.hint ? `<p class="text-xs font-mono text-indigo-300">[ ${q.hint} ]</p>` : ''}
-                ${q.speak ? `<button onclick='speakGerman(${safeOnclickArg(q.speak)}, true)' class="btn3d mt-1 px-4 py-2 bg-indigo-600 text-white font-black text-[11px] rounded-xl">\ud83d\udd0a ${q.prompt ? 'Listen' : 'Play again'}</button>` : ''}
+                ${q.speak ? `<button onclick='speakGerman(${safeOnclickArg(q.speak)}, true)' class="btn3d mt-1 ${q.prompt ? 'px-4 py-2 text-[11px]' : 'px-6 py-3 text-sm'} bg-indigo-600 text-white font-black rounded-xl">\ud83d\udd0a ${q.prompt ? 'Listen' : 'Abspielen'}</button>` : ''}
               </div>
               <div class="space-y-2">
                 ${q.options.map((o,i) => {
@@ -3543,6 +4015,10 @@
       activeExamSectionIndex = 4;
       renderActiveTabModule();
     }
+
+    // The first tap anywhere unlocks speech for the rest of the session on iOS
+    document.addEventListener('touchend', primeSpeech, { once: true, passive: true });
+    document.addEventListener('click', primeSpeech, { once: true });
 
     // Preload speech synthesis voices so German audio is ready on first play
     if ('speechSynthesis' in window) {
