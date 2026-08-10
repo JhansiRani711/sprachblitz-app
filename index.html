@@ -793,6 +793,7 @@
     ];
 
     // Global Core Architecture Reactivity State Cache Layout Engine Variables
+    const APP_BUILD = 'v7';
     let activeTab = 'dashboard';
 
     // ===== Curriculum: 7 units, each a list of lessons =====
@@ -1467,7 +1468,8 @@
       const note = document.getElementById('header-note');
       if (!note) return;
       const learned = roomObjects.filter(o => objProgress(o).frac === 1).length;
-      note.innerText = learned === 0 ? '' : learned + (learned === 1 ? ' corner alive' : ' corners alive');
+      const alive = learned === 0 ? '' : learned + (learned === 1 ? ' corner alive \u00b7 ' : ' corners alive \u00b7 ');
+      note.innerText = alive + APP_BUILD;
     }
 
     function rewardXP(amt) {
