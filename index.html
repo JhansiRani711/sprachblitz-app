@@ -808,7 +808,7 @@
     ];
 
     // Global Core Architecture Reactivity State Cache Layout Engine Variables
-    const APP_BUILD = 'v13';
+    const APP_BUILD = 'v14';
 
     // Days you have actually studied. Only ever goes up - no streak to break.
     let daysLearned = parseInt(localStorage.getItem('sb_days_learned'), 10) || 0;
@@ -823,12 +823,20 @@
     }
 
     // First-run welcome, shown once
+    // ?welcome=1 replays the intro once. It must be one-shot: if the override
+    // stayed on, finishWelcome would re-render and the welcome would come
+    // straight back, making the button look dead.
+    let forceWelcomeOnce = (typeof location !== 'undefined') && /[?&]welcome=1/.test(location.search);
     function hasBeenWelcomed() {
-      // ?welcome=1 replays the intro even after it has been dismissed
-      if (typeof location !== 'undefined' && /[?&]welcome=1/.test(location.search)) return false;
+      if (forceWelcomeOnce) return false;
       return localStorage.getItem('sb_welcomed') === '1';
     }
-    function finishWelcome() { localStorage.setItem('sb_welcomed', '1'); renderActiveTabModule(); }
+    function finishWelcome() {
+      forceWelcomeOnce = false;
+      showWelcome = false;
+      localStorage.setItem('sb_welcomed', '1');
+      renderActiveTabModule();
+    }
     let activeTab = 'dashboard';
 
     // ===== Curriculum: 7 units, each a list of lessons =====
