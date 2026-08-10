@@ -1,14 +1,14 @@
 {
-  "name": "Sprachblitz — A1 Deutsch lernen",
+  "name": "Sprachblitz — A1 & A2 Deutsch lernen",
   "short_name": "Sprachblitz",
-  "description": "Learn German A1: vocabulary, grammar, listening, reading, writing, speaking and Goethe mock exams.",
+  "description": "Learn German A1 and A2 with Bruno: vocabulary, grammar, listening, reading, writing, speaking and Goethe mock exams.",
   "start_url": "./",
   "scope": "./",
-  "display": "standalone",
+  "display": "browser",
   "orientation": "portrait",
   "background_color": "#0f172a",
   "theme_color": "#0f172a",
-  "lang": "en",
+  "lang": "de",
   "icons": [
     { "src": "./icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
     { "src": "./icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
