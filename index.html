@@ -1035,7 +1035,7 @@
     ];
 
     // Global Core Architecture Reactivity State Cache Layout Engine Variables
-    const APP_BUILD = 'v19';
+    const APP_BUILD = 'v21';
     // Which level the room screen is showing. Progress is stored per lesson,
     // so switching levels never loses anything.
     let activeLevel = localStorage.getItem('sb_level') || 'A1';
@@ -1644,6 +1644,18 @@
       "Time (Uhrzeit Layouts)": "\u23f0",
       "Introductions (Vorstellung)": "\ud83e\uddd1",
       "Daily Routine (Tagesablauf)": "\u2600\ufe0f",
+      "Travel (Reisen)": "\ud83d\ude82",
+      "Shopping (Einkaufen)": "\ud83d\uded2",
+      "Health (Gesundheit)": "\ud83e\ude7a",
+      "Work (Arbeit & Beruf)": "\ud83d\udcbc",
+      "City & Directions (Stadt & Wege)": "\ud83d\uddfa\ufe0f",
+      "Housing (Wohnen)": "\ud83c\udfe1",
+      "Leisure & Media (Freizeit)": "\ud83d\udcfa",
+      "Weather & Environment (Umwelt)": "\ud83c\udf3f",
+      "Restaurant (Im Restaurant)": "\ud83c\udf7d\ufe0f",
+      "Appointments & Offices (Termine)": "\ud83c\udfe2",
+      "Feelings & Opinions (Meinungen)": "\ud83d\udcac",
+      "Education (Schule & Lernen)": "\ud83c\udf93",
       "Food (Essen)": "\ud83c\udf5e",
       "Drinks (Getr\u00e4nke)": "\u2615",
       "DYNAM_NUMBERS": "\u221e"
@@ -2016,14 +2028,30 @@
     }
 
     // --- GAME 1: WORD MATCHING MATRIX ENGINE ---
+    // Practice can be set to A1, A2, or both at once.
+    let practiceLevel = localStorage.getItem('sb_practice_level') || 'A1';
+    function setPracticeLevel(lv) {
+      practiceLevel = lv;
+      localStorage.setItem('sb_practice_level', lv);
+      renderActiveTabModule();
+    }
+    function practicePool() {
+      const src = practiceLevel === 'A2' ? a2VocabularyDatabase
+                : practiceLevel === 'both' ? allVocabularyDatabase
+                : a1VocabularyDatabase;
+      const out = [];
+      Object.keys(src).forEach(c => src[c].forEach(w => out.push(w)));
+      return out;
+    }
+
     function initWordMatchGame() {
       activeGameMode = 'match';
       matchSuccessCount = 0;
       matchSelectedGermanIdx = null;
       matchSelectedEnglishIdx = null;
-      
-      // Pull random 4 items from Family/Body parts pool safely
-      const pool = [...a1VocabularyDatabase["Family (Die Familie)"], ...a1VocabularyDatabase["Body Parts (Körperteile)"]];
+
+      // Four random words from whichever level Practice is set to
+      const pool = practicePool().filter(w => cleanPrompt(w.german).length < 22 && !isCognate(w));
       const shuffled = pool.sort(() => 0.5 - Math.random()).slice(0, 4);
       
       const germans = shuffled.map((x, i) => ({ text: x.german, id: i, matched: false }));
@@ -2068,8 +2096,8 @@
     function initGenderBlitzGame() {
       activeGameMode = 'gender';
       genderGameFeedback = null;
-      
-      const pool = [...a1VocabularyDatabase["Family (Die Familie)"], ...a1VocabularyDatabase["Body Parts (Körperteile)"]].filter(x => ['masculine', 'feminine', 'neuter'].includes(x.gender));
+
+      const pool = practicePool().filter(x => ['masculine', 'feminine', 'neuter'].includes(x.gender));
       
       if(pool.length > 0) {
         genderGameActiveItem = pool[Math.floor(Math.random() * pool.length)];
@@ -2433,6 +2461,35 @@
         fallbackXPAwarded = true;
         rewardXP(5);
       }
+      renderActiveTabModule();
+    }
+
+    // ===== Grammatik-Blitz: one random exercise from the level's grammar banks =====
+    let grammarBlitzItem = null;
+    let grammarBlitzPicked = null;
+
+    function grammarBankIds() {
+      const keys = Object.keys(grammarExercises);
+      if (practiceLevel === 'A2') return keys.filter(k => k.startsWith('a2_'));
+      if (practiceLevel === 'both') return keys;
+      return keys.filter(k => !k.startsWith('a2_'));
+    }
+
+    function initGrammarBlitz() {
+      activeGameMode = 'grammar';
+      grammarBlitzPicked = null;
+      const ids = grammarBankIds();
+      if (!ids.length) { activeGameMode = 'none'; renderActiveTabModule(); return; }
+      const gid = ids[Math.floor(Math.random() * ids.length)];
+      const bank = grammarExercises[gid];
+      grammarBlitzItem = Object.assign({}, bank[Math.floor(Math.random() * bank.length)], { gid });
+      renderActiveTabModule();
+    }
+
+    function answerGrammarBlitz(i) {
+      if (grammarBlitzPicked !== null) return;
+      grammarBlitzPicked = i;
+      if (i === grammarBlitzItem.correct) rewardXP(5);
       renderActiveTabModule();
     }
 
@@ -2828,7 +2885,7 @@
 
     function wordOfTheDay() {
       const all = [];
-      Object.keys(a1VocabularyDatabase).forEach(c => a1VocabularyDatabase[c].forEach(i => all.push(i)));
+      Object.keys(allVocabularyDatabase).forEach(c => allVocabularyDatabase[c].forEach(i => all.push(i)));
       const day = Math.floor(Date.now() / 86400000);
       return all[day % all.length];
     }
@@ -3385,6 +3442,43 @@
         return;
       }
 
+      if (activeGameMode === 'grammar') {
+        const q = grammarBlitzItem;
+        const picked = grammarBlitzPicked;
+        container.innerHTML = `
+          <div class="space-y-4">
+            <div class="flex justify-between items-center px-1">
+              <h3 class="text-sm font-black text-white">Grammatik-Blitz \u00b7 ${practiceLevel === 'both' ? 'A1 + A2' : practiceLevel}</h3>
+              <button onclick="closeGame()" class="text-slate-500 text-lg font-black">\u2715</button>
+            </div>
+            <p class="text-[11px] text-slate-400">${q.ask}</p>
+            <div class="${conf.cardBg} border p-6 rounded-2xl text-center">
+              <p class="text-xl font-black text-white" translate="no" lang="de">${q.prompt}</p>
+            </div>
+            <div class="space-y-2">
+              ${q.options.map((o, i) => {
+                let stl = 'bg-slate-800 text-slate-200';
+                if (picked !== null) {
+                  if (i === q.correct) stl = 'bg-emerald-600 text-white';
+                  else if (i === picked) stl = 'bg-rose-600 text-white';
+                  else stl = 'bg-slate-900 text-slate-600 opacity-50';
+                }
+                return `<button onclick="answerGrammarBlitz(${i})" ${picked !== null ? 'disabled' : ''} class="btn3d w-full text-left p-3.5 rounded-xl text-sm font-bold ${stl}" translate="no" lang="de">${o}</button>`;
+              }).join('')}
+            </div>
+            ${picked !== null ? `
+              <div class="p-3 rounded-xl text-[11px] font-bold flex items-center gap-2 ${picked === q.correct ? 'bg-emerald-950/50 text-emerald-300' : 'bg-amber-950/50 text-amber-300'}">
+                <img src="./bears/${picked === q.correct ? 'bear-hug' : 'bear-think'}.png" alt="" class="h-12 w-auto shrink-0" onerror="this.style.display='none'">
+                <span class="flex-1">${q.explain || ''}</span>
+              </div>
+              <div class="grid grid-cols-2 gap-2">
+                <button onclick="initGrammarBlitz()" class="btn3d py-3 bg-indigo-600 text-white font-black text-xs rounded-xl">Next</button>
+                <button onclick="closeGame()" class="btn3d py-3 bg-slate-700 text-white font-black text-xs rounded-xl">Done</button>
+              </div>` : ''}
+          </div>`;
+        return;
+      }
+
       if (activeGameMode === 'gender') {
         let raw = genderGameActiveItem ? genderGameActiveItem.german : '';
         let noun = raw.replace(/^(der|die|das)\s+/i, '');
@@ -3502,14 +3596,14 @@
       }
 
       else if (activeTab === 'vocabulary') {
-        const categories = Object.keys(a1VocabularyDatabase);
-        const activeList = a1VocabularyDatabase[selectedVocabCategory];
+        const categories = Object.keys(allVocabularyDatabase);
+        const activeList = allVocabularyDatabase[selectedVocabCategory];
         const card = activeList ? activeList[activeVocabCardIndex] : null;
 
         const allCategories = categories.concat(['DYNAM_NUMBERS']);
         const labelFor = (c) => c === 'DYNAM_NUMBERS' ? 'Numbers 0-100 Million' : c;
         const iconFor = (c) => vocabCategoryIcons[c] || '\ud83d\udcd8';
-        const countFor = (c) => c === 'DYNAM_NUMBERS' ? '\u221e' : (a1VocabularyDatabase[c] ? a1VocabularyDatabase[c].length + ' cards' : '');
+        const countFor = (c) => c === 'DYNAM_NUMBERS' ? '\u221e' : (allVocabularyDatabase[c] ? allVocabularyDatabase[c].length + ' cards' : '');
 
         let categoryButtonsHTML = '';
         allCategories.forEach(cat => {
@@ -3584,7 +3678,18 @@
                 <p class="text-[10px] text-slate-400">Play a game or browse any topic. Nothing is locked here.</p>
               </div>
             </div>
-            <div class="w-full grid grid-cols-2 gap-2">
+            <div class="w-full grid grid-cols-3 gap-2">
+              ${[['A1','A1'],['A2','A2'],['both','A1+A2']].map(([v,lbl]) => `
+                <button onclick="setPracticeLevel('${v}')" class="btn3d py-2 rounded-xl text-[11px] font-black"
+                        style="background:${practiceLevel === v ? '#4f46e5' : '#1e293b'}; color:#fff">${lbl}</button>`).join('')}
+            </div>
+
+            <div class="w-full grid grid-cols-3 gap-2">
+              <button onclick="initGrammarBlitz()" class="btn3d p-3 bg-emerald-600 rounded-2xl text-left">
+                <span class="text-xl block leading-none mb-1">\ud83d\udcd0</span>
+                <span class="text-[11px] font-black text-white block">Grammatik</span>
+                <span class="text-[9px] font-bold text-emerald-100">Fill the gap</span>
+              </button>
               <button onclick="initWordMatchGame()" class="btn3d p-3 bg-indigo-600 rounded-2xl text-left">
                 <span class="text-xl block leading-none mb-1">\ud83e\udde9</span>
                 <span class="text-[11px] font-black text-white block">Word match</span>
@@ -3592,8 +3697,8 @@
               </button>
               <button onclick="initGenderBlitzGame()" class="btn3d p-3 bg-fuchsia-600 rounded-2xl text-left">
                 <span class="text-xl block leading-none mb-1">\ud83c\udfae</span>
-                <span class="text-[11px] font-black text-white block">Gender blitz</span>
-                <span class="text-[9px] font-bold text-fuchsia-200">der / die / das</span>
+                <span class="text-[11px] font-black text-white block">der/die/das</span>
+                <span class="text-[9px] font-bold text-fuchsia-200">Articles</span>
               </button>
             </div>
             <button onclick="toggleVocabSheet()" class="w-full flex items-center justify-between gap-2 p-3 rounded-2xl border bg-slate-800 border-slate-700 active:scale-[0.99] transition-transform">
