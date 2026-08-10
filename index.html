@@ -193,10 +193,10 @@
       </div>
       <div class="flex items-center gap-2 shrink-0">
         <div class="font-bold text-xs flex items-center gap-1 px-2 py-1 rounded-lg border border-amber-900/60 bg-amber-950/40 text-amber-400">
-          \ud83d\udd25 <span id="streak-days-val">1</span>
+          🔥 <span id="streak-days-val">1</span>
         </div>
         <div class="font-bold text-xs flex items-center gap-1 px-2 py-1 rounded-lg border border-indigo-800 bg-indigo-950 text-indigo-300">
-          \u2728 <span id="xp-amount-val">0</span>
+          ✨ <span id="xp-amount-val">0</span>
         </div>
       </div>
     </header>
@@ -808,7 +808,7 @@
     ];
 
     // Global Core Architecture Reactivity State Cache Layout Engine Variables
-    const APP_BUILD = 'v10';
+    const APP_BUILD = 'v11';
 
     // Days you have actually studied. Only ever goes up - no streak to break.
     let daysLearned = parseInt(localStorage.getItem('sb_days_learned'), 10) || 0;
@@ -2259,7 +2259,11 @@
 
     function toggleJournal() { journalOpen = !journalOpen; renderActiveTabModule(); }
 
-    function needsWelcome() { return !localStorage.getItem('sb_welcomed'); }
+    function needsWelcome() {
+      // ?welcome=1 forces the intro to play again - handy for testing
+      if (typeof location !== 'undefined' && /[?&]welcome=1/.test(location.search)) return true;
+      return !localStorage.getItem('sb_welcomed');
+    }
     function dismissWelcome() {
       localStorage.setItem('sb_welcomed', '1');
       renderActiveTabModule();
