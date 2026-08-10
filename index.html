@@ -808,7 +808,7 @@
     ];
 
     // Global Core Architecture Reactivity State Cache Layout Engine Variables
-    const APP_BUILD = 'v12';
+    const APP_BUILD = 'v13';
 
     // Days you have actually studied. Only ever goes up - no streak to break.
     let daysLearned = parseInt(localStorage.getItem('sb_days_learned'), 10) || 0;
@@ -2647,8 +2647,13 @@
             <div class="on-dark w-full max-w-sm text-center space-y-6">
               <img src="./bears/bear-wave.png" alt="" class="h-48 w-auto mx-auto" onerror="this.style.display='none'">
               <div class="space-y-1">
-                <p class="text-2xl font-black od-title" translate="no" lang="de">Hallo! Ich bin Bruno.</p>
-                <p class="text-sm font-bold od-muted">Willkommen in meinem Zimmer.</p>
+                <p class="text-2xl font-black od-title" translate="no" lang="de">${
+                  timeOfDay() === 'morning' ? 'Guten Morgen!'
+                  : timeOfDay() === 'evening' || timeOfDay() === 'night' ? 'Guten Abend!'
+                  : 'Guten Tag!'}</p>
+                <p class="text-base font-bold od-title" translate="no" lang="de">Ich bin Bruno.</p>
+                <p class="text-sm font-bold od-muted" translate="no" lang="de">Willkommen in meinem Zimmer!</p>
+                <p class="text-xs od-muted">Welcome to Bruno's room \u2014 tap the buttons to fill it with German.</p>
               </div>
               <button onclick="finishWelcome()" class="btn3d w-full py-4 rounded-2xl text-white font-black text-lg" style="background:#4f46e5" translate="no" lang="de">Los geht's!</button>
             </div>
