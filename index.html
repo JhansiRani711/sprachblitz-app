@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="google" content="notranslate">
   <meta name="theme-color" content="#0f172a">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -16,6 +17,9 @@
   <!-- External Font Family Tracking -->
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
+    /* German content must never be machine-translated - Chrome would turn
+       "der Trainer" into "the coach" and quietly break every lesson. */
+    .de { }
     body {
       font-family: 'Plus Jakarta Sans', sans-serif;
       transition: background-color 0.3s ease, color 0.3s ease;
@@ -164,7 +168,7 @@
     .on-dark .od-dim    { color: #64748b !important; }
   </style>
 </head>
-<body class="min-h-screen flex flex-col bg-slate-950 text-slate-100">
+<body class="notranslate min-h-screen flex flex-col bg-slate-950 text-slate-100" translate="no">
 
   <!-- Startup splash: app icon + name, removed once the app has rendered -->
   <div id="splash-screen">
@@ -2089,6 +2093,38 @@
       return `<g pointer-events="none">${out}</g>`;
     }
 
+    // Bruno's spot in the room: {left%, bottom%, height%, pose}
+    function brunoSpot() {
+      const t = timeOfDay();
+      const learned = roomObjects.filter(o => objProgress(o).frac === 1).length;
+      if (t === 'night')   return { left:'80%', bottom:'22%', h:'20%', pose:'bear-sleep', flip:false };
+      if (t === 'morning') return { left:'14%', bottom:'12%', h:'30%', pose:'bear-stand', flip:false };
+      if (t === 'evening') return { left:'46%', bottom:'12%', h:'30%', pose:'bear-sit',   flip:false };
+      // daytime: at the desk, or dancing in the middle once the room is alive
+      if (learned >= roomObjects.length) return { left:'50%', bottom:'14%', h:'32%', pose:'bear-dance', flip:false };
+      return { left:'44%', bottom:'12%', h:'30%', pose:'bear-walk', flip:false };
+    }
+
+    // Where Bruno stands in the room, and which pose, depending on the hour.
+    // Morning by the kitchen table, daytime at his desk, evening thinking,
+    // night asleep in bed. A good day's work makes him dance on the rug.
+    function brunoInRoom() {
+      const t = timeOfDay();
+      const learnedToday = dailyXP >= 20;
+      if (learnedToday && t !== 'night') return { pose:'bear-dance', x:404, y:300, h:120 };
+      if (t === 'morning') return { pose:'bear-stand', x:96,  y:216, h:140 };
+      if (t === 'day')     return { pose:'bear-sit',   x:398, y:238, h:120 };
+      if (t === 'evening') return { pose:'bear-think', x:392, y:216, h:140 };
+      return { pose:'bear-sleep', x:706, y:246, h:96 };
+    }
+
+    // Pose shown on a corner sheet, reacting to how far along that corner is
+    function brunoForCorner(frac) {
+      if (frac === 1) return 'bear-jump';
+      if (frac > 0)   return 'bear-walk';
+      return 'bear-think';
+    }
+
     function roomBearPose() {
       const t = timeOfDay();
       if (t === 'night') return 'bear-sleep';
@@ -2208,6 +2244,7 @@
     }
 
     // Compact card used by both the flashcard and the postcard
+    // every German form inside the chips is marked so Chrome leaves it alone
     function grammarChips(item) {
       const g = wordGrammar(item);
       if (!g.isNoun) {
@@ -2221,11 +2258,11 @@
         <div class="grid grid-cols-2 gap-1.5">
           <div>
             <p class="text-[9px] font-bold text-slate-500 uppercase">Definite</p>
-            <p class="text-xs font-black text-slate-100">${g.definite}</p>
+            <p class="text-xs font-black text-slate-100" translate="no" lang="de">${g.definite}</p>
           </div>
           <div>
             <p class="text-[9px] font-bold text-slate-500 uppercase">Indefinite</p>
-            <p class="text-xs font-black text-slate-100">${g.indefinite}</p>
+            <p class="text-xs font-black text-slate-100" translate="no" lang="de">${g.indefinite}</p>
           </div>
         </div>
         <p class="text-[10px] font-bold text-slate-400">${g.note}</p>
@@ -2423,6 +2460,11 @@
             <circle cx="616" cy="298" r="6" fill="none" stroke="${st('clock').f===1?'#8a7a5e':INK}" stroke-width="2.2"/>
             <circle cx="652" cy="298" r="6" fill="none" stroke="${st('clock').f===1?'#8a7a5e':INK}" stroke-width="2.2"/>`, 634, 372)}
 
+          <!-- Bruno himself, in his room -->
+          ${(() => { const b = brunoInRoom(); return `
+            <image href="./bears/${b.pose}.png" x="${b.x}" y="${b.y}" height="${b.h}" pointer-events="none"/>
+            <ellipse cx="${b.x + 44}" cy="${b.y + b.h + 4}" rx="46" ry="9" fill="#000000" opacity=".14" pointer-events="none"/>`; })()}
+
           <!-- seasonal wash and weather -->
           <rect x="0" y="0" width="900" height="480" fill="${sp.tint}" opacity="${sp.tintA}" pointer-events="none"/>
           ${seasonParticles(sp)}
@@ -2437,8 +2479,9 @@
             <div class="on-dark w-full max-w-md md:max-w-2xl rounded-t-3xl p-5 space-y-3 max-h-[80vh] overflow-y-auto"
                  style="background:#111827; padding-bottom:calc(5.5rem + env(safe-area-inset-bottom))" onclick="event.stopPropagation()">
               <div class="flex items-start gap-3">
+                <img src="./bears/${brunoForCorner(pr.frac)}.png" alt="" class="h-16 w-auto shrink-0" onerror="this.style.display='none'">
                 <div class="flex-1 min-w-0">
-                  <p class="text-lg font-black od-title">${o.de}</p>
+                  <p class="text-lg font-black od-title" translate="no" lang="de">${o.de}</p>
                   <p class="text-[11px] font-bold od-muted">${o.blurb}</p>
                   <p class="text-[10px] font-black ${pr.frac === 1 ? 'od-green' : 'od-amber'} mt-0.5">
                     ${pr.frac === 1 ? '\u2713 Complete \u2014 its German name now shows in the room'
@@ -2450,6 +2493,14 @@
               <div class="h-2 rounded-full overflow-hidden" style="background:#1f2937">
                 <div class="h-full rounded-full" style="width:${Math.round(pr.frac*100)}%; background:#f59e0b"></div>
               </div>
+              <p class="text-[11px] font-bold od-muted italic" translate="no" lang="de">${
+                pr.frac === 1 ? '\ud83c\udf89 \u201eWunderbar! Diese Ecke ist fertig.\u201c'
+                : pr.frac > 0 ? '\ud83d\udcaa \u201eWeiter so \u2014 fast geschafft!\u201c'
+                : '\ud83d\udc4b \u201eKomm, wir fangen hier an!\u201c'}</p>
+              <p class="text-[11px] font-bold od-muted italic">${
+                pr.frac === 1 ? '\ud83c\udf89 \u201eWunderbar! Diese Ecke ist fertig.\u201c'
+                : pr.frac > 0 ? '\ud83d\udcaa \u201eWeiter so \u2014 fast geschafft!\u201c'
+                : '\ud83d\udc4b \u201eKomm, wir fangen hier an!\u201c'}</p>
               <div class="space-y-2 pt-1">
                 ${o.lessons.map(id => {
                   const les = lessonById(id);
@@ -2492,7 +2543,7 @@
                          <p class="text-[10px] font-black uppercase tracking-wider od-amber">${e.title}</p>
                          <button onclick='speakGerman(${safeOnclickArg(e.de)}, false)' class="text-[10px] font-black od-muted">\ud83d\udd0a</button>
                        </div>
-                       <p class="text-xs font-bold od-title leading-relaxed">${e.de}</p>
+                       <p class="text-xs font-bold od-title leading-relaxed" translate="no" lang="de">${e.de}</p>
                        <p class="text-[11px] od-muted leading-relaxed">${e.en}</p>
                      </div>`).join('')}
               </div>
@@ -2503,9 +2554,8 @@
       return `
         <div class="space-y-4">
           <div class="flex items-center gap-3 px-1">
-            <img src="./bears/${roomBearPose()}.png" alt="" class="h-14 w-auto shrink-0" onerror="this.style.display='none'">
             <div class="flex-1 min-w-0">
-              <p class="text-base font-black text-white truncate">${bearGreeting()}</p>
+              <p class="text-base font-black text-white truncate" translate="no" lang="de">${bearGreeting()}</p>
               <p class="text-[11px] font-bold text-slate-400">${totalDone} of ${roomObjects.length} corners brought to life</p>
             </div>
             <button onclick="toggleJournal()" class="btn3d shrink-0 px-3 py-2 rounded-2xl text-center" style="background:#3f3a5c">
@@ -2518,7 +2568,7 @@
             <div class="on-dark rounded-3xl p-3 flex items-center gap-3" style="background:#2a2440; box-shadow:0 4px 0 #1c1830">
               <img src="./bears/${moment.pose}.png" alt="" class="h-16 w-auto shrink-0" onerror="this.style.display='none'">
               <div class="flex-1 min-w-0">
-                <p class="text-xs font-black od-title">${moment.de}</p>
+                <p class="text-xs font-black od-title" translate="no" lang="de">${moment.de}</p>
                 <p class="text-[10px] font-bold od-muted">${moment.en}</p>
                 <div class="flex gap-2 mt-2">
                   <button onclick="dismissMoment(); toggleRoomObject('${moment.obj}')" class="btn3d px-3 py-1.5 rounded-xl text-[10px] font-black" style="background:#4f46e5">Help Bruno</button>
@@ -2529,19 +2579,24 @@
 
           <div class="relative rounded-3xl overflow-hidden" style="box-shadow:0 6px 0 rgba(0,0,0,.35)">
             ${svg}
+            ${(() => { const b = brunoSpot(); return `
+              <img src="./bears/${b.pose}.png" alt="Bruno"
+                   class="absolute pointer-events-none"
+                   style="left:${b.left}; bottom:${b.bottom}; height:${b.h}; width:auto; transform:translateX(-50%); filter:drop-shadow(0 6px 8px rgba(0,0,0,.35))"
+                   onerror="this.style.display='none'">`; })()}
           </div>
 
           <div class="flex items-center justify-between gap-2 px-1">
-            <p class="text-[10px] font-black uppercase tracking-wider text-slate-500">${sp.de} \u00b7 ${sp.en}</p>
-            <p class="text-[10px] font-bold text-slate-400">${sp.note}</p>
+            <p class="text-[10px] font-black uppercase tracking-wider text-slate-500"><span translate="no" lang="de">${sp.de}</span> \u00b7 ${sp.en}</p>
+            <p class="text-[10px] font-bold text-slate-400" translate="no" lang="de">${sp.note}</p>
           </div>
 
           <div class="${conf.cardBg} border p-4 rounded-2xl space-y-2">
             <div class="flex items-start gap-3">
               <span class="text-2xl shrink-0">\u2709\ufe0f</span>
               <div class="flex-1 min-w-0">
-                <p class="text-[10px] font-black uppercase tracking-wider text-amber-400">Wort des Tages</p>
-                <p class="text-base font-black text-white">${wordGrammar(wotd).isNoun ? wordGrammar(wotd).definite : cleanPrompt(wotd.german)}</p>
+                <p class="text-[10px] font-black uppercase tracking-wider text-amber-400" translate="no" lang="de">Wort des Tages</p>
+                <p class="text-base font-black text-white" translate="no" lang="de">${wordGrammar(wotd).isNoun ? wordGrammar(wotd).definite : cleanPrompt(wotd.german)}</p>
                 <p class="text-[11px] text-slate-400">${wotd.english}</p>
               </div>
               <button onclick='speakGerman(${safeOnclickArg(wotd.german)}, true)' class="btn3d px-3 py-2 text-white font-black text-[11px] rounded-xl shrink-0" style="background:#4f46e5">\ud83d\udd0a</button>
@@ -2646,8 +2701,12 @@
             const passed = quizCorrect >= Math.min(4, quizQuestions.length);
             container.innerHTML = `
               <div class="text-center p-6 ${conf.cardBg} border rounded-2xl shadow-xl space-y-4">
-                <img src="./bears/${passed ? 'bear-jump' : 'bear-think'}.png" alt="" class="h-28 w-auto mx-auto">
-                <h3 class="text-base font-black text-white">${passed ? 'Lesson complete!' : 'Almost there'}</h3>
+                <img src="./bears/${passed ? 'bear-jump' : 'bear-think'}.png" alt="" class="h-28 w-auto mx-auto" onerror="this.style.display='none'">
+                ${passed ? '<p class="text-2xl tracking-widest">\ud83c\udf89 \u2b50 \ud83c\udf6f</p>' : ''}
+                <h3 class="text-base font-black text-white">${passed ? 'Geschafft!' : 'Fast geschafft'}</h3>
+                <p class="text-[11px] font-bold text-slate-400 italic">${passed
+                  ? '\u201eSuper gemacht! Ich bin stolz auf dich.\u201c \u2014 Bruno'
+                  : '\u201eKein Problem. Wir versuchen es noch einmal!\u201c \u2014 Bruno'}</p>
                 <p class="text-xs text-slate-400">${quizCorrect} of ${quizQuestions.length} correct${passed ? ' \u00b7 +10 XP' : ''}</p>
                 <p class="text-[11px] text-slate-500">${passed ? 'The next lesson is unlocked.' : 'You need 4 correct to unlock the next lesson.'}</p>
                 <div class="grid grid-cols-2 gap-2">
@@ -2669,7 +2728,7 @@
               </div>
               <p class="text-[11px] font-black uppercase tracking-wider text-slate-400">${q.ask}</p>
               <div class="${conf.cardBg} border p-6 rounded-2xl text-center space-y-2">
-                ${q.prompt ? `<p class="text-2xl font-black text-white">${q.prompt}</p>` : `<p class="text-4xl">\ud83d\udc42</p>`}
+                ${q.prompt ? `<p class="text-2xl font-black text-white" translate="no" lang="de">${q.prompt}</p>` : `<p class="text-4xl">\ud83d\udc42</p>`}
                 ${q.hint ? `<p class="text-xs font-mono text-indigo-300">[ ${q.hint} ]</p>` : ''}
                 ${q.speak ? `<button onclick='speakGerman(${safeOnclickArg(q.speak)}, true)' class="btn3d mt-1 px-4 py-2 bg-indigo-600 text-white font-black text-[11px] rounded-xl">\ud83d\udd0a ${q.prompt ? 'Listen' : 'Play again'}</button>` : ''}
               </div>
@@ -2751,7 +2810,7 @@
                     <span class="text-[9px] font-mono text-amber-400/80 font-bold bg-slate-950/40 px-1.5 py-0.5 rounded">📄 Front</span>
                   </div>
                   <div class="flex flex-col my-auto items-center">
-                    <span class="text-2xl font-black tracking-tight select-none">${card.german}</span>
+                    <span class="text-2xl font-black tracking-tight select-none" translate="no" lang="de">${card.german}</span>
                     <span class="text-xs font-mono font-bold text-indigo-300 mt-2 bg-indigo-950/40 px-2 py-1 rounded border border-indigo-900/40">🗣️ [ ${card.pronunciation || 'N/A'} ]</span>
                     
                     <button onclick='event.stopPropagation(); triggerSpeechSynthesis(${safeOnclickArg(card.german)});' class="mt-3 px-3 py-1.5 bg-indigo-600 hover:bg-indigo-500 text-white font-extrabold text-[10px] rounded-lg shadow-md flex items-center gap-1 transition-transform active:scale-95">
