@@ -151,6 +151,17 @@
     [data-theme="light"] .border-amber-900 { border-color: #fde68a !important; }
 
     [data-theme="light"] ::-webkit-scrollbar-thumb { background: rgba(100, 116, 139, 0.3); }
+
+    /* Overlays (room sheet, journal, moment card) are always dark surfaces, so
+       their text must stay light even when the app is in Light Mode. Without
+       this the light-theme layer repaints .text-white dark and the sheet
+       contents become invisible. */
+    .on-dark, .on-dark p, .on-dark span, .on-dark div { color: #e2e8f0 !important; }
+    .on-dark .od-title  { color: #ffffff !important; }
+    .on-dark .od-muted  { color: #94a3b8 !important; }
+    .on-dark .od-amber  { color: #fbbf24 !important; }
+    .on-dark .od-green  { color: #34d399 !important; }
+    .on-dark .od-dim    { color: #64748b !important; }
   </style>
 </head>
 <body class="min-h-screen flex flex-col bg-slate-950 text-slate-100">
@@ -185,6 +196,9 @@
       <button onclick="switchTab('exams')" id="tab-exams" class="flex-1 flex items-center justify-center" aria-label="Exams"><span class="tab-icon">🏆</span></button>
     </footer>
   </div>
+
+  <!-- Sheets render here, outside the scrolling area, so they always cover the screen -->
+  <div id="sb-overlay"></div>
 
   <!-- Master Application Logic & Core Datastructure Matrices -->
   <script>
@@ -2099,6 +2113,71 @@
       return journalEntries.filter(e => e.need <= learned).length;
     }
 
+    // Full grammatical picture for a vocabulary entry: article, indefinite
+    // form, and a plain-language note on what kind of word it is.
+    const genderInfo = {
+      masculine: { def:'der', indef:'ein',  label:'masculine', colour:'#60a5fa' },
+      feminine:  { def:'die', indef:'eine', label:'feminine',  colour:'#f472b6' },
+      neuter:    { def:'das', indef:'ein',  label:'neuter',    colour:'#fbbf24' },
+      plural:    { def:'die', indef:'\u2014', label:'plural',  colour:'#a78bfa' }
+    };
+
+    const kindNotes = {
+      letter:'Letter of the alphabet', umlaut:'Umlaut sound', ligature:'Special letter',
+      phonics:'Pronunciation rule', number:'Number', day:'Day of the week', month:'Month',
+      season:'Season', daypart:'Part of the day', colour:'Colour (adjective)',
+      hobby:'Activity', greeting:'Greeting phrase', departure:'Farewell phrase',
+      query:'Question word', 'informal time':'Time phrase', dialogue:'Useful sentence',
+      routine:'Everyday sentence', split:'Has a male and a female form',
+      expression:'Expression'
+    };
+
+    function bareNoun(item) {
+      return String(item.german).replace(/^(der|die|das)\s+/i, '').trim();
+    }
+
+    function wordGrammar(item) {
+      const gi = genderInfo[item.gender];
+      if (gi) {
+        const noun = bareNoun(item);
+        return {
+          isNoun: true, colour: gi.colour, label: gi.label,
+          definite: gi.def + ' ' + noun,
+          indefinite: gi.indef === '\u2014' ? '\u2014' : gi.indef + ' ' + noun,
+          note: item.gender === 'plural'
+            ? 'Plural nouns take die and have no indefinite article.'
+            : 'Nouns are always capitalised in German.'
+        };
+      }
+      return { isNoun:false, colour:'#94a3b8', label:item.gender,
+               note: kindNotes[item.gender] || 'Not a noun \u2014 no article needed.' };
+    }
+
+    // Compact card used by both the flashcard and the postcard
+    function grammarChips(item) {
+      const g = wordGrammar(item);
+      if (!g.isNoun) {
+        return `<div class="mt-2 p-2.5 rounded-xl text-left" style="background:rgba(148,163,184,.12)">
+          <p class="text-[9px] font-black uppercase tracking-wider" style="color:${g.colour}">${g.label}</p>
+          <p class="text-[11px] font-bold text-slate-300 mt-0.5">${g.note}</p>
+        </div>`;
+      }
+      return `<div class="mt-2 p-2.5 rounded-xl text-left space-y-1" style="background:rgba(148,163,184,.12)">
+        <p class="text-[9px] font-black uppercase tracking-wider" style="color:${g.colour}">${g.label}</p>
+        <div class="grid grid-cols-2 gap-1.5">
+          <div>
+            <p class="text-[9px] font-bold text-slate-500 uppercase">Definite</p>
+            <p class="text-xs font-black text-slate-100">${g.definite}</p>
+          </div>
+          <div>
+            <p class="text-[9px] font-bold text-slate-500 uppercase">Indefinite</p>
+            <p class="text-xs font-black text-slate-100">${g.indefinite}</p>
+          </div>
+        </div>
+        <p class="text-[10px] font-bold text-slate-400">${g.note}</p>
+      </div>`;
+    }
+
     function wordOfTheDay() {
       const all = [];
       Object.keys(a1VocabularyDatabase).forEach(c => a1VocabularyDatabase[c].forEach(i => all.push(i)));
@@ -2149,13 +2228,16 @@
         const pr = objProgress(o);
         sheet = `
           <div class="fixed inset-0 z-[60] flex items-end justify-center" style="background:rgba(2,6,23,.65)" onclick="toggleRoomObject('${o.id}')">
-            <div class="w-full max-w-md md:max-w-2xl rounded-t-3xl p-5 space-y-3 max-h-[88vh] overflow-y-auto"
-                 style="background:#111827; padding-bottom:calc(1.25rem + env(safe-area-inset-bottom))" onclick="event.stopPropagation()">
+            <div class="on-dark w-full max-w-md md:max-w-2xl rounded-t-3xl p-5 space-y-3 max-h-[80vh] overflow-y-auto"
+                 style="background:#111827; padding-bottom:calc(5.5rem + env(safe-area-inset-bottom))" onclick="event.stopPropagation()">
               <div class="flex items-start gap-3">
                 <div class="flex-1 min-w-0">
-                  <p class="text-lg font-black text-white">${o.de}</p>
-                  <p class="text-[11px] font-bold text-slate-400">${o.blurb}</p>
-                  <p class="text-[10px] font-black text-amber-400 mt-0.5">${pr.done} of ${pr.total} finished</p>
+                  <p class="text-lg font-black od-title">${o.de}</p>
+                  <p class="text-[11px] font-bold od-muted">${o.blurb}</p>
+                  <p class="text-[10px] font-black ${pr.frac === 1 ? 'od-green' : 'od-amber'} mt-0.5">
+                    ${pr.frac === 1 ? '\u2713 Complete \u2014 its German name now shows in the room'
+                       : pr.done + ' of ' + pr.total + ' done \u00b7 finish the rest to light up this corner'}
+                  </p>
                 </div>
                 <button onclick="toggleRoomObject('${o.id}')" class="text-slate-500 text-xl font-black leading-none">\u2715</button>
               </div>
@@ -2178,12 +2260,14 @@
           </div>`;
       }
 
+      // Sheets go to the body-level host, never inside the scroll container
+      const overlayHost = document.getElementById('sb-overlay');
       let journalSheet = '';
       if (journalOpen) {
         const unlocked = journalUnlockedCount();
         journalSheet = `
           <div class="fixed inset-0 z-[60] flex items-end justify-center" style="background:rgba(2,6,23,.65)" onclick="toggleJournal()">
-            <div class="w-full max-w-md md:max-w-2xl rounded-t-3xl p-5 space-y-3 max-h-[88vh] overflow-y-auto"
+            <div class="on-dark w-full max-w-md md:max-w-2xl rounded-t-3xl p-5 space-y-3 max-h-[88vh] overflow-y-auto"
                  style="background:#111827; padding-bottom:calc(1.25rem + env(safe-area-inset-bottom))" onclick="event.stopPropagation()">
               <div class="flex items-start gap-3">
                 <img src="./bears/bear-sit.png" alt="" class="h-14 w-auto shrink-0" onerror="this.style.display='none'">
@@ -2215,6 +2299,8 @@
           </div>`;
       }
 
+      if (overlayHost) overlayHost.innerHTML = sheet + journalSheet;
+
       return `
         <div class="space-y-4">
           <div class="flex items-center gap-3 px-1">
@@ -2230,7 +2316,7 @@
           </div>
 
           ${showMoment ? `
-            <div class="rounded-3xl p-3 flex items-center gap-3" style="background:#2a2440; box-shadow:0 4px 0 #1c1830">
+            <div class="on-dark rounded-3xl p-3 flex items-center gap-3" style="background:#2a2440; box-shadow:0 4px 0 #1c1830">
               <img src="./bears/${moment.pose}.png" alt="" class="h-16 w-auto shrink-0" onerror="this.style.display='none'">
               <div class="flex-1 min-w-0">
                 <p class="text-xs font-black text-white">${moment.de}</p>
@@ -2369,26 +2455,23 @@
             <p class="text-[10px] font-bold text-slate-400">${sp.note}</p>
           </div>
 
-          <div class="${conf.cardBg} border p-4 rounded-2xl flex items-center gap-3">
-            <span class="text-2xl shrink-0">\u2709\ufe0f</span>
-            <div class="flex-1 min-w-0">
-              <p class="text-[10px] font-black uppercase tracking-wider text-amber-400">Wort des Tages</p>
-              <p class="text-sm font-black text-white truncate">${cleanPrompt(wotd.german)}</p>
-              <p class="text-[11px] text-slate-400 truncate">${wotd.english}</p>
+          <div class="${conf.cardBg} border p-4 rounded-2xl space-y-2">
+            <div class="flex items-center gap-3">
+              <span class="text-2xl shrink-0">\u2709\ufe0f</span>
+              <div class="flex-1 min-w-0">
+                <p class="text-[10px] font-black uppercase tracking-wider text-amber-400">Wort des Tages</p>
+                <p class="text-base font-black text-white">${wordGrammar(wotd).isNoun ? wordGrammar(wotd).definite : cleanPrompt(wotd.german)}</p>
+                <p class="text-[11px] text-slate-400">${wotd.english}</p>
+              </div>
+              <button onclick='speakGerman(${safeOnclickArg(wotd.german)}, true)' class="btn3d px-3 py-2 bg-indigo-600 text-white font-black text-[11px] rounded-xl shrink-0">\ud83d\udd0a</button>
             </div>
-            <button onclick='speakGerman(${safeOnclickArg(wotd.german)}, true)' class="btn3d px-3 py-2 bg-indigo-600 text-white font-black text-[11px] rounded-xl shrink-0">\ud83d\udd0a</button>
-          </div>
-
-          <div class="${conf.cardBg} border p-4 rounded-xl">
-            <h3 class="text-xs font-black text-slate-400 uppercase tracking-wider mb-2">Room light</h3>
-            <div class="grid grid-cols-3 gap-2">
-              <button onclick="applyThemeProfile('midnight-slate')" class="btn3d p-2.5 rounded-lg text-[11px] font-bold" style="background-color:#0f172a; color:#ffffff;">Slate</button>
-              <button onclick="applyThemeProfile('cyberpunk-neon')" class="btn3d p-2.5 rounded-lg text-[11px] font-bold" style="background-color:#1e1b4b; color:#67e8f9;">Neon</button>
-              <button onclick="applyThemeProfile('daylight-white')" class="btn3d p-2.5 rounded-lg text-[11px] font-bold" style="background-color:#ffffff; color:#0f172a;">Light</button>
-            </div>
+            <p class="text-[11px] font-mono font-bold text-indigo-300">[ ${wotd.pronunciation || ''} ]</p>
+            ${grammarChips(wotd)}
+            ${grammarChips(wotd)}
+            <p class="text-[11px] text-slate-400 leading-relaxed">${wotd.hint}</p>
           </div>
         </div>
-        ${sheet}${journalSheet}`;
+        `;
     }
 
     // Games render as a full-screen overlay from any tab
@@ -2468,6 +2551,8 @@
     // View Route Processing Center Hub
     function renderActiveTabModule() {
       const container = document.getElementById('main-scroll-view');
+      const ov = document.getElementById('sb-overlay');
+      if (ov && !(activeTab === 'dashboard' && activeGameMode === 'none' && !activeExamRunningMode)) ov.innerHTML = '';
       const conf = systemThemeProfiles[currentThemeProfile] || systemThemeProfiles['midnight-slate'];
 
       // Games open as an overlay from either the Path or the Practice tab
@@ -2578,7 +2663,7 @@
               <span class="text-indigo-400 font-extrabold uppercase">A1 Vocabulary Library</span>
             </div>
 
-            <div class="flashcard-wrapper w-full h-56 cursor-pointer ${isVocabCardFlipped ? 'flipped' : ''}" onclick="this.classList.toggle('flipped'); isVocabCardFlipped=!isVocabCardFlipped;">
+            <div class="flashcard-wrapper w-full h-72 md:h-80 cursor-pointer ${isVocabCardFlipped ? 'flipped' : ''}" onclick="this.classList.toggle('flipped'); isVocabCardFlipped=!isVocabCardFlipped;">
               <div class="flashcard-inner">
                 <div class="flashcard-front ${conf.cardBg} border shadow-xl">
                   <div class="w-full flex justify-between items-center">
@@ -2595,10 +2680,11 @@
                   </div>
                   <span class="text-[10px] text-slate-400 font-medium italic">💡 Tap card background area to flip</span>
                 </div>
-                <div class="flashcard-back ${conf.cardBackBg} border shadow-xl">
-                  <span class="text-[9px] uppercase tracking-widest font-black self-start text-indigo-300">English Translation Mapping</span>
-                  <span class="text-xl font-extrabold tracking-tight my-auto select-none">${card.english}</span>
-                  <p class="text-xs text-indigo-200/80 px-4">${card.hint}</p>
+                <div class="flashcard-back ${conf.cardBackBg} border shadow-xl overflow-y-auto">
+                  <span class="text-[9px] uppercase tracking-widest font-black self-start text-indigo-300">Meaning &amp; grammar</span>
+                  <span class="text-xl font-extrabold tracking-tight select-none">${card.english}</span>
+                  ${grammarChips(card)}
+                  <p class="text-[11px] text-indigo-200/80 mt-1">${card.hint}</p>
                 </div>
               </div>
             </div>
