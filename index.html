@@ -798,7 +798,23 @@
     ];
 
     // Global Core Architecture Reactivity State Cache Layout Engine Variables
-    const APP_BUILD = 'v8';
+    const APP_BUILD = 'v10';
+
+    // Days you have actually studied. Only ever goes up - no streak to break.
+    let daysLearned = parseInt(localStorage.getItem('sb_days_learned'), 10) || 0;
+    let showWelcome = !localStorage.getItem('sb_welcomed');
+    let showCoachmark = !localStorage.getItem('sb_coached');
+    function noteLearningDay() {
+      const today = new Date().toDateString();
+      if (localStorage.getItem('sb_last_learn_date') === today) return;
+      localStorage.setItem('sb_last_learn_date', today);
+      daysLearned += 1;
+      localStorage.setItem('sb_days_learned', daysLearned);
+    }
+
+    // First-run welcome, shown once
+    function hasBeenWelcomed() { return localStorage.getItem('sb_welcomed') === '1'; }
+    function finishWelcome() { localStorage.setItem('sb_welcomed', '1'); renderActiveTabModule(); }
     let activeTab = 'dashboard';
 
     // ===== Curriculum: 7 units, each a list of lessons =====
@@ -1473,11 +1489,13 @@
       const note = document.getElementById('header-note');
       if (!note) return;
       const learned = roomObjects.filter(o => objProgress(o).frac === 1).length;
-      const alive = learned === 0 ? '' : learned + (learned === 1 ? ' corner alive \u00b7 ' : ' corners alive \u00b7 ');
-      note.innerText = alive + APP_BUILD;
+      // A number that only ever goes up - no streak to break, no guilt.
+      const days = daysLearned > 0 ? daysLearned + (daysLearned === 1 ? ' Tag gelernt \u00b7 ' : ' Tage gelernt \u00b7 ') : '';
+      note.innerText = days + APP_BUILD;
     }
 
     function rewardXP(amt) {
+      noteLearningDay();
       totalXPAmount += amt;
       localStorage.setItem('sb_total_xp', totalXPAmount);
       dailyXP += amt;
@@ -2196,6 +2214,16 @@
     ];
 
     let journalOpen = false;
+    function dismissWelcome() {
+      showWelcome = false;
+      localStorage.setItem('sb_welcomed', '1');
+      renderActiveTabModule();
+    }
+    function clearCoachmark() {
+      showCoachmark = false;
+      localStorage.setItem('sb_coached', '1');
+    }
+
     function toggleJournal() { journalOpen = !journalOpen; renderActiveTabModule(); }
     function journalUnlockedCount() {
       const learned = roomObjects.filter(o => objProgress(o).frac === 1).length;
@@ -2276,6 +2304,7 @@
     }
 
     function toggleRoomObject(id) {
+      if (showCoachmark) clearCoachmark();
       openRoomObject = (openRoomObject === id) ? null : id;
       renderActiveTabModule();
     }
@@ -2321,6 +2350,21 @@
         shelf:[430,198], desk:[500,278], window:[500,72], rug:[592,424],
         bed:[866,266], clock:[664,312]
       };
+      // After the welcome, a single arrow points at the first thing to tap.
+      // It disappears the moment any corner is opened.
+      const coachmark = () => {
+        if (!hasBeenWelcomed() || !showCoachmark || !suggest) return '';
+        const c = PIN[suggest]; if (!c) return '';
+        return `<g pointer-events="none">
+          <path d="M${c[0]} ${c[1]-30} l-9 -16 h18 z" fill="#4f46e5">
+            <animateTransform attributeName="transform" type="translate" values="0,0; 0,-8; 0,0" dur="1.2s" repeatCount="indefinite"/>
+          </path>
+          <rect x="${c[0]-46}" y="${c[1]-76}" width="92" height="24" rx="12" fill="#4f46e5"/>
+          <text x="${c[0]}" y="${c[1]-59}" text-anchor="middle" font-family="'Plus Jakarta Sans',sans-serif"
+                font-size="12" font-weight="800" fill="#ffffff">Hier tippen</text>
+        </g>`;
+      };
+
       const pins = () => roomObjects.map(o => {
         const c = PIN[o.id]; if (!c) return '';
         const p = objProgress(o);
@@ -2502,6 +2546,7 @@
 
           <!-- tap buttons, drawn above the furniture and Bruno -->
           ${pins()}
+          ${coachmark()}
 
           <!-- seasonal wash and weather -->
           <rect x="0" y="0" width="900" height="480" fill="${sp.tint}" opacity="${sp.tintA}" pointer-events="none"/>
@@ -2555,6 +2600,23 @@
           </div>`;
       }
 
+      let welcome = '';
+      if (!hasBeenWelcomed()) {
+        // Deliberately almost wordless: a big Bruno, one German line, one
+        // button. The arrow that appears afterwards does the explaining.
+        welcome = `
+          <div class="fixed inset-0 z-[70] flex items-center justify-center p-6" style="background:rgba(15,23,42,.94)">
+            <div class="on-dark w-full max-w-sm text-center space-y-6">
+              <img src="./bears/bear-wave.png" alt="" class="h-48 w-auto mx-auto" onerror="this.style.display='none'">
+              <div class="space-y-1">
+                <p class="text-2xl font-black od-title" translate="no" lang="de">Hallo! Ich bin Bruno.</p>
+                <p class="text-sm font-bold od-muted">Willkommen in meinem Zimmer.</p>
+              </div>
+              <button onclick="finishWelcome()" class="btn3d w-full py-4 rounded-2xl text-white font-black text-lg" style="background:#4f46e5" translate="no" lang="de">Los geht's!</button>
+            </div>
+          </div>`;
+      }
+
       let journalSheet = '';
       if (journalOpen) {
         const unlocked = journalUnlockedCount();
@@ -2589,13 +2651,15 @@
           </div>`;
       }
 
+
+
       return `
         <div class="space-y-4">
           <div class="flex items-center gap-3 px-1">
             <img src="./bears/${roomBearPose()}.png" alt="Bruno" class="h-14 w-auto shrink-0" onerror="this.style.display='none'">
             <div class="flex-1 min-w-0">
               <p class="text-base font-black text-white truncate" translate="no" lang="de">${bearGreeting()}</p>
-              <p class="text-[11px] font-bold text-slate-400">${totalDone} of ${roomObjects.length} corners brought to life</p>
+              <p class="text-[11px] font-bold text-slate-400">${totalDone} of ${roomObjects.length} corners brought to life${daysLearned > 0 ? ' \u00b7 <span translate="no" lang="de">' + daysLearned + ' Tage gelernt</span>' : ''}</p>
             </div>
             <button onclick="toggleJournal()" class="btn3d shrink-0 px-3 py-2 rounded-2xl text-center" style="background:#3f3a5c">
               <span class="text-base leading-none block">\ud83d\udcd3</span>
@@ -2640,7 +2704,7 @@
             <p class="text-[11px] text-slate-400 leading-relaxed">${wotd.hint}</p>
           </div>
         </div>
-        ${sheet}${journalSheet}`;
+        ${sheet}${journalSheet}${welcome}`;
     }
 
     // Games render as a full-screen overlay from any tab
