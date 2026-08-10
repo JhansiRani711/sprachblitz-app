@@ -187,8 +187,18 @@
     
     <!-- Top Global Status Header Tracking Engine -->
     <header id="app-header-nav" class="p-4 border-b border-slate-800 bg-slate-950 text-white flex justify-between items-center sticky top-0 z-50 theme-transition">
-      <h1 class="text-base font-extrabold tracking-tight">Sprachblitz</h1>
-      <p id="header-note" class="text-[10px] font-bold text-slate-500"></p>
+      <div class="flex flex-col min-w-0">
+        <h1 class="text-base font-extrabold tracking-tight">Sprachblitz</h1>
+        <p id="header-note" class="text-[9px] font-bold text-slate-500"></p>
+      </div>
+      <div class="flex items-center gap-2 shrink-0">
+        <div class="font-bold text-xs flex items-center gap-1 px-2 py-1 rounded-lg border border-amber-900/60 bg-amber-950/40 text-amber-400">
+          \ud83d\udd25 <span id="streak-days-val">1</span>
+        </div>
+        <div class="font-bold text-xs flex items-center gap-1 px-2 py-1 rounded-lg border border-indigo-800 bg-indigo-950 text-indigo-300">
+          \u2728 <span id="xp-amount-val">0</span>
+        </div>
+      </div>
     </header>
 
     <!-- Main Dynamic Scrolling Workspace Window View Surface -->
@@ -942,8 +952,12 @@
       return all.length - 1;
     }
     function markLessonDone(id) {
+      const wasComplete = roomObjects.filter(o => objProgress(o).frac === 1).length;
       lessonProgress[id] = true;
       localStorage.setItem('sb_lesson_progress', JSON.stringify(lessonProgress));
+      // finishing the last lesson of a corner is worth a bonus
+      const nowComplete = roomObjects.filter(o => objProgress(o).frac === 1).length;
+      if (nowComplete > wasComplete) rewardXP(25);
     }
 
     // ===== Daily goal =====
@@ -1487,6 +1501,10 @@
     // XP still accumulates quietly and surfaces only where it is earned.
     function updateDashboardTelemetry() {
       const note = document.getElementById('header-note');
+      const xpNode = document.getElementById('xp-amount-val');
+      const stNode = document.getElementById('streak-days-val');
+      if (xpNode) xpNode.innerText = totalXPAmount;
+      if (stNode) stNode.innerText = savedStreakCount;
       if (!note) return;
       const learned = roomObjects.filter(o => objProgress(o).frac === 1).length;
       // A number that only ever goes up - no streak to break, no guilt.
@@ -1494,7 +1512,22 @@
       note.innerText = days + APP_BUILD;
     }
 
+    // A badge floats up wherever XP is earned, so every part of the app
+    // visibly feeds the same counter in the header.
+    function flashXP(amt) {
+      if (!amt || typeof document === 'undefined' || !document.body) return;
+      const el = document.createElement('div');
+      el.textContent = '+' + amt + ' XP';
+      el.style.cssText = 'position:fixed;top:60px;right:16px;z-index:9998;background:#4f46e5;color:#fff;'
+        + 'font-weight:800;font-size:12px;padding:6px 12px;border-radius:999px;pointer-events:none;'
+        + 'box-shadow:0 4px 12px rgba(0,0,0,.35);transition:transform .7s ease,opacity .7s ease';
+      document.body.appendChild(el);
+      requestAnimationFrame(() => { el.style.transform = 'translateY(-28px)'; el.style.opacity = '0'; });
+      setTimeout(() => el.remove(), 820);
+    }
+
     function rewardXP(amt) {
+      flashXP(amt);
       noteLearningDay();
       totalXPAmount += amt;
       localStorage.setItem('sb_total_xp', totalXPAmount);
@@ -2225,6 +2258,12 @@
     }
 
     function toggleJournal() { journalOpen = !journalOpen; renderActiveTabModule(); }
+
+    function needsWelcome() { return !localStorage.getItem('sb_welcomed'); }
+    function dismissWelcome() {
+      localStorage.setItem('sb_welcomed', '1');
+      renderActiveTabModule();
+    }
     function journalUnlockedCount() {
       const learned = roomObjects.filter(o => objProgress(o).frac === 1).length;
       return journalEntries.filter(e => e.need <= learned).length;
