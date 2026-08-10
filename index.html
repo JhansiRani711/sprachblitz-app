@@ -2094,16 +2094,6 @@
     }
 
     // Bruno's spot in the room: {left%, bottom%, height%, pose}
-    function brunoSpot() {
-      const t = timeOfDay();
-      const learned = roomObjects.filter(o => objProgress(o).frac === 1).length;
-      if (t === 'night')   return { left:'80%', bottom:'22%', h:'20%', pose:'bear-sleep', flip:false };
-      if (t === 'morning') return { left:'14%', bottom:'12%', h:'30%', pose:'bear-stand', flip:false };
-      if (t === 'evening') return { left:'46%', bottom:'12%', h:'30%', pose:'bear-sit',   flip:false };
-      // daytime: at the desk, or dancing in the middle once the room is alive
-      if (learned >= roomObjects.length) return { left:'50%', bottom:'14%', h:'32%', pose:'bear-dance', flip:false };
-      return { left:'44%', bottom:'12%', h:'30%', pose:'bear-walk', flip:false };
-    }
 
     // Where Bruno stands in the room, and which pose, depending on the hour.
     // Morning by the kitchen table, daytime at his desk, evening thinking,
@@ -2111,11 +2101,13 @@
     function brunoInRoom() {
       const t = timeOfDay();
       const learnedToday = dailyXP >= 20;
-      if (learnedToday && t !== 'night') return { pose:'bear-dance', x:404, y:300, h:120 };
-      if (t === 'morning') return { pose:'bear-stand', x:96,  y:216, h:140 };
-      if (t === 'day')     return { pose:'bear-sit',   x:398, y:238, h:120 };
-      if (t === 'evening') return { pose:'bear-think', x:392, y:216, h:140 };
-      return { pose:'bear-sleep', x:706, y:246, h:96 };
+      // Bruno stands centre-stage on the rug. Only the night pose moves him
+      // over to the bed, because that is where sleeping makes sense.
+      if (t === 'night')   return { pose:'bear-sleep', x:700, y:250, h:92 };
+      if (learnedToday)    return { pose:'bear-dance', x:404, y:268, h:132 };
+      if (t === 'morning') return { pose:'bear-stand', x:412, y:262, h:138 };
+      if (t === 'day')     return { pose:'bear-sit',   x:410, y:282, h:118 };
+      return { pose:'bear-think', x:412, y:262, h:138 };
     }
 
     // Pose shown on a corner sheet, reacting to how far along that corner is
@@ -2554,6 +2546,7 @@
       return `
         <div class="space-y-4">
           <div class="flex items-center gap-3 px-1">
+            <img src="./bears/${roomBearPose()}.png" alt="Bruno" class="h-14 w-auto shrink-0" onerror="this.style.display='none'">
             <div class="flex-1 min-w-0">
               <p class="text-base font-black text-white truncate" translate="no" lang="de">${bearGreeting()}</p>
               <p class="text-[11px] font-bold text-slate-400">${totalDone} of ${roomObjects.length} corners brought to life</p>
@@ -2579,11 +2572,6 @@
 
           <div class="relative rounded-3xl overflow-hidden" style="box-shadow:0 6px 0 rgba(0,0,0,.35)">
             ${svg}
-            ${(() => { const b = brunoSpot(); return `
-              <img src="./bears/${b.pose}.png" alt="Bruno"
-                   class="absolute pointer-events-none"
-                   style="left:${b.left}; bottom:${b.bottom}; height:${b.h}; width:auto; transform:translateX(-50%); filter:drop-shadow(0 6px 8px rgba(0,0,0,.35))"
-                   onerror="this.style.display='none'">`; })()}
           </div>
 
           <div class="flex items-center justify-between gap-2 px-1">
