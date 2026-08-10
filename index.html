@@ -808,7 +808,7 @@
     ];
 
     // Global Core Architecture Reactivity State Cache Layout Engine Variables
-    const APP_BUILD = 'v11';
+    const APP_BUILD = 'v12';
 
     // Days you have actually studied. Only ever goes up - no streak to break.
     let daysLearned = parseInt(localStorage.getItem('sb_days_learned'), 10) || 0;
@@ -823,7 +823,11 @@
     }
 
     // First-run welcome, shown once
-    function hasBeenWelcomed() { return localStorage.getItem('sb_welcomed') === '1'; }
+    function hasBeenWelcomed() {
+      // ?welcome=1 replays the intro even after it has been dismissed
+      if (typeof location !== 'undefined' && /[?&]welcome=1/.test(location.search)) return false;
+      return localStorage.getItem('sb_welcomed') === '1';
+    }
     function finishWelcome() { localStorage.setItem('sb_welcomed', '1'); renderActiveTabModule(); }
     let activeTab = 'dashboard';
 
@@ -2259,15 +2263,6 @@
 
     function toggleJournal() { journalOpen = !journalOpen; renderActiveTabModule(); }
 
-    function needsWelcome() {
-      // ?welcome=1 forces the intro to play again - handy for testing
-      if (typeof location !== 'undefined' && /[?&]welcome=1/.test(location.search)) return true;
-      return !localStorage.getItem('sb_welcomed');
-    }
-    function dismissWelcome() {
-      localStorage.setItem('sb_welcomed', '1');
-      renderActiveTabModule();
-    }
     function journalUnlockedCount() {
       const learned = roomObjects.filter(o => objProgress(o).frac === 1).length;
       return journalEntries.filter(e => e.need <= learned).length;
