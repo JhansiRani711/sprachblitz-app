@@ -11,7 +11,7 @@
   <link rel="manifest" href="./manifest.json">
   <link rel="apple-touch-icon" href="./apple-touch-icon.png">
   <link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png">
-  <title>Sprachblitz - A1 Language Arena & Exam Center</title>
+  <title>Sprachblitz – Deutsch lernen A1 bis B2</title>
   <!-- Tailwind CSS Core Setup -->
   <script src="https://cdn.tailwindcss.com"></script>
   <!-- External Font Family Tracking -->
@@ -179,7 +179,7 @@
   <div id="splash-screen">
     <img src="./icon-512.png" alt="" style="width:140px; height:140px; border-radius:30px; box-shadow:0 10px 40px rgba(0,0,0,.5)">
     <h1>Sprachblitz</h1>
-    <p>A1 Deutsch lernen</p>
+    <p>A1–B2 Deutsch lernen</p>
   </div>
 
   <!-- Main Responsive Application Container Shell -->
@@ -198,6 +198,10 @@
         <div class="font-bold text-xs flex items-center gap-1 px-2 py-1 rounded-lg border border-indigo-800 bg-indigo-950 text-indigo-300">
           ✨ <span id="xp-amount-val">0</span>
         </div>
+        <button onclick="openSettings()" aria-label="Profile and settings"
+                class="h-8 w-8 rounded-lg border border-slate-700 bg-slate-800 text-sm flex items-center justify-center">
+          <span id="header-avatar">⚙️</span>
+        </button>
       </div>
     </header>
 
@@ -218,6 +222,7 @@
 
   <!-- Sheets render here, outside the scrolling area, so they always cover the screen -->
   <div id="sb-overlay"></div>
+  <div id="sb-settings"></div>
 
   <!-- Master Application Logic & Core Datastructure Matrices -->
   <script>
@@ -2736,6 +2741,7 @@
 
     function speakGerman(text, stripParens) {
       if (!('speechSynthesis' in window)) return;
+      if (typeof soundOn !== 'undefined' && !soundOn) return;
       const synth = window.speechSynthesis;
       const clean = stripParens ? String(text).split('(')[0].trim() : String(text);
       if (!clean) return;
@@ -2746,7 +2752,7 @@
       const fire = () => {
         const u = new SpeechSynthesisUtterance(clean);
         u.lang = 'de-DE';
-        u.rate = 0.85;
+        u.rate = (typeof speechRate === 'number' ? speechRate : 0.85);
         u.volume = 1;
         const voices = synth.getVoices();
         const de = voices.find(v => v.lang === 'de-DE') || voices.find(v => v.lang && v.lang.startsWith('de'));
@@ -3656,6 +3662,7 @@
 
     // Falling snow / petals / leaves, drawn as SVG so no images are needed
     function seasonParticles(sp) {
+      if (typeof reduceMotion !== 'undefined' && reduceMotion) return '';
       if (sp.particle === 'none') return '';
       const n = sp.particle === 'snow' ? 16 : 10;
       let out = '';
@@ -3784,6 +3791,266 @@
     }
 
     function toggleJournal() { journalOpen = !journalOpen; renderActiveTabModule(); }
+
+    // The settings sheet is rendered on top of whatever tab is open.
+    function settingsSheetHTML() {
+      if (!settingsOpen) return '';
+      const row = (label, hint, control) => `
+        <div class="flex items-center justify-between gap-3 py-2.5">
+          <div class="min-w-0">
+            <p class="text-xs font-black od-title">${label}</p>
+            ${hint ? `<p class="text-[10px] font-bold od-muted">${hint}</p>` : ''}
+          </div>
+          <div class="shrink-0">${control}</div>
+        </div>`;
+      const toggle = (on, fn) => `
+        <button onclick="${fn}" class="btn3d px-3 py-1.5 rounded-xl text-[11px] font-black text-white"
+                style="background:${on ? '#4f46e5' : '#334155'}">${on ? 'On' : 'Off'}</button>`;
+
+      return `
+        <div class="fixed inset-0 z-[75] flex items-end justify-center" style="background:rgba(2,6,23,.7)" onclick="closeSettings()">
+          <div class="on-dark w-full max-w-md md:max-w-2xl rounded-t-3xl p-5 space-y-2 max-h-[88vh] overflow-y-auto"
+               style="background:#111827; padding-bottom:calc(5.5rem + env(safe-area-inset-bottom))" onclick="event.stopPropagation()">
+
+            <div class="flex items-center justify-between">
+              <p class="text-lg font-black od-title">Profile & settings</p>
+              <button onclick="closeSettings()" class="text-xl font-black leading-none od-dim">\u2715</button>
+            </div>
+
+            <div class="rounded-2xl p-4 space-y-3" style="background:#1e293b">
+              <div class="flex items-center gap-3">
+                <span class="text-3xl leading-none">${learnerAvatar}</span>
+                <div class="flex-1 min-w-0">
+                  <p class="text-[10px] font-black uppercase tracking-wider od-muted">Your name</p>
+                  <input value="${learnerName.replace(/"/g, '&quot;')}" oninput="saveLearnerName(this.value)"
+                         placeholder="e.g. Anna" maxlength="24"
+                         class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-sm font-bold text-white outline-none mt-1">
+                </div>
+              </div>
+              <div class="flex flex-wrap gap-2">
+                ${AVATAR_CHOICES.map(a => `<button onclick="setAvatar('${a}')" class="btn3d h-9 w-9 rounded-xl text-lg leading-none"
+                    style="background:${a === learnerAvatar ? '#4f46e5' : '#0f172a'}">${a}</button>`).join('')}
+              </div>
+              <p class="text-[10px] font-bold od-dim leading-relaxed">
+                This is a local profile: your name, avatar and progress live on this device only.
+                There is no account and no password, so nothing is uploaded anywhere.
+                Use Export below to move your progress to another device.</p>
+            </div>
+
+            <div class="rounded-2xl px-4 divide-y divide-slate-800" style="background:#1e293b">
+              ${row('German audio', 'Bruno speaks words and sentences aloud', toggle(soundOn, 'setSoundOn(' + (!soundOn) + ')'))}
+              ${row('Speaking speed', 'Slower is easier to copy',
+                `<div class="flex items-center gap-2">
+                   <input type="range" min="0.5" max="1.2" step="0.05" value="${speechRate}"
+                          oninput="setSpeechRate(this.value)" class="w-28">
+                   <span id="rate-label" class="text-[11px] font-black od-muted w-10 text-right">${speechRate.toFixed(2)}\u00d7</span>
+                 </div>`)}
+              ${row('Reduce motion', 'Turns off falling leaves, snow and drifting effects', toggle(reduceMotion, 'setReduceMotion(' + (!reduceMotion) + ')'))}
+            </div>
+
+            <div class="rounded-2xl px-4 divide-y divide-slate-800" style="background:#1e293b">
+              ${row('Current level', 'Changes the scene and the lessons on the Path',
+                `<div class="flex gap-1">${['A1','A2','B1','B2'].map(lv =>
+                  `<button onclick="setLevel('${lv}'); closeSettings()" class="btn3d px-2.5 py-1.5 rounded-lg text-[11px] font-black text-white"
+                     style="background:${activeLevel === lv ? '#4f46e5' : '#334155'}">${lv}</button>`).join('')}</div>`)}
+              ${row('Theme', 'How the app looks',
+                `<select onchange="applyThemeProfile(this.value); localStorage.setItem('sb_theme_profile', this.value)"
+                         class="bg-slate-950 border border-slate-800 rounded-xl px-2 py-1.5 text-[11px] font-bold text-white outline-none">
+                   ${Object.keys(systemThemeProfiles).map(k =>
+                     `<option value="${k}" ${k === currentThemeProfile ? 'selected' : ''}>${k.replace(/-/g, ' ')}</option>`).join('')}
+                 </select>`)}
+            </div>
+
+            <div class="rounded-2xl p-4 space-y-2" style="background:#1e293b">
+              <p class="text-[10px] font-black uppercase tracking-wider od-muted">Your progress</p>
+              <div class="grid grid-cols-2 gap-2">
+                <button onclick="exportProgress()" class="btn3d py-2.5 rounded-xl text-[11px] font-black text-white" style="background:#334155">Export to file</button>
+                <label class="btn3d py-2.5 rounded-xl text-[11px] font-black text-white text-center cursor-pointer" style="background:#334155">
+                  Import file
+                  <input type="file" accept="application/json" onchange="importProgress(this)" class="hidden">
+                </label>
+              </div>
+              <button onclick="resetProgress()" class="btn3d w-full py-2.5 rounded-xl text-[11px] font-black text-white" style="background:#7f1d1d">Delete all progress</button>
+              <p class="text-[10px] font-bold od-dim">Sprachblitz ${APP_BUILD} \u00b7 ${totalXPAmount} XP \u00b7 ${daysLearned} ${daysLearned === 1 ? 'Tag' : 'Tage'} gelernt</p>
+            </div>
+          </div>
+        </div>`;
+    }
+
+    // ===================== Profile, settings, Daily Blitz =====================
+    // There is no server behind this app, so there is no account and no password.
+    // "Profile" means a name and an avatar stored on this device only, and the
+    // settings sheet is where a learner changes how the app behaves.
+    let settingsOpen = false;
+    let learnerName   = localStorage.getItem('sb_name') || '';
+    let learnerAvatar = localStorage.getItem('sb_avatar') || '🐻';
+    let soundOn       = localStorage.getItem('sb_sound') !== '0';
+    let speechRate    = parseFloat(localStorage.getItem('sb_speech_rate')) || 0.85;
+    let reduceMotion  = localStorage.getItem('sb_reduce_motion') === '1';
+
+    const AVATAR_CHOICES = ['🐻','🦊','🦉','🐼','🐨','🦁','🐧','🐢'];
+
+    function openSettings()  { settingsOpen = true;  renderActiveTabModule(); }
+    function closeSettings() { settingsOpen = false; renderActiveTabModule(); }
+
+    function saveLearnerName(v) {
+      learnerName = String(v || '').slice(0, 24);
+      localStorage.setItem('sb_name', learnerName);
+      updateDashboardTelemetry();
+    }
+    function setAvatar(a) {
+      learnerAvatar = a;
+      localStorage.setItem('sb_avatar', a);
+      const node = document.getElementById('header-avatar');
+      if (node) node.innerText = a;
+      renderActiveTabModule();
+    }
+    function setSoundOn(v) {
+      soundOn = !!v;
+      localStorage.setItem('sb_sound', soundOn ? '1' : '0');
+      if (!soundOn && 'speechSynthesis' in window) { try { window.speechSynthesis.cancel(); } catch (e) {} }
+      renderActiveTabModule();
+    }
+    function setSpeechRate(v) {
+      speechRate = Math.min(1.2, Math.max(0.5, parseFloat(v) || 0.85));
+      localStorage.setItem('sb_speech_rate', speechRate);
+      const lab = document.getElementById('rate-label');
+      if (lab) lab.innerText = speechRate.toFixed(2) + '\u00d7';
+    }
+    function setReduceMotion(v) {
+      reduceMotion = !!v;
+      localStorage.setItem('sb_reduce_motion', reduceMotion ? '1' : '0');
+      renderActiveTabModule();
+    }
+
+    // Everything the app knows about this learner, as a file they can keep.
+    function exportProgress() {
+      const data = {};
+      for (let i = 0; i < localStorage.length; i++) {
+        const k = localStorage.key(i);
+        if (k && k.indexOf('sb_') === 0) data[k] = localStorage.getItem(k);
+      }
+      const payload = { app: 'Sprachblitz', build: APP_BUILD, exported: new Date().toISOString(), data };
+      const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = 'sprachblitz-progress.json';
+      a.click();
+      setTimeout(() => URL.revokeObjectURL(a.href), 2000);
+    }
+
+    function importProgress(input) {
+      const file = input && input.files && input.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = () => {
+        try {
+          const parsed = JSON.parse(reader.result);
+          if (!parsed || !parsed.data) throw new Error('not a Sprachblitz file');
+          Object.entries(parsed.data).forEach(([k, v]) => {
+            if (k.indexOf('sb_') === 0) localStorage.setItem(k, v);
+          });
+          location.reload();
+        } catch (e) {
+          alert('That file could not be read as Sprachblitz progress.');
+        }
+      };
+      reader.readAsText(file);
+    }
+
+    function resetProgress() {
+      if (!confirm('Delete all progress on this device? This cannot be undone.')) return;
+      const keys = [];
+      for (let i = 0; i < localStorage.length; i++) {
+        const k = localStorage.key(i);
+        if (k && k.indexOf('sb_') === 0) keys.push(k);
+      }
+      keys.forEach(k => localStorage.removeItem(k));
+      location.reload();
+    }
+
+    // ---- Daily Blitz: one obvious thing to do, five questions, once a day ----
+    let blitzQuestions = [], blitzIndex = 0, blitzPicked = null, blitzCorrect = 0, blitzDone = false;
+    const BLITZ_LENGTH = 5;
+
+    function blitzDoneToday() {
+      return localStorage.getItem('sb_blitz_date') === new Date().toDateString();
+    }
+    function blitzStreak() {
+      return parseInt(localStorage.getItem('sb_blitz_streak'), 10) || 0;
+    }
+
+    // Mixes vocabulary from the active level with grammar drills already unlocked,
+    // so the Blitz always reviews what this learner has actually met.
+    function buildBlitzQuestions() {
+      const out = [];
+      const dbForLevel = { A1: a1VocabularyDatabase, A2: a2VocabularyDatabase, B1: b1VocabularyDatabase, B2: b2VocabularyDatabase };
+      const pool = Object.values(dbForLevel[activeLevel] || a1VocabularyDatabase).flat();
+      shuffle(pool).slice(0, 3).forEach(w => {
+        // Two words in a level can share an English gloss, which would put the
+        // same option in the list twice - so distractors are deduplicated.
+        const seen = new Set([w.english]);
+        const wrong = [];
+        shuffle(pool).forEach(x => {
+          if (wrong.length >= 3 || seen.has(x.english)) return;
+          seen.add(x.english); wrong.push(x);
+        });
+        const opts = shuffle([w.english].concat(wrong.map(x => x.english)));
+        out.push({
+          kind: 'vocab',
+          prompt: cleanPrompt(w.german),
+          speak: w.german,
+          ask: 'What does this mean?',
+          options: opts,
+          correct: opts.indexOf(w.english),
+          explain: w.hint || ''
+        });
+      });
+      const gids = curriculumUnits
+        .filter(u => u.level === activeLevel)
+        .flatMap(u => u.lessons.filter(l => l.type === 'grammar').map(l => l.gid))
+        .filter(g => grammarExercises[g]);
+      shuffle(gids).slice(0, BLITZ_LENGTH - out.length).forEach(g => {
+        const q = grammarExercises[g][Math.floor(Math.random() * grammarExercises[g].length)];
+        out.push({
+          kind: 'grammar', prompt: q.prompt, speak: null, ask: q.ask,
+          options: q.options, correct: q.correct, explain: q.explain
+        });
+      });
+      return shuffle(out).slice(0, BLITZ_LENGTH);
+    }
+
+    function startDailyBlitz() {
+      blitzQuestions = buildBlitzQuestions();
+      if (!blitzQuestions.length) return;
+      blitzIndex = 0; blitzPicked = null; blitzCorrect = 0; blitzDone = false;
+      activeGameMode = 'blitz';
+      renderActiveTabModule();
+    }
+
+    function answerBlitz(i) {
+      if (blitzPicked !== null) return;
+      blitzPicked = i;
+      const q = blitzQuestions[blitzIndex];
+      if (i === q.correct) { blitzCorrect++; rewardXP(4); }
+      renderActiveTabModule();
+    }
+
+    function nextBlitz() {
+      if (blitzIndex < blitzQuestions.length - 1) {
+        blitzIndex++; blitzPicked = null; renderActiveTabModule(); return;
+      }
+      blitzDone = true;
+      const today = new Date().toDateString();
+      if (localStorage.getItem('sb_blitz_date') !== today) {
+        const yest = new Date(Date.now() - 864e5).toDateString();
+        const run = localStorage.getItem('sb_blitz_date') === yest ? blitzStreak() + 1 : 1;
+        localStorage.setItem('sb_blitz_streak', run);
+        localStorage.setItem('sb_blitz_date', today);
+        rewardXP(10); // completion bonus, once per day
+      }
+      renderActiveTabModule();
+    }
 
     function journalUnlockedCount() {
       const learned = sceneObjects().filter(o => objProgress(o).frac === 1).length;
@@ -4343,10 +4610,6 @@
                 pr.frac === 1 ? '\ud83c\udf89 \u201eWunderbar! Diese Ecke ist fertig.\u201c'
                 : pr.frac > 0 ? '\ud83d\udcaa \u201eWeiter so \u2014 fast geschafft!\u201c'
                 : '\ud83d\udc4b \u201eKomm, wir fangen hier an!\u201c'}</p>
-              <p class="text-[11px] font-bold od-muted italic">${
-                pr.frac === 1 ? '\ud83c\udf89 \u201eWunderbar! Diese Ecke ist fertig.\u201c'
-                : pr.frac > 0 ? '\ud83d\udcaa \u201eWeiter so \u2014 fast geschafft!\u201c'
-                : '\ud83d\udc4b \u201eKomm, wir fangen hier an!\u201c'}</p>
               <div class="space-y-2 pt-1">
                 ${o.lessons.map(id => {
                   const les = lessonById(id);
@@ -4426,7 +4689,7 @@
           <div class="flex items-center gap-3 px-1">
             <img src="./bears/${roomBearPose()}.png" alt="Bruno" class="h-14 w-auto shrink-0" onerror="this.style.display='none'">
             <div class="flex-1 min-w-0">
-              <p class="text-base font-black text-white truncate" translate="no" lang="de">${bearGreeting()}</p>
+              <p class="text-base font-black text-white truncate" translate="no" lang="de">${bearGreeting()}${learnerName ? ', ' + learnerName : ''}</p>
               <p class="text-[11px] font-bold text-slate-400">${totalDone} of ${SCENE.length} corners brought to life${daysLearned > 0 ? ' \u00b7 <span translate="no" lang="de">' + daysLearned + ' Tage gelernt</span>' : ''}</p>
             </div>
             <button onclick="toggleJournal()" class="btn3d shrink-0 px-3 py-2 rounded-2xl text-center" style="background:#3f3a5c">
@@ -4434,6 +4697,23 @@
               <span class="text-[9px] font-black text-slate-300">${journalUnlockedCount()}/${journalEntries.length}</span>
             </button>
           </div>
+
+          ${(() => {
+            const done = blitzDoneToday();
+            const run = blitzStreak();
+            return `
+            <button onclick="startDailyBlitz()" class="btn3d w-full rounded-3xl p-4 text-left flex items-center gap-3"
+                    style="background:${done ? '#1e293b' : 'linear-gradient(135deg,#4f46e5,#c026d3)'}; box-shadow:0 5px 0 rgba(0,0,0,.35)">
+              <span class="text-3xl leading-none shrink-0">\u26a1</span>
+              <div class="flex-1 min-w-0">
+                <p class="text-sm font-black text-white">${done ? 'Blitz again' : 'Start today\u2019s Blitz'}</p>
+                <p class="text-[11px] font-bold" style="color:${done ? '#94a3b8' : '#e0e7ff'}">
+                  ${BLITZ_LENGTH} questions \u00b7 ${activeLevel} \u00b7 ${done ? 'today\u2019s bonus already earned' : '+30 XP'}
+                </p>
+              </div>
+              ${run > 0 ? `<span class="shrink-0 px-2 py-1 rounded-lg text-[11px] font-black text-white" style="background:rgba(0,0,0,.28)">\ud83d\udd25 ${run}</span>` : ''}
+            </button>`;
+          })()}
 
           ${showMoment ? `
             <div class="on-dark rounded-3xl p-3 flex items-center gap-3" style="background:#2a2440; box-shadow:0 4px 0 #1c1830">
@@ -4497,6 +4777,7 @@
 
     // Games render as a full-screen overlay from any tab
     function renderGameOverlay(container, conf) {
+      if (activeGameMode === 'blitz') { container.innerHTML = blitzOverlayHTML(conf); return; }
       if (activeGameMode === 'match') {
         let leftColHTML = '', rightColHTML = '';
         matchGamePairs.germans.forEach((g, i) => {
@@ -4606,11 +4887,73 @@
 
     function closeGame() { activeGameMode = 'none'; renderActiveTabModule(); }
 
+    // Bruno reacts to the answer instead of a bare tick or cross.
+    function blitzOverlayHTML(conf) {
+      if (blitzDone) {
+        const all = blitzCorrect === blitzQuestions.length;
+        return `
+          <div class="space-y-4 text-center">
+            <img src="./bears/${all ? 'bear-dance' : blitzCorrect >= 3 ? 'bear-hug' : 'bear-think'}.png" alt="" class="h-40 w-auto mx-auto" onerror="this.style.display='none'">
+            <p class="text-xl font-black text-white" translate="no" lang="de">${
+              all ? 'Fantastisch!' : blitzCorrect >= 3 ? 'Sehr gut!' : 'Gut ge\u00fcbt!'}</p>
+            <p class="text-sm font-bold text-slate-300">${blitzCorrect} of ${blitzQuestions.length} correct</p>
+            ${blitzStreak() > 1 ? `<p class="text-xs font-black text-amber-400">\ud83d\udd25 ${blitzStreak()} days in a row</p>` : ''}
+            <div class="grid grid-cols-2 gap-2 pt-2">
+              <button onclick="startDailyBlitz()" class="btn3d py-3 rounded-xl font-black text-xs text-white" style="background:#4f46e5">\u26a1 One more</button>
+              <button onclick="closeGame()" class="btn3d py-3 rounded-xl font-black text-xs text-white" style="background:#334155">Done</button>
+            </div>
+          </div>`;
+      }
+      const q = blitzQuestions[blitzIndex];
+      const answered = blitzPicked !== null;
+      const right = answered && blitzPicked === q.correct;
+      return `
+        <div class="space-y-4">
+          <div class="flex items-center justify-between px-1">
+            <h3 class="text-sm font-black text-white">\u26a1 Daily Blitz \u00b7 ${blitzIndex + 1}/${blitzQuestions.length}</h3>
+            <button onclick="closeGame()" class="text-slate-500 text-lg font-black">\u2715</button>
+          </div>
+          <div class="h-1.5 rounded-full overflow-hidden" style="background:#1e293b">
+            <div class="h-full rounded-full" style="width:${Math.round((blitzIndex / blitzQuestions.length) * 100)}%; background:#4f46e5"></div>
+          </div>
+          <div class="${conf.cardBg} border rounded-2xl p-5 text-center space-y-2">
+            <p class="text-[10px] font-black uppercase tracking-wider text-indigo-400">${q.ask}</p>
+            <p class="text-2xl font-black text-white" translate="no" lang="de">${q.prompt}</p>
+            ${q.speak ? `<button onclick='speakGerman(${safeOnclickArg(q.speak)}, true)' class="btn3d px-4 py-2 rounded-xl text-xs font-black text-white" style="background:#4f46e5">\ud83d\udd0a</button>` : ''}
+          </div>
+          <div class="space-y-2">
+            ${q.options.map((o, i) => {
+              let bg = '#1e293b';
+              if (answered && i === q.correct) bg = '#15803d';
+              else if (answered && i === blitzPicked) bg = '#7f1d1d';
+              return `<button onclick="answerBlitz(${i})" class="btn3d w-full p-3.5 rounded-xl text-sm font-bold text-white text-left" style="background:${bg}">${o}</button>`;
+            }).join('')}
+          </div>
+          ${answered ? `
+            <div class="rounded-xl p-3 flex items-center gap-2" style="background:${right ? 'rgba(21,128,61,.25)' : 'rgba(180,83,9,.25)'}">
+              <img src="./bears/${right ? 'bear-hug' : 'bear-think'}.png" alt="" class="h-12 w-auto shrink-0" onerror="this.style.display='none'">
+              <div class="flex-1 min-w-0">
+                <p class="text-xs font-black ${right ? 'text-emerald-300' : 'text-amber-300'}" translate="no" lang="de">${
+                  right ? '\ud83c\udf89 Richtig! +4 XP' : 'Fast! Die richtige Antwort: ' + q.options[q.correct]}</p>
+                ${q.explain ? `<p class="text-[11px] font-bold text-slate-300 mt-0.5">${q.explain}</p>` : ''}
+              </div>
+            </div>
+            <button onclick="nextBlitz()" class="btn3d w-full py-3.5 rounded-xl font-black text-sm text-white" style="background:#4f46e5">
+              ${blitzIndex < blitzQuestions.length - 1 ? 'Continue' : 'Finish'}
+            </button>` : ''}
+        </div>`;
+    }
+
     // View Route Processing Center Hub
     function renderActiveTabModule() {
       const container = document.getElementById('main-scroll-view');
       const ov = document.getElementById('sb-overlay');
       if (ov && !(activeTab === 'dashboard' && activeGameMode === 'none' && !activeExamRunningMode)) ov.innerHTML = '';
+      // Settings sits above everything and is reachable from any tab
+      const settingsNode = document.getElementById('sb-settings');
+      if (settingsNode) settingsNode.innerHTML = settingsSheetHTML();
+      const avatarNode = document.getElementById('header-avatar');
+      if (avatarNode) avatarNode.innerText = learnerAvatar || '\u2699\ufe0f';
       const conf = systemThemeProfiles[currentThemeProfile] || systemThemeProfiles['midnight-slate'];
 
       // Games open as an overlay from either the Path or the Practice tab
