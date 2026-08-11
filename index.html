@@ -2525,6 +2525,18 @@
 
     // One icon per topic, used on the topic-picker buttons
     const vocabCategoryIcons = {
+      "Working World (Arbeitswelt)": "\ud83d\udcbc",
+      "Economy & Money (Wirtschaft)": "\ud83d\udcc8",
+      "Education & Research (Bildung)": "\ud83d\udd2c",
+      "Media & Public Life (Medien)": "\ud83d\udcf0",
+      "Society & Politics (Gesellschaft)": "\ud83c\udfdb\ufe0f",
+      "Law & Administration (Recht)": "\ud83d\udcdc",
+      "Environment & Climate (Umwelt)": "\ud83c\udf0d",
+      "Health & Mind (Gesundheit)": "\ud83e\ude7a",
+      "Technology & Data (Technik)": "\ud83d\udda5\ufe0f",
+      "Culture & Identity (Kultur)": "\ud83c\udfad",
+      "Argument & Opinion (Argumentation)": "\u2696\ufe0f",
+      "Discussion Phrases (Redemittel)": "\ud83d\udde3\ufe0f",
       "Alphabet (Alphabet)": "\ud83d\udd24",
       "Umlauts & Sound Rules": "\ud83d\udde3\ufe0f",
       "Numbers (Zahlen)": "\ud83d\udd22",
@@ -2573,6 +2585,14 @@
       "Drinks (Getr\u00e4nke)": "\u2615",
       "DYNAM_NUMBERS": "\u221e"
     };
+
+    // The vocabulary tab lists every level's topics, so the card header names the right one.
+    function vocabLevelOf(cat) {
+      if (a2VocabularyDatabase[cat]) return 'A2';
+      if (b1VocabularyDatabase[cat]) return 'B1';
+      if (b2VocabularyDatabase[cat]) return 'B2';
+      return 'A1';
+    }
 
     function selectVocabCategory(cat) {
       selectedVocabCategory = cat;
@@ -4678,7 +4698,7 @@
         allCategories.forEach(cat => {
           const on = cat === selectedVocabCategory;
           categoryButtonsHTML += `
-            <button onclick="selectVocabCategory(${safeOnclickArg(cat)})" class="p-3 rounded-2xl border text-left flex flex-col gap-1 transition-all active:scale-95 ${on ? 'bg-indigo-600 border-indigo-400 text-white' : 'bg-slate-800 border-slate-700 text-slate-200'}">
+            <button onclick='selectVocabCategory(${safeOnclickArg(cat)})' class="p-3 rounded-2xl border text-left flex flex-col gap-1 transition-all active:scale-95 ${on ? 'bg-indigo-600 border-indigo-400 text-white' : 'bg-slate-800 border-slate-700 text-slate-200'}">
               <span class="text-lg leading-none">${iconFor(cat)}</span>
               <span class="text-[11px] font-black leading-tight">${labelFor(cat)}</span>
               <span class="text-[9px] font-bold ${on ? 'text-indigo-100' : 'text-slate-500'}">${countFor(cat)}</span>
@@ -4702,7 +4722,7 @@
           coreDisplayBodyHTML = `
             <div class="w-full flex justify-between items-center text-[11px] font-bold text-slate-400 px-1">
               <span>Card ${activeVocabCardIndex + 1} of ${activeList.length}</span>
-              <span class="text-indigo-400 font-extrabold uppercase">A1 Vocabulary Library</span>
+              <span class="text-indigo-400 font-extrabold uppercase">${vocabLevelOf(selectedVocabCategory)} Vocabulary</span>
             </div>
 
             <div class="flashcard-wrapper w-full h-72 md:h-80 cursor-pointer ${isVocabCardFlipped ? 'flipped' : ''}" onclick="this.classList.toggle('flipped'); isVocabCardFlipped=!isVocabCardFlipped;">
