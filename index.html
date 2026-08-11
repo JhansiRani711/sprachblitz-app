@@ -1054,7 +1054,155 @@
 
     // A1 and A2 words live in one lookup so quizzes, the topic picker and the
     // word of the day all work the same way across both levels.
-    const allVocabularyDatabase = Object.assign({}, a1VocabularyDatabase, a2VocabularyDatabase, b1VocabularyDatabase);
+    // ===== B2: abstract, working and public life =====
+    const b2VocabularyDatabase = {
+      "Working World (Arbeitswelt)": [
+        { id:"b2a1", german:"Die Führungskraft",  gender:"feminine",  english:"Manager, executive", pronunciation:"dee fue-roongs-kraft", hint:"Someone who leads a team." },
+        { id:"b2a2", german:"Die Belegschaft",    gender:"feminine",  english:"Workforce, staff",   pronunciation:"dee bay-layk-shaft",   hint:"All employees of a company." },
+        { id:"b2a3", german:"Der Betriebsrat",    gender:"masculine", english:"Works council",     pronunciation:"dayr beh-treeps-raht",  hint:"Represents employees to management." },
+        { id:"b2a4", german:"Die Fluktuation",    gender:"feminine",  english:"Staff turnover",    pronunciation:"dee floo-ktoo-a-tsee-ohn", hint:"How often people leave and are replaced." },
+        { id:"b2a5", german:"Die Zuständigkeit",  gender:"feminine",  english:"Responsibility, remit", pronunciation:"dee tsoo-shten-deekh-kyt", hint:"Wer ist zuständig?" },
+        { id:"b2a6", german:"Die Einarbeitung",   gender:"feminine",  english:"Onboarding, induction", pronunciation:"dee eyn-ar-by-toong", hint:"The first weeks in a new job." },
+        { id:"b2a7", german:"Der Tarifvertrag",   gender:"masculine", english:"Collective agreement", pronunciation:"dayr ta-reef-fer-trahk", hint:"Negotiated pay and conditions." },
+        { id:"b2a8", german:"Die Vereinbarkeit",  gender:"feminine",  english:"Compatibility (work and family)", pronunciation:"dee fer-eyn-bar-kyt", hint:"Vereinbarkeit von Familie und Beruf." },
+        { id:"b2a9", german:"Befristet",          gender:"adjective", english:"Fixed-term, temporary", pronunciation:"beh-frist-et",        hint:"Opposite: unbefristet." },
+        { id:"b2a10", german:"Sich durchsetzen",  gender:"verb",      english:"To assert oneself, prevail", pronunciation:"zikh doorkh-zet-sen", hint:"To get your position accepted." }
+      ],
+      "Economy & Money (Wirtschaft)": [
+        { id:"b2w1", german:"Die Konjunktur",     gender:"feminine",  english:"Economic cycle",    pronunciation:"dee kon-yoonk-toor",   hint:"Aufschwung or Abschwung." },
+        { id:"b2w2", german:"Die Inflation",      gender:"feminine",  english:"Inflation",         pronunciation:"dee in-fla-tsee-ohn",  hint:"Prices rise, money buys less." },
+        { id:"b2w3", german:"Der Umsatz",         gender:"masculine", english:"Revenue, turnover", pronunciation:"dayr oom-zats",        hint:"Money coming in, before costs." },
+        { id:"b2w4", german:"Der Gewinn",         gender:"masculine", english:"Profit",            pronunciation:"dayr geh-vin",         hint:"What remains after costs." },
+        { id:"b2w5", german:"Die Investition",    gender:"feminine",  english:"Investment",        pronunciation:"dee in-ves-tee-tsee-ohn", hint:"Money put in now for later." },
+        { id:"b2w6", german:"Die Schulden",       gender:"plural",    english:"Debts",             pronunciation:"dee shool-den",        hint:"Only used in the plural." },
+        { id:"b2w7", german:"Der Wettbewerb",     gender:"masculine", english:"Competition",       pronunciation:"dayr vet-beh-vairp",   hint:"Firms competing for customers." },
+        { id:"b2w8", german:"Die Förderung",      gender:"feminine",  english:"Subsidy, support",  pronunciation:"dee fur-der-oong",     hint:"State money for a purpose." },
+        { id:"b2w9", german:"Rentabel",           gender:"adjective", english:"Profitable, worthwhile", pronunciation:"ren-tah-bel",     hint:"It pays for itself." },
+        { id:"b2w10", german:"Sich lohnen",       gender:"verb",      english:"To be worth it",    pronunciation:"zikh loh-nen",         hint:"Das lohnt sich nicht." }
+      ],
+      "Education & Research (Bildung)": [
+        { id:"b2b1", german:"Die Forschung",      gender:"feminine",  english:"Research",          pronunciation:"dee for-shoong",       hint:"Systematic investigation." },
+        { id:"b2b2", german:"Die Studie",         gender:"feminine",  english:"Study (piece of research)", pronunciation:"dee shtoo-dee-eh", hint:"Laut einer Studie …" },
+        { id:"b2b3", german:"Die These",          gender:"feminine",  english:"Thesis, claim",     pronunciation:"dee tay-zeh",          hint:"The claim you then defend." },
+        { id:"b2b4", german:"Der Nachweis",       gender:"masculine", english:"Proof, evidence",   pronunciation:"dayr nakh-vys",        hint:"Documented evidence." },
+        { id:"b2b5", german:"Die Erkenntnis",     gender:"feminine",  english:"Insight, finding",  pronunciation:"dee air-kent-nis",     hint:"What the research showed." },
+        { id:"b2b6", german:"Der Zusammenhang",   gender:"masculine", english:"Connection, correlation", pronunciation:"dayr tsoo-zam-men-hang", hint:"Not the same as Ursache." },
+        { id:"b2b7", german:"Die Voraussetzung",  gender:"feminine",  english:"Prerequisite",      pronunciation:"dee for-ows-zets-oong", hint:"What must be true first." },
+        { id:"b2b8", german:"Die Weiterbildung",  gender:"feminine",  english:"Further training",  pronunciation:"dee vy-ter-bil-doong", hint:"Learning alongside a job." },
+        { id:"b2b9", german:"Fundiert",           gender:"adjective", english:"Well-founded, sound", pronunciation:"foon-deert",         hint:"Backed by evidence." },
+        { id:"b2b10", german:"Nachvollziehen",    gender:"verb",      english:"To follow, comprehend", pronunciation:"nakh-fol-tsee-hen", hint:"Das kann ich nachvollziehen." }
+      ],
+      "Media & Public Life (Medien)": [
+        { id:"b2m1", german:"Die Berichterstattung", gender:"feminine", english:"Reporting, coverage", pronunciation:"dee beh-rikht-air-shtat-oong", hint:"How media cover a topic." },
+        { id:"b2m2", german:"Die Quelle",         gender:"feminine",  english:"Source",            pronunciation:"dee kvel-eh",          hint:"Where information comes from." },
+        { id:"b2m3", german:"Die Schlagzeile",    gender:"feminine",  english:"Headline",          pronunciation:"dee shlahk-tsy-leh",   hint:"The big line at the top." },
+        { id:"b2m4", german:"Die Meinungsfreiheit", gender:"feminine", english:"Freedom of opinion", pronunciation:"dee my-noongs-fry-hyt", hint:"A basic right." },
+        { id:"b2m5", german:"Die Glaubwürdigkeit", gender:"feminine", english:"Credibility",       pronunciation:"dee glowp-vuer-deekh-kyt", hint:"Whether people believe it." },
+        { id:"b2m6", german:"Der Beitrag",        gender:"masculine", english:"Contribution, article/segment", pronunciation:"dayr by-trahk", hint:"One piece in a programme." },
+        { id:"b2m7", german:"Die Öffentlichkeit", gender:"feminine",  english:"The public",        pronunciation:"dee ur-fent-likh-kyt", hint:"In der Öffentlichkeit." },
+        { id:"b2m8", german:"Die Recherche",      gender:"feminine",  english:"Research (journalistic)", pronunciation:"dee reh-shair-sheh", hint:"Digging for facts." },
+        { id:"b2m9", german:"Voreingenommen",     gender:"adjective", english:"Biased",            pronunciation:"for-eyn-geh-nom-men",  hint:"Not neutral." },
+        { id:"b2m10", german:"Verbreiten",        gender:"verb",      english:"To spread, circulate", pronunciation:"fer-bry-ten",       hint:"Gerüchte verbreiten sich schnell." }
+      ],
+      "Society & Politics (Gesellschaft)": [
+        { id:"b2g1", german:"Die Gerechtigkeit",  gender:"feminine",  english:"Justice, fairness", pronunciation:"dee geh-rekh-teekh-kyt", hint:"Soziale Gerechtigkeit." },
+        { id:"b2g2", german:"Die Gleichberechtigung", gender:"feminine", english:"Equal rights",   pronunciation:"dee glykh-beh-rekh-tee-goong", hint:"Same rights for all." },
+        { id:"b2g3", german:"Die Teilhabe",       gender:"feminine",  english:"Participation, inclusion", pronunciation:"dee tyl-hah-beh", hint:"Being able to take part." },
+        { id:"b2g4", german:"Der Wandel",         gender:"masculine", english:"Change, transformation", pronunciation:"dayr van-del",   hint:"Demografischer Wandel." },
+        { id:"b2g5", german:"Die Verantwortung",  gender:"feminine",  english:"Responsibility",    pronunciation:"dee fer-ant-vor-toong", hint:"Verantwortung übernehmen." },
+        { id:"b2g6", german:"Die Debatte",        gender:"feminine",  english:"Debate",            pronunciation:"dee deh-bat-teh",      hint:"Public argument about an issue." },
+        { id:"b2g7", german:"Der Kompromiss",     gender:"masculine", english:"Compromise",        pronunciation:"dayr kom-pro-mis",     hint:"Both sides give something up." },
+        { id:"b2g8", german:"Die Mehrheit",       gender:"feminine",  english:"Majority",          pronunciation:"dee mair-hyt",         hint:"Opposite: die Minderheit." },
+        { id:"b2g9", german:"Umstritten",         gender:"adjective", english:"Controversial, disputed", pronunciation:"oom-shtrit-ten", hint:"People disagree about it." },
+        { id:"b2g10", german:"Sich einsetzen",    gender:"verb",      english:"To campaign for",   pronunciation:"zikh eyn-zet-sen",     hint:"sich einsetzen für + Akk." }
+      ],
+      "Law & Administration (Recht)": [
+        { id:"b2r1", german:"Das Gesetz",         gender:"neuter",    english:"Law, statute",      pronunciation:"das geh-zets",         hint:"Passed by parliament." },
+        { id:"b2r2", german:"Die Vorschrift",     gender:"feminine",  english:"Regulation, rule",  pronunciation:"dee for-shrift",       hint:"A rule you must follow." },
+        { id:"b2r3", german:"Der Antrag",         gender:"masculine", english:"Application, formal request", pronunciation:"dayr an-trahk", hint:"einen Antrag stellen." },
+        { id:"b2r4", german:"Die Frist",          gender:"feminine",  english:"Deadline, notice period", pronunciation:"dee frist",      hint:"eine Frist einhalten." },
+        { id:"b2r5", german:"Der Anspruch",       gender:"masculine", english:"Entitlement, claim", pronunciation:"dayr an-shprookh",    hint:"Anspruch auf Urlaub haben." },
+        { id:"b2r6", german:"Die Genehmigung",    gender:"feminine",  english:"Permit, approval",  pronunciation:"dee geh-nay-mee-goong", hint:"Official permission." },
+        { id:"b2r7", german:"Der Widerspruch",    gender:"masculine", english:"Objection, appeal", pronunciation:"dayr vee-der-shprookh", hint:"Widerspruch einlegen." },
+        { id:"b2r8", german:"Die Haftung",        gender:"feminine",  english:"Liability",         pronunciation:"dee haf-toong",        hint:"Who pays when something goes wrong." },
+        { id:"b2r9", german:"Verbindlich",        gender:"adjective", english:"Binding",           pronunciation:"fer-bint-likh",        hint:"Not just a suggestion." },
+        { id:"b2r10", german:"Beantragen",        gender:"verb",      english:"To apply for",      pronunciation:"beh-an-trah-gen",      hint:"Takes the accusative." }
+      ],
+      "Environment & Climate (Umwelt)": [
+        { id:"b2u1", german:"Der Klimawandel",    gender:"masculine", english:"Climate change",    pronunciation:"dayr klee-ma-van-del",  hint:"Long-term shift in climate." },
+        { id:"b2u2", german:"Der Ausstoß",        gender:"masculine", english:"Emissions, output", pronunciation:"dayr ows-shtohs",       hint:"CO2-Ausstoß senken." },
+        { id:"b2u3", german:"Die Erneuerbaren",   gender:"plural",    english:"Renewables",        pronunciation:"dee air-noy-er-bah-ren", hint:"Wind, Sonne, Wasser." },
+        { id:"b2u4", german:"Der Verbrauch",      gender:"masculine", english:"Consumption",       pronunciation:"dayr fer-browkh",       hint:"Stromverbrauch, Wasserverbrauch." },
+        { id:"b2u5", german:"Die Nachhaltigkeit", gender:"feminine",  english:"Sustainability",    pronunciation:"dee nakh-hal-teekh-kyt", hint:"Usable long term." },
+        { id:"b2u6", german:"Die Belastung",      gender:"feminine",  english:"Burden, pollution load", pronunciation:"dee beh-las-toong", hint:"Umweltbelastung." },
+        { id:"b2u7", german:"Die Kreislaufwirtschaft", gender:"feminine", english:"Circular economy", pronunciation:"dee krys-lowf-veert-shaft", hint:"Reuse instead of throw away." },
+        { id:"b2u8", german:"Der Artenschutz",    gender:"masculine", english:"Species protection", pronunciation:"dayr ar-ten-shoots",   hint:"Protecting biodiversity." },
+        { id:"b2u9", german:"Schonend",           gender:"adjective", english:"Gentle, resource-sparing", pronunciation:"shoh-nent",      hint:"schonend mit Ressourcen umgehen." },
+        { id:"b2u10", german:"Vermeiden",         gender:"verb",      english:"To avoid, prevent", pronunciation:"fer-my-den",           hint:"Abfall vermeiden." }
+      ],
+      "Health & Mind (Gesundheit)": [
+        { id:"b2h1", german:"Die Vorsorge",       gender:"feminine",  english:"Prevention, check-up", pronunciation:"dee for-zor-geh",   hint:"Acting before problems appear." },
+        { id:"b2h2", german:"Die Belastbarkeit",  gender:"feminine",  english:"Resilience, capacity to cope", pronunciation:"dee beh-last-bar-kyt", hint:"How much strain you can take." },
+        { id:"b2h3", german:"Die Ernährung",      gender:"feminine",  english:"Nutrition, diet",   pronunciation:"dee air-nai-roong",    hint:"What you habitually eat." },
+        { id:"b2h4", german:"Die Bewegung",       gender:"feminine",  english:"Exercise, movement", pronunciation:"dee beh-vay-goong",   hint:"Mehr Bewegung im Alltag." },
+        { id:"b2h5", german:"Die Behandlung",     gender:"feminine",  english:"Treatment",         pronunciation:"dee beh-hand-loong",   hint:"What the doctor prescribes." },
+        { id:"b2h6", german:"Die Genesung",       gender:"feminine",  english:"Recovery",          pronunciation:"dee geh-nay-zoong",    hint:"Gute Genesung!" },
+        { id:"b2h7", german:"Die Krankenkasse",   gender:"feminine",  english:"Health insurer",    pronunciation:"dee kran-ken-kas-seh", hint:"Pays for treatment in Germany." },
+        { id:"b2h8", german:"Die Aufklärung",     gender:"feminine",  english:"Information, awareness-raising", pronunciation:"dee owf-klai-roong", hint:"Explaining risks publicly." },
+        { id:"b2h9", german:"Chronisch",          gender:"adjective", english:"Chronic, long-lasting", pronunciation:"kroh-nish",        hint:"Opposite: akut." },
+        { id:"b2h10", german:"Sich erholen",      gender:"verb",      english:"To recover, rest",  pronunciation:"zikh air-hoh-len",     hint:"Erhol dich gut!" }
+      ],
+      "Technology & Data (Technik)": [
+        { id:"b2t1", german:"Die Digitalisierung", gender:"feminine", english:"Digitalisation",    pronunciation:"dee dee-gee-ta-lee-zee-roong", hint:"Moving processes online." },
+        { id:"b2t2", german:"Der Datenschutz",    gender:"masculine", english:"Data protection",   pronunciation:"dayr dah-ten-shoots",  hint:"Rules on personal data." },
+        { id:"b2t3", german:"Die Schnittstelle",  gender:"feminine",  english:"Interface",         pronunciation:"dee shnit-shtel-eh",   hint:"Where two systems meet." },
+        { id:"b2t4", german:"Die Anwendung",      gender:"feminine",  english:"Application, use case", pronunciation:"dee an-ven-doong",  hint:"Where a technology is used." },
+        { id:"b2t5", german:"Der Algorithmus",    gender:"masculine", english:"Algorithm",         pronunciation:"dayr al-go-rit-moos",  hint:"Plural: die Algorithmen." },
+        { id:"b2t6", german:"Die Verschlüsselung", gender:"feminine", english:"Encryption",        pronunciation:"dee fer-shlues-eh-loong", hint:"Makes data unreadable to others." },
+        { id:"b2t7", german:"Der Fortschritt",    gender:"masculine", english:"Progress",          pronunciation:"dayr fort-shrit",      hint:"Technischer Fortschritt." },
+        { id:"b2t8", german:"Die Abhängigkeit",   gender:"feminine",  english:"Dependence",        pronunciation:"dee ap-heng-eekh-kyt", hint:"Relying on one provider." },
+        { id:"b2t9", german:"Anfällig",           gender:"adjective", english:"Vulnerable, prone to", pronunciation:"an-fel-eekh",       hint:"anfällig für Störungen." },
+        { id:"b2t10", german:"Ersetzen",          gender:"verb",      english:"To replace",        pronunciation:"air-zet-sen",          hint:"Maschinen ersetzen Menschen?" }
+      ],
+      "Culture & Identity (Kultur)": [
+        { id:"b2k1", german:"Die Herkunft",       gender:"feminine",  english:"Origin, background", pronunciation:"dee hair-koonft",     hint:"Where someone comes from." },
+        { id:"b2k2", german:"Die Zugehörigkeit",  gender:"feminine",  english:"Belonging",         pronunciation:"dee tsoo-geh-hur-eekh-kyt", hint:"Feeling part of a group." },
+        { id:"b2k3", german:"Das Vorurteil",      gender:"neuter",    english:"Prejudice",         pronunciation:"das for-oor-tyl",      hint:"Judging before knowing." },
+        { id:"b2k4", german:"Die Vielfalt",       gender:"feminine",  english:"Diversity, variety", pronunciation:"dee feel-falt",       hint:"Many different kinds." },
+        { id:"b2k5", german:"Das Brauchtum",      gender:"neuter",    english:"Customs, tradition", pronunciation:"das browkh-toom",     hint:"Inherited local practices." },
+        { id:"b2k6", german:"Die Auseinandersetzung", gender:"feminine", english:"Engagement, dispute", pronunciation:"dee ows-eye-nan-der-zets-oong", hint:"Working through a topic — or a clash." },
+        { id:"b2k7", german:"Der Austausch",      gender:"masculine", english:"Exchange",          pronunciation:"dayr ows-towsh",       hint:"Kultureller Austausch." },
+        { id:"b2k8", german:"Die Wahrnehmung",    gender:"feminine",  english:"Perception",        pronunciation:"dee var-nay-moong",    hint:"How something is seen." },
+        { id:"b2k9", german:"Prägend",            gender:"adjective", english:"Formative",         pronunciation:"prai-gent",            hint:"It shaped who you are." },
+        { id:"b2k10", german:"Sich auseinandersetzen", gender:"verb", english:"To engage critically with", pronunciation:"zikh ows-eye-nan-der-zet-sen", hint:"sich auseinandersetzen mit + Dativ." }
+      ],
+      "Argument & Opinion (Argumentation)": [
+        { id:"b2p1", german:"Das Argument",       gender:"neuter",    english:"Argument, point",   pronunciation:"das ar-goo-ment",      hint:"A reason supporting a view." },
+        { id:"b2p2", german:"Der Einwand",        gender:"masculine", english:"Objection",         pronunciation:"dayr eyn-vant",        hint:"A point against." },
+        { id:"b2p3", german:"Die Begründung",     gender:"feminine",  english:"Justification, reasoning", pronunciation:"dee beh-gruen-doong", hint:"The why behind a claim." },
+        { id:"b2p4", german:"Der Standpunkt",     gender:"masculine", english:"Standpoint, position", pronunciation:"dayr shtant-poonkt", hint:"Where you stand on the issue." },
+        { id:"b2p5", german:"Die Abwägung",       gender:"feminine",  english:"Weighing up",       pronunciation:"dee ap-vai-goong",     hint:"Balancing pros and cons." },
+        { id:"b2p6", german:"Die Folge",          gender:"feminine",  english:"Consequence",       pronunciation:"dee fol-geh",          hint:"What follows from it." },
+        { id:"b2p7", german:"Die Ursache",        gender:"feminine",  english:"Cause",             pronunciation:"dee oor-zah-kheh",     hint:"Ursache und Wirkung." },
+        { id:"b2p8", german:"Der Vorbehalt",      gender:"masculine", english:"Reservation, caveat", pronunciation:"dayr for-beh-halt",  hint:"Agreement, but not entirely." },
+        { id:"b2p9", german:"Nachvollziehbar",    gender:"adjective", english:"Understandable, plausible", pronunciation:"nakh-fol-tsee-bar", hint:"You can follow the logic." },
+        { id:"b2p10", german:"Bezweifeln",        gender:"verb",      english:"To doubt, question", pronunciation:"beh-tsvy-feln",       hint:"Ich bezweifle, dass …" }
+      ],
+      "Discussion Phrases (Redemittel)": [
+        { id:"b2d1", german:"Meiner Ansicht nach", gender:"phrase",   english:"In my view",        pronunciation:"my-ner an-zikht nakh", hint:"Verb comes straight after." },
+        { id:"b2d2", german:"Das leuchtet mir ein", gender:"phrase",  english:"That makes sense to me", pronunciation:"das loykh-tet meer eyn", hint:"Conceding a point." },
+        { id:"b2d3", german:"Da muss ich widersprechen", gender:"phrase", english:"I have to disagree there", pronunciation:"dah moos eekh vee-der-shpre-khen", hint:"Polite but firm." },
+        { id:"b2d4", german:"Einerseits … andererseits", gender:"phrase", english:"On one hand … on the other", pronunciation:"eye-ner-zyts … an-der-er-zyts", hint:"Balancing two sides." },
+        { id:"b2d5", german:"Im Großen und Ganzen", gender:"phrase",  english:"By and large",      pronunciation:"im groh-sen oont gan-tsen", hint:"Summing up overall." },
+        { id:"b2d6", german:"Das hängt davon ab, ob", gender:"phrase", english:"That depends on whether", pronunciation:"das hengt da-fon ap, op", hint:"Followed by verb-final clause." },
+        { id:"b2d7", german:"Ich gebe zu, dass",  gender:"phrase",    english:"I admit that",      pronunciation:"eekh gay-beh tsoo, das", hint:"Conceding before objecting." },
+        { id:"b2d8", german:"Zusammenfassend lässt sich sagen", gender:"phrase", english:"To sum up, one can say", pronunciation:"tsoo-zam-men-fas-ent lest zikh zah-gen", hint:"Closing a presentation." },
+        { id:"b2d9", german:"Es kommt darauf an", gender:"phrase",    english:"It depends",        pronunciation:"es komt da-rowf an",   hint:"Buying time in a debate." },
+        { id:"b2d10", german:"Genau das ist der Punkt", gender:"phrase", english:"That is exactly the point", pronunciation:"geh-now das ist dayr poonkt", hint:"Agreeing emphatically." }
+      ]
+    };
+
+    const allVocabularyDatabase = Object.assign({}, a1VocabularyDatabase, a2VocabularyDatabase, b1VocabularyDatabase, b2VocabularyDatabase);
 
     // Refactored Adjective / Conjugation / Article Grammar Database Array
     const a1GrammarDatabase = [
@@ -1094,7 +1242,20 @@
       { id: "b1_passiv2", title: "B1.9 Passiv in anderen Zeiten", rules: "Past passive uses wurde plus Partizip II. With a modal: muss ... werden.", example: "Das Haus wurde 1990 gebaut. Der Antrag muss unterschrieben werden." },
       { id: "b1_indir", title: "B1.10 Indirekte Fragen", rules: "An indirect question becomes a subordinate clause. Use the W-word, or 'ob' when there is no W-word. Verb last.", example: "Ich weiß nicht, wann er kommt. Er fragt, ob wir Zeit haben." },
       { id: "b1_partizip", title: "B1.11 Partizip als Adjektiv", rules: "Partizip I (-end) is active and ongoing; Partizip II is passive and finished. Both take normal adjective endings.", example: "das lachende Kind, das reparierte Auto" },
-      { id: "b1_konnekt", title: "B1.12 deshalb, trotzdem, außerdem", rules: "These are adverbs, not conjunctions: they occupy position 1, so the verb still comes second and the subject moves after it.", example: "Es regnet. Deshalb bleibe ich zu Hause." }
+      { id: "b1_konnekt", title: "B1.12 deshalb, trotzdem, außerdem", rules: "These are adverbs, not conjunctions: they occupy position 1, so the verb still comes second and the subject moves after it.", example: "Es regnet. Deshalb bleibe ich zu Hause." },
+
+      { id: "b2_konj1", title: "B2.1 Konjunktiv I – indirekte Rede", rules: "Reported speech in written German uses Konjunktiv I: er sagt, er sei / habe / komme. When the Konjunktiv I form looks identical to the present, German switches to Konjunktiv II (sie hätten instead of sie haben).", example: "Der Minister sagte, die Lage sei ernst und man habe bereits reagiert." },
+      { id: "b2_passersatz", title: "B2.2 Passiversatzformen", rules: "Passive meaning without werden: sich lassen (das lässt sich reparieren), sein + zu + Infinitiv (das ist zu vermeiden), and adjectives in -bar (machbar, vermeidbar).", example: "Der Fehler lässt sich leicht beheben. = Der Fehler kann leicht behoben werden." },
+      { id: "b2_nomstil", title: "B2.3 Nominalstil und Verbalstil", rules: "Formal German packs verbs into nouns: nach der Prüfung des Antrags instead of nachdem der Antrag geprüft worden ist. Being able to unpack the noun back into a clause is the B2 skill.", example: "Wegen der Verspätung des Zuges = Weil der Zug sich verspätet hat" },
+      { id: "b2_partattr", title: "B2.4 Erweiterte Partizipialattribute", rules: "A participle with its own additions sits between article and noun: der gestern veröffentlichte Bericht. Unpack it as a relative clause: der Bericht, der gestern veröffentlicht wurde.", example: "die im letzten Jahr beschlossenen Maßnahmen" },
+      { id: "b2_konnekt2", title: "B2.5 Zweiteilige Konnektoren", rules: "Paired connectors link two parts: sowohl … als auch, weder … noch, entweder … oder, nicht nur … sondern auch, je … desto. After je + comparative the verb goes last; after desto it comes second.", example: "Je länger die Debatte dauert, desto weniger hört man einander zu." },
+      { id: "b2_konzessiv", title: "B2.6 Konzessive Verbindungen", rules: "Concession has three shapes: obwohl + verb last, zwar … aber (both main clauses), and trotzdem as an adverb in position 1 with the verb second.", example: "Zwar ist das Verfahren teuer, aber es ist sicher. Obwohl es teuer ist, wird es genutzt." },
+      { id: "b2_final", title: "B2.7 Finalsätze: damit und um … zu", rules: "Purpose clauses: um … zu only when both clauses share a subject; damit whenever the subjects differ.", example: "Ich rufe an, um den Termin zu verschieben. Ich rufe an, damit du Bescheid weißt." },
+      { id: "b2_modalsubj", title: "B2.8 Modalverben subjektiv", rules: "Modals also express how sure the speaker is: er muss krank sein (I am almost certain), er dürfte krank sein (probably), er könnte krank sein (possibly), er will krank gewesen sein (he claims).", example: "Sie müsste inzwischen angekommen sein." },
+      { id: "b2_konj2verg", title: "B2.9 Konjunktiv II der Vergangenheit", rules: "For an unreal past, use hätte or wäre plus Partizip II. With a modal, the modal appears as an infinitive at the end: hätte kommen können.", example: "Wenn ich das gewusst hätte, hätte ich früher reagieren können." },
+      { id: "b2_genprep", title: "B2.10 Präpositionen mit Genitiv", rules: "Formal registers use trotz, wegen, während, aufgrund, angesichts, innerhalb, anstatt with the genitive: trotz des Regens, aufgrund der Lage.", example: "Angesichts der hohen Kosten wurde das Projekt verschoben." },
+      { id: "b2_nvv", title: "B2.11 Nomen-Verb-Verbindungen", rules: "Fixed noun plus verb pairs carry the meaning together: in Anspruch nehmen, zur Verfügung stehen, in Frage kommen, Rücksicht nehmen, eine Entscheidung treffen.", example: "Die Unterlagen stehen ab Montag zur Verfügung." },
+      { id: "b2_relwas", title: "B2.12 Relativsätze mit was und wo(r)-", rules: "Use was after das, alles, nichts, etwas, viel and after a whole clause. With a preposition it becomes wo(r)-: worüber, wofür, womit.", example: "Das ist alles, was ich weiß. Er kam zu spät, was niemanden überraschte." }
     ];
 
     // Comprehensive A1 Skills Laboratory Array Matrix
@@ -1193,6 +1354,173 @@
         { id: "s25", title: "Talking About Your Free Time", context: "Practice describing how you like to spend your free time.", text: "In meiner Freizeit lese ich gern Bücher.", guide: "Pronounce: In my-ner fry-tsyt lay-zeh eech gairn bue-kher." }
       ]
     };
+
+    const a2SkillsDatabase = {
+      listening: [
+        { id: "a2l1", title: "Bahnhof: Gleiswechsel", context: "A platform announcement changes at the last minute. Catch the new platform number.", transcript: "Information für die Reisenden nach Köln: Der Regionalexpress fährt heute nicht von Gleis 6, sondern von Gleis 11.", question: "From which platform does the train leave today?", options: ["Gleis 1", "Gleis 6", "Gleis 11", "Gleis 16"], correct: 2 },
+        { id: "a2l2", title: "Anrufbeantworter: Verspätung", context: "A friend leaves a voicemail. Note what she asks you to bring.", transcript: "Hallo, ich stehe im Stau und komme später. Können wir uns um halb acht treffen? Und bring bitte die Tickets mit.", question: "What should you bring?", options: ["Das Essen", "Die Tickets", "Den Regenschirm", "Das Auto"], correct: 1 },
+        { id: "a2l3", title: "Kaufhaus: Durchsage", context: "A department store closes earlier than usual today.", transcript: "Liebe Kundinnen und Kunden, wegen einer Betriebsfeier schließen wir heute schon um 19 Uhr, eine Stunde früher als sonst.", question: "When does the shop close today?", options: ["Um 18 Uhr", "Um 19 Uhr", "Um 20 Uhr", "Um 21 Uhr"], correct: 1 },
+        { id: "a2l4", title: "Radio: Wetterbericht", context: "Listen for how the weather changes during the day.", transcript: "Am Vormittag bleibt es trocken, aber kühl. Am Nachmittag ziehen Wolken auf, und am Abend regnet es fast überall.", question: "When will it rain?", options: ["Am Vormittag", "Am Mittag", "Am Abend", "Gar nicht"], correct: 2 },
+        { id: "a2l5", title: "Arztpraxis: Termin verschieben", context: "The practice calls to move an appointment. Note the new day and time.", transcript: "Ihr Termin am Montag um neun Uhr geht leider nicht, der Arzt ist krank. Passt Ihnen Mittwoch um elf Uhr?", question: "What is the new appointment?", options: ["Montag, 9 Uhr", "Mittwoch, 9 Uhr", "Mittwoch, 11 Uhr", "Freitag, 11 Uhr"], correct: 2 },
+        { id: "a2l6", title: "Im Geschäft: Größe und Farbe", context: "A customer cannot get what she wanted. Note what she finally takes.", transcript: "Diese Hose haben wir leider nur in Blau. In Schwarz hätten wir noch den Rock. – Nein danke, dann nehme ich die blaue Hose.", question: "What does the customer take?", options: ["Eine schwarze Hose", "Eine blaue Hose", "Einen schwarzen Rock", "Nichts"], correct: 1 },
+        { id: "a2l7", title: "Anmeldung: Was fehlt noch?", context: "Registration for a course. One document is still missing.", transcript: "Das Formular liegt hier, die Kopie vom Ausweis habe ich auch. Es fehlt nur noch Ihre Unterschrift hier unten.", question: "What is still missing?", options: ["Das Formular", "Die Unterschrift", "Der Ausweis", "Das Foto"], correct: 1 },
+        { id: "a2l8", title: "Hausverwaltung: Reparatur", context: "A tenant reports a new problem after an earlier repair.", transcript: "Die Waschmaschine im Keller läuft wieder, danke. Aber jetzt ist das Licht im Treppenhaus kaputt.", question: "What is broken now?", options: ["Die Waschmaschine", "Das Licht im Treppenhaus", "Der Aufzug", "Die Heizung"], correct: 1 },
+        { id: "a2l9", title: "Radio: Hörer gesucht", context: "A radio show asks listeners to do something specific.", transcript: "Für unsere Sendung am Freitag suchen wir Hörer, die im Ausland gearbeitet haben. Rufen Sie uns an und erzählen Sie Ihre Geschichte.", question: "What should listeners do?", options: ["Eine E-Mail schreiben", "Im Studio vorbeikommen", "Anrufen und erzählen", "Ein Formular ausfüllen"], correct: 2 },
+        { id: "a2l10", title: "Freizeit: Wochenplanung", context: "Two people plan Wednesday. Note what they decide.", transcript: "Am Mittwoch möchte ich endlich wieder Sport machen. – Dann gehen wir joggen, im Park ist es jetzt schön.", question: "What will they do on Wednesday?", options: ["Ins Kino gehen", "Im Park joggen", "Schwimmen gehen", "Rad fahren"], correct: 1 },
+        { id: "a2l11", title: "Nachbarin: Paket angenommen", context: "A neighbour left a message about a parcel.", transcript: "Ich habe heute ein Paket für Sie angenommen. Sie können es ab sechs Uhr abends bei mir abholen, ich bin dann zu Hause.", question: "From when can the parcel be collected?", options: ["Ab 16 Uhr", "Ab 18 Uhr", "Ab 20 Uhr", "Erst morgen"], correct: 1 },
+        { id: "a2l12", title: "Sprachschule: Kursinfo", context: "A course advisor explains when the course takes place.", transcript: "Der Abendkurs findet dienstags und donnerstags von achtzehn bis zwanzig Uhr statt und dauert zehn Wochen.", question: "On which days is the course?", options: ["Montag und Mittwoch", "Dienstag und Donnerstag", "Mittwoch und Freitag", "Nur freitags"], correct: 1 }
+      ],
+      reading: [
+        { id: "a2r1", title: "Aushang: Hausordnung", context: "Read the notice in the stairwell and find the quiet hours.", body: "Liebe Hausbewohner: Von 22 bis 7 Uhr sowie sonntags ganztägig bitten wir um Ruhe. Die Waschküche darf bis 20 Uhr benutzt werden.", question: "When must it be quiet?", options: ["Von 20 bis 7 Uhr", "Von 22 bis 7 Uhr", "Nur sonntags", "Nur samstags"], correct: 1 },
+        { id: "a2r2", title: "E-Mail: Terminabsage", context: "Read the short message and identify what the sender suggests.", body: "Hallo Frau Kraus, leider muss ich unseren Termin am Dienstag absagen, weil ich auf Dienstreise bin. Ginge es bei Ihnen auch am Donnerstag um 14 Uhr?", question: "What does the sender propose?", options: ["Den Termin ganz zu streichen", "Einen neuen Termin am Donnerstag", "Ein Telefonat am Dienstag", "Einen Termin am Montag"], correct: 1 },
+        { id: "a2r3", title: "Anzeige: Wohnungssuche", context: "Read the rental ad and find what is not included.", body: "Helle 2-Zimmer-Wohnung, 58 qm, 3. Stock ohne Aufzug, 690 € warm. Küche vorhanden, kein Balkon. Ab 1. September frei.", question: "What does the flat NOT have?", options: ["Eine Küche", "Einen Balkon", "Fenster", "Zwei Zimmer"], correct: 1 },
+        { id: "a2r4", title: "Zeitungsnotiz: Stadtfest", context: "Read the short news item and find where the festival takes place.", body: "Das Stadtfest findet dieses Jahr nicht am Marktplatz statt, sondern im Stadtpark. Grund sind die Bauarbeiten in der Innenstadt.", question: "Where is the festival this year?", options: ["Am Marktplatz", "Im Stadtpark", "Am Bahnhof", "In der Schule"], correct: 1 },
+        { id: "a2r5", title: "Informationstafel: Bibliothek", context: "Read the floor list and decide where to go for newspapers.", body: "3. OG: Lesecafé, Gruppenräume. 2. OG: Wörterbücher, Zeitungen und Zeitschriften. 1. OG: Romane, Krimis, Hörbücher. EG: Anmeldung, Rückgabe, Kinderbücher.", question: "Where do you find newspapers?", options: ["EG", "1. OG", "2. OG", "3. OG"], correct: 2 },
+        { id: "a2r6", title: "E-Mail: Neu in der Stadt", context: "Read the personal email and identify where the writer currently lives.", body: "Seit drei Wochen arbeite ich in Leipzig. Eine eigene Wohnung habe ich noch nicht gefunden, deshalb wohne ich bis Ende des Monats bei meiner Tante.", question: "Where does the writer live at the moment?", options: ["In einer eigenen Wohnung", "Bei einer Verwandten", "Im Hotel", "Bei einer Kollegin"], correct: 1 },
+        { id: "a2r7", title: "Anzeige: Catering", context: "Read the advert and find what is included in the price.", body: "Wir kochen für Ihre Feier: vegetarisches Buffet ab 18 € pro Person, Lieferung bis 50 km. Geschirr und Servicepersonal auf Wunsch gegen Aufpreis.", question: "What costs extra?", options: ["Das Buffet", "Die Lieferung", "Geschirr und Personal", "Nichts"], correct: 2 },
+        { id: "a2r8", title: "Schild: Schwimmbad", context: "Read the sign and find the last time you can enter.", body: "Öffnungszeiten: 6.30–22 Uhr. Letzter Einlass 21 Uhr. Montags Reinigung, geschlossen.", question: "When is the last entry?", options: ["20 Uhr", "21 Uhr", "22 Uhr", "6.30 Uhr"], correct: 1 },
+        { id: "a2r9", title: "Kursbeschreibung", context: "Read the course description and find who the course is for.", body: "Dieser Kurs richtet sich an Teilnehmende, die schon A1 abgeschlossen haben und sich auf die A2-Prüfung vorbereiten möchten. Vorkenntnisse sind nötig.", question: "Who is this course for?", options: ["Absolute Anfänger", "Lernende nach A1", "Nur Muttersprachler", "Kinder unter 10"], correct: 1 },
+        { id: "a2r10", title: "Aushang: Fundbüro", context: "Read the notice and find how long items are kept.", body: "Gefundene Gegenstände werden sechs Monate aufbewahrt. Danach werden sie verkauft oder gespendet. Bitte bringen Sie Ihren Ausweis mit.", question: "How long are found items kept?", options: ["Sechs Wochen", "Drei Monate", "Sechs Monate", "Ein Jahr"], correct: 2 },
+        { id: "a2r11", title: "SMS: Treffen verschieben", context: "Read the message and identify the new meeting point.", body: "Ich schaffe es nicht ins Café. Können wir uns stattdessen um 19 Uhr direkt vor dem Kino treffen? Ich habe die Karten schon.", question: "Where will they meet now?", options: ["Im Café", "Vor dem Kino", "Am Bahnhof", "Zu Hause"], correct: 1 },
+        { id: "a2r12", title: "Arbeitsvertrag: Urlaub", context: "Read the extract and find the notice period for holiday requests.", body: "Urlaub ist mindestens vier Wochen vorher schriftlich zu beantragen. In den Schulferien entscheidet die Reihenfolge der Anträge.", question: "How early must holiday be requested?", options: ["Eine Woche vorher", "Zwei Wochen vorher", "Vier Wochen vorher", "Am selben Tag"], correct: 2 }
+      ],
+      writing: [
+        { id: "a2w1", title: "SMS: Später kommen", scenario: "Sie wollten heute Abend mit Ihrer Freundin Miriam ins Kino gehen, müssen aber länger arbeiten. Schreiben Sie eine SMS.", points: ["Entschuldigen Sie sich", "Schreiben Sie, warum es nicht geht", "Schlagen Sie einen neuen Tag vor"], pointKeywords: [["tut mir leid", "entschuldigung", "sorry"], ["muss arbeiten", "länger arbeiten", "keine zeit", "büro"], ["donnerstag", "morgen", "nächste woche", "am samstag", "anderen tag"]], minWords: 20, maxWords: 40, sample: "Hallo Miriam, es tut mir leid! Ich muss heute leider länger arbeiten und schaffe das Kino nicht. Hast du am Donnerstag Zeit? Dann gehen wir zur gleichen Zeit. Liebe Grüße, Sara" },
+        { id: "a2w2", title: "E-Mail: Einladung annehmen", scenario: "Ihr Sprachkurs macht einen Ausflug. Ihre Kursleiterin, Frau Ahrens, hat Sie eingeladen. Schreiben Sie eine E-Mail.", points: ["Bedanken Sie sich und sagen Sie zu", "Sagen Sie, dass Sie jemanden mitbringen", "Fragen Sie nach der Abfahrtszeit"], pointKeywords: [["danke", "vielen dank", "ich komme gern", "ich komme mit"], ["mitbringen", "meinen bruder", "meine schwester", "eine freundin", "mein mann", "meine frau"], ["wann", "abfahrt", "uhrzeit", "los", "abfahren"]], minWords: 30, maxWords: 55, sample: "Sehr geehrte Frau Ahrens, vielen Dank für die Einladung. Ich komme gern mit zum Ausflug. Darf ich meinen Bruder mitbringen? Er lernt auch Deutsch. Können Sie mir bitte schreiben, wann wir abfahren? Mit freundlichen Grüßen, Sara Nowak" },
+        { id: "a2w3", title: "E-Mail: Beschwerde beim Vermieter", scenario: "In Ihrer Wohnung ist die Heizung seit drei Tagen kalt. Schreiben Sie Ihrer Hausverwaltung.", points: ["Beschreiben Sie das Problem", "Sagen Sie, seit wann es besteht", "Bitten Sie um eine schnelle Reparatur"], pointKeywords: [["heizung", "kalt", "funktioniert nicht", "kaputt"], ["seit drei tagen", "seit montag", "seit einer woche", "seit"], ["bitte", "reparieren", "techniker", "so schnell wie möglich", "kümmern"]], minWords: 30, maxWords: 55, sample: "Sehr geehrte Damen und Herren, die Heizung in meiner Wohnung wird seit drei Tagen nicht mehr warm. Abends ist es sehr kalt. Können Sie bitte einen Techniker schicken? Ich bin ab 16 Uhr zu Hause. Mit freundlichen Grüßen, Ali Demir" },
+        { id: "a2w4", title: "E-Mail: Kurs absagen", scenario: "Sie haben sich für einen Kochkurs angemeldet, können aber nicht teilnehmen. Schreiben Sie der Volkshochschule.", points: ["Nennen Sie den Kurs und das Datum", "Sagen Sie ab und nennen Sie den Grund", "Fragen Sie nach dem Geld oder einem anderen Termin"], pointKeywords: [["kochkurs", "kurs am", "am samstag", "angemeldet"], ["kann nicht", "muss absagen", "leider nicht", "arbeiten", "krank"], ["geld zurück", "erstatten", "anderer termin", "später", "nächsten kurs"]], minWords: 30, maxWords: 55, sample: "Sehr geehrte Damen und Herren, ich habe mich für den Kochkurs am 12. Mai angemeldet. Leider kann ich nicht teilnehmen, weil ich an diesem Tag arbeiten muss. Kann ich in einen späteren Kurs wechseln? Mit freundlichen Grüßen, Nina Petrova" },
+        { id: "a2w5", title: "SMS: Um einen Gefallen bitten", scenario: "Sie sind im Urlaub und brauchen Hilfe von Ihrem Nachbarn Herrn Klein.", points: ["Sagen Sie, wo Sie sind", "Bitten Sie um Hilfe (Blumen, Post)", "Sagen Sie, wann Sie zurückkommen"], pointKeywords: [["urlaub", "bin in", "verreist"], ["kannst du", "können sie", "bitte", "blumen", "post", "briefkasten"], ["zurück", "komme am", "wieder da", "sonntag"]], minWords: 25, maxWords: 45, sample: "Hallo Herr Klein, ich bin diese Woche im Urlaub in Österreich. Könnten Sie bitte die Blumen gießen und die Post aus dem Briefkasten nehmen? Ich komme am Sonntagabend zurück. Vielen Dank! Viele Grüße, Familie Sonnen" },
+        { id: "a2w6", title: "E-Mail: Nach Informationen fragen", scenario: "Sie interessieren sich für ein Fitnessstudio in Ihrer Nähe. Schreiben Sie eine E-Mail.", points: ["Sagen Sie, warum Sie schreiben", "Fragen Sie nach Preis und Vertragslaufzeit", "Fragen Sie nach einem Probetraining"], pointKeywords: [["interesse", "möchte", "informationen", "mitgliedschaft"], ["preis", "kosten", "monat", "vertrag", "laufzeit"], ["probetraining", "ausprobieren", "einmal testen", "schnuppern"]], minWords: 30, maxWords: 55, sample: "Sehr geehrte Damen und Herren, ich interessiere mich für eine Mitgliedschaft in Ihrem Studio. Was kostet der Beitrag pro Monat, und wie lang ist die Vertragslaufzeit? Kann ich vorher ein Probetraining machen? Vielen Dank im Voraus. Mit freundlichen Grüßen, Tomás Silva" },
+        { id: "a2w7", title: "E-Mail: Sich für Hilfe bedanken", scenario: "Ihre Kollegin Frau Roth hat Ihnen beim Umzug geholfen. Schreiben Sie ihr.", points: ["Bedanken Sie sich", "Sagen Sie, was besonders geholfen hat", "Laden Sie sie zu sich ein"], pointKeywords: [["danke", "vielen dank", "dankeschön"], ["geholfen", "kisten", "möbel", "auto", "hat mir sehr"], ["einladen", "besuch", "komm vorbei", "essen", "kaffee"]], minWords: 30, maxWords: 50, sample: "Liebe Frau Roth, vielen Dank für Ihre Hilfe am Samstag! Besonders mit dem Transport der Kisten haben Sie mir sehr geholfen. Kommen Sie doch bald zum Kaffee vorbei, dann zeige ich Ihnen die neue Wohnung. Herzliche Grüße, Marek" },
+        { id: "a2w8", title: "E-Mail: Verspätung im Büro melden", scenario: "Ihr Zug hat Verspätung und Sie kommen zu spät zu einer Besprechung. Schreiben Sie Ihrem Chef.", points: ["Informieren Sie über die Verspätung", "Nennen Sie den Grund", "Sagen Sie, wann Sie ankommen"], pointKeywords: [["verspätung", "komme später", "zu spät"], ["zug", "bahn", "stau", "unfall", "ausgefallen"], ["gegen", "um", "in einer stunde", "voraussichtlich"]], minWords: 25, maxWords: 45, sample: "Guten Morgen Herr Lang, mein Zug hat 40 Minuten Verspätung, deshalb komme ich später zur Besprechung. Voraussichtlich bin ich gegen 10.30 Uhr im Büro. Können Sie bitte ohne mich anfangen? Mit freundlichen Grüßen, Aylin" }
+      ],
+      speaking: [
+        { id: "a2s1", title: "Über den Arbeitstag erzählen", context: "Talk about how your day begins. Practise linking two sentences with 'dann'.", text: "Mein Tag beginnt um halb sieben. Zuerst trinke ich einen Kaffee, dann fahre ich mit dem Bus zur Arbeit.", guide: "Pronounce: Myn tahk beh-gint oom halp zee-ben. Tsoo-airst trin-keh eech eye-nen ka-fay, dan fah-reh eech mit dem boos tsoor ar-byt." },
+        { id: "a2s2", title: "Einen Vorschlag machen", context: "Suggest a time to meet. Note the question word order.", text: "Wollen wir uns am Donnerstag nach der Arbeit treffen? Ich habe ab siebzehn Uhr Zeit.", guide: "Pronounce: Vol-len veer oons am don-ers-tahk nahkh dair ar-byt tref-fen? Eech hah-beh ap zeep-tsayn oor tsyt." },
+        { id: "a2s3", title: "Höflich ablehnen und Alternative nennen", context: "Turn something down politely and offer another option.", text: "Das geht bei mir leider nicht. Können wir es stattdessen am Samstagvormittag machen?", guide: "Pronounce: Das gayt by meer ly-der neekht. Kur-nen veer es shtat-des-sen am zams-tahk-for-mit-tahk makh-en?" },
+        { id: "a2s4", title: "Über die Vergangenheit sprechen", context: "Describe last weekend using the Perfekt.", text: "Am Wochenende habe ich meine Großeltern besucht und bin danach im Park spazieren gegangen.", guide: "Pronounce: Am vokh-en-en-deh hah-beh eech my-neh grohs-el-tern beh-zookht oont bin dah-nahkh im park shpa-tsee-ren geh-gang-en." },
+        { id: "a2s5", title: "Sich beschweren", context: "Complain politely about a problem in your flat.", text: "Entschuldigung, die Heizung wird seit drei Tagen nicht mehr warm. Könnten Sie das bitte reparieren lassen?", guide: "Pronounce: Ent-shool-dee-goong, dee hy-tsoong veert zyt dry tah-gen neekht mair varm. Kurn-ten zee das bit-teh reh-pa-ree-ren las-sen?" },
+        { id: "a2s6", title: "Nach dem Weg fragen (Details)", context: "Ask for directions and how long it takes.", text: "Wie komme ich am besten zum Rathaus, und wie lange dauert das zu Fuß?", guide: "Pronounce: Vee kom-meh eech am bes-ten tsoom raht-hows, oont vee lang-eh dow-ert das tsoo foos?" },
+        { id: "a2s7", title: "Eine Meinung äußern", context: "Give a simple opinion with a reason using 'weil'.", text: "Ich finde die Idee gut, weil wir dann mehr Zeit haben.", guide: "Pronounce: Eech fin-deh dee ee-day goot, vyl veer dan mair tsyt hah-ben." },
+        { id: "a2s8", title: "Im Restaurant reklamieren", context: "Point out politely that something is wrong with your order.", text: "Entschuldigung, ich hatte die Suppe bestellt, aber ich habe den Salat bekommen.", guide: "Pronounce: Ent-shool-dee-goong, eech hat-teh dee zoop-peh beh-shtelt, ah-ber eech hah-beh dayn za-laht beh-kom-men." },
+        { id: "a2s9", title: "Über Pläne sprechen", context: "Talk about a plan for next month.", text: "Nächsten Monat möchte ich einen Computerkurs machen, weil ich das für meine Arbeit brauche.", guide: "Pronounce: Naikh-sten moh-naht murkh-teh eech eye-nen com-pyoo-ter-koors makh-en, vyl eech das fuer my-neh ar-byt brow-kheh." },
+        { id: "a2s10", title: "Einen Termin vereinbaren", context: "Make an appointment on the phone and confirm it.", text: "Ich hätte gern einen Termin am Mittwochnachmittag. Passt es um vierzehn Uhr?", guide: "Pronounce: Eech het-teh gairn eye-nen ter-meen am mit-vokh-nahkh-mit-tahk. Past es oom feer-tsayn oor?" },
+        { id: "a2s11", title: "Etwas vergleichen", context: "Compare two options using the comparative.", text: "Der Bus ist billiger als der Zug, aber der Zug ist viel schneller.", guide: "Pronounce: Dair boos ist bil-lee-ger als dair tsook, ah-ber dair tsook ist feel shnel-ler." },
+        { id: "a2s12", title: "Sich auf etwas einigen", context: "Close a plan by naming place and time.", text: "Gut, dann treffen wir uns am Samstag um elf Uhr vor dem Kaufhaus.", guide: "Pronounce: Goot, dan tref-fen veer oons am zams-tahk oom elf oor for dem kowf-hows." }
+      ]
+    };
+
+    const b1SkillsDatabase = {
+      listening: [
+        { id: "b1l1", title: "Radiobeitrag: Homeoffice", context: "A short report on working from home. Listen for the main argument.", transcript: "Viele Beschäftigte arbeiten heute teilweise zu Hause. Studien zeigen: Die Produktivität bleibt gleich, aber der Kontakt zu den Kollegen leidet.", question: "What does the report say about working from home?", options: ["Die Produktivität sinkt stark", "Die Produktivität bleibt gleich, der Kontakt leidet", "Alle wollen zurück ins Büro", "Es gibt keine Studien dazu"], correct: 1 },
+        { id: "b1l2", title: "Interview: Berufswechsel", context: "Someone explains why she changed careers.", transcript: "Nach zehn Jahren im Büro habe ich gekündigt. Ich wollte etwas machen, das man am Ende des Tages sehen kann. Heute bin ich Tischlerin.", question: "Why did she change jobs?", options: ["Wegen des Gehalts", "Sie wollte sichtbare Ergebnisse", "Sie ist umgezogen", "Die Firma hat geschlossen"], correct: 1 },
+        { id: "b1l3", title: "Durchsage: Streik", context: "A transport announcement about a strike. Note what is recommended.", transcript: "Wegen eines Streiks fallen morgen die meisten Regionalzüge aus. Wir empfehlen, auf Fernbusse auszuweichen oder Fahrgemeinschaften zu bilden.", question: "What does the announcement recommend?", options: ["Zu Hause zu bleiben", "Fernbusse oder Fahrgemeinschaften", "Ein Taxi zu nehmen", "Später zu fahren"], correct: 1 },
+        { id: "b1l4", title: "Gespräch: Mietvertrag", context: "A tenant discusses a contract clause.", transcript: "Im Vertrag steht, dass Sie drei Monate vorher kündigen müssen. Wenn Sie früher ausziehen wollen, brauchen wir einen Nachmieter.", question: "What is needed to move out early?", options: ["Eine höhere Miete", "Ein Nachmieter", "Eine schriftliche Erlaubnis der Nachbarn", "Nichts"], correct: 1 },
+        { id: "b1l5", title: "Vortrag: Ehrenamt", context: "A speaker explains what volunteers gain.", transcript: "Wer sich ehrenamtlich engagiert, hilft nicht nur anderen. Viele berichten, dass sie neue Kontakte knüpfen und Fähigkeiten lernen, die im Beruf nützlich sind.", question: "What do volunteers gain according to the speaker?", options: ["Nur ein gutes Gefühl", "Kontakte und nützliche Fähigkeiten", "Ein höheres Gehalt", "Kostenlose Reisen"], correct: 1 },
+        { id: "b1l6", title: "Telefonat: Reklamation", context: "A customer complains about a delivery.", transcript: "Der Schrank kam beschädigt an. Ich möchte kein neues Modell, sondern das Geld zurück. Die Rechnung habe ich noch.", question: "What does the customer want?", options: ["Ein Ersatzmodell", "Das Geld zurück", "Eine Reparatur", "Einen Gutschein"], correct: 1 },
+        { id: "b1l7", title: "Diskussion: Auto in der Stadt", context: "Two speakers disagree about cars in city centres.", transcript: "Ich finde autofreie Innenstädte gut, die Luft wird besser. – Grundsätzlich ja, aber ohne guten Nahverkehr trifft das vor allem Menschen vom Land.", question: "What is the second speaker's position?", options: ["Er ist völlig dagegen", "Er stimmt zu, sieht aber ein Problem", "Er findet die Luft unwichtig", "Er wohnt in der Stadt"], correct: 1 },
+        { id: "b1l8", title: "Nachricht: Praktikumsplatz", context: "A company leaves a message about an internship.", transcript: "Wir würden Ihnen den Platz gern anbieten, allerdings erst ab September statt ab Juli. Bitte sagen Sie uns bis Freitag Bescheid.", question: "What has changed?", options: ["Die Bezahlung", "Der Starttermin", "Der Ort", "Die Dauer"], correct: 1 },
+        { id: "b1l9", title: "Bericht: Lebensmittel wegwerfen", context: "A report about food waste. Listen for the proposed solution.", transcript: "In Deutschland landen jährlich Millionen Tonnen Lebensmittel im Müll. Fachleute fordern, das Mindesthaltbarkeitsdatum verständlicher zu gestalten.", question: "What do experts demand?", options: ["Niedrigere Preise", "Ein verständlicheres Haltbarkeitsdatum", "Mehr Supermärkte", "Weniger Verpackung"], correct: 1 },
+        { id: "b1l10", title: "Gespräch: Weiterbildung", context: "A colleague explains why she takes an evening course.", transcript: "Die Firma zahlt die Hälfte, den Rest trage ich selbst. Anstrengend ist es schon, aber ohne den Abschluss komme ich hier nicht weiter.", question: "Why does she do the course?", options: ["Die Firma zwingt sie", "Ohne Abschluss kommt sie beruflich nicht weiter", "Sie hat viel Freizeit", "Der Kurs ist kostenlos"], correct: 1 },
+        { id: "b1l11", title: "Interview: Umzug aufs Land", context: "A family explains their move out of the city.", transcript: "Wir haben lange gezögert. Der Garten war das Hauptargument, auch wenn ich jetzt eine Stunde länger pendle.", question: "What was the main reason for moving?", options: ["Die günstige Miete", "Der Garten", "Die Arbeit", "Die Schule"], correct: 1 },
+        { id: "b1l12", title: "Ansage: Kursänderung", context: "A course announcement changes the format.", transcript: "Der Kurs findet ab nächster Woche online statt. Die Uhrzeit bleibt gleich, den Link bekommen Sie am Vortag per E-Mail.", question: "What stays the same?", options: ["Der Ort", "Die Uhrzeit", "Die Dozentin", "Der Preis"], correct: 1 }
+      ],
+      reading: [
+        { id: "b1r1", title: "Zeitungsartikel: Fahrradstadt", context: "Read the article extract and identify the main point.", body: "Seit die Stadt breitere Radwege gebaut hat, fahren 30 Prozent mehr Menschen mit dem Rad. Kritiker bemängeln allerdings, dass Lieferverkehr und Handwerksbetriebe kaum noch Parkplätze finden.", question: "What is the criticism mentioned?", options: ["Radwege sind zu teuer", "Lieferverkehr und Betriebe finden keine Parkplätze", "Zu wenige Menschen fahren Rad", "Die Radwege sind zu schmal"], correct: 1 },
+        { id: "b1r2", title: "Leserbrief: Öffnungszeiten", context: "Read the reader's letter and identify the writer's position.", body: "Längere Öffnungszeiten klingen bequem. Aber wer denkt an die Beschäftigten? Wer sonntags arbeitet, hat kaum noch gemeinsame Zeit mit der Familie. Bequemlichkeit sollte nicht alles sein.", question: "What is the writer's view?", options: ["Er ist für Sonntagsöffnung", "Er denkt an die Beschäftigten und ist dagegen", "Er findet Öffnungszeiten unwichtig", "Er arbeitet im Handel"], correct: 1 },
+        { id: "b1r3", title: "Ratgeber: Bewerbung", context: "Read the advice text and find the recommendation.", body: "Ein Anschreiben sollte keine Wiederholung des Lebenslaufs sein. Wählen Sie zwei Erfahrungen aus, die zur Stelle passen, und erklären Sie, was Sie daraus gelernt haben.", question: "What does the text advise?", options: ["Den Lebenslauf zu wiederholen", "Zwei passende Erfahrungen zu erklären", "Möglichst lang zu schreiben", "Auf ein Anschreiben zu verzichten"], correct: 1 },
+        { id: "b1r4", title: "Vertragsauszug: Handyvertrag", context: "Read the contract extract and find what happens after 24 months.", body: "Die Mindestlaufzeit beträgt 24 Monate. Danach verlängert sich der Vertrag automatisch um einen Monat, sofern nicht mit einer Frist von vier Wochen gekündigt wird.", question: "What happens after the minimum term?", options: ["Der Vertrag endet automatisch", "Er verlängert sich monatlich, wenn man nicht kündigt", "Der Preis sinkt", "Man muss neu unterschreiben"], correct: 1 },
+        { id: "b1r5", title: "Blogbeitrag: Sprachen lernen", context: "Read the blog post and find the author's main tip.", body: "Vokabellisten allein bringen wenig. Was bei mir funktioniert hat: jeden Tag zwanzig Minuten sprechen, auch wenn es fehlerhaft ist. Fehler sind Teil des Fortschritts, kein Beweis für Unfähigkeit.", question: "What is the author's main tip?", options: ["Mehr Vokabeln lernen", "Täglich sprechen, auch mit Fehlern", "Nur mit Muttersprachlern üben", "Grammatik zuerst"], correct: 1 },
+        { id: "b1r6", title: "Aushang: Nachbarschaftsgarten", context: "Read the notice and find the condition for participation.", body: "Wer mitmachen möchte, verpflichtet sich, pro Monat mindestens vier Stunden im Garten zu helfen. Die Ernte wird gerecht unter allen Beteiligten aufgeteilt.", question: "What must participants do?", options: ["Einen Beitrag zahlen", "Monatlich vier Stunden helfen", "Eigene Werkzeuge kaufen", "Täglich kommen"], correct: 1 },
+        { id: "b1r7", title: "Bericht: Fachkräftemangel", context: "Read the report and identify the proposed measure.", body: "In der Pflege fehlen tausende Fachkräfte. Neben besserer Bezahlung fordern Verbände vor allem verlässliche Dienstpläne, damit Beschäftigte Beruf und Familie planen können.", question: "Besides pay, what do associations demand?", options: ["Kürzere Ausbildung", "Verlässliche Dienstpläne", "Mehr Urlaub im Sommer", "Neue Gebäude"], correct: 1 },
+        { id: "b1r8", title: "E-Mail: Projektverzug", context: "Read the internal email and identify what is being asked.", body: "Wir liegen zwei Wochen hinter dem Plan. Ich schlage vor, den Testlauf zu verschieben und stattdessen zuerst die Dokumentation abzuschließen. Bitte geben Sie mir bis Mittwoch eine Rückmeldung.", question: "What does the sender propose?", options: ["Das Projekt abzubrechen", "Den Testlauf zu verschieben", "Mehr Personal einzustellen", "Den Termin zu halten"], correct: 1 },
+        { id: "b1r9", title: "Kommentar: Handys in der Schule", context: "Read the comment and identify the compromise suggested.", body: "Ein komplettes Verbot ist weltfremd, ein freier Umgang aber auch nicht sinnvoll. Sinnvoller wäre: Handys bleiben im Unterricht in der Tasche, in den Pausen entscheiden die Klassen selbst.", question: "What compromise is suggested?", options: ["Ein komplettes Verbot", "Handys im Unterricht weg, in Pausen erlaubt", "Handys immer erlaubt", "Handys nur für Lehrkräfte"], correct: 1 },
+        { id: "b1r10", title: "Anzeige: Stellenausschreibung", context: "Read the job ad and find what is explicitly not required.", body: "Wir suchen eine Assistenz der Geschäftsführung. Erwartet werden gute Deutschkenntnisse und Organisationstalent. Ein Studium ist nicht erforderlich, Berufserfahrung ist willkommen.", question: "What is NOT required?", options: ["Deutschkenntnisse", "Ein Studium", "Organisationstalent", "Zuverlässigkeit"], correct: 1 },
+        { id: "b1r11", title: "Reisebericht: Wandern", context: "Read the travel report and identify the writer's advice.", body: "Die Route ist landschaftlich großartig, aber unterschätzen Sie den Abstieg nicht. Wer erst mittags startet, läuft die letzte Stunde im Dunkeln. Brechen Sie früh auf.", question: "What does the writer advise?", options: ["Früh loszugehen", "Mittags zu starten", "Die Route zu meiden", "Eine Lampe zu kaufen"], correct: 0 },
+        { id: "b1r12", title: "Hinweis: Versicherung", context: "Read the insurance note and find the deadline for reporting damage.", body: "Schäden sind innerhalb von sieben Tagen nach Bekanntwerden zu melden. Wird die Frist versäumt, kann die Versicherung die Zahlung kürzen oder ganz verweigern.", question: "What is the deadline for reporting damage?", options: ["24 Stunden", "Sieben Tage", "Einen Monat", "Es gibt keine Frist"], correct: 1 }
+      ],
+      writing: [
+        { id: "b1w1", title: "Forumsbeitrag: Homeoffice", scenario: "In einem Online-Forum wird diskutiert: 'Sollten Firmen Homeoffice erlauben?' Schreiben Sie einen Beitrag.", points: ["Nennen Sie Ihre Meinung", "Nennen Sie zwei Argumente mit Beispiel", "Schreiben Sie eine Schlussfolgerung"], pointKeywords: [["meiner meinung nach", "ich finde", "ich denke", "ich bin der meinung"], ["erstens", "zum einen", "außerdem", "zum beispiel", "weil", "denn"], ["insgesamt", "zusammenfassend", "deshalb", "fazit", "abschließend"]], minWords: 60, maxWords: 110, sample: "Meiner Meinung nach sollten Firmen Homeoffice ermöglichen, aber nicht für jede Aufgabe. Zum einen sparen Beschäftigte Zeit: Ich selbst pendle täglich zwei Stunden, die mir sonst fehlen. Zum anderen leidet der Kontakt im Team, wenn niemand mehr ins Büro kommt. Deshalb halte ich eine Mischung für sinnvoll, zum Beispiel zwei feste Bürotage pro Woche. Insgesamt sollte die Entscheidung von der Aufgabe abhängen, nicht von Misstrauen." },
+        { id: "b1w2", title: "Formelle E-Mail: Beschwerde", scenario: "Sie haben online einen Schreibtisch gekauft. Er kam beschädigt an. Schreiben Sie an den Kundenservice.", points: ["Beschreiben Sie Bestellung und Problem", "Erklären Sie, was Sie schon versucht haben", "Nennen Sie eine konkrete Forderung mit Frist"], pointKeywords: [["bestellt", "bestellnummer", "geliefert", "beschädigt", "kaputt"], ["angerufen", "geschrieben", "keine antwort", "bereits", "hotline"], ["erstattung", "geld zurück", "austausch", "bis zum", "innerhalb von", "frist"]], minWords: 60, maxWords: 110, sample: "Sehr geehrte Damen und Herren, am 3. April habe ich bei Ihnen einen Schreibtisch bestellt (Bestellnummer 44120). Bei der Lieferung war die Tischplatte deutlich beschädigt. Ich habe bereits zweimal bei Ihrer Hotline angerufen, bisher jedoch keine Rückmeldung erhalten. Ich bitte Sie daher, mir den Kaufpreis bis zum 30. April zu erstatten oder einen Termin für den Austausch zu nennen. Mit freundlichen Grüßen, Laura Fischer" },
+        { id: "b1w3", title: "Persönlicher Brief: Rat geben", scenario: "Ihre Freundin überlegt, für ein Jahr im Ausland zu arbeiten, und fragt Sie um Rat. Antworten Sie.", points: ["Reagieren Sie auf ihre Nachricht", "Geben Sie einen Rat und begründen Sie ihn", "Bieten Sie konkrete Hilfe an"], pointKeywords: [["deine nachricht", "du schreibst", "freue mich", "verstehe"], ["ich würde", "an deiner stelle", "rate dir", "weil", "denn"], ["helfen", "ich kann", "melde dich", "besuche dich", "wohnung", "unterlagen"]], minWords: 60, maxWords: 110, sample: "Liebe Nadja, danke für deine Nachricht – ich verstehe gut, dass dich die Entscheidung beschäftigt. An deiner Stelle würde ich es machen, weil du so eine Chance selten wieder bekommst und deine Stelle hier ja nicht wegläuft. Wichtig wäre nur, vorher zu klären, wie es mit Versicherung und Wohnung aussieht. Wenn du möchtest, sehe ich mir die Unterlagen mit dir an, und deine Post kann ich auch übernehmen. Melde dich einfach! Liebe Grüße, Sonja" },
+        { id: "b1w4", title: "Forumsbeitrag: Autofreie Innenstadt", scenario: "Ihre Stadt diskutiert eine autofreie Innenstadt. Schreiben Sie einen Beitrag im Stadtforum.", points: ["Beschreiben Sie kurz die Situation", "Nennen Sie Vor- und Nachteile", "Machen Sie einen Vorschlag"], pointKeywords: [["in unserer stadt", "die situation", "diskutiert", "geplant"], ["vorteil", "nachteil", "einerseits", "andererseits", "allerdings"], ["ich schlage vor", "man könnte", "mein vorschlag", "sinnvoll wäre"]], minWords: 60, maxWords: 110, sample: "In unserer Stadt wird gerade diskutiert, den Innenstadtring für Autos zu sperren. Einerseits würde das die Luft verbessern und die Straßen sicherer machen. Andererseits erreichen ältere Menschen und Handwerksbetriebe die Geschäfte dann schlechter. Ich schlage vor, die Sperrung zunächst nur samstags zu testen und gleichzeitig den Bustakt zu verdichten. Nach einem halben Jahr könnte man die Zahlen prüfen und dann entscheiden." },
+        { id: "b1w5", title: "Formelle E-Mail: Kursbestätigung erbitten", scenario: "Sie haben einen Weiterbildungskurs besucht und brauchen eine Teilnahmebestätigung für Ihren Arbeitgeber.", points: ["Nennen Sie Kurs und Zeitraum", "Erklären Sie, wofür Sie die Bestätigung brauchen", "Bitten Sie um Zusendung bis zu einem Termin"], pointKeywords: [["kurs", "vom", "bis", "teilgenommen", "besucht"], ["arbeitgeber", "firma", "personalabteilung", "benötige", "für die"], ["senden", "schicken", "bis zum", "per e-mail", "post"]], minWords: 60, maxWords: 100, sample: "Sehr geehrte Frau Weiß, ich habe vom 4. bis 15. März an Ihrem Kurs 'Projektmanagement kompakt' teilgenommen. Meine Personalabteilung benötigt eine Teilnahmebestätigung, damit die Kosten erstattet werden können. Könnten Sie mir das Dokument bitte bis zum 5. April per E-Mail zusenden? Falls Sie weitere Angaben von mir brauchen, melde ich mich gern. Vielen Dank für Ihre Unterstützung. Mit freundlichen Grüßen, Ibrahim Yildiz" },
+        { id: "b1w6", title: "Forumsbeitrag: Handys in der Schule", scenario: "Ein Elternforum diskutiert ein Handyverbot an Schulen. Schreiben Sie Ihre Position.", points: ["Nennen Sie Ihre Position", "Begründen Sie mit einem Beispiel", "Gehen Sie auf ein Gegenargument ein"], pointKeywords: [["ich bin", "meiner meinung nach", "ich halte"], ["zum beispiel", "beispielsweise", "bei uns", "meine tochter", "mein sohn", "weil"], ["natürlich", "zwar", "man könnte einwenden", "kritiker", "allerdings", "dagegen"]], minWords: 60, maxWords: 110, sample: "Ich halte ein komplettes Handyverbot für den falschen Weg. Kinder müssen lernen, mit Geräten umzugehen, und das gelingt nicht, wenn man sie nur wegschließt. Bei meinem Sohn hat es zum Beispiel gut funktioniert, dass die Klasse gemeinsam Regeln aufgestellt hat. Natürlich kann man einwenden, dass Handys im Unterricht stören – das stimmt. Deshalb wäre ich dafür, sie während der Stunden einzusammeln, in den Pausen aber zu erlauben." },
+        { id: "b1w7", title: "Persönliche E-Mail: Absage mit Erklärung", scenario: "Sie können bei einem Umzug Ihrer Freundin doch nicht helfen. Schreiben Sie ihr.", points: ["Sagen Sie ab und entschuldigen Sie sich", "Erklären Sie den Grund genauer", "Bieten Sie eine Alternative an"], pointKeywords: [["leider", "tut mir leid", "kann nicht", "muss absagen"], ["weil", "denn", "dienstreise", "arbeit", "familie", "termin"], ["stattdessen", "dafür", "am sonntag", "später", "ich kann", "jemand anderes"]], minWords: 55, maxWords: 100, sample: "Liebe Kim, es tut mir wirklich leid, aber ich kann dir am Samstag doch nicht beim Umzug helfen. Mein Chef hat mich kurzfristig auf eine Dienstreise geschickt, die ich nicht verschieben kann. Dafür bin ich am Sonntag den ganzen Tag frei und könnte dir beim Auspacken und beim Aufbauen der Regale helfen. Außerdem hat mein Bruder ein Auto und würde am Samstag die schweren Kisten fahren. Sag mir einfach Bescheid! Liebe Grüße, Marc" },
+        { id: "b1w8", title: "Formelle E-Mail: Vorschlag an den Arbeitgeber", scenario: "Sie möchten in Ihrer Firma eine Fahrradstellplatz-Lösung vorschlagen. Schreiben Sie an die Geschäftsführung.", points: ["Beschreiben Sie das Problem", "Machen Sie einen konkreten Vorschlag", "Nennen Sie den Nutzen für die Firma"], pointKeywords: [["problem", "zurzeit", "im moment", "keine", "zu wenige", "stellplätze"], ["ich schlage vor", "möglich wäre", "vorschlag", "überdachte", "abstellraum"], ["vorteil", "nutzen", "für die firma", "gesünder", "weniger", "image", "sparen"]], minWords: 60, maxWords: 110, sample: "Sehr geehrte Frau Berger, zurzeit gibt es auf dem Firmengelände nur sechs Fahrradstellplätze, die täglich belegt sind. Mehrere Kolleginnen und Kollegen stellen ihre Räder deshalb ungeschützt an den Zaun. Ich schlage vor, den ungenutzten Bereich neben der Halle 2 mit einem einfachen Dach und Bügeln auszustatten. Das wäre vergleichsweise günstig und würde mehr Beschäftigte zum Radfahren bewegen, was auch die Parkplatzsituation entspannt. Gern stelle ich den Vorschlag genauer vor. Mit freundlichen Grüßen, Petra Lang" }
+      ],
+      speaking: [
+        { id: "b1s1", title: "Meinung äußern und begründen", context: "State an opinion and back it up in one connected sentence.", text: "Ich bin der Meinung, dass Homeoffice sinnvoll ist, solange das Team sich regelmäßig persönlich trifft.", guide: "Pronounce: Eech bin dair my-noong, das home-office zin-fol ist, zoh-lang-eh das team zeekh reh-geh-mai-seekh per-zurn-leekh trift." },
+        { id: "b1s2", title: "Ein Gegenargument einräumen", context: "Concede a counterargument before making your own point.", text: "Natürlich kostet das mehr Geld, trotzdem halte ich die Investition langfristig für richtig.", guide: "Pronounce: Na-tuer-leekh kos-tet das mair gelt, trots-dem hal-teh eech dee in-ves-tee-tsee-ohn lang-fris-teekh fuer reekh-teekh." },
+        { id: "b1s3", title: "Über Erfahrungen berichten", context: "Report a past experience and what you learned from it.", text: "Als ich im Ausland gearbeitet habe, habe ich gelernt, wie wichtig es ist, Fragen zu stellen.", guide: "Pronounce: Als eech im ows-lant geh-ar-by-tet hah-beh, hah-beh eech geh-lairnt, vee veekh-teekh es ist, frah-gen tsoo shtel-len." },
+        { id: "b1s4", title: "Etwas höflich reklamieren", context: "Complain formally and state a clear request.", text: "Die Lieferung war beschädigt. Ich möchte Sie bitten, mir den Betrag zu erstatten.", guide: "Pronounce: Dee lee-feh-roong var beh-shay-deekht. Eech murkh-teh zee bit-ten, meer dayn beh-trahk tsoo air-shtat-ten." },
+        { id: "b1s5", title: "Vermutungen ausdrücken", context: "Express an assumption with 'wahrscheinlich' and Konjunktiv II.", text: "Wahrscheinlich wäre es besser, wenn wir den Termin um eine Woche verschieben würden.", guide: "Pronounce: Vahr-shyn-leekh vai-reh es bes-ser, ven veer dayn ter-meen oom eye-neh vokh-eh fer-shee-ben vuer-den." },
+        { id: "b1s6", title: "Ein Problem beschreiben", context: "Describe a problem precisely, including how long it has lasted.", text: "Seit etwa zwei Wochen funktioniert der Aufzug nicht zuverlässig, besonders morgens bleibt er oft stehen.", guide: "Pronounce: Zyt et-vah tsvy vokh-en foonk-tsee-oh-neert dair owf-tsook neekht tsoo-fair-les-seekh, beh-zon-ders mor-gens blypt air oft shtay-en." },
+        { id: "b1s7", title: "Vor- und Nachteile abwägen", context: "Weigh up two sides in one sentence.", text: "Einerseits spart man Zeit, andererseits verliert man den Kontakt zu den Kollegen.", guide: "Pronounce: Eye-ner-zyts shpart man tsyt, an-der-er-zyts fer-leert man dayn kon-takt tsoo dayn kol-lay-gen." },
+        { id: "b1s8", title: "Einen Vorschlag begründen", context: "Make a proposal and justify it with a purpose clause.", text: "Ich schlage vor, dass wir zuerst die Dokumentation abschließen, damit der Testlauf reibungslos läuft.", guide: "Pronounce: Eech shlah-geh for, das veer tsoo-airst dee do-koo-men-ta-tsee-ohn ap-shlee-sen, dah-mit dair test-lowf ry-boongs-lohs loyft." },
+        { id: "b1s9", title: "Höflich widersprechen", context: "Disagree politely in a discussion.", text: "Da bin ich anderer Meinung. Aus meiner Sicht ist das Problem nicht die Technik, sondern die Organisation.", guide: "Pronounce: Dah bin eech an-der-er my-noong. Ows my-ner zeekht ist das prob-laym neekht dee tekh-nik, zon-dern dee or-ga-nee-za-tsee-ohn." },
+        { id: "b1s10", title: "Über Zukunftspläne sprechen", context: "Talk about a plan and the condition attached to it.", text: "Wenn ich die Prüfung bestehe, möchte ich mich im Herbst für die Weiterbildung anmelden.", guide: "Pronounce: Ven eech dee pruef-oong beh-shtay-eh, murkh-teh eech meekh im hairpst fuer dee vy-ter-bil-doong an-mel-den." },
+        { id: "b1s11", title: "Ein Gespräch zusammenfassen", context: "Summarise the result of a discussion.", text: "Wir haben uns also darauf geeinigt, den Vorschlag zunächst drei Monate zu testen.", guide: "Pronounce: Veer hah-ben oons al-zoh dah-rowf geh-eye-neekht, dayn for-shlahk tsoo-naikhst dry moh-nah-teh tsoo tes-ten." },
+        { id: "b1s12", title: "Um Präzisierung bitten", context: "Ask someone to be more specific without sounding rude.", text: "Könnten Sie das bitte etwas genauer erklären? Ich bin mir nicht sicher, ob ich Sie richtig verstanden habe.", guide: "Pronounce: Kurn-ten zee das bit-teh et-vas geh-now-er air-klai-ren? Eech bin meer neekht zee-kher, op eech zee reekh-teekh fer-shtan-den hah-beh." }
+      ]
+    };
+
+    // Skills lab content is keyed by level so the tab follows the level switcher.
+    const b2SkillsDatabase = {
+      listening: [
+        { id: "b2l1", title: "Radiobeitrag: Homeoffice", context: "A radio feature reports a study result. Catch what the study actually found.", transcript: "Eine neue Studie zeigt: Beschäftigte im Homeoffice arbeiten im Schnitt nicht weniger, berichten aber häufiger, dass sie abends schlecht abschalten können.", question: "What does the study find?", options: ["People work less at home", "People work about the same but switch off less easily", "People are more often ill", "People prefer the office"], correct: 1 },
+        { id: "b2l2", title: "Diskussion: Tempolimit", context: "Two speakers disagree. Identify the second speaker's objection.", transcript: "A: Ein Tempolimit würde den Ausstoß sofort senken. B: Das bestreite ich nicht, nur fällt der Effekt deutlich kleiner aus, als oft behauptet wird.", question: "What is B's position?", options: ["B denies any effect", "B accepts the effect but thinks it is smaller than claimed", "B agrees fully", "B wants a higher limit"], correct: 1 },
+        { id: "b2l3", title: "Vortrag: Fachkräftemangel", context: "A lecture names a cause. Note which one.", transcript: "Der Mangel liegt weniger an fehlenden Bewerbungen als an langwierigen Anerkennungsverfahren für ausländische Abschlüsse.", question: "What does the speaker see as the main cause?", options: ["Too few applications", "Slow recognition of foreign qualifications", "Low salaries", "Poor training places"], correct: 1 },
+        { id: "b2l4", title: "Interview: Ehrenamt", context: "An interviewee qualifies her own praise. Catch the reservation.", transcript: "Ehrenamtliche Arbeit ist wertvoll, keine Frage. Problematisch wird es erst, wenn der Staat sich darauf verlässt und eigene Aufgaben abgibt.", question: "What is her reservation?", options: ["Volunteering is not valuable", "The state should not offload its own duties onto volunteers", "Volunteers are badly trained", "There are too few volunteers"], correct: 1 },
+        { id: "b2l5", title: "Nachricht: Betriebsversammlung", context: "A voicemail from a colleague. Note what is expected of you.", transcript: "Die Versammlung wurde auf Donnerstag verlegt. Wichtig: Wer eine Frage einreichen möchte, muss sie bis Mittwochmittag schriftlich beim Betriebsrat abgeben.", question: "What must you do to ask a question?", options: ["Ask on the day", "Submit it in writing by Wednesday midday", "Email the manager", "Nothing, questions are collected live"], correct: 1 },
+        { id: "b2l6", title: "Podcast: Künstliche Intelligenz", context: "The speaker makes a careful prediction. Note how certain he is.", transcript: "Ganze Berufe werden kaum verschwinden. Wahrscheinlich verschieben sich eher einzelne Tätigkeiten innerhalb der Berufe.", question: "How confident is the speaker?", options: ["Certain that jobs will disappear", "Cautious: single tasks will shift rather than whole jobs", "Certain nothing will change", "He refuses to predict"], correct: 1 },
+        { id: "b2l7", title: "Bericht: Mietmarkt", context: "A news item contrasts two figures. Catch the contrast.", transcript: "Die Zahl der Neubauten ist leicht gestiegen. Gleichzeitig sind die Mieten in den Innenstädten weiter kräftig geklettert.", question: "What is the contrast?", options: ["Building fell, rents fell", "Building rose slightly, rents still rose sharply", "Both rose slightly", "Rents fell despite building"], correct: 1 },
+        { id: "b2l8", title: "Gespräch: Weiterbildung", context: "A manager makes a conditional offer. Note the condition.", transcript: "Die Firma übernimmt die Kursgebühren, vorausgesetzt, Sie bleiben danach mindestens zwei Jahre im Betrieb.", question: "What is the condition?", options: ["Passing an exam", "Staying at least two years afterwards", "Paying half yourself", "Working weekends"], correct: 1 },
+        { id: "b2l9", title: "Kommentar: Datenschutz", context: "The commentator concedes before objecting. Catch the objection.", transcript: "Natürlich erleichtert die Datenweitergabe die Forschung. Trotzdem darf sie nicht ohne wirksame Kontrolle geschehen.", question: "What is the commentator's point?", options: ["Data sharing should stop", "Data sharing helps, but needs effective oversight", "Research is unimportant", "Oversight already works well"], correct: 1 },
+        { id: "b2l10", title: "Durchsage: Streik", context: "A station announcement gives an exception. Catch it.", transcript: "Aufgrund des Streiks entfallen sämtliche Regionalzüge. Der Fernverkehr fährt nach Sonderfahrplan, allerdings ohne Halt in Kleinstädten.", question: "What still runs?", options: ["Nothing at all", "Long-distance trains on a special timetable, without small-town stops", "Only regional trains", "All trains, delayed"], correct: 1 },
+        { id: "b2l11", title: "Vorstellungsgespräch: Rückfrage", context: "A candidate answers a difficult question. Note the strategy.", transcript: "Mit Konflikten gehe ich so um, dass ich zuerst die Sachfrage von der persönlichen Ebene trenne und dann eine gemeinsame Lösung vorschlage.", question: "What is the candidate's approach to conflict?", options: ["Avoid the conflict", "Separate the issue from the personal level, then propose a joint solution", "Escalate to the manager", "Wait until it resolves itself"], correct: 1 },
+        { id: "b2l12", title: "Umfrage: Ehrenamt und Zeit", context: "A survey result is summarised. Catch the qualification.", transcript: "Zwei Drittel der Befragten wären grundsätzlich bereit, sich zu engagieren – allerdings nur, wenn der Zeitaufwand planbar bleibt.", question: "Under what condition would they volunteer?", options: ["If they were paid", "If the time commitment stays predictable", "If it were online", "If friends joined too"], correct: 1 }
+      ],
+      reading: [
+        { id: "b2r1", title: "Kommentar: Vier-Tage-Woche", context: "Read the comment and identify the author's overall position.", body: "Wer die Vier-Tage-Woche pauschal als Produktivitätswunder verkauft, macht es sich zu leicht. In wissensintensiven Bereichen sind die Ergebnisse durchaus ermutigend; in Schichtbetrieben mit festen Besetzungsvorgaben lässt sich dieselbe Arbeit jedoch nicht in weniger Stunden erledigen.", question: "What is the author's position?", options: ["The four-day week always works", "It works in some sectors but not where staffing is fixed", "It never works", "The evidence is entirely missing"], correct: 1 },
+        { id: "b2r2", title: "Studie: Lesekompetenz", context: "Read the summary and identify what the data do NOT show.", body: "Der Zusammenhang zwischen Bildschirmzeit und schwächerer Lesekompetenz ist statistisch belegt. Über die Richtung der Wirkung sagt die Studie allerdings nichts: Ebenso denkbar ist, dass Kinder mit Leseschwierigkeiten häufiger zum Bildschirm greifen.", question: "What does the study leave open?", options: ["Whether the correlation exists", "Which way the causal direction runs", "How many children took part", "Whether reading matters"], correct: 1 },
+        { id: "b2r3", title: "Stellenanzeige: Projektleitung", context: "Read the posting and find what is required rather than merely welcome.", body: "Vorausgesetzt werden ein abgeschlossenes Studium sowie mehrjährige Projekterfahrung. Von Vorteil, aber nicht zwingend, sind Kenntnisse im Vergaberecht sowie Erfahrung mit internationalen Teams.", question: "Which is a firm requirement?", options: ["Knowledge of procurement law", "A completed degree and several years of project experience", "Experience with international teams", "A foreign language"], correct: 1 },
+        { id: "b2r4", title: "Leserbrief: Innenstadt", context: "Read the letter and identify the concession the writer makes.", body: "Dass eine autofreie Innenstadt die Luft verbessert, will ich gar nicht bestreiten. Nur wird selten erwähnt, wie ältere Menschen aus den Randbezirken künftig ihre Arzttermine erreichen sollen.", question: "What does the writer concede?", options: ["That car-free centres improve air quality", "That older people do not need appointments", "That the suburbs are well connected", "That cars are necessary everywhere"], correct: 0 },
+        { id: "b2r5", title: "Sachtext: Ehrenamt in Zahlen", context: "Read the passage and identify the trend described.", body: "Die Gesamtzahl der Engagierten ist stabil geblieben. Verändert hat sich die Form: Statt langfristiger Mitgliedschaften in Vereinen überwiegen heute projektbezogene, zeitlich begrenzte Einsätze.", question: "What has changed?", options: ["Fewer people volunteer", "The form of volunteering, from long-term membership to short projects", "Volunteering has disappeared", "Clubs have grown"], correct: 1 },
+        { id: "b2r6", title: "Vertragstext: Kündigungsfrist", context: "Read the clause and work out the practical consequence.", body: "Das Arbeitsverhältnis kann von beiden Seiten mit einer Frist von drei Monaten zum Quartalsende gekündigt werden. Maßgeblich ist der Zugang der schriftlichen Kündigung.", question: "What matters for the deadline?", options: ["The date the letter was written", "The date the written notice arrives", "A verbal announcement", "The start of the month"], correct: 1 },
+        { id: "b2r7", title: "Fachartikel: Rebound-Effekt", context: "Read the extract and identify the phenomenon described.", body: "Effizientere Geräte senken den Verbrauch pro Nutzung. Häufig steigt jedoch die Nutzung selbst, sodass die Einsparung teilweise oder ganz aufgezehrt wird.", question: "What is described?", options: ["Devices break more often", "Efficiency gains are eaten up by increased use", "Consumption always falls", "Prices rise with efficiency"], correct: 1 },
+        { id: "b2r8", title: "Behördenschreiben: Widerspruch", context: "Read the letter and identify what you must do next.", body: "Gegen diesen Bescheid können Sie innerhalb eines Monats nach Bekanntgabe schriftlich Widerspruch einlegen. Ein per Telefon erklärter Widerspruch wahrt die Frist nicht.", question: "How must an objection be made?", options: ["By phone within a month", "In writing within a month of notification", "In person at any time", "There is no possibility of objection"], correct: 1 },
+        { id: "b2r9", title: "Rezension: Ausstellung", context: "Read the review and identify the reviewer's mixed judgement.", body: "Die Auswahl der Exponate ist klug und überraschend. Umso bedauerlicher, dass die Beschriftungen so knapp ausfallen, dass Besucherinnen ohne Vorwissen kaum eine Einordnung finden.", question: "What is the reviewer's judgement?", options: ["Selection good, labelling too brief", "Selection poor, labelling good", "Everything excellent", "Everything disappointing"], correct: 0 },
+        { id: "b2r10", title: "Ratgeber: Verhandlung", context: "Read the advice and identify the recommended tactic.", body: "Nennen Sie nicht als Erste eine Zahl, sondern fragen Sie nach dem vorgesehenen Rahmen. Wer zuerst eine Summe nennt, legt die Verhandlung häufig unnötig fest.", question: "What is advised?", options: ["Name your figure first", "Ask about the intended range instead of naming a figure first", "Refuse to negotiate", "Always accept the first offer"], correct: 1 },
+        { id: "b2r11", title: "Bericht: Pendeln", context: "Read the report and identify the causal claim.", body: "Wer täglich mehr als eine Stunde pendelt, berichtet deutlich häufiger von Erschöpfung. Ob das Pendeln die Ursache ist oder lediglich mit anderen Belastungen zusammenfällt, bleibt offen.", question: "What does the report claim?", options: ["Commuting definitely causes exhaustion", "There is an association, but the cause is not established", "Commuting has no effect", "Exhaustion causes commuting"], correct: 1 },
+        { id: "b2r12", title: "Positionspapier: Digitalisierung", context: "Read the demand and identify what is being asked for.", body: "Gefordert wird nicht mehr Technik, sondern klare Zuständigkeiten: Solange unklar bleibt, wer Daten pflegt und wer haftet, nützt auch die beste Software wenig.", question: "What is being demanded?", options: ["More software", "Clear responsibilities for data and liability", "Fewer digital tools", "Higher budgets only"], correct: 1 }
+      ],
+      writing: [
+        { id: "b2w1", title: "Stellungnahme: Handyverbot an Schulen", scenario: "In einem Online-Forum wird diskutiert, ob Handys an Schulen verboten werden sollen. Schreiben Sie einen Forumsbeitrag.", points: ["Nennen Sie Ihre Position klar", "Führen Sie ein Argument mit Begründung und Beispiel an", "Gehen Sie auf einen möglichen Einwand ein"], pointKeywords: [["meiner ansicht nach", "ich bin der meinung", "ich halte", "meines erachtens"], ["weil", "denn", "zum beispiel", "beispielsweise", "dadurch"], ["allerdings", "zwar", "einwand", "kritiker", "man könnte einwenden", "andererseits"]], minWords: 80, maxWords: 140, sample: "Meiner Ansicht nach ist ein vollständiges Verbot der falsche Weg. Handys gehören inzwischen zum Alltag, und Schulen haben die Aufgabe, den Umgang damit zu vermitteln, statt ihn nur zu untersagen. In meiner alten Schule wurden Handys im Unterricht gezielt für Recherche eingesetzt, was die Stunden deutlich lebendiger gemacht hat. Zwar wird eingewendet, dass Geräte vom Lernen ablenken, und das trifft in vielen Fällen zu. Genau deshalb halte ich klare Regeln für einzelne Situationen für sinnvoller als ein pauschales Verbot, das ohnehin schwer zu kontrollieren wäre." },
+        { id: "b2w2", title: "Beschwerde: Mangelhafte Leistung", scenario: "Sie haben für Ihre Firma einen Konferenzraum gemietet. Technik und Verpflegung waren mangelhaft. Schreiben Sie eine formelle Beschwerde an den Anbieter.", points: ["Schildern Sie den Sachverhalt sachlich", "Benennen Sie die konkreten Mängel", "Formulieren Sie eine klare Forderung mit Frist"], pointKeywords: [["am", "gebucht", "veranstaltung", "konferenzraum", "hiermit"], ["mangel", "funktionierte nicht", "defekt", "verspätet", "unvollständig", "beanstande"], ["erstattung", "minderung", "bis zum", "frist", "erwarte", "fordere"]], minWords: 80, maxWords: 150, sample: "Sehr geehrte Damen und Herren, am 14. März habe ich für unsere Jahrestagung den großen Konferenzraum gebucht. Leider entsprach die Leistung nicht der Vereinbarung. Die Präsentationstechnik fiel zweimal für längere Zeit aus, sodass wir den Ablauf ändern mussten. Die zugesagte Verpflegung wurde erst mit einer Stunde Verspätung und unvollständig geliefert. Ich beanstande diese Mängel hiermit ausdrücklich und bitte um eine Minderung des Rechnungsbetrags um 30 Prozent. Für Ihre Rückmeldung habe ich mir den 5. April vorgemerkt. Mit freundlichen Grüßen, K. Renner" },
+        { id: "b2w3", title: "E-Mail: Vorschlag an die Abteilungsleitung", scenario: "Sie möchten in Ihrer Abteilung einen festen Homeoffice-Tag einführen. Schreiben Sie eine E-Mail an Ihre Abteilungsleiterin.", points: ["Begründen Sie den Vorschlag", "Gehen Sie auf mögliche Bedenken ein", "Schlagen Sie ein konkretes Vorgehen vor"], pointKeywords: [["vorschlag", "weil", "würde", "vorteil", "konzentriert"], ["bedenken", "erreichbarkeit", "allerdings", "einwand", "sorge"], ["testphase", "drei monate", "pilot", "vorschlage", "auswerten", "danach"]], minWords: 80, maxWords: 140, sample: "Sehr geehrte Frau Kessler, ich möchte anregen, in unserer Abteilung einen festen Homeoffice-Tag einzuführen. Aufgaben, die längere konzentrierte Arbeit erfordern, ließen sich so deutlich störungsärmer erledigen. Mir ist bewusst, dass die Erreichbarkeit im Team dabei nicht leiden darf. Genau deshalb schlage ich vor, den Tag für alle einheitlich auf den Mittwoch zu legen und Besprechungen bewusst auf die übrigen Tage zu verschieben. Sinnvoll wäre eine Testphase von drei Monaten, die wir anschließend gemeinsam auswerten. Über eine kurze Rückmeldung würde ich mich freuen. Mit freundlichen Grüßen, T. Adam" },
+        { id: "b2w4", title: "Stellungnahme: Kostenloser Nahverkehr", scenario: "Ihre Stadt diskutiert, den Nahverkehr kostenlos anzubieten. Schreiben Sie einen Leserbrief an die Lokalzeitung.", points: ["Beziehen Sie klar Stellung", "Wägen Sie Vor- und Nachteile ab", "Formulieren Sie einen konkreten Vorschlag"], pointKeywords: [["ich halte", "meiner meinung", "befürworte", "lehne ab", "ansicht"], ["einerseits", "andererseits", "zwar", "allerdings", "abwägung", "kosten"], ["vorschlag", "stattdessen", "besser wäre", "sollte", "schrittweise"]], minWords: 80, maxWords: 150, sample: "Als langjähriger Nutzer der Buslinie 12 halte ich einen kostenlosen Nahverkehr für gut gemeint, aber schlecht durchdacht. Einerseits würde er Menschen mit geringem Einkommen spürbar entlasten und den Umstieg vom Auto erleichtern. Andererseits nützt ein kostenloses Ticket wenig, wenn der Bus nur alle vierzig Minuten fährt und abends gar nicht mehr. Ich schlage deshalb vor, die vorhandenen Mittel zunächst in den Takt und in zusätzliche Fahrzeuge zu stecken. Sobald das Angebot verlässlich ist, lässt sich über den Preis erneut diskutieren." },
+        { id: "b2w5", title: "Bericht: Ergebnisse einer Umfrage", scenario: "Sie haben in Ihrem Verein eine kleine Umfrage zur Vereinszeitung durchgeführt. Schreiben Sie einen kurzen Bericht für den Vorstand.", points: ["Beschreiben Sie kurz das Vorgehen", "Fassen Sie die wichtigsten Ergebnisse zusammen", "Leiten Sie eine Empfehlung ab"], pointKeywords: [["befragt", "umfrage", "teilgenommen", "fragebogen", "zeitraum"], ["ergebnis", "mehrheit", "prozent", "gaben an", "wünschen"], ["empfehle", "empfehlung", "sollte", "schlage vor", "daraus folgt"]], minWords: 80, maxWords: 150, sample: "Im Zeitraum vom 3. bis 17. Mai wurden alle 96 Mitglieder schriftlich befragt; 54 haben geantwortet. Die Mehrheit liest die Vereinszeitung regelmäßig, bemängelt jedoch den Erscheinungsrhythmus: Vier Ausgaben pro Jahr empfinden viele als zu selten, um über aktuelle Termine informiert zu bleiben. Deutlich wurde außerdem der Wunsch nach einer digitalen Fassung. Ich empfehle daher, die gedruckte Ausgabe beizubehalten, sie aber durch einen kurzen monatlichen Newsletter zu ergänzen. Der Aufwand dafür ließe sich mit zwei Freiwilligen gut bewältigen." },
+        { id: "b2w6", title: "E-Mail: Höflich absagen und Alternative anbieten", scenario: "Eine Partnerorganisation bittet Sie, kurzfristig einen Workshop zu übernehmen. Sie können nicht. Schreiben Sie eine E-Mail.", points: ["Bedanken Sie sich und sagen Sie klar ab", "Begründen Sie die Absage nachvollziehbar", "Bieten Sie eine Alternative an"], pointKeywords: [["danke", "vielen dank", "leider", "absagen", "nicht möglich"], ["weil", "da", "termin", "kapazität", "verpflichtung", "kurzfristig"], ["alternative", "stattdessen", "kollege", "kollegin", "später", "vorschlagen"]], minWords: 80, maxWords: 140, sample: "Sehr geehrte Frau Dorn, vielen Dank für Ihre Anfrage und für das Vertrauen. Leider muss ich Ihnen für den 8. Juni absagen: An diesem Tag begleite ich bereits eine zugesagte Schulung, die ich so kurzfristig nicht verlegen kann. Damit der Workshop dennoch stattfinden kann, möchte ich Ihnen zwei Möglichkeiten anbieten. Meine Kollegin Frau Lauer arbeitet seit Jahren zum selben Thema und hätte an diesem Termin Kapazität. Alternativ übernehme ich den Workshop gern selbst, wenn er sich auf die zweite Julihälfte verschieben lässt. Mit freundlichen Grüßen, M. Sobek" }
+      ],
+      speaking: [
+        { id: "b2s1", title: "Position beziehen", context: "State a clear position and justify it in one breath.", text: "Meiner Ansicht nach liegt das Problem weniger an der Technik als an den unklaren Zuständigkeiten.", guide: "Pronounce: My-ner an-zikht nakh leekt das prob-laym veh-nee-ger an dayr tekh-nik als an dayn oon-klah-ren tsoo-shten-deekh-ky-ten." },
+        { id: "b2s2", title: "Einräumen und einwenden", context: "Concede a point before you object to it.", text: "Zwar spart das Verfahren Zeit, allerdings entstehen dadurch neue Kosten an anderer Stelle.", guide: "Pronounce: Tsvahr shpahrt das fer-fah-ren tsyt, al-er-dings ent-shtay-en da-doorkh noy-eh kos-ten an an-der-er shtel-eh." },
+        { id: "b2s3", title: "Eine Grafik beschreiben", context: "Describe a trend in a chart without over-claiming.", text: "Die Zahl der Anträge ist zwischen 2019 und 2023 stetig gestiegen, besonders deutlich im letzten Jahr.", guide: "Pronounce: Dee tsahl dayr an-trai-geh ist tsvish-en tsvy-tow-zent-noyn-tsayn oont tsvy-tow-zent-dry-oont-tsvan-tsikh shtay-tikh geh-shtee-gen." },
+        { id: "b2s4", title: "Vermutung äußern", context: "Express a careful assumption using a subjective modal.", text: "Das dürfte vor allem daran liegen, dass viele Betriebe die Frist nicht kannten.", guide: "Pronounce: Das duerf-teh for al-em da-ran lee-gen, das fee-leh beh-tree-beh dee frist neekht kan-ten." },
+        { id: "b2s5", title: "Höflich unterbrechen", context: "Interrupt a discussion without sounding rude.", text: "Darf ich an dieser Stelle kurz einhaken? Genau dazu hätte ich eine Rückfrage.", guide: "Pronounce: Darf eekh an dee-zer shtel-eh koorts eyn-hah-ken? Geh-now da-tsoo het-teh eekh eye-neh ruek-frah-geh." },
+        { id: "b2s6", title: "Etwas relativieren", context: "Qualify a strong claim so it stays defensible.", text: "Das gilt allerdings nur für große Betriebe; auf kleinere lässt sich das kaum übertragen.", guide: "Pronounce: Das gilt al-er-dings noor fuer groh-seh beh-tree-beh; owf kly-ner-eh lest zikh das kowm ue-ber-trah-gen." },
+        { id: "b2s7", title: "Einen Kompromiss vorschlagen", context: "Propose a middle way in a negotiation.", text: "Wie wäre es, wenn wir das Konzept zunächst drei Monate testen und danach gemeinsam auswerten?", guide: "Pronounce: Vee vai-reh es, ven veer das kon-tsept tsoo-naikhst dry moh-nah-teh tes-ten oont da-nakh geh-mine-zahm ows-vair-ten?" },
+        { id: "b2s8", title: "Nachfragen und präzisieren", context: "Ask someone to make a vague claim precise.", text: "Was genau meinen Sie mit 'zu teuer'? Beziehen Sie sich auf die Anschaffung oder auf den Betrieb?", guide: "Pronounce: Vas geh-now my-nen zee mit 'tsoo toy-er'? Beh-tsee-en zee zikh owf dee an-shaf-oong oh-der owf dayn beh-treep?" },
+        { id: "b2s9", title: "Ein Ergebnis zusammenfassen", context: "Close a discussion by summarising what was agreed.", text: "Zusammenfassend lässt sich sagen, dass wir uns auf eine Testphase geeinigt haben.", guide: "Pronounce: Tsoo-zam-men-fas-ent lest zikh zah-gen, das veer oons owf eye-neh test-fah-zeh geh-eye-neekht hah-ben." },
+        { id: "b2s10", title: "Erfahrung schildern", context: "Tell a short professional anecdote with a point.", text: "In meinem letzten Projekt haben wir genau diesen Fehler gemacht, und seitdem klären wir die Verantwortlichkeiten vorher schriftlich.", guide: "Pronounce: In my-nem lets-ten pro-yekt hah-ben veer geh-now dee-zen fay-ler geh-makht, oont zyt-daym klai-ren veer dee fer-ant-vort-likh-ky-ten for-hair shrift-likh." },
+        { id: "b2s11", title: "Widersprechen ohne Angriff", context: "Disagree firmly while staying collegial.", text: "Da bin ich anderer Meinung. Aus meiner Sicht überwiegen die langfristigen Nachteile.", guide: "Pronounce: Dah bin eekh an-der-er my-noong. Ows my-ner zeekht ue-ber-vee-gen dee lang-frist-ee-gen nakh-ty-leh." },
+        { id: "b2s12", title: "Eine Empfehlung begründen", context: "Recommend a course of action and say why.", text: "Ich würde dazu raten, mit der kleinsten Abteilung anzufangen, weil sich Fehler dort schneller korrigieren lassen.", guide: "Pronounce: Eekh vuer-deh da-tsoo rah-ten, mit dayr klyn-sten ap-ty-loong an-tsoo-fang-en, vyl zikh fay-ler dort shnel-er ko-ree-gee-ren las-en." }
+      ]
+    };
+
+    const skillsDatabases = { A1: a1SkillsDatabase, A2: a2SkillsDatabase, B1: b1SkillsDatabase, B2: b2SkillsDatabase };
+    function currentSkills() { return skillsDatabases[activeLevel] || a1SkillsDatabase; }
 
     // Full 5 Mock Exam System Pipeline Core Structure Mapping Matrix
     const mockExamsDatabase = [
@@ -1553,6 +1881,57 @@
           { id:"b1u6l2", icon:"\ud83c\udf89", label:"Festivals", type:"vocab", cat:"Festivals (Feste & Traditionen)" },
           { id:"gr_b1_futur", icon:"\ud83d\udcd0", label:"Futur I", type:"grammar", gid:"b1_futur", idx:30 },
           { id:"gr_b1_partizip", icon:"\ud83d\udcd0", label:"Participles as adjectives", type:"grammar", gid:"b1_partizip", idx:35 }
+        ] },
+
+      // ===== B2: the working and public world beyond the town =====
+      { title: "At the university", subtitle: "An der Universit\u00e4t", colour: "#4338ca", dark: "#312e81", level: "B2",
+        lessons: [
+          { id:"b2u1l1", icon:"\ud83d\udd2c", label:"Education & research", type:"vocab", cat:"Education & Research (Bildung)" },
+          { id:"b2u1l2", icon:"\u2696\ufe0f", label:"Argument & opinion", type:"vocab", cat:"Argument & Opinion (Argumentation)" },
+          { id:"gr_b2_nomstil", icon:"\ud83d\udcd0", label:"Nominal style", type:"grammar", gid:"b2_nomstil", idx:39 },
+          { id:"gr_b2_partattr", icon:"\ud83d\udcd0", label:"Participle attributes", type:"grammar", gid:"b2_partattr", idx:40 }
+        ] },
+      { title: "In the newsroom", subtitle: "In der Redaktion", colour: "#0f766e", dark: "#134e4a", level: "B2",
+        lessons: [
+          { id:"b2u2l1", icon:"\ud83d\udcf0", label:"Media & public life", type:"vocab", cat:"Media & Public Life (Medien)" },
+          { id:"b2u2l2", icon:"\ud83c\udfad", label:"Culture & identity", type:"vocab", cat:"Culture & Identity (Kultur)" },
+          { id:"gr_b2_konj1", icon:"\ud83d\udcd0", label:"Reported speech", type:"grammar", gid:"b2_konj1", idx:37 },
+          { id:"gr_b2_relwas", icon:"\ud83d\udcd0", label:"was / wo(r)-", type:"grammar", gid:"b2_relwas", idx:48 }
+        ] },
+      { title: "At the courthouse", subtitle: "Am Gericht", colour: "#9f1239", dark: "#6b0f2a", level: "B2",
+        lessons: [
+          { id:"b2u3l1", icon:"\ud83d\udcdc", label:"Law & administration", type:"vocab", cat:"Law & Administration (Recht)" },
+          { id:"b2u3l2", icon:"\ud83c\udfdb\ufe0f", label:"Society & politics", type:"vocab", cat:"Society & Politics (Gesellschaft)" },
+          { id:"gr_b2_genprep", icon:"\ud83d\udcd0", label:"Genitive prepositions", type:"grammar", gid:"b2_genprep", idx:46 },
+          { id:"gr_b2_konzessiv", icon:"\ud83d\udcd0", label:"obwohl / zwar \u2026 aber", type:"grammar", gid:"b2_konzessiv", idx:42 }
+        ] },
+      { title: "At head office", subtitle: "In der Firmenzentrale", colour: "#1d4ed8", dark: "#1e3a8a", level: "B2",
+        lessons: [
+          { id:"b2u4l1", icon:"\ud83d\udcbc", label:"Working world", type:"vocab", cat:"Working World (Arbeitswelt)" },
+          { id:"b2u4l2", icon:"\ud83d\udcc8", label:"Economy & money", type:"vocab", cat:"Economy & Money (Wirtschaft)" },
+          { id:"gr_b2_passersatz", icon:"\ud83d\udcd0", label:"Passive alternatives", type:"grammar", gid:"b2_passersatz", idx:38 },
+          { id:"gr_b2_nvv", icon:"\ud83d\udcd0", label:"Noun-verb pairs", type:"grammar", gid:"b2_nvv", idx:47 }
+        ] },
+      { title: "At the clinic", subtitle: "In der Klinik", colour: "#047857", dark: "#064e3b", level: "B2",
+        lessons: [
+          { id:"b2u5l1", icon:"\ud83e\ude7a", label:"Health & mind", type:"vocab", cat:"Health & Mind (Gesundheit)" },
+          { id:"b2u5l2", icon:"\ud83d\udda5\ufe0f", label:"Technology & data", type:"vocab", cat:"Technology & Data (Technik)" },
+          { id:"gr_b2_modalsubj", icon:"\ud83d\udcd0", label:"Modals for certainty", type:"grammar", gid:"b2_modalsubj", idx:44 },
+          { id:"gr_b2_final", icon:"\ud83d\udcd0", label:"damit / um \u2026 zu", type:"grammar", gid:"b2_final", idx:43 }
+        ] },
+      { title: "At the congress centre", subtitle: "Im Kongresszentrum", colour: "#b45309", dark: "#78350f", level: "B2",
+        lessons: [
+          { id:"b2u6l1", icon:"\ud83c\udf0d", label:"Environment & climate", type:"vocab", cat:"Environment & Climate (Umwelt)" },
+          { id:"b2u6l2", icon:"\ud83d\udde3\ufe0f", label:"Discussion phrases", type:"vocab", cat:"Discussion Phrases (Redemittel)" },
+          { id:"gr_b2_konnekt2", icon:"\ud83d\udcd0", label:"Paired connectors", type:"grammar", gid:"b2_konnekt2", idx:41 },
+          { id:"gr_b2_konj2verg", icon:"\ud83d\udcd0", label:"Unreal past", type:"grammar", gid:"b2_konj2verg", idx:45 }
+        ] },
+      { title: "B2 skills", subtitle: "Fertigkeiten B2", colour: "#7e22ce", dark: "#581c87", level: "B2",
+        lessons: [
+          { id:"b2u7l1", icon:"\ud83c\udfa7", label:"H\u00f6ren", type:"skill", skill:"listening" },
+          { id:"b2u7l2", icon:"\ud83d\udcd6", label:"Lesen", type:"skill", skill:"reading" },
+          { id:"b2u7l3", icon:"\u270d\ufe0f", label:"Schreiben", type:"skill", skill:"writing" },
+          { id:"b2u7l4", icon:"\ud83c\udfa4", label:"Sprechen", type:"skill", skill:"speaking" }
         ] }
     ];
 
@@ -1726,6 +2105,86 @@
 
     // Application exercises: fill the gap, not "define the rule"
     const grammarExercises = {
+      g_art: [
+        { prompt: "___ Mann liest eine Zeitung.", ask: "Which definite article?", options: ["Der","Die","Das","Den"], correct: 0, explain: "Mann is masculine: der Mann." },
+        { prompt: "___ Frau arbeitet hier.", ask: "Which definite article?", options: ["Der","Die","Das","Dem"], correct: 1, explain: "Frau is feminine: die Frau." },
+        { prompt: "___ Kind spielt im Garten.", ask: "Which definite article?", options: ["Der","Die","Das","Den"], correct: 2, explain: "Kind is neuter: das Kind." },
+        { prompt: "Ich habe ___ Hund.", ask: "Which indefinite article?", options: ["ein","eine","einen","einem"], correct: 2, explain: "Hund is masculine and the object here, so accusative: einen Hund." },
+        { prompt: "Das ist ___ Buch.", ask: "Which indefinite article?", options: ["ein","eine","einen","einer"], correct: 0, explain: "Buch is neuter: ein Buch." }
+      ],
+
+      b2_konj1: [
+        { prompt: "Er sagte, er ___ keine Zeit.", ask: "Konjunktiv I of 'haben'", options: ["habe","hat","hätte","haben"], correct: 0, explain: "3rd person singular Konjunktiv I: er habe." },
+        { prompt: "Sie erklärte, das Ergebnis ___ eindeutig.", ask: "Konjunktiv I of 'sein'", options: ["ist","sei","wäre","sind"], correct: 1, explain: "sein is irregular: er/sie/es sei." },
+        { prompt: "Die Sprecher sagten, sie ___ keine Unterlagen erhalten.", ask: "Which form here?", options: ["haben","habe","hätten","hatten"], correct: 2, explain: "Konjunktiv I 'haben' would look like the present, so German switches to Konjunktiv II: hätten." },
+        { prompt: "Der Bericht sagt, die Zahlen ___ gestiegen.", ask: "Complete the reported speech", options: ["seien","sind","waren","sei"], correct: 0, explain: "Plural Konjunktiv I of sein: sie seien." }
+      ],
+      b2_passersatz: [
+        { prompt: "Das Problem ___ sich in zwei Schritten lösen.", ask: "Passive replacement with 'lassen'", options: ["lässt","lasst","ließ","lassen"], correct: 0, explain: "es lässt sich lösen = es kann gelöst werden." },
+        { prompt: "Dieser Fehler ist leicht zu ___.", ask: "sein + zu + Infinitiv", options: ["vermieden","vermeiden","vermeidet","vermeidend"], correct: 1, explain: "sein + zu takes the plain infinitive." },
+        { prompt: "Der Termin ist nicht mehr ___.", ask: "Which -bar adjective?", options: ["änderbar","ändern","geändert","änderlich"], correct: 0, explain: "-bar carries the passive-possible meaning: kann nicht geändert werden." },
+        { prompt: "Welcher Satz bedeutet dasselbe wie 'Das kann repariert werden'?", ask: "Choose the equivalent", options: ["Das lässt sich reparieren.","Das hat repariert.","Das wird reparieren.","Das ist repariert worden."], correct: 0, explain: "sich lassen expresses possibility in the passive sense." }
+      ],
+      b2_nomstil: [
+        { prompt: "Nach der Prüfung der Unterlagen …", ask: "Which clause matches?", options: ["Nachdem die Unterlagen geprüft worden sind","Bevor die Unterlagen geprüft werden","Damit die Unterlagen geprüft werden","Obwohl die Unterlagen geprüft werden"], correct: 0, explain: "nach + noun corresponds to nachdem + clause." },
+        { prompt: "Wegen des schlechten Wetters …", ask: "Which clause matches?", options: ["Weil das Wetter schlecht war","Obwohl das Wetter schlecht war","Wenn das Wetter schlecht ist","Damit das Wetter besser wird"], correct: 0, explain: "wegen + Genitiv corresponds to weil." },
+        { prompt: "Bei Nichtbeachtung der Vorschrift …", ask: "Which clause matches?", options: ["Wenn die Vorschrift nicht beachtet wird","Weil die Vorschrift beachtet wurde","Obwohl die Vorschrift gilt","Nachdem die Vorschrift geändert wurde"], correct: 0, explain: "bei + noun usually unpacks to a wenn clause." },
+        { prompt: "Verbalise: 'zur Verbesserung der Qualität'", ask: "Which clause matches?", options: ["um die Qualität zu verbessern","weil die Qualität besser ist","obwohl die Qualität gut ist","nachdem die Qualität stieg"], correct: 0, explain: "zur + nominalised verb expresses purpose: um … zu." }
+      ],
+      b2_partattr: [
+        { prompt: "der gestern ___ Bericht", ask: "Complete the participle attribute", options: ["veröffentlichte","veröffentlichen","veröffentlicht","veröffentlichend"], correct: 0, explain: "Partizip II plus adjective ending: der veröffentlichte Bericht." },
+        { prompt: "die im Mai ___ Maßnahmen", ask: "Complete the attribute", options: ["beschlossenen","beschließen","beschlossen","beschließenden"], correct: 0, explain: "Plural after die takes -en: die beschlossenen Maßnahmen." },
+        { prompt: "'das lachende Kind' means the child …", ask: "Partizip I or II?", options: ["is laughing (active, ongoing)","was laughed at","has laughed","will laugh"], correct: 0, explain: "Partizip I (-end) is active and ongoing." },
+        { prompt: "Unpack: 'die vom Team geprüften Daten'", ask: "Which relative clause?", options: ["die Daten, die vom Team geprüft wurden","die Daten, die das Team prüfen will","die Daten, die das Team hat","die Daten, die geprüft werden müssen"], correct: 0, explain: "Partizip II attribute unpacks to a passive relative clause." }
+      ],
+      b2_konnekt2: [
+        { prompt: "Sie spricht ___ Spanisch ___ auch Russisch.", ask: "Which pair fits?", options: ["sowohl … als","weder … noch","entweder … oder","zwar … aber"], correct: 0, explain: "sowohl … als auch adds two positives." },
+        { prompt: "Er hat ___ angerufen ___ geschrieben.", ask: "Which pair fits (neither/nor)?", options: ["weder … noch","sowohl … als auch","nicht nur … sondern","je … desto"], correct: 0, explain: "weder … noch negates both." },
+        { prompt: "Je mehr Menschen mitmachen, ___ schneller geht es.", ask: "Complete the pair", options: ["desto","als","umso mehr","damit"], correct: 0, explain: "je + comparative … desto + comparative." },
+        { prompt: "Je länger wir warten, desto teurer ___ es.", ask: "Where does the verb go?", options: ["wird","werden wird","es wird","wird es"], correct: 0, explain: "After desto the verb takes second position: desto teurer wird es." }
+      ],
+      b2_konzessiv: [
+        { prompt: "___ es teuer ist, kaufen wir es.", ask: "Which connector?", options: ["Obwohl","Trotzdem","Deshalb","Zwar"], correct: 0, explain: "obwohl introduces a subordinate clause, verb last." },
+        { prompt: "Es ist teuer. ___ kaufen wir es.", ask: "Which adverb?", options: ["Trotzdem","Obwohl","Weil","Damit"], correct: 0, explain: "trotzdem sits in position 1, verb second." },
+        { prompt: "___ ist die Methode neu, ___ sie funktioniert gut.", ask: "Which pair?", options: ["Zwar … aber","Weder … noch","Je … desto","Sowohl … als auch"], correct: 0, explain: "zwar … aber concedes then contrasts." },
+        { prompt: "Obwohl er wenig geschlafen ___, war er konzentriert.", ask: "Where does the verb go?", options: ["hatte","hat er","er hatte","hatte er"], correct: 0, explain: "In an obwohl clause the finite verb comes last." }
+      ],
+      b2_final: [
+        { prompt: "Ich lerne jeden Tag, ___ die Prüfung zu bestehen.", ask: "Which connector?", options: ["um","damit","weil","dass"], correct: 0, explain: "Same subject in both clauses: um … zu." },
+        { prompt: "Ich erkläre es noch einmal, ___ alle es verstehen.", ask: "Which connector?", options: ["damit","um","weil","obwohl"], correct: 0, explain: "Different subjects, so damit." },
+        { prompt: "Er spart, ___ eine Wohnung kaufen zu können.", ask: "Complete", options: ["um","damit","dass","wenn"], correct: 0, explain: "um … zu can take a modal in the infinitive: um … kaufen zu können." },
+        { prompt: "Which sentence is correct?", ask: "Choose", options: ["Ich schreibe es auf, damit du es nicht vergisst.","Ich schreibe es auf, um du es nicht vergisst.","Ich schreibe es auf, damit nicht zu vergessen.","Ich schreibe es auf, um dass du es weißt."], correct: 0, explain: "Different subjects require damit plus a full clause." }
+      ],
+      b2_modalsubj: [
+        { prompt: "Das Licht brennt. Sie ___ zu Hause sein.", ask: "Almost certain", options: ["muss","darf","will","soll"], correct: 0, explain: "müssen expresses near-certainty in the subjective use." },
+        { prompt: "Er ___ inzwischen angekommen sein.", ask: "Probably", options: ["dürfte","darf","muss","kann nicht"], correct: 0, explain: "dürfte = probably, a careful assumption." },
+        { prompt: "Sie ___ das Angebot abgelehnt haben, sagt sie selbst.", ask: "He/she claims it", options: ["will","muss","dürfte","kann"], correct: 0, explain: "wollen in the subjective use reports the speaker's own claim." },
+        { prompt: "Das ___ nicht stimmen – die Zahlen widersprechen sich.", ask: "Ruling it out", options: ["kann","muss","darf","soll"], correct: 0, explain: "kann nicht expresses impossibility in the speaker's judgement." }
+      ],
+      b2_konj2verg: [
+        { prompt: "Wenn ich das ___, hätte ich anders reagiert.", ask: "Konjunktiv II past of 'wissen'", options: ["gewusst hätte","wusste","weiß","gewusst habe"], correct: 0, explain: "hätte + Partizip II for an unreal past." },
+        { prompt: "Er ___ früher kommen können.", ask: "Modal in the unreal past", options: ["hätte","wäre","würde","hat"], correct: 0, explain: "With a modal: hätte kommen können." },
+        { prompt: "Ohne deine Hilfe ___ ich nicht fertig geworden.", ask: "Which auxiliary?", options: ["wäre","hätte","würde","bin"], correct: 0, explain: "werden takes sein, so wäre geworden." },
+        { prompt: "Wenn wir mehr Zeit gehabt hätten, ___ wir das Konzept überarbeitet.", ask: "Complete the main clause", options: ["hätten","würden","wären","haben"], correct: 0, explain: "Both halves stay in Konjunktiv II past." }
+      ],
+      b2_genprep: [
+        { prompt: "trotz ___ Regens", ask: "Which article form?", options: ["des","dem","den","der"], correct: 0, explain: "trotz takes the genitive: trotz des Regens." },
+        { prompt: "während ___ Sitzung", ask: "Which article form?", options: ["der","die","dem","den"], correct: 0, explain: "Feminine genitive: während der Sitzung." },
+        { prompt: "aufgrund ___ hohen Kosten", ask: "Which article form?", options: ["der","den","die","dem"], correct: 0, explain: "Plural genitive: aufgrund der hohen Kosten." },
+        { prompt: "Which preposition also takes the genitive?", ask: "Choose", options: ["angesichts","mit","bei","seit"], correct: 0, explain: "angesichts + Genitiv; mit, bei and seit take the dative." }
+      ],
+      b2_nvv: [
+        { prompt: "Die Unterlagen ___ ab Montag zur Verfügung.", ask: "Complete the fixed phrase", options: ["stehen","machen","geben","nehmen"], correct: 0, explain: "zur Verfügung stehen = to be available." },
+        { prompt: "Wir müssen eine Entscheidung ___.", ask: "Which verb?", options: ["treffen","machen","nehmen","stellen"], correct: 0, explain: "eine Entscheidung treffen, not machen." },
+        { prompt: "Diese Lösung kommt für uns nicht in ___.", ask: "Complete", options: ["Frage","Betracht nehmen","Anspruch","Verfügung"], correct: 0, explain: "in Frage kommen = to be an option." },
+        { prompt: "Bitte ___ Sie Rücksicht auf die Nachbarn.", ask: "Which verb?", options: ["nehmen","machen","geben","haben"], correct: 0, explain: "Rücksicht nehmen auf + Akkusativ." }
+      ],
+      b2_relwas: [
+        { prompt: "Das ist alles, ___ ich weiß.", ask: "Which relative word?", options: ["was","das","dass","welches"], correct: 0, explain: "After alles, nichts, etwas and viel German uses was." },
+        { prompt: "Er kam zu spät, ___ niemanden überraschte.", ask: "Referring to the whole clause", options: ["was","das","welches","dass"], correct: 0, explain: "was refers back to the entire preceding statement." },
+        { prompt: "Das ist etwas, ___ ich mich schon lange interessiere.", ask: "With the preposition 'für'", options: ["wofür","für was","was","dafür"], correct: 0, explain: "Preposition plus was becomes wofür." },
+        { prompt: "Sie sprach über ein Thema, ___ ich wenig weiß.", ask: "With the preposition 'über'", options: ["worüber","über was","was","darüber"], correct: 0, explain: "über + was becomes worüber." }
+      ],
       g_pron: [
         { prompt: "___ bin Anna.", ask: "Which pronoun fits?", options: ["Ich","Du","Wir","Ihr"], correct: 0, explain: "ich bin - first person singular." },
         { prompt: "___ bist mein Freund.", ask: "Which pronoun fits?", options: ["Er","Du","Sie","Es"], correct: 1, explain: "du bist - second person singular." },
@@ -1743,7 +2202,7 @@
       g_conj: [
         { prompt: "Ich ___ Fußball. (spielen)", ask: "Conjugate the verb", options: ["spiele","spielst","spielt","spielen"], correct: 0, explain: "ich + -e" },
         { prompt: "Du ___ Deutsch. (lernen)", ask: "Conjugate the verb", options: ["lerne","lernst","lernt","lernen"], correct: 1, explain: "du + -st" },
-        { prompt: "Sie ___ in Koln. (wohnen)", ask: "Conjugate the verb", options: ["wohne","wohnst","wohnt","wohnen"], correct: 2, explain: "sie (she) + -t" },
+        { prompt: "Sie ___ in Köln. (wohnen)", ask: "Conjugate the verb", options: ["wohne","wohnst","wohnt","wohnen"], correct: 2, explain: "sie (she) + -t" },
         { prompt: "Wir ___ Kaffee. (trinken)", ask: "Conjugate the verb", options: ["trinke","trinkst","trinkt","trinken"], correct: 3, explain: "wir + -en" },
         { prompt: "Ihr ___ ein Buch. (kaufen)", ask: "Conjugate the verb", options: ["kaufe","kaufst","kauft","kaufen"], correct: 2, explain: "ihr + -t" }
       ],
@@ -1755,11 +2214,11 @@
         { prompt: "Das ist ___ Haus. (wir)", ask: "Which possessive?", options: ["unser","unsere","euer","ihr"], correct: 0, explain: "Haus is neuter - unser" }
       ],
       g_mod: [
-        { prompt: "Ich ___ Deutsch sprechen.", ask: "Fill in 'konnen'", options: ["kann","kannst","konnen","konnt"], correct: 0, explain: "ich kann + infinitive at the end" },
+        { prompt: "Ich ___ Deutsch sprechen.", ask: "Fill in 'können'", options: ["kann","kannst","können","könnt"], correct: 0, explain: "ich kann + infinitive at the end" },
         { prompt: "Du ___ heute arbeiten.", ask: "Fill in 'müssen'", options: ["muss","musst","müssen","musst du"], correct: 1, explain: "du musst" },
         { prompt: "Er ___ ins Kino gehen.", ask: "Fill in 'wollen'", options: ["will","willst","wollen","wollt"], correct: 0, explain: "er will" },
         { prompt: "Ich kann gut ___.", ask: "Where does the verb go?", options: ["schwimme","schwimmst","schwimmen","geschwommen"], correct: 2, explain: "The infinitive sits at the very end." },
-        { prompt: "Wir ___ Pizza essen.", ask: "Fill in 'mochten'", options: ["mochte","mochtest","mochten","mochtet"], correct: 2, explain: "wir mochten" }
+        { prompt: "Wir ___ Pizza essen.", ask: "Fill in 'möchten'", options: ["möchte","möchtest","möchten","möchtet"], correct: 2, explain: "wir möchten" }
       ],
       g_tren: [
         { prompt: "Ich stehe um 7 Uhr ___. (aufstehen)", ask: "Where does the prefix go?", options: ["auf","an","aus","ab"], correct: 0, explain: "The prefix 'auf' detaches and moves to the end." },
@@ -1771,7 +2230,7 @@
       g_imp: [
         { prompt: "___ hierher! (kommen, du)", ask: "Form the imperative", options: ["Komm","Kommst","Kommen","Kommt"], correct: 0, explain: "Drop 'du' and the -st ending." },
         { prompt: "___ bitte langsam! (sprechen, Sie)", ask: "Form the imperative", options: ["Sprich","Sprecht","Sprechen Sie","Sprichst"], correct: 2, explain: "Formal keeps the pronoun after the verb." },
-        { prompt: "___ das Fenster! (offnen, du)", ask: "Form the imperative", options: ["Offne","Offnest","Offnet","Offnen"], correct: 0, explain: "du-form imperative: offne" },
+        { prompt: "___ das Fenster! (öffnen, du)", ask: "Form the imperative", options: ["Öffne","Öffnest","Öffnet","Öffnen"], correct: 0, explain: "du-form imperative: öffne" },
         { prompt: "___ mir bitte! (helfen, du)", ask: "Form the imperative", options: ["Hilfst","Hilf","Helfen","Helft"], correct: 1, explain: "Stem change e->i: hilf" },
         { prompt: "___ leise, bitte! (sein, du)", ask: "Form the imperative", options: ["Bist","Sei","Seid","Sein"], correct: 1, explain: "sein is irregular: sei" }
       ],
@@ -1790,11 +2249,11 @@
         { prompt: "Ich habe Pizza ___. (essen)", ask: "Partizip II", options: ["esse","gegessen","isst","essen"], correct: 1, explain: "essen -> gegessen" }
       ],
       g_habs: [
-        { prompt: "Gestern ___ ich mude.", ask: "Prateritum of 'sein'", options: ["bin","war","hatte","ist"], correct: 1, explain: "sein -> war" },
-        { prompt: "Ich ___ gestern keine Zeit.", ask: "Prateritum of 'haben'", options: ["habe","hatte","war","bin"], correct: 1, explain: "haben -> hatte" },
-        { prompt: "Wir ___ letzte Woche in Koln.", ask: "Prateritum of 'sein'", options: ["sind","waren","hatten","haben"], correct: 1, explain: "wir waren" },
-        { prompt: "Sie ___ ein großes Haus.", ask: "Prateritum of 'haben'", options: ["hat","hatte","war","ist"], correct: 1, explain: "sie hatte" },
-        { prompt: "___ du gestern krank?", ask: "Prateritum of 'sein'", options: ["Bist","Warst","Hattest","Bin"], correct: 1, explain: "du warst" }
+        { prompt: "Gestern ___ ich mude.", ask: "Präteritum of 'sein'", options: ["bin","war","hatte","ist"], correct: 1, explain: "sein -> war" },
+        { prompt: "Ich ___ gestern keine Zeit.", ask: "Präteritum of 'haben'", options: ["habe","hatte","war","bin"], correct: 1, explain: "haben -> hatte" },
+        { prompt: "Wir ___ letzte Woche in Köln.", ask: "Präteritum of 'sein'", options: ["sind","waren","hatten","haben"], correct: 1, explain: "wir waren" },
+        { prompt: "Sie ___ ein großes Haus.", ask: "Präteritum of 'haben'", options: ["hat","hatte","war","ist"], correct: 1, explain: "sie hatte" },
+        { prompt: "___ du gestern krank?", ask: "Präteritum of 'sein'", options: ["Bist","Warst","Hattest","Bin"], correct: 1, explain: "du warst" }
       ],
       g_case: [
         { prompt: "Ich sehe ___ Mann.", ask: "Akkusativ", options: ["der","den","dem","des"], correct: 1, explain: "Masculine direct object: den" },
@@ -2565,7 +3024,7 @@
         alert('Sorry, your browser does not support audio playback. Please try Chrome, Edge, or Safari in a full browser (not an in-app browser).');
         return;
       }
-      const lData = a1SkillsDatabase.listening[activeSkillQuestionIndex % a1SkillsDatabase.listening.length];
+      const lData = currentSkills().listening[activeSkillQuestionIndex % currentSkills().listening.length];
       const synth = window.speechSynthesis;
       if (synth.speaking) synth.cancel();
 
@@ -2640,7 +3099,7 @@
 
     // --- A1 E-Mail Writing Auto-Checker (heuristic grammar/content/style feedback) ---
     function checkEmailWriting() {
-      const wData = a1SkillsDatabase.writing[activeSkillQuestionIndex % a1SkillsDatabase.writing.length];
+      const wData = currentSkills().writing[activeSkillQuestionIndex % currentSkills().writing.length];
       const text = writingUserText.trim();
       const lower = text.toLowerCase();
       const words = text.split(/\s+/).filter(Boolean);
@@ -2817,7 +3276,7 @@
         return;
       }
 
-      const sData = a1SkillsDatabase.speaking[activeSkillQuestionIndex % a1SkillsDatabase.speaking.length];
+      const sData = currentSkills().speaking[activeSkillQuestionIndex % currentSkills().speaking.length];
       speakingRecognitionActive = true;
       speakingRecognizedText = null;
       speakingFeedback = null;
@@ -3064,13 +3523,31 @@
         blurb:"Culture, festivals and looking ahead", lessons:["b1u6l1","b1u6l2","gr_b1_futur","gr_b1_partizip"] }
     ];
 
+
+    // B2 steps out of the town into working and public life.
+    const districtObjects = [
+      { id:"uni",      de:"die Universit\u00e4t",   en:"University", zone:"District",
+        blurb:"Research, evidence and building an argument", lessons:["b2u1l1","b2u1l2","gr_b2_nomstil","gr_b2_partattr"] },
+      { id:"newsroom", de:"die Redaktion",       en:"Newsroom",   zone:"District",
+        blurb:"Media, culture and reporting what others said", lessons:["b2u2l1","b2u2l2","gr_b2_konj1","gr_b2_relwas"] },
+      { id:"court",    de:"das Gericht",         en:"Courthouse", zone:"District",
+        blurb:"Law, society and formal register", lessons:["b2u3l1","b2u3l2","gr_b2_genprep","gr_b2_konzessiv"] },
+      { id:"hq",       de:"die Firmenzentrale",  en:"Head office", zone:"District",
+        blurb:"Work, money and the language of business", lessons:["b2u4l1","b2u4l2","gr_b2_passersatz","gr_b2_nvv"] },
+      { id:"clinicb2", de:"die Klinik",          en:"Clinic",     zone:"District",
+        blurb:"Health, technology and degrees of certainty", lessons:["b2u5l1","b2u5l2","gr_b2_modalsubj","gr_b2_final"] },
+      { id:"congress", de:"das Kongresszentrum", en:"Congress centre", zone:"District",
+        blurb:"Climate, debate and the four B2 skills", lessons:["b2u6l1","b2u6l2","gr_b2_konnekt2","gr_b2_konj2verg","b2u7l1","b2u7l2","b2u7l3","b2u7l4"] }
+    ];
+
     // Whichever level is showing, these helpers return its places.
     function sceneObjects() {
+      if (activeLevel === 'B2') return districtObjects;
       if (activeLevel === 'B1') return townObjects;
       if (activeLevel === 'A2') return streetObjects;
       return roomObjects;
     }
-    function allSceneObjects() { return roomObjects.concat(streetObjects, townObjects); }
+    function allSceneObjects() { return roomObjects.concat(streetObjects, townObjects, districtObjects); }
     function objectById(id) { return sceneObjects().find(o => o.id === id) || allSceneObjects().find(o => o.id === id); }
 
     const roomObjects = [
@@ -3417,7 +3894,11 @@
         flat:[676,132], clinic:[806,196], work:[196,300], school:[458,300],
         bench:[628,404], park:[812,330]
       };
-      const PIN = activeLevel === 'B1' ? PIN_TOWN : activeLevel === 'A2' ? PIN_STREET : {
+      const PIN_DISTRICT = {
+        uni:[140,180], newsroom:[336,236], court:[540,168],
+        hq:[736,132], clinicb2:[250,384], congress:[640,392]
+      };
+      const PIN = activeLevel === 'B2' ? PIN_DISTRICT : activeLevel === 'B1' ? PIN_TOWN : activeLevel === 'A2' ? PIN_STREET : {
         fridge:[104,188], cupboard:[252,180], stove:[254,262], ktable:[200,382],
         door:[646,134], calendar:[750,88], mirror:[842,96], coatrack:[302,132],
         shelf:[430,198], desk:[500,278], window:[500,72], rug:[592,424],
@@ -3600,6 +4081,62 @@
         </svg>`;
       };
 
+      // B2: the working district. Same building helper as the town, taller blocks.
+      const districtSvg = () => {
+        const b = brunoInRoom();
+        const blk = (id, x, y, w, h, colour, roof) => {
+          const f = objProgress(O[id]).frac;
+          const line = f === 1 ? 'none' : INK;
+          let win = '';
+          for (let r = 0; r < Math.floor(h / 48); r++)
+            for (let c = 0; c < Math.floor(w / 40); c++)
+              win += `<rect x="${x + 10 + c * 40}" y="${y + 16 + r * 48}" width="22" height="24" rx="4"
+                        fill="${f === 1 ? (pal.lampOn ? '#fde68a' : '#cfe3ee') : 'none'}"
+                        stroke="${f === 1 ? 'rgba(0,0,0,.14)' : INK}" stroke-width="2"/>`;
+          return `<g>
+            <rect x="${x}" y="${y}" width="${w}" height="${h}" rx="6" fill="${f === 1 ? colour : 'none'}" stroke="${line}" stroke-width="2.4"/>
+            <rect x="${x - 6}" y="${y - 14}" width="${w + 12}" height="14" rx="4" fill="${f === 1 ? roof : 'none'}" stroke="${line || INK}" stroke-width="2.2"/>
+            ${win}
+          </g>`;
+        };
+        return `
+        <svg viewBox="0 0 900 480" width="100%" style="display:block" xmlns="http://www.w3.org/2000/svg">
+          <rect x="0" y="0" width="900" height="480" fill="${pal.sky}"/>
+          <circle cx="98" cy="74" r="24" fill="${pal.sun}"/>
+          <rect x="0" y="366" width="900" height="114" fill="${pal.floor}"/>
+          <rect x="0" y="362" width="900" height="8" fill="${pal.wallDark}"/>
+          <text x="20" y="30" font-family="'Plus Jakarta Sans',sans-serif" font-size="12" font-weight="800" fill="${ZONE}">DAS VIERTEL</text>
+
+          ${grp('hq',       blk('hq',       684, 146, 104, 216, '#93a7c4', '#41506a'), 736, 396)}
+          ${grp('court',    blk('court',    488, 182, 108, 180, '#e2d3b4', '#8a6f42'), 542, 396)}
+          ${grp('newsroom', blk('newsroom', 286, 250, 100, 112, '#cbb7d8', '#6b4f8a'), 336, 396)}
+
+          ${grp('uni', `
+            <rect x="72" y="196" width="140" height="166" rx="6" fill="${fill('uni','#d9c9ae')}" stroke="${st('uni').stroke || INK}" stroke-width="2.4"/>
+            <path d="M62 196 L142 152 L222 196 Z" fill="${fill('uni','#a8895c')}" stroke="${st('uni').stroke || INK}" stroke-width="2.4"/>
+            <rect x="94" y="248" width="18" height="114" fill="${fill('uni','#efe4cf')}" stroke="${st('uni').stroke || INK}" stroke-width="2"/>
+            <rect x="134" y="248" width="18" height="114" fill="${fill('uni','#efe4cf')}" stroke="${st('uni').stroke || INK}" stroke-width="2"/>
+            <rect x="174" y="248" width="18" height="114" fill="${fill('uni','#efe4cf')}" stroke="${st('uni').stroke || INK}" stroke-width="2"/>`, 142, 396)}
+
+          ${grp('clinicb2', `
+            <rect x="188" y="330" width="124" height="32" rx="6" fill="${fill('clinicb2','#e8f0f4')}" stroke="${st('clinicb2').stroke || INK}" stroke-width="2.4"/>
+            <rect x="240" y="336" width="20" height="8" fill="${fill('clinicb2','#dc2626')}" stroke="${st('clinicb2').stroke || INK}" stroke-width="1.6"/>
+            <rect x="246" y="330" width="8" height="20" fill="${fill('clinicb2','#dc2626')}" stroke="${st('clinicb2').stroke || INK}" stroke-width="1.6"/>`, 250, 420)}
+
+          ${grp('congress', `
+            <path d="M562 396 q78 -78 156 0 z" fill="${fill('congress','#c7d8cf')}" stroke="${st('congress').stroke || INK}" stroke-width="2.4"/>
+            <rect x="556" y="392" width="168" height="14" rx="5" fill="${fill('congress','#4d7c68')}" stroke="${st('congress').stroke || INK}" stroke-width="2.2"/>
+            <rect x="628" y="360" width="24" height="20" rx="3" fill="${fill('congress','#ffffff')}" stroke="${st('congress').stroke || INK}" stroke-width="2"/>`, 640, 434)}
+
+          <image href="./bears/${b.pose}.png" x="404" y="368" height="96" pointer-events="none"/>
+          <ellipse cx="444" cy="470" rx="40" ry="8" fill="#000000" opacity=".14" pointer-events="none"/>
+
+          ${pins()}
+          <rect x="0" y="0" width="900" height="480" fill="${sp.tint}" opacity="${sp.tintA}" pointer-events="none"/>
+          ${seasonParticles(sp)}
+        </svg>`;
+      };
+
       const roomSvg = () => `
         <svg viewBox="0 0 900 480" width="100%" style="display:block" xmlns="http://www.w3.org/2000/svg">
           <defs>
@@ -3757,7 +4294,7 @@
           ${seasonParticles(sp)}
         </svg>`;
 
-      const svg = activeLevel === 'B1' ? townSvg() : activeLevel === 'A2' ? streetSvg() : roomSvg();
+      const svg = activeLevel === 'B2' ? districtSvg() : activeLevel === 'B1' ? townSvg() : activeLevel === 'A2' ? streetSvg() : roomSvg();
 
       let sheet = '';
       if (openRoomObject && O[openRoomObject]) {
@@ -3891,8 +4428,8 @@
               </div>
             </div>` : ''}
 
-          <div class="grid grid-cols-3 gap-2">
-            ${['A1','A2','B1'].map(lv => {
+          <div class="grid grid-cols-4 gap-2">
+            ${['A1','A2','B1','B2'].map(lv => {
               const pr = levelProgress(lv);
               const on = activeLevel === lv;
               const locked = lv === 'A2' && !a1Complete() && pr.done === 0;
@@ -3903,7 +4440,7 @@
                   <span class="text-[10px] font-black" style="color:${on ? '#c7d2fe' : '#64748b'}">${pr.done}/${pr.total}</span>
                 </div>
                 <p class="text-[10px] font-bold" style="color:${on ? '#c7d2fe' : '#64748b'}">
-                  ${lv === 'A1' ? "Bruno's room" : lv === 'A2' ? 'The street' : 'The town'}</p>
+                  ${lv === 'A1' ? "Bruno's room" : lv === 'A2' ? 'The street' : lv === 'B1' ? 'The town' : 'The district'}</p>
                 <div class="h-1.5 rounded-full mt-1.5 overflow-hidden" style="background:rgba(148,163,184,.25)">
                   <div class="h-full rounded-full" style="width:${Math.round(pr.frac*100)}%; background:${on ? '#ffffff' : '#4f46e5'}"></div>
                 </div>
@@ -4300,12 +4837,12 @@
           </div>
           <div class="${conf.cardBg} border p-4 rounded-2xl space-y-3">
             <div class="flex justify-between items-center">
-              <h3 class="text-xs font-black uppercase tracking-wider text-indigo-400">${activeSkillSection.toUpperCase()} LAB IMMERSION</h3>
+              <h3 class="text-xs font-black uppercase tracking-wider text-indigo-400">${activeLevel} · ${activeSkillSection.toUpperCase()} LAB</h3>
               <span class="text-[10px] font-bold text-slate-500">#${activeSkillQuestionIndex + 1}</span>
             </div>`;
 
         if (activeSkillSection === 'listening') {
-          const lData = a1SkillsDatabase.listening[activeSkillQuestionIndex % a1SkillsDatabase.listening.length];
+          const lData = currentSkills().listening[activeSkillQuestionIndex % currentSkills().listening.length];
           skillsHTML += `
             <div class="space-y-3">
               <div class="flex items-center gap-2">
@@ -4327,7 +4864,7 @@
               ` : ''}
             </div>`;
         } else if (activeSkillSection === 'reading') {
-          const rData = a1SkillsDatabase.reading[activeSkillQuestionIndex % a1SkillsDatabase.reading.length];
+          const rData = currentSkills().reading[activeSkillQuestionIndex % currentSkills().reading.length];
           skillsHTML += `
             <div class="space-y-3">
               <div class="p-3 bg-slate-950 border border-slate-800 rounded-xl font-mono text-xs leading-relaxed italic text-slate-300">"${rData.body}"</div>
@@ -4345,7 +4882,7 @@
               ` : ''}
             </div>`;
         } else if (activeSkillSection === 'writing') {
-          const wData = a1SkillsDatabase.writing[activeSkillQuestionIndex % a1SkillsDatabase.writing.length];
+          const wData = currentSkills().writing[activeSkillQuestionIndex % currentSkills().writing.length];
           const res = writingCheckResult;
           skillsHTML += `
             <div class="space-y-3">
@@ -4383,7 +4920,7 @@
               ` : ''}
             </div>`;
         } else if (activeSkillSection === 'speaking') {
-          const sData = a1SkillsDatabase.speaking[activeSkillQuestionIndex % a1SkillsDatabase.speaking.length];
+          const sData = currentSkills().speaking[activeSkillQuestionIndex % currentSkills().speaking.length];
           const speechSupported = isSpeechRecognitionSupported();
           const recorderSupported = hasMediaRecorderSupport();
           skillsHTML += `
