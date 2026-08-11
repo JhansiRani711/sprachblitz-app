@@ -78,7 +78,7 @@
       position: relative; overflow: hidden;
     }
     .blitz-hero::after {
-      content: "\26a1"; position: absolute; right: -8px; top: -20px;
+      content: "⚡"; position: absolute; right: -8px; top: -20px;
       font-size: 100px; opacity: .10; transform: rotate(12deg);
     }
     .blitz-cta {
@@ -1562,7 +1562,8 @@
       {
         id: 0, level: "A1", title: "Goethe-Zertifikat A1 – Original-Übungssatz 01",
         hoeren: [
-          { teil: 1, audioText: "Maria: Weißt du, wo es hier Kleidung für Kinder gibt? Laura: Oh, das weiß ich auch nicht. Aber sehen wir einmal auf die Information – Kinderspielzeug gibt es im vierten Stock, Damenkleidung im ersten. Hier: Im zweiten Stock findest du Kinderkleidung.", question: "Wo gibt es Kleidung für Kinder?", options: ["Im 1. Stock.", "Im 2. Stock.", "Im 4. Stock."], c: 1 },
+          { teil: 1, audioText: "Maria: Weißt du, wo es hier Kleidung für Kinder gibt? Laura: Oh, das weiß ich auch nicht. Aber sehen wir einmal auf die Information – 
+Kinderspielzeug gibt es im vierten Stock, Damenkleidung im ersten. Hier: Im zweiten Stock findest du Kinderkleidung.", question: "Wo gibt es Kleidung für Kinder?", options: ["Im 1. Stock.", "Im 2. Stock.", "Im 4. Stock."], c: 1 },
           { teil: 1, audioText: "Ober: Hier, bitte, die Speisekarte. Ich kann heute den Fisch empfehlen. Dame: Nein, danke, ich mag keinen Fisch. Ober: Dann vielleicht Hähnchen mit Pommes frites oder unseren Chefsalat mit Ei und Schinken? Dame: Salat ist eine gute Idee. Den bringen Sie mir, bitte.", question: "Was bestellt die Dame?", options: ["Fisch.", "Salat.", "Hähnchen."], c: 1 },
           { teil: 1, audioText: "Student: Bitte eine Eintrittskarte für Studenten. Frau: Gern, aber das Museum schließt in einer halben Stunde. Student: Ach, so früh schon! Frau: Ja, am Mittwochnachmittag schließen wir schon um 15 Uhr, aber an den anderen Tagen ist bis 18 Uhr geöffnet und am Donnerstag schließen wir erst um 22 Uhr.", question: "Wie lange hat das Museum am Mittwoch geöffnet?", options: ["Bis 22 Uhr.", "Bis 15 Uhr.", "Bis 18 Uhr."], c: 1 },
           { teil: 1, audioText: "Tim: Mein Arzt sagt, ich soll mehr Sport machen. Klaus: Richtig! Komm in meinen Verein, da kannst du Fußball spielen. Und am Wochenende laufe ich immer eine Stunde. Tim: Nein, für mich ist Rad fahren das Beste – sagt mein Arzt. Laufen ist nichts für mich.", question: "Welchen Sport empfiehlt der Arzt?", options: ["Fußball.", "Fahrrad fahren.", "Laufen."], c: 1 },
@@ -4475,13 +4476,13 @@
             <div class="flex items-start gap-3 relative z-10">
               <img src="./bears/${roomBearPose()}.png" alt="Bruno" class="h-20 w-auto shrink-0" onerror="this.style.display='none'">
               <div class="flex-1 min-w-0">
-                <p class="text-[10px] font-black uppercase tracking-widest text-indigo-200">\26a1 Sprachblitz</p>
+                <p class="text-[10px] font-black uppercase tracking-widest text-indigo-200">⚡ Sprachblitz</p>
                 <p class="text-xl font-black text-white leading-tight mt-1" translate="no" lang="de">${bearGreeting()}</p>
                 <p class="text-[11px] font-bold text-indigo-100/80 mt-1">2 Minuten \u00b7 5 Fragen \u00b7 +50 XP m\u00f6glich</p>
               </div>
             </div>
             <button onclick="startDailyBlitz()" class="blitz-cta relative z-10 w-full mt-4 py-3.5 rounded-2xl text-sm">
-              \26a1 START TODAY'S BLITZ
+              ⚡ START TODAY'S BLITZ
             </button>
             <div class="grid grid-cols-3 gap-2 mt-3 relative z-10">
               <div class="blitz-stat text-center">
@@ -4993,7 +4994,8 @@
             <div class="space-y-3">
               <p class="text-xs font-black text-white">${wData.title}</p>
               <p class="text-xs text-slate-300 leading-relaxed">${wData.scenario}</p>
-              <ul class="text-[11px] text-slate-400 list-disc list-inside space-y-1">
+              <ul class="text-[11px] text-slate-400 list-disc list-i
+nside space-y-1">
                 ${wData.points.map(p => `<li>${p}</li>`).join('')}
               </ul>
               <textarea id="writing-email-textarea" rows="6" oninput="writingUserText=this.value" class="w-full p-2.5 bg-slate-950 border border-slate-800 rounded-lg text-xs text-slate-200" placeholder="Schreiben Sie hier Ihre E-Mail (ca. ${wData.minWords}-${wData.maxWords} Wörter)...">${escapeHtmlForField(writingUserText)}</textarea>
