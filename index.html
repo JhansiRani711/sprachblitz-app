@@ -82,6 +82,21 @@
     .stone.locked  { background:#1e293b; box-shadow: none; opacity:.55; cursor: not-allowed; }
     .stone.done:active, .stone.current:active { transform: translateY(5px); box-shadow: 0 0 0 #15803d; }
     .chest { width:56px; height:56px; border-radius:14px; border:none; display:flex; align-items:center; justify-content:center; font-size:26px; }
+    /* Answer feedback: a short pop for right, a short shake for wrong. */
+    @keyframes sb-pop   { 0%{transform:scale(1)} 40%{transform:scale(1.06)} 100%{transform:scale(1)} }
+    @keyframes sb-shake { 0%,100%{transform:translateX(0)} 20%{transform:translateX(-6px)} 40%{transform:translateX(6px)} 60%{transform:translateX(-4px)} 80%{transform:translateX(4px)} }
+    @keyframes sb-rise  { from{opacity:0; transform:translateY(10px)} to{opacity:1; transform:translateY(0)} }
+    @keyframes sb-glow  { 0%,100%{box-shadow:0 0 0 rgba(250,204,21,0)} 50%{box-shadow:0 0 18px rgba(250,204,21,.55)} }
+    .sb-pop   { animation: sb-pop .34s ease; }
+    .sb-shake { animation: sb-shake .38s ease; }
+    .sb-rise  { animation: sb-rise .3s ease both; }
+    .sb-combo { animation: sb-glow 1.1s ease-in-out infinite; }
+    .sb-bar   { transition: width .45s cubic-bezier(.4,0,.2,1); }
+    @media (prefers-reduced-motion: reduce) {
+      .sb-pop, .sb-shake, .sb-rise, .sb-combo { animation: none !important; }
+      .sb-bar { transition: none; }
+    }
+
     .btn3d { border:none !important; box-shadow: 0 4px 0 rgba(0,0,0,.35); transition: transform .08s, box-shadow .08s; }
     .btn3d:active { transform: translateY(4px); box-shadow: 0 0 0 rgba(0,0,0,.35); }
 
@@ -223,6 +238,7 @@
   <!-- Sheets render here, outside the scrolling area, so they always cover the screen -->
   <div id="sb-overlay"></div>
   <div id="sb-settings"></div>
+  <div id="sb-achievements"></div>
 
   <!-- Master Application Logic & Core Datastructure Matrices -->
   <script>
@@ -2944,10 +2960,95 @@
       setTimeout(() => el.remove(), 820);
     }
 
+    // ---- Levels: XP turns into a visible rank, thresholds widen as you climb ----
+    const XP_RANKS = [
+      { at: 0,    title: 'Neuling' },      { at: 150,  title: 'Anf\u00e4nger' },
+      { at: 400,  title: 'Sammler' },      { at: 800,  title: 'Kenner' },
+      { at: 1400, title: 'Gespr\u00e4chspartner' }, { at: 2200, title: 'Erz\u00e4hler' },
+      { at: 3200, title: 'Sprachprofi' },  { at: 4500, title: 'Wortmeister' },
+      { at: 6000, title: 'Sprachblitz' }
+    ];
+    function xpRank(xp) {
+      let i = 0;
+      while (i + 1 < XP_RANKS.length && xp >= XP_RANKS[i + 1].at) i++;
+      const cur = XP_RANKS[i], next = XP_RANKS[i + 1] || null;
+      const span = next ? next.at - cur.at : Math.max(1, xp - cur.at);
+      return {
+        level: i + 1, title: cur.title, next: next,
+        into: next ? xp - cur.at : span, span: span,
+        pct: next ? Math.min(100, Math.round(((xp - cur.at) / span) * 100)) : 100
+      };
+    }
+
+    // ---- Achievements: earned once, stored, announced with a toast ----
+    const ACHIEVEMENTS = [
+      { id:'first_blitz', icon:'\u26a1', label:'First Blitz',      desc:'Finish your first Daily Blitz.' },
+      { id:'perfect',     icon:'\ud83c\udfaf', label:'Perfect round', desc:'Get every question right in one Blitz.' },
+      { id:'combo5',      icon:'\ud83d\udd25', label:'Five in a row', desc:'Answer five in a row correctly.' },
+      { id:'streak3',     icon:'\ud83d\udcc5', label:'Three days',    desc:'Blitz three days in a row.' },
+      { id:'streak7',     icon:'\ud83d\uddd3\ufe0f', label:'A full week', desc:'Blitz seven days in a row.' },
+      { id:'xp500',       icon:'\u2728', label:'500 XP',         desc:'Collect 500 XP in total.' },
+      { id:'xp2000',      icon:'\ud83d\udc8e', label:'2000 XP',   desc:'Collect 2000 XP in total.' },
+      { id:'ten_lessons', icon:'\ud83d\udcda', label:'Ten lessons', desc:'Complete ten lessons.' },
+      { id:'a_place',     icon:'\ud83c\udfe0', label:'Room complete', desc:'Finish every lesson of one place.' },
+      { id:'listener',    icon:'\ud83c\udfa7', label:'Good ear',   desc:'Answer ten listening questions correctly.' }
+    ];
+    let unlockedAchievements = JSON.parse(localStorage.getItem('sb_achievements') || '[]');
+    let listeningHits = parseInt(localStorage.getItem('sb_listen_hits'), 10) || 0;
+
+    function hasAchievement(id) { return unlockedAchievements.indexOf(id) !== -1; }
+
+    function grantAchievement(id) {
+      if (hasAchievement(id)) return false;
+      const a = ACHIEVEMENTS.find(x => x.id === id);
+      if (!a) return false;
+      unlockedAchievements.push(id);
+      localStorage.setItem('sb_achievements', JSON.stringify(unlockedAchievements));
+      showToast(a.icon, a.label, a.desc);
+      return true;
+    }
+
+    // Checks everything that can be true right now. Safe to call often.
+    function checkAchievements(ctx) {
+      ctx = ctx || {};
+      const earned = [];
+      const push = id => { if (grantAchievement(id)) earned.push(id); };
+      if (ctx.blitzFinished) push('first_blitz');
+      if (ctx.perfect) push('perfect');
+      if ((ctx.combo || 0) >= 5) push('combo5');
+      if (blitzStreak() >= 3) push('streak3');
+      if (blitzStreak() >= 7) push('streak7');
+      if (totalXPAmount >= 500) push('xp500');
+      if (totalXPAmount >= 2000) push('xp2000');
+      if (Object.keys(lessonProgress).length >= 10) push('ten_lessons');
+      if (allSceneObjects().some(o => objProgress(o).frac === 1)) push('a_place');
+      if (listeningHits >= 10) push('listener');
+      return earned;
+    }
+
+    // One toast at a time, stacked below the header.
+    function showToast(icon, title, sub) {
+      if (typeof document === 'undefined' || !document.body) return;
+      const el = document.createElement('div');
+      el.className = 'sb-rise';
+      el.innerHTML = `<span style="font-size:20px">${icon}</span>
+        <span style="display:block"><b style="font-size:12px">${title}</b>
+        <span style="display:block;font-size:10px;opacity:.85">${sub || ''}</span></span>`;
+      el.style.cssText += ';position:fixed;left:50%;transform:translateX(-50%);top:70px;z-index:9999;'
+        + 'display:flex;align-items:center;gap:10px;background:#1e1b4b;color:#fff;border:1px solid #4338ca;'
+        + 'padding:10px 14px;border-radius:14px;box-shadow:0 8px 24px rgba(0,0,0,.45);max-width:88%';
+      document.body.appendChild(el);
+      setTimeout(() => { el.style.transition = 'opacity .4s'; el.style.opacity = '0'; }, 2400);
+      setTimeout(() => el.remove(), 2900);
+    }
+
     function rewardXP(amt) {
       flashXP(amt);
       noteLearningDay();
+      const before = xpRank(totalXPAmount).level;
       totalXPAmount += amt;
+      const after = xpRank(totalXPAmount);
+      if (after.level > before) showToast('\u2b50', 'Level ' + after.level + ' \u00b7 ' + after.title, 'Neuer Rang freigeschaltet');
       localStorage.setItem('sb_total_xp', totalXPAmount);
       dailyXP += amt;
       localStorage.setItem('sb_daily_xp', dailyXP);
@@ -3971,6 +4072,7 @@
 
     // ---- Daily Blitz: one obvious thing to do, five questions, once a day ----
     let blitzQuestions = [], blitzIndex = 0, blitzPicked = null, blitzCorrect = 0, blitzDone = false;
+    let blitzCombo = 0, blitzBestCombo = 0, blitzSessionXP = 0, blitzEarned = [], blitzFeedbackClass = '';
     const BLITZ_LENGTH = 5;
 
     function blitzDoneToday() {
@@ -4006,6 +4108,24 @@
           explain: w.hint || ''
         });
       });
+      // One question is audio-only: nothing to read, you have to listen.
+      const heard = shuffle(pool).find(w => w.german && w.german.length < 26);
+      if (heard) {
+        const seenG = new Set([heard.german]);
+        const distract = [];
+        shuffle(pool).forEach(x => {
+          if (distract.length >= 3 || seenG.has(x.german)) return;
+          seenG.add(x.german); distract.push(x);
+        });
+        const opts = shuffle([heard.german].concat(distract.map(x => x.german)));
+        out.push({
+          kind: 'listen', prompt: '\ud83c\udfa7', speak: heard.german,
+          ask: 'Listen \u2014 which word is it?',
+          options: opts, correct: opts.indexOf(heard.german),
+          explain: heard.english ? heard.german + ' = ' + heard.english : ''
+        });
+      }
+
       const gids = curriculumUnits
         .filter(u => u.level === activeLevel)
         .flatMap(u => u.lessons.filter(l => l.type === 'grammar').map(l => l.gid))
@@ -4024,21 +4144,53 @@
       blitzQuestions = buildBlitzQuestions();
       if (!blitzQuestions.length) return;
       blitzIndex = 0; blitzPicked = null; blitzCorrect = 0; blitzDone = false;
+      blitzCombo = 0; blitzBestCombo = 0; blitzSessionXP = 0; blitzEarned = []; blitzFeedbackClass = '';
       activeGameMode = 'blitz';
       renderActiveTabModule();
+      speakBlitzPromptIfNeeded();
     }
+
+    // Audio questions play themselves; written ones stay silent.
+    function speakBlitzPromptIfNeeded() {
+      const q = blitzQuestions[blitzIndex];
+      if (q && q.kind === 'listen' && q.speak) setTimeout(() => speakGerman(q.speak, true), 260);
+    }
+
+    // Answering correctly in a row is worth more: 4 XP, rising to 8 on a run.
+    function blitzXPFor(combo) { return Math.min(8, 4 + Math.max(0, combo - 1)); }
 
     function answerBlitz(i) {
       if (blitzPicked !== null) return;
       blitzPicked = i;
       const q = blitzQuestions[blitzIndex];
-      if (i === q.correct) { blitzCorrect++; rewardXP(4); }
+      if (i === q.correct) {
+        blitzCorrect++;
+        blitzCombo++;
+        blitzBestCombo = Math.max(blitzBestCombo, blitzCombo);
+        const gain = blitzXPFor(blitzCombo);
+        blitzSessionXP += gain;
+        blitzFeedbackClass = 'sb-pop';
+        rewardXP(gain);
+        if (q.kind === 'listen') {
+          listeningHits++;
+          localStorage.setItem('sb_listen_hits', listeningHits);
+        }
+        blitzEarned = blitzEarned.concat(checkAchievements({ combo: blitzCombo }));
+      } else {
+        blitzCombo = 0;
+        blitzFeedbackClass = 'sb-shake';
+        // Hearing the right answer matters more than reading it.
+        if (q.speak) setTimeout(() => speakGerman(q.speak, true), 200);
+      }
       renderActiveTabModule();
     }
 
     function nextBlitz() {
       if (blitzIndex < blitzQuestions.length - 1) {
-        blitzIndex++; blitzPicked = null; renderActiveTabModule(); return;
+        blitzIndex++; blitzPicked = null; blitzFeedbackClass = '';
+        renderActiveTabModule();
+        speakBlitzPromptIfNeeded();
+        return;
       }
       blitzDone = true;
       const today = new Date().toDateString();
@@ -4047,8 +4199,78 @@
         const run = localStorage.getItem('sb_blitz_date') === yest ? blitzStreak() + 1 : 1;
         localStorage.setItem('sb_blitz_streak', run);
         localStorage.setItem('sb_blitz_date', today);
-        rewardXP(10); // completion bonus, once per day
+        // Completion bonus grows with the run, capped so a long streak
+        // stays a reward rather than a reason not to miss a day.
+        const bonus = 10 + Math.min(run, 7) * 2;
+        blitzSessionXP += bonus;
+        rewardXP(bonus);
       }
+      const perfect = blitzCorrect === blitzQuestions.length;
+      blitzEarned = blitzEarned.concat(checkAchievements({
+        blitzFinished: true, perfect: perfect, combo: blitzBestCombo
+      }));
+      renderActiveTabModule();
+    }
+
+    // ---- Achievements shelf, opened from the dashboard level bar ----
+    let achievementsOpen = false;
+    function openAchievements() { achievementsOpen = true; renderActiveTabModule(); }
+    function closeAchievements() { achievementsOpen = false; renderActiveTabModule(); }
+
+    function achievementsSheetHTML() {
+      if (!achievementsOpen) return '';
+      const rank = xpRank(totalXPAmount);
+      return `
+        <div onclick="closeAchievements()" style="position:fixed;inset:0;background:rgba(2,6,23,.72);z-index:9997"></div>
+        <div class="sb-rise" style="position:fixed;left:0;right:0;bottom:0;z-index:9998;max-height:78vh;overflow-y:auto;
+             background:#0f172a;border-top:1px solid #1e293b;border-radius:22px 22px 0 0;padding:18px">
+          <div class="flex items-center justify-between mb-3">
+            <div>
+              <p class="text-sm font-black text-white">Level ${rank.level} \u00b7 <span translate="no" lang="de">${rank.title}</span></p>
+              <p class="text-[11px] font-bold text-slate-400">${totalXPAmount} XP total${rank.next ? ' \u00b7 ' + (rank.next.at - totalXPAmount) + ' XP to ' + rank.next.title : ''}</p>
+            </div>
+            <button onclick="closeAchievements()" class="text-slate-500 text-xl font-black">\u2715</button>
+          </div>
+          <div class="h-2 rounded-full overflow-hidden mb-4" style="background:#1e293b">
+            <div class="h-full rounded-full sb-bar" style="width:${rank.pct}%; background:linear-gradient(90deg,#4f46e5,#c026d3)"></div>
+          </div>
+          <div class="grid grid-cols-2 gap-2">
+            ${ACHIEVEMENTS.map(a => {
+              const got = hasAchievement(a.id);
+              return `<div class="rounded-xl p-3" style="background:${got ? '#1e1b4b' : '#0b1220'};border:1px solid ${got ? '#4338ca' : '#1e293b'};opacity:${got ? 1 : .55}">
+                <p class="text-xl">${got ? a.icon : '\ud83d\udd12'}</p>
+                <p class="text-[11px] font-black text-white mt-1">${a.label}</p>
+                <p class="text-[10px] font-bold text-slate-400">${a.desc}</p>
+              </div>`;
+            }).join('')}
+          </div>
+        </div>`;
+    }
+
+    // ---- A1 -> A2 -> B1 -> B2: suggest the next level once this one is mostly done ----
+    const LEVEL_ORDER = ['A1', 'A2', 'B1', 'B2'];
+    function levelCompletion(lv) {
+      const lessons = curriculumUnits.filter(u => u.level === lv).flatMap(u => u.lessons);
+      if (!lessons.length) return 0;
+      const done = lessons.filter(l => lessonProgress[l.id]).length;
+      return done / lessons.length;
+    }
+    function nextLevelSuggestion() {
+      const i = LEVEL_ORDER.indexOf(activeLevel);
+      const next = LEVEL_ORDER[i + 1];
+      if (!next) return null;
+      const pct = levelCompletion(activeLevel);
+      if (pct < 0.8) return null;
+      if (localStorage.getItem('sb_level_prompt_' + next) === 'seen') return null;
+      return { next: next, pct: Math.round(pct * 100) };
+    }
+    function acceptNextLevel(lv) {
+      localStorage.setItem('sb_level_prompt_' + lv, 'seen');
+      setLevel(lv);
+      showToast('\ud83d\uddfa\ufe0f', lv + ' freigeschaltet', 'Ein neuer Ort wartet auf dich.');
+    }
+    function dismissNextLevel(lv) {
+      localStorage.setItem('sb_level_prompt_' + lv, 'seen');
       renderActiveTabModule();
     }
 
@@ -4699,20 +4921,47 @@
           </div>
 
           ${(() => {
+            const sug = nextLevelSuggestion();
+            if (!sug) return '';
+            return `
+            <div class="rounded-3xl p-4 sb-rise" style="background:linear-gradient(135deg,#065f46,#0f766e); box-shadow:0 5px 0 rgba(0,0,0,.35)">
+              <p class="text-sm font-black text-white">\ud83d\uddfa\ufe0f ${activeLevel} is ${sug.pct}% done</p>
+              <p class="text-[11px] font-bold mb-3" style="color:#d1fae5">Ready for ${sug.next}? A new place opens up, and ${activeLevel} stays exactly where it is.</p>
+              <div class="grid grid-cols-2 gap-2">
+                <button onclick="acceptNextLevel('${sug.next}')" class="btn3d py-2.5 rounded-xl font-black text-xs text-white" style="background:#4f46e5">Start ${sug.next}</button>
+                <button onclick="dismissNextLevel('${sug.next}')" class="btn3d py-2.5 rounded-xl font-black text-xs text-white" style="background:rgba(0,0,0,.3)">Not yet</button>
+              </div>
+            </div>`;
+          })()}
+
+          ${(() => {
             const done = blitzDoneToday();
             const run = blitzStreak();
+            const rank = xpRank(totalXPAmount);
             return `
-            <button onclick="startDailyBlitz()" class="btn3d w-full rounded-3xl p-4 text-left flex items-center gap-3"
-                    style="background:${done ? '#1e293b' : 'linear-gradient(135deg,#4f46e5,#c026d3)'}; box-shadow:0 5px 0 rgba(0,0,0,.35)">
-              <span class="text-3xl leading-none shrink-0">\u26a1</span>
-              <div class="flex-1 min-w-0">
-                <p class="text-sm font-black text-white">${done ? 'Blitz again' : 'Start today\u2019s Blitz'}</p>
-                <p class="text-[11px] font-bold" style="color:${done ? '#94a3b8' : '#e0e7ff'}">
-                  ${BLITZ_LENGTH} questions \u00b7 ${activeLevel} \u00b7 ${done ? 'today\u2019s bonus already earned' : '+30 XP'}
-                </p>
-              </div>
-              ${run > 0 ? `<span class="shrink-0 px-2 py-1 rounded-lg text-[11px] font-black text-white" style="background:rgba(0,0,0,.28)">\ud83d\udd25 ${run}</span>` : ''}
-            </button>`;
+            <div class="space-y-2">
+              <button onclick="startDailyBlitz()" class="btn3d w-full rounded-3xl p-4 text-left flex items-center gap-3 ${done ? '' : 'sb-combo'}"
+                      style="background:${done ? '#1e293b' : 'linear-gradient(135deg,#4f46e5,#c026d3)'}; box-shadow:0 5px 0 rgba(0,0,0,.35)">
+                <span class="text-3xl leading-none shrink-0">\u26a1</span>
+                <div class="flex-1 min-w-0">
+                  <p class="text-sm font-black text-white">${done ? 'One more Blitz' : 'Start today\u2019s Blitz'}</p>
+                  <p class="text-[11px] font-bold" style="color:${done ? '#94a3b8' : '#e0e7ff'}">
+                    ${BLITZ_LENGTH} questions \u00b7 ${activeLevel} \u00b7 ${done ? 'today\u2019s bonus already earned' : 'up to +' + (10 + Math.min(run + 1, 7) * 2 + BLITZ_LENGTH * 8) + ' XP'}
+                  </p>
+                </div>
+                ${run > 0 ? `<span class="shrink-0 px-2 py-1 rounded-lg text-[11px] font-black text-white" style="background:rgba(0,0,0,.28)">\ud83d\udd25 ${run}</span>` : ''}
+              </button>
+
+              <button onclick="openAchievements()" class="w-full rounded-2xl p-3 text-left" style="background:#111827">
+                <div class="flex items-center justify-between mb-1">
+                  <p class="text-[11px] font-black text-white">Level ${rank.level} \u00b7 <span translate="no" lang="de">${rank.title}</span></p>
+                  <p class="text-[10px] font-bold text-slate-400">${unlockedAchievements.length}/${ACHIEVEMENTS.length} \ud83c\udfc6</p>
+                </div>
+                <div class="h-2 rounded-full overflow-hidden" style="background:#1e293b">
+                  <div class="h-full rounded-full sb-bar" style="width:${rank.pct}%; background:linear-gradient(90deg,#4f46e5,#c026d3)"></div>
+                </div>
+              </button>
+            </div>`;
           })()}
 
           ${showMoment ? `
@@ -4888,19 +5137,60 @@
     function closeGame() { activeGameMode = 'none'; renderActiveTabModule(); }
 
     // Bruno reacts to the answer instead of a bare tick or cross.
+    // Bruno reacts to how the round is going, not just to right/wrong.
+    function blitzBearPose(right, combo) {
+      if (!right) return 'bear-think';
+      if (combo >= 5) return 'bear-dance';
+      if (combo >= 3) return 'bear-jump';
+      return 'bear-hug';
+    }
+    function blitzBearLine(right, combo, q) {
+      if (!right) return 'Fast! Die richtige Antwort: ' + q.options[q.correct];
+      if (combo >= 5) return '\ud83d\udd25 ' + combo + 'er-Serie! Unglaublich!';
+      if (combo >= 3) return '\ud83d\udd25 ' + combo + ' richtig hintereinander!';
+      return '\ud83c\udf89 Richtig!';
+    }
+
     function blitzOverlayHTML(conf) {
       if (blitzDone) {
         const all = blitzCorrect === blitzQuestions.length;
+        const rank = xpRank(totalXPAmount);
+        const badges = blitzEarned.map(id => ACHIEVEMENTS.find(a => a.id === id)).filter(Boolean);
         return `
-          <div class="space-y-4 text-center">
-            <img src="./bears/${all ? 'bear-dance' : blitzCorrect >= 3 ? 'bear-hug' : 'bear-think'}.png" alt="" class="h-40 w-auto mx-auto" onerror="this.style.display='none'">
+          <div class="space-y-4 text-center sb-rise">
+            <img src="./bears/${all ? 'bear-dance' : blitzCorrect >= 3 ? 'bear-jump' : 'bear-think'}.png" alt="" class="h-40 w-auto mx-auto sb-pop" onerror="this.style.display='none'">
             <p class="text-xl font-black text-white" translate="no" lang="de">${
               all ? 'Fantastisch!' : blitzCorrect >= 3 ? 'Sehr gut!' : 'Gut ge\u00fcbt!'}</p>
-            <p class="text-sm font-bold text-slate-300">${blitzCorrect} of ${blitzQuestions.length} correct</p>
-            ${blitzStreak() > 1 ? `<p class="text-xs font-black text-amber-400">\ud83d\udd25 ${blitzStreak()} days in a row</p>` : ''}
-            <div class="grid grid-cols-2 gap-2 pt-2">
-              <button onclick="startDailyBlitz()" class="btn3d py-3 rounded-xl font-black text-xs text-white" style="background:#4f46e5">\u26a1 One more</button>
-              <button onclick="closeGame()" class="btn3d py-3 rounded-xl font-black text-xs text-white" style="background:#334155">Done</button>
+
+            <div class="flex justify-center gap-2">
+              ${blitzQuestions.map((_, i) => `<span style="width:10px;height:10px;border-radius:999px;display:inline-block;background:${i < blitzCorrect ? '#22c55e' : '#334155'}"></span>`).join('')}
+            </div>
+            <p class="text-sm font-bold text-slate-300">${blitzCorrect} of ${blitzQuestions.length} correct \u00b7 +${blitzSessionXP} XP</p>
+            ${blitzBestCombo >= 3 ? `<p class="text-xs font-black text-amber-400">\ud83d\udd25 Best run: ${blitzBestCombo} in a row</p>` : ''}
+            ${blitzStreak() > 1 ? `<p class="text-xs font-black text-amber-400">\ud83d\udcc5 ${blitzStreak()} days in a row</p>` : ''}
+
+            <div class="rounded-2xl p-3 text-left" style="background:#111827">
+              <div class="flex items-center justify-between mb-1">
+                <p class="text-[11px] font-black text-white">Level ${rank.level} \u00b7 <span translate="no" lang="de">${rank.title}</span></p>
+                <p class="text-[10px] font-bold text-slate-400">${rank.next ? rank.into + '/' + rank.span + ' XP' : 'max'}</p>
+              </div>
+              <div class="h-2 rounded-full overflow-hidden" style="background:#1e293b">
+                <div class="h-full rounded-full sb-bar" style="width:${rank.pct}%; background:linear-gradient(90deg,#4f46e5,#c026d3)"></div>
+              </div>
+              ${rank.next ? `<p class="text-[10px] font-bold text-slate-500 mt-1">Next: <span translate="no" lang="de">${rank.next.title}</span></p>` : ''}
+            </div>
+
+            ${badges.length ? `<div class="space-y-1.5">
+              ${badges.map(a => `<div class="rounded-xl p-2.5 flex items-center gap-2 text-left sb-rise" style="background:#1e1b4b;border:1px solid #4338ca">
+                <span class="text-xl">${a.icon}</span>
+                <span class="flex-1 min-w-0"><b class="text-[11px] text-white block">${a.label}</b>
+                <span class="text-[10px] text-indigo-300">${a.desc}</span></span>
+              </div>`).join('')}
+            </div>` : ''}
+
+            <div class="grid grid-cols-2 gap-2 pt-1">
+              <button onclick="startDailyBlitz()" class="btn3d py-3.5 rounded-xl font-black text-xs text-white sb-combo" style="background:linear-gradient(135deg,#4f46e5,#c026d3)">\u26a1 One more Blitz</button>
+              <button onclick="closeGame()" class="btn3d py-3.5 rounded-xl font-black text-xs text-white" style="background:#334155">Done</button>
             </div>
           </div>`;
       }
@@ -4911,15 +5201,19 @@
         <div class="space-y-4">
           <div class="flex items-center justify-between px-1">
             <h3 class="text-sm font-black text-white">\u26a1 Daily Blitz \u00b7 ${blitzIndex + 1}/${blitzQuestions.length}</h3>
-            <button onclick="closeGame()" class="text-slate-500 text-lg font-black">\u2715</button>
+            <div class="flex items-center gap-2">
+              ${blitzCombo >= 2 ? `<span class="px-2 py-0.5 rounded-lg text-[10px] font-black text-white sb-combo" style="background:#b45309">\ud83d\udd25 ${blitzCombo}\u00d7</span>` : ''}
+              <button onclick="closeGame()" class="text-slate-500 text-lg font-black">\u2715</button>
+            </div>
           </div>
           <div class="h-1.5 rounded-full overflow-hidden" style="background:#1e293b">
-            <div class="h-full rounded-full" style="width:${Math.round((blitzIndex / blitzQuestions.length) * 100)}%; background:#4f46e5"></div>
+            <div class="h-full rounded-full sb-bar" style="width:${Math.round(((blitzIndex + (answered ? 1 : 0)) / blitzQuestions.length) * 100)}%; background:linear-gradient(90deg,#4f46e5,#c026d3)"></div>
           </div>
-          <div class="${conf.cardBg} border rounded-2xl p-5 text-center space-y-2">
+          <div class="${conf.cardBg} border rounded-2xl p-5 text-center space-y-2 ${blitzFeedbackClass}">
             <p class="text-[10px] font-black uppercase tracking-wider text-indigo-400">${q.ask}</p>
-            <p class="text-2xl font-black text-white" translate="no" lang="de">${q.prompt}</p>
-            ${q.speak ? `<button onclick='speakGerman(${safeOnclickArg(q.speak)}, true)' class="btn3d px-4 py-2 rounded-xl text-xs font-black text-white" style="background:#4f46e5">\ud83d\udd0a</button>` : ''}
+            <p class="${q.kind === 'listen' ? 'text-5xl' : 'text-2xl'} font-black text-white" translate="no" lang="de">${
+              q.kind === 'listen' && !answered ? '\ud83c\udfa7' : q.prompt}</p>
+            ${q.speak ? `<button onclick='speakGerman(${safeOnclickArg(q.speak)}, true)' class="btn3d px-4 py-2 rounded-xl text-xs font-black text-white" style="background:#4f46e5">\ud83d\udd0a ${q.kind === 'listen' ? 'Nochmal h\u00f6ren' : ''}</button>` : ''}
           </div>
           <div class="space-y-2">
             ${q.options.map((o, i) => {
@@ -4930,11 +5224,11 @@
             }).join('')}
           </div>
           ${answered ? `
-            <div class="rounded-xl p-3 flex items-center gap-2" style="background:${right ? 'rgba(21,128,61,.25)' : 'rgba(180,83,9,.25)'}">
-              <img src="./bears/${right ? 'bear-hug' : 'bear-think'}.png" alt="" class="h-12 w-auto shrink-0" onerror="this.style.display='none'">
+            <div class="rounded-xl p-3 flex items-center gap-2 sb-rise" style="background:${right ? 'rgba(21,128,61,.25)' : 'rgba(180,83,9,.25)'}">
+              <img src="./bears/${blitzBearPose(right, blitzCombo)}.png" alt="" class="h-14 w-auto shrink-0 ${right ? 'sb-pop' : ''}" onerror="this.style.display='none'">
               <div class="flex-1 min-w-0">
                 <p class="text-xs font-black ${right ? 'text-emerald-300' : 'text-amber-300'}" translate="no" lang="de">${
-                  right ? '\ud83c\udf89 Richtig! +4 XP' : 'Fast! Die richtige Antwort: ' + q.options[q.correct]}</p>
+                  blitzBearLine(right, blitzCombo, q)}${right ? ' +' + blitzXPFor(blitzCombo) + ' XP' : ''}</p>
                 ${q.explain ? `<p class="text-[11px] font-bold text-slate-300 mt-0.5">${q.explain}</p>` : ''}
               </div>
             </div>
@@ -4952,6 +5246,8 @@
       // Settings sits above everything and is reachable from any tab
       const settingsNode = document.getElementById('sb-settings');
       if (settingsNode) settingsNode.innerHTML = settingsSheetHTML();
+      const achNode = document.getElementById('sb-achievements');
+      if (achNode) achNode.innerHTML = achievementsSheetHTML();
       const avatarNode = document.getElementById('header-avatar');
       if (avatarNode) avatarNode.innerText = learnerAvatar || '\u2699\ufe0f';
       const conf = systemThemeProfiles[currentThemeProfile] || systemThemeProfiles['midnight-slate'];
