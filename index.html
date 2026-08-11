@@ -69,6 +69,41 @@
     @keyframes splash-pop { from { transform: scale(.65); opacity: 0 } to { transform: scale(1); opacity: 1 } }
     @media (prefers-reduced-motion: reduce) { #splash-screen img { animation: none } }
 
+
+    /* ===== Sprachblitz engagement layer ===== */
+    .blitz-hero {
+      background: linear-gradient(135deg, #312e81 0%, #4f46e5 52%, #7c3aed 100%);
+      border-radius: 28px; padding: 18px;
+      box-shadow: 0 7px 0 #1e1b4b, 0 14px 30px rgba(0,0,0,.22);
+      position: relative; overflow: hidden;
+    }
+    .blitz-hero::after {
+      content: "\26a1"; position: absolute; right: -8px; top: -20px;
+      font-size: 100px; opacity: .10; transform: rotate(12deg);
+    }
+    .blitz-cta {
+      background: #ffffff; color: #312e81; box-shadow: 0 4px 0 #c7d2fe;
+      font-weight: 900; transition: transform .08s ease, box-shadow .08s ease;
+    }
+    .blitz-cta:active { transform: translateY(4px); box-shadow: 0 0 0 #c7d2fe; }
+    .blitz-stat {
+      background: rgba(15,23,42,.30); border: 1px solid rgba(255,255,255,.16);
+      border-radius: 16px; padding: 9px 10px;
+    }
+    .blitz-mission {
+      border: 1px solid #3730a3; background: #171b3d; border-radius: 22px;
+      padding: 14px; box-shadow: 0 4px 0 #0f172a;
+    }
+    .blitz-progress { height: 9px; border-radius: 999px; background: #0f172a; overflow: hidden; }
+    .blitz-progress > span {
+      display:block; height:100%; border-radius:999px;
+      background: linear-gradient(90deg,#f59e0b,#22c55e);
+    }
+    .blitz-reward {
+      background: #1e293b; border: 1px solid #334155;
+      border-radius: 14px; padding: 8px 10px;
+    }
+
     /* Respect the iPhone notch and home indicator */
     /* Pressable 3D buttons - a solid bottom edge instead of a border */
     .stone {
@@ -1678,7 +1713,7 @@
     ];
 
     // Global Core Architecture Reactivity State Cache Layout Engine Variables
-    const APP_BUILD = 'v22';
+    const APP_BUILD = 'v23-engagement';
     // Which level the room screen is showing. Progress is stored per lesson,
     // so switching levels never loses anything.
     let activeLevel = localStorage.getItem('sb_level') || 'A1';
@@ -2447,6 +2482,19 @@
         prompt: q.prompt, hint: null, speak: null, ask: q.ask,
         options: q.options, correct: q.correct, explain: q.explain
       }));
+    }
+
+
+    // ===== Daily Blitz: one obvious action for the home screen =====
+    function startDailyBlitz() {
+      const all = flatLessons();
+      const unfinished = all.filter(l => !isLessonDone(l.id));
+      const pool = unfinished.length ? unfinished : all;
+      if (!pool.length) return;
+      const pick = pool[0];
+      activeLevel = pick.unit.level || 'A1';
+      localStorage.setItem('sb_level', activeLevel);
+      startLesson(pick.id);
     }
 
     function startLesson(id) {
@@ -4423,16 +4471,47 @@
 
       return `
         <div class="space-y-4">
-          <div class="flex items-center gap-3 px-1">
-            <img src="./bears/${roomBearPose()}.png" alt="Bruno" class="h-14 w-auto shrink-0" onerror="this.style.display='none'">
-            <div class="flex-1 min-w-0">
-              <p class="text-base font-black text-white truncate" translate="no" lang="de">${bearGreeting()}</p>
-              <p class="text-[11px] font-bold text-slate-400">${totalDone} of ${SCENE.length} corners brought to life${daysLearned > 0 ? ' \u00b7 <span translate="no" lang="de">' + daysLearned + ' Tage gelernt</span>' : ''}</p>
+          <div class="blitz-hero">
+            <div class="flex items-start gap-3 relative z-10">
+              <img src="./bears/${roomBearPose()}.png" alt="Bruno" class="h-20 w-auto shrink-0" onerror="this.style.display='none'">
+              <div class="flex-1 min-w-0">
+                <p class="text-[10px] font-black uppercase tracking-widest text-indigo-200">\26a1 Sprachblitz</p>
+                <p class="text-xl font-black text-white leading-tight mt-1" translate="no" lang="de">${bearGreeting()}</p>
+                <p class="text-[11px] font-bold text-indigo-100/80 mt-1">2 Minuten \u00b7 5 Fragen \u00b7 +50 XP m\u00f6glich</p>
+              </div>
             </div>
-            <button onclick="toggleJournal()" class="btn3d shrink-0 px-3 py-2 rounded-2xl text-center" style="background:#3f3a5c">
-              <span class="text-base leading-none block">\ud83d\udcd3</span>
-              <span class="text-[9px] font-black text-slate-300">${journalUnlockedCount()}/${journalEntries.length}</span>
+            <button onclick="startDailyBlitz()" class="blitz-cta relative z-10 w-full mt-4 py-3.5 rounded-2xl text-sm">
+              \26a1 START TODAY'S BLITZ
             </button>
+            <div class="grid grid-cols-3 gap-2 mt-3 relative z-10">
+              <div class="blitz-stat text-center">
+                <p class="text-[9px] font-black text-indigo-200 uppercase">Streak</p>
+                <p class="text-sm font-black text-white">\ud83d\udd25 ${savedStreakCount}</p>
+              </div>
+              <div class="blitz-stat text-center">
+                <p class="text-[9px] font-black text-indigo-200 uppercase">XP</p>
+                <p class="text-sm font-black text-white">\u2728 ${totalXPAmount}</p>
+              </div>
+              <div class="blitz-stat text-center">
+                <p class="text-[9px] font-black text-indigo-200 uppercase">Learned</p>
+                <p class="text-sm font-black text-white">${totalDone}/${SCENE.length}</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="blitz-mission">
+            <div class="flex items-center justify-between gap-3">
+              <div>
+                <p class="text-[9px] font-black uppercase tracking-widest text-amber-400">\ud83c\udfaf Daily mission</p>
+                <p class="text-sm font-black text-white mt-1">Reach ${DAILY_GOAL_XP} XP today</p>
+              </div>
+              <div class="blitz-reward text-[10px] font-black text-amber-300">\ud83c\udf81 +50 XP bonus</div>
+            </div>
+            <div class="blitz-progress mt-3"><span style="width:${Math.min(100, Math.round((dailyXP / DAILY_GOAL_XP) * 100))}%"></span></div>
+            <div class="flex justify-between mt-1.5 text-[10px] font-bold text-slate-400">
+              <span>${dailyXP}/${DAILY_GOAL_XP} XP</span>
+              <span>${dailyXP >= DAILY_GOAL_XP ? '\u2713 Mission complete!' : 'Keep going!'}</span>
+            </div>
           </div>
 
           ${showMoment ? `
@@ -4448,7 +4527,12 @@
               </div>
             </div>` : ''}
 
-          <div class="grid grid-cols-4 gap-2">
+          <div>
+            <div class="flex items-center justify-between px-1 mb-2">
+              <p class="text-[10px] font-black uppercase tracking-widest text-slate-500">🗺️ Your German journey</p>
+              <span class="text-[9px] font-bold text-slate-500">A1 → A2 → B1 → B2</span>
+            </div>
+            <div class="grid grid-cols-4 gap-2">
             ${['A1','A2','B1','B2'].map(lv => {
               const pr = levelProgress(lv);
               const on = activeLevel === lv;
@@ -4466,6 +4550,7 @@
                 </div>
               </button>`;
             }).join('')}
+            </div>
           </div>
 
           <div class="relative rounded-3xl overflow-hidden" style="box-shadow:0 6px 0 rgba(0,0,0,.35)">
