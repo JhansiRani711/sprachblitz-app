@@ -1,6 +1,6 @@
 // Sprachblitz service worker
 // Bump CACHE_VERSION on every deploy, or users keep the old app.
-const CACHE_VERSION = 'sprachblitz-v23';
+const CACHE_VERSION = 'sprachblitz-v24';
 
 const APP_SHELL = [
   './',
@@ -72,6 +72,21 @@ self.addEventListener('fetch', event => {
   // to reach installed users. Network first, cache only as an offline fallback.
   const ownCode = url.origin === self.location.origin
     && /\.(js|json)$/.test(url.pathname);
+
+  // Pre-rendered audio never changes once written, so cache it hard. This is
+  // what lets the recorded German voice work offline.
+  if (url.origin === self.location.origin && /^\/.*\/audio\/.*\.mp3$/.test(url.pathname)) {
+    event.respondWith((async () => {
+      const hit = await caches.match(req);
+      if (hit) return hit;
+      try {
+        const res = await fetch(req);
+        if (res && res.ok) (await caches.open(CACHE_VERSION)).put(req, res.clone());
+        return res;
+      } catch (e) { return Response.error(); }
+    })());
+    return;
+  }
 
   if (ownCode) {
     event.respondWith((async () => {
