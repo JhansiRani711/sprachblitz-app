@@ -3175,7 +3175,9 @@
       if (!id || !sbAudioManifest[id]) return false;
       try {
         if (sbCurrentAudio) { sbCurrentAudio.pause(); sbCurrentAudio = null; }
-        const a = new Audio('./audio/' + id + '.mp3');
+        // Piper without ffmpeg writes WAV; everything else writes MP3.
+        const ext = (sbAudioManifest[id] === 'wav') ? '.wav' : '.mp3';
+        const a = new Audio('./audio/' + id + ext);
         a.playbackRate = Math.max(0.6, Math.min(1.2, (typeof speechRate === 'number' ? speechRate : 0.9) + 0.1));
         sbCurrentAudio = a;
         await a.play();
