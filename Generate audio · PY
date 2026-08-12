@@ -13,20 +13,41 @@ WHAT THIS DOES
   back to the browser voice when it does not, so nothing breaks midway.
 
 COST, HONESTLY
-  Roughly 60,000 characters across the app.
-    Google Cloud TTS  — first 1M chars/month of Neural2 free, then ~$16/M.
-                        Realistically: free.
-    ElevenLabs        — better German prosody, ~$5/month starter plan.
-    Azure Neural      — 500k chars/month free, then ~$16/M.
-  You pay once per phrase, not per play: the MP3s are static files in the repo.
+  The app is about 56,000 characters of German.
+
+    piper     FREE, no account, no card. Runs on your own machine.
+              German voice "Thorsten" is genuinely good — clearly better than
+              a browser voice, a little flatter than the paid cloud ones.
+              Start here unless you have a reason not to.
+
+    azure     500k chars/month free on the F0 tier, so this app costs nothing.
+              BUT creating an Azure account still requires a card for identity
+              verification, even on free tier. Excellent German neural voices.
+
+    google    1M chars/month free on Neural2. Also requires a card.
+
+    elevenlabs  Best German prosody of the four. ~$5/month, no free tier
+              worth relying on.
+
+  You pay once per phrase, not per play: the MP3s become static files.
 
 USAGE
-  pip install google-cloud-texttospeech
-  export GOOGLE_APPLICATION_CREDENTIALS=/path/to/key.json
-  python3 tools/generate-audio.py --provider google
-  python3 tools/generate-audio.py --provider google --limit 20   # try a few first
+  # Free, no account (recommended first try)
+  pip install piper-tts
+  python3 tools/generate-audio.py --provider piper
 
-  Then commit the audio/ folder and the generated audio-manifest.json.
+  # Azure
+  export AZURE_SPEECH_KEY=xxxx
+  export AZURE_SPEECH_REGION=westeurope
+  pip install requests
+  python3 tools/generate-audio.py --provider azure --limit 20
+
+  # Google
+  export GOOGLE_APPLICATION_CREDENTIALS=/path/to/key.json
+  pip install google-cloud-texttospeech
+  python3 tools/generate-audio.py --provider google
+
+  Then commit audio/ and audio-manifest.json, and bump CACHE_VERSION in sw.js.
 """
 
 import argparse, hashlib, json, os, re, sys
@@ -38,6 +59,9 @@ MANIFEST = os.path.join(ROOT, 'audio-manifest.json')
 
 # Two voices, so dialogues do not sound like one person talking to themselves.
 GOOGLE_VOICES = ['de-DE-Neural2-F', 'de-DE-Neural2-D']
+AZURE_VOICES  = ['de-DE-KatjaNeural', 'de-DE-ConradNeural']
+# Piper voices are downloaded once, automatically, on first use.
+PIPER_VOICES  = ['de_DE-thorsten-medium', 'de_DE-eva_k-x_low']
 
 
 # Words that appear constantly in German and almost never in the app's English
@@ -114,6 +138,58 @@ def synth_google(text, out_path, voice):
         fh.write(resp.audio_content)
 
 
+def synth_azure(text, out_path, voice):
+    """Azure Speech, F0 free tier: 500k characters a month."""
+    import requests
+    key = os.environ.get('AZURE_SPEECH_KEY')
+    region = os.environ.get('AZURE_SPEECH_REGION', 'westeurope')
+    if not key:
+        sys.exit('Set AZURE_SPEECH_KEY (and AZURE_SPEECH_REGION) first.')
+
+    # SSML, so the speaking rate can be tuned to exam pace rather than
+    # the slow default that makes learners over-confident.
+    safe = (text.replace('&', '&amp;').replace('<', '&lt;').replace('>', '&gt;'))
+    ssml = (f'<speak version="1.0" xmlns="http://www.w3.org/2001/10/synthesis" xml:lang="de-DE">'
+            f'<voice name="{voice}"><prosody rate="-5%">{safe}</prosody></voice></speak>')
+
+    r = requests.post(
+        f'https://{region}.tts.speech.microsoft.com/cognitiveservices/v1',
+        headers={
+            'Ocp-Apim-Subscription-Key': key,
+            'Content-Type': 'application/ssml+xml',
+            'X-Microsoft-OutputFormat': 'audio-24khz-48kbitrate-mono-mp3',
+            'User-Agent': 'sprachblitz',
+        },
+        data=ssml.encode('utf-8'), timeout=60)
+    r.raise_for_status()
+    with open(out_path, 'wb') as fh:
+        fh.write(r.content)
+
+
+def synth_piper(text, out_path, voice):
+    """Piper: a local neural TTS. No account, no card, no network after the
+    voice model has downloaded once. Writes WAV, converted to MP3 when ffmpeg
+    is available and left as WAV otherwise."""
+    import subprocess, shutil, tempfile
+    if shutil.which('piper') is None:
+        sys.exit('piper not found. Install it with:  pip install piper-tts')
+
+    with tempfile.NamedTemporaryFile(suffix='.wav', delete=False) as tmp:
+        wav = tmp.name
+    subprocess.run(['piper', '--model', voice, '--output_file', wav],
+                   input=text.encode('utf-8'), check=True,
+                   stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+
+    if shutil.which('ffmpeg'):
+        subprocess.run(['ffmpeg', '-y', '-i', wav, '-b:a', '64k', out_path],
+                       check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+        os.unlink(wav)
+    else:
+        # No ffmpeg: keep the WAV. Browsers play it fine, the files are just
+        # larger, so the app looks for .mp3 first and then .wav.
+        os.replace(wav, out_path.replace('.mp3', '.wav'))
+
+
 def synth_elevenlabs(text, out_path, voice):
     import requests
     key = os.environ.get('ELEVENLABS_API_KEY')
@@ -131,7 +207,8 @@ def synth_elevenlabs(text, out_path, voice):
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument('--provider', choices=['google', 'elevenlabs'], default='google')
+    ap.add_argument('--provider', choices=['piper', 'azure', 'google', 'elevenlabs'],
+                    default='piper', help='piper is free and needs no account')
     ap.add_argument('--limit', type=int, default=0, help='only do the first N (a cheap test run)')
     ap.add_argument('--voice', default=None)
     ap.add_argument('--dry-run', action='store_true', help='list what would be generated')
@@ -160,19 +237,24 @@ def main():
     for n, (text, key) in enumerate(items, 1):
         pid = phrase_id(text)
         out = os.path.join(AUDIO_DIR, pid + '.mp3')
-        if os.path.exists(out):
-            manifest[pid] = True
+        if os.path.exists(out) or os.path.exists(out.replace('.mp3', '.wav')):
+            manifest[pid] = 'wav' if os.path.exists(out.replace('.mp3', '.wav')) else True
             skipped += 1
             continue
-        # Alternate voices so dialogue lines differ from narration.
-        voice = args.voice or (GOOGLE_VOICES[n % len(GOOGLE_VOICES)]
-                               if args.provider == 'google' else '21m00Tcm4TlvDq8ikWAM')
+        # Alternate voices so dialogue lines do not sound like one speaker.
+        pools = {'google': GOOGLE_VOICES, 'azure': AZURE_VOICES, 'piper': PIPER_VOICES}
+        pool = pools.get(args.provider)
+        voice = args.voice or (pool[n % len(pool)] if pool else '21m00Tcm4TlvDq8ikWAM')
         try:
             if args.provider == 'google':
                 synth_google(text, out, voice)
+            elif args.provider == 'azure':
+                synth_azure(text, out, voice)
+            elif args.provider == 'piper':
+                synth_piper(text, out, voice)
             else:
                 synth_elevenlabs(text, out, voice)
-            manifest[pid] = True
+            manifest[pid] = 'wav' if os.path.exists(out.replace('.mp3', '.wav')) else True
             made += 1
             print(f'  {n}/{len(items)}  {pid}  {text[:60]}')
         except Exception as e:
