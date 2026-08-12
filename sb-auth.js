@@ -16,8 +16,6 @@
 //   Apple sign-in additionally needs a paid Apple Developer account.
 //   Leave ENABLE_APPLE false until you have one.
 // =====================================================================
-
-// Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
   apiKey: "AIzaSyBcHo97Ekni3F4LA9s14vlNZ9lrqkZRD2c",
@@ -28,12 +26,6 @@ const firebaseConfig = {
   appId: "1:1088979468853:web:ead7d1a35062caf074277c",
   measurementId: "G-HKD2Y8X0P2"
 };
-
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
-const analytics = getAnalytics(app);
-
-const ENABLE_APPLE = false;   // needs a paid Apple Developer account
 
 // These localStorage keys are device-specific and must NOT sync,
 // or installing on a second device would report itself as installed.
