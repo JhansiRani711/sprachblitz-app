@@ -1,0 +1,188 @@
+#!/usr/bin/env python3
+"""
+Pre-render every German phrase in Sprachblitz to an MP3 file.
+
+WHY
+  The app currently speaks through the browser's own voice. It is free and
+  works offline, but at B1/B2 it is too clean and too slow to prepare anyone
+  for a real Goethe listening exam. Real neural voices fix that.
+
+WHAT THIS DOES
+  Scans index.html for every spoken string, sends each to a TTS provider, and
+  writes audio/<hash>.mp3. The app then plays the file when it exists and falls
+  back to the browser voice when it does not, so nothing breaks midway.
+
+COST, HONESTLY
+  Roughly 60,000 characters across the app.
+    Google Cloud TTS  — first 1M chars/month of Neural2 free, then ~$16/M.
+                        Realistically: free.
+    ElevenLabs        — better German prosody, ~$5/month starter plan.
+    Azure Neural      — 500k chars/month free, then ~$16/M.
+  You pay once per phrase, not per play: the MP3s are static files in the repo.
+
+USAGE
+  pip install google-cloud-texttospeech
+  export GOOGLE_APPLICATION_CREDENTIALS=/path/to/key.json
+  python3 tools/generate-audio.py --provider google
+  python3 tools/generate-audio.py --provider google --limit 20   # try a few first
+
+  Then commit the audio/ folder and the generated audio-manifest.json.
+"""
+
+import argparse, hashlib, json, os, re, sys
+
+ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+INDEX = os.path.join(ROOT, 'index.html')
+AUDIO_DIR = os.path.join(ROOT, 'audio')
+MANIFEST = os.path.join(ROOT, 'audio-manifest.json')
+
+# Two voices, so dialogues do not sound like one person talking to themselves.
+GOOGLE_VOICES = ['de-DE-Neural2-F', 'de-DE-Neural2-D']
+
+
+# Words that appear constantly in German and almost never in the app's English
+# context lines. Two hits is enough to be confident.
+_DE = (' der ', ' die ', ' das ', ' und ', ' ist ', ' nicht ', ' sie ', ' ich ',
+       ' wir ', ' Sie ', ' ein ', ' eine ', ' mit ', ' auf ', ' für ', ' den ',
+       ' dem ', ' zu ', ' haben ', ' sind ', ' war ', ' bitte ', ' kann ',
+       ' wird ', ' auch ', ' noch ', ' dass ', ' aber ', ' im ', ' am ')
+_EN = (' the ', ' and ', ' a ', ' to ', ' of ', ' is ', ' you ', ' about ',
+       ' with ', ' what ', ' note ', ' listen ', ' read ', ' practise ',
+       ' someone ', ' explains ', ' describes ')
+
+
+def looks_german(text):
+    """True when a string is German rather than an English instruction."""
+    if re.search(r'[äöüßÄÖÜ]', text):
+        return True
+    padded = ' ' + text.lower() + ' '
+    de = sum(1 for w in _DE if w.lower() in padded)
+    en = sum(1 for w in _EN if w in padded)
+    return de >= 2 and de > en
+
+
+def phrase_id(text):
+    """Stable filename for a phrase. Same text always maps to the same file,
+    so re-running the script does not regenerate what already exists."""
+    return hashlib.sha1(text.strip().encode('utf-8')).hexdigest()[:16]
+
+
+def extract_phrases(path):
+    """Pull every German string the app speaks aloud out of index.html.
+
+    These are the fields passed to speakGerman() or used as flashcard fronts:
+    german, transcript, audioText, text (speaking drills), sample (model
+    answers) and sampleA (spoken answers)."""
+    src = open(path, encoding='utf-8').read()
+    keys = ['german', 'transcript', 'audioText', 'text', 'sample', 'sampleA', 'sampleQ']
+    found = {}
+    for key in keys:
+        # matches  key: "..."  allowing escaped quotes inside
+        for m in re.finditer(key + r'\s*:\s*"((?:[^"\\]|\\.)*)"', src):
+            raw = m.group(1)
+            text = (raw.replace('\\"', '"').replace('\\n', ' ')
+                       .replace('\\u00e4', 'ä').replace('\\u00f6', 'ö')
+                       .replace('\\u00fc', 'ü').replace('\\u00df', 'ß'))
+            text = re.sub(r'\s+', ' ', text).strip()
+            # Flashcard fronts carry a bracketed hint: "A (Aa)" is read as "A".
+            if key == 'german':
+                text = text.split('(')[0].strip()
+            # Skip empty strings and anything absurdly long.
+            if not text or len(text) > 900:
+                continue
+            # `text:` is used for German speaking drills AND for English
+            # context lines elsewhere, so filter by language before paying
+            # to synthesise it. Cheap heuristic, checked against the app.
+            if not looks_german(text):
+                continue
+            found.setdefault(text, key)
+    return found
+
+
+def synth_google(text, out_path, voice):
+    from google.cloud import texttospeech
+    client = texttospeech.TextToSpeechClient()
+    resp = client.synthesize_speech(
+        input=texttospeech.SynthesisInput(text=text),
+        voice=texttospeech.VoiceSelectionParams(language_code='de-DE', name=voice),
+        audio_config=texttospeech.AudioConfig(
+            audio_encoding=texttospeech.AudioEncoding.MP3,
+            speaking_rate=0.95,       # exam pace, not slow-learner pace
+        ),
+    )
+    with open(out_path, 'wb') as fh:
+        fh.write(resp.audio_content)
+
+
+def synth_elevenlabs(text, out_path, voice):
+    import requests
+    key = os.environ.get('ELEVENLABS_API_KEY')
+    if not key:
+        sys.exit('Set ELEVENLABS_API_KEY first.')
+    r = requests.post(
+        f'https://api.elevenlabs.io/v1/text-to-speech/{voice}',
+        headers={'xi-api-key': key, 'Content-Type': 'application/json'},
+        json={'text': text, 'model_id': 'eleven_multilingual_v2'},
+        timeout=60)
+    r.raise_for_status()
+    with open(out_path, 'wb') as fh:
+        fh.write(r.content)
+
+
+def main():
+    ap = argparse.ArgumentParser()
+    ap.add_argument('--provider', choices=['google', 'elevenlabs'], default='google')
+    ap.add_argument('--limit', type=int, default=0, help='only do the first N (a cheap test run)')
+    ap.add_argument('--voice', default=None)
+    ap.add_argument('--dry-run', action='store_true', help='list what would be generated')
+    args = ap.parse_args()
+
+    phrases = extract_phrases(INDEX)
+    chars = sum(len(p) for p in phrases)
+    print(f'{len(phrases)} phrases, {chars:,} characters total')
+
+    if args.dry_run:
+        for i, (text, key) in enumerate(sorted(phrases.items())[:40]):
+            print(f'  [{key}] {text[:80]}')
+        print('  ...' if len(phrases) > 40 else '')
+        return
+
+    os.makedirs(AUDIO_DIR, exist_ok=True)
+    manifest = {}
+    if os.path.exists(MANIFEST):
+        manifest = json.load(open(MANIFEST, encoding='utf-8'))
+
+    items = sorted(phrases.items())
+    if args.limit:
+        items = items[:args.limit]
+
+    made = skipped = 0
+    for n, (text, key) in enumerate(items, 1):
+        pid = phrase_id(text)
+        out = os.path.join(AUDIO_DIR, pid + '.mp3')
+        if os.path.exists(out):
+            manifest[pid] = True
+            skipped += 1
+            continue
+        # Alternate voices so dialogue lines differ from narration.
+        voice = args.voice or (GOOGLE_VOICES[n % len(GOOGLE_VOICES)]
+                               if args.provider == 'google' else '21m00Tcm4TlvDq8ikWAM')
+        try:
+            if args.provider == 'google':
+                synth_google(text, out, voice)
+            else:
+                synth_elevenlabs(text, out, voice)
+            manifest[pid] = True
+            made += 1
+            print(f'  {n}/{len(items)}  {pid}  {text[:60]}')
+        except Exception as e:
+            print(f'  FAILED {pid}: {e}', file=sys.stderr)
+
+    json.dump(manifest, open(MANIFEST, 'w', encoding='utf-8'), indent=0)
+    print(f'\ndone: {made} generated, {skipped} already existed')
+    print(f'manifest: {MANIFEST}  ({len(manifest)} entries)')
+    print('Commit audio/ and audio-manifest.json, then bump CACHE_VERSION in sw.js.')
+
+
+if __name__ == '__main__':
+    main()
