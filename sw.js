@@ -46,6 +46,12 @@ self.addEventListener('fetch', event => {
   const req = event.request;
   if (req.method !== 'GET') return;
 
+  // Never cache authentication or database traffic — a stale login token
+  // or a cached progress read would be worse than being offline.
+  const url = new URL(req.url);
+  if (/googleapis\.com$|firebaseio\.com$|firebaseapp\.com$/.test(url.hostname)
+      && !/^fonts\./.test(url.hostname)) return;
+
   // Navigations: network first, so a fresh deploy is picked up when online,
   // but the cached page still opens on a train with no signal.
   if (req.mode === 'navigate') {
