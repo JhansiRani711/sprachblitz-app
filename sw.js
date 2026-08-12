@@ -75,7 +75,7 @@ self.addEventListener('fetch', event => {
 
   // Pre-rendered audio never changes once written, so cache it hard. This is
   // what lets the recorded German voice work offline.
-  if (url.origin === self.location.origin && /^\/.*\/audio\/.*\.mp3$/.test(url.pathname)) {
+  if (url.origin === self.location.origin && /^\/.*\/audio\/.*\.(mp3|wav)$/.test(url.pathname)) {
     event.respondWith((async () => {
       const hit = await caches.match(req);
       if (hit) return hit;
