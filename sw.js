@@ -1,6 +1,6 @@
 // Sprachblitz service worker
 // Bump CACHE_VERSION on every deploy, or users keep the old app.
-const CACHE_VERSION = 'sprachblitz-v22-3';
+const CACHE_VERSION = 'sprachblitz-v23';
 
 const APP_SHELL = [
   './',
