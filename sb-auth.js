@@ -17,7 +17,7 @@
 //   Leave ENABLE_APPLE false until you have one.
 // =====================================================================
 
-const firebaseConfig = {
+const FIREBASE_CONFIG = {
   apiKey: "AIzaSyBcHo97Ekni3F4LA9s14vlNZ9lrqkZRD2c",
   authDomain: "sprachblitz.firebaseapp.com",
   projectId: "sprachblitz",
