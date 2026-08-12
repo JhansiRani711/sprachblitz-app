@@ -1,0 +1,279 @@
+#!/usr/bin/env python3
+"""
+Pre-render every German phrase in Sprachblitz to an MP3 file.
+
+WHY
+  The app currently speaks through the browser's own voice. It is free and
+  works offline, but at B1/B2 it is too clean and too slow to prepare anyone
+  for a real Goethe listening exam. Real neural voices fix that.
+
+WHAT THIS DOES
+  Scans index.html for every spoken string, sends each to a TTS provider, and
+  writes audio/<hash>.mp3. The app then plays the file when it exists and falls
+  back to the browser voice when it does not, so nothing breaks midway.
+
+COST, HONESTLY
+  The app is about 56,000 characters of German.
+
+    piper     FREE, no account, no card. Runs on your own machine.
+              German voice "Thorsten" is genuinely good — clearly better than
+              a browser voice, a little flatter than the paid cloud ones.
+              Start here unless you have a reason not to.
+
+    azure     500k chars/month free on the F0 tier, so this app costs nothing.
+              BUT creating an Azure account still requires a card for identity
+              verification, even on free tier. Excellent German neural voices.
+
+    google    1M chars/month free on Neural2. Also requires a card.
+
+    elevenlabs  Best German prosody of the four. ~$5/month, no free tier
+              worth relying on.
+
+  You pay once per phrase, not per play: the MP3s become static files.
+
+USAGE
+  # Free, no account (recommended first try)
+  pip install piper-tts
+  python3 tools/generate-audio.py --provider piper
+
+  # Azure
+  export AZURE_SPEECH_KEY=xxxx
+  export AZURE_SPEECH_REGION=westeurope
+  pip install requests
+  python3 tools/generate-audio.py --provider azure --limit 20
+
+  # Google
+  export GOOGLE_APPLICATION_CREDENTIALS=/path/to/key.json
+  pip install google-cloud-texttospeech
+  python3 tools/generate-audio.py --provider google
+
+  Then commit audio/ and audio-manifest.json, and bump CACHE_VERSION in sw.js.
+"""
+
+import argparse, hashlib, json, os, re, sys
+
+ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+INDEX = os.path.join(ROOT, 'index.html')
+AUDIO_DIR = os.path.join(ROOT, 'audio')
+MANIFEST = os.path.join(ROOT, 'audio-manifest.json')
+
+# Two voices, so dialogues do not sound like one person talking to themselves.
+GOOGLE_VOICES = ['de-DE-Neural2-F', 'de-DE-Neural2-D']
+AZURE_VOICES  = ['de-DE-KatjaNeural', 'de-DE-ConradNeural']
+# Piper voices are downloaded once, automatically, on first use.
+PIPER_VOICES  = ['de_DE-thorsten-medium', 'de_DE-eva_k-x_low']
+
+
+# Words that appear constantly in German and almost never in the app's English
+# context lines. Two hits is enough to be confident.
+_DE = (' der ', ' die ', ' das ', ' und ', ' ist ', ' nicht ', ' sie ', ' ich ',
+       ' wir ', ' Sie ', ' ein ', ' eine ', ' mit ', ' auf ', ' für ', ' den ',
+       ' dem ', ' zu ', ' haben ', ' sind ', ' war ', ' bitte ', ' kann ',
+       ' wird ', ' auch ', ' noch ', ' dass ', ' aber ', ' im ', ' am ')
+_EN = (' the ', ' and ', ' a ', ' to ', ' of ', ' is ', ' you ', ' about ',
+       ' with ', ' what ', ' note ', ' listen ', ' read ', ' practise ',
+       ' someone ', ' explains ', ' describes ')
+
+
+def looks_german(text):
+    """True when a string is German rather than an English instruction."""
+    if re.search(r'[äöüßÄÖÜ]', text):
+        return True
+    padded = ' ' + text.lower() + ' '
+    de = sum(1 for w in _DE if w.lower() in padded)
+    en = sum(1 for w in _EN if w in padded)
+    return de >= 2 and de > en
+
+
+def phrase_id(text):
+    """Stable filename for a phrase. Same text always maps to the same file,
+    so re-running the script does not regenerate what already exists."""
+    return hashlib.sha1(text.strip().encode('utf-8')).hexdigest()[:16]
+
+
+def extract_phrases(path):
+    """Pull every German string the app speaks aloud out of index.html.
+
+    These are the fields passed to speakGerman() or used as flashcard fronts:
+    german, transcript, audioText, text (speaking drills), sample (model
+    answers) and sampleA (spoken answers)."""
+    src = open(path, encoding='utf-8').read()
+    keys = ['german', 'transcript', 'audioText', 'text', 'sample', 'sampleA', 'sampleQ']
+    found = {}
+    for key in keys:
+        # matches  key: "..."  allowing escaped quotes inside
+        for m in re.finditer(key + r'\s*:\s*"((?:[^"\\]|\\.)*)"', src):
+            raw = m.group(1)
+            text = (raw.replace('\\"', '"').replace('\\n', ' ')
+                       .replace('\\u00e4', 'ä').replace('\\u00f6', 'ö')
+                       .replace('\\u00fc', 'ü').replace('\\u00df', 'ß'))
+            text = re.sub(r'\s+', ' ', text).strip()
+            # Flashcard fronts carry a bracketed hint: "A (Aa)" is read as "A".
+            if key == 'german':
+                text = text.split('(')[0].strip()
+            # Skip empty strings and anything absurdly long.
+            if not text or len(text) > 900:
+                continue
+            # `text:` is used for German speaking drills AND for English
+            # context lines elsewhere, so filter by language before paying
+            # to synthesise it. Cheap heuristic, checked against the app.
+            if not looks_german(text):
+                continue
+            found.setdefault(text, key)
+    return found
+
+
+def synth_google(text, out_path, voice):
+    from google.cloud import texttospeech
+    client = texttospeech.TextToSpeechClient()
+    resp = client.synthesize_speech(
+        input=texttospeech.SynthesisInput(text=text),
+        voice=texttospeech.VoiceSelectionParams(language_code='de-DE', name=voice),
+        audio_config=texttospeech.AudioConfig(
+            audio_encoding=texttospeech.AudioEncoding.MP3,
+            speaking_rate=0.95,       # exam pace, not slow-learner pace
+        ),
+    )
+    with open(out_path, 'wb') as fh:
+        fh.write(resp.audio_content)
+
+
+def synth_azure(text, out_path, voice):
+    """Azure Speech, F0 free tier: 500k characters a month."""
+    import requests
+    key = os.environ.get('AZURE_SPEECH_KEY')
+    region = os.environ.get('AZURE_SPEECH_REGION', 'westeurope')
+    if not key:
+        sys.exit('Set AZURE_SPEECH_KEY (and AZURE_SPEECH_REGION) first.')
+
+    # SSML, so the speaking rate can be tuned to exam pace rather than
+    # the slow default that makes learners over-confident.
+    safe = (text.replace('&', '&amp;').replace('<', '&lt;').replace('>', '&gt;'))
+    ssml = (f'<speak version="1.0" xmlns="http://www.w3.org/2001/10/synthesis" xml:lang="de-DE">'
+            f'<voice name="{voice}"><prosody rate="-5%">{safe}</prosody></voice></speak>')
+
+    r = requests.post(
+        f'https://{region}.tts.speech.microsoft.com/cognitiveservices/v1',
+        headers={
+            'Ocp-Apim-Subscription-Key': key,
+            'Content-Type': 'application/ssml+xml',
+            'X-Microsoft-OutputFormat': 'audio-24khz-48kbitrate-mono-mp3',
+            'User-Agent': 'sprachblitz',
+        },
+        data=ssml.encode('utf-8'), timeout=60)
+    r.raise_for_status()
+    with open(out_path, 'wb') as fh:
+        fh.write(r.content)
+
+
+def synth_piper(text, out_path, voice):
+    """Piper: a local neural TTS. No account, no card, no network after the
+    voice model has downloaded once. Writes WAV, converted to MP3 when ffmpeg
+    is available and left as WAV otherwise."""
+    import subprocess, shutil, tempfile
+
+    # pip often installs piper.exe into a Scripts folder that is not on PATH
+    # (very common on Windows), so prefer running it as a module.
+    exe = shutil.which('piper')
+    cmd_prefix = [exe] if exe else [sys.executable, '-m', 'piper']
+
+    with tempfile.NamedTemporaryFile(suffix='.wav', delete=False) as tmp:
+        wav = tmp.name
+    try:
+        subprocess.run(cmd_prefix + ['--model', voice, '--output_file', wav],
+                       input=text.encode('utf-8'), check=True,
+                       stdout=subprocess.DEVNULL, stderr=subprocess.PIPE)
+    except FileNotFoundError:
+        sys.exit('piper not found. Install it with:  pip install piper-tts')
+    except subprocess.CalledProcessError as e:
+        msg = (e.stderr or b'').decode('utf-8', 'ignore').strip()
+        sys.exit('piper failed: ' + (msg[-500:] or 'no error text'))
+
+    if shutil.which('ffmpeg'):
+        subprocess.run(['ffmpeg', '-y', '-i', wav, '-b:a', '64k', out_path],
+                       check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+        os.unlink(wav)
+    else:
+        # No ffmpeg: keep the WAV. Browsers play it fine, the files are just
+        # larger, so the app looks for .mp3 first and then .wav.
+        os.replace(wav, out_path.replace('.mp3', '.wav'))
+
+
+def synth_elevenlabs(text, out_path, voice):
+    import requests
+    key = os.environ.get('ELEVENLABS_API_KEY')
+    if not key:
+        sys.exit('Set ELEVENLABS_API_KEY first.')
+    r = requests.post(
+        f'https://api.elevenlabs.io/v1/text-to-speech/{voice}',
+        headers={'xi-api-key': key, 'Content-Type': 'application/json'},
+        json={'text': text, 'model_id': 'eleven_multilingual_v2'},
+        timeout=60)
+    r.raise_for_status()
+    with open(out_path, 'wb') as fh:
+        fh.write(r.content)
+
+
+def main():
+    ap = argparse.ArgumentParser()
+    ap.add_argument('--provider', choices=['piper', 'azure', 'google', 'elevenlabs'],
+                    default='piper', help='piper is free and needs no account')
+    ap.add_argument('--limit', type=int, default=0, help='only do the first N (a cheap test run)')
+    ap.add_argument('--voice', default=None)
+    ap.add_argument('--dry-run', action='store_true', help='list what would be generated')
+    args = ap.parse_args()
+
+    phrases = extract_phrases(INDEX)
+    chars = sum(len(p) for p in phrases)
+    print(f'{len(phrases)} phrases, {chars:,} characters total')
+
+    if args.dry_run:
+        for i, (text, key) in enumerate(sorted(phrases.items())[:40]):
+            print(f'  [{key}] {text[:80]}')
+        print('  ...' if len(phrases) > 40 else '')
+        return
+
+    os.makedirs(AUDIO_DIR, exist_ok=True)
+    manifest = {}
+    if os.path.exists(MANIFEST):
+        manifest = json.load(open(MANIFEST, encoding='utf-8'))
+
+    items = sorted(phrases.items())
+    if args.limit:
+        items = items[:args.limit]
+
+    made = skipped = 0
+    for n, (text, key) in enumerate(items, 1):
+        pid = phrase_id(text)
+        out = os.path.join(AUDIO_DIR, pid + '.mp3')
+        if os.path.exists(out) or os.path.exists(out.replace('.mp3', '.wav')):
+            manifest[pid] = 'wav' if os.path.exists(out.replace('.mp3', '.wav')) else True
+            skipped += 1
+            continue
+        # Alternate voices so dialogue lines do not sound like one speaker.
+        pools = {'google': GOOGLE_VOICES, 'azure': AZURE_VOICES, 'piper': PIPER_VOICES}
+        pool = pools.get(args.provider)
+        voice = args.voice or (pool[n % len(pool)] if pool else '21m00Tcm4TlvDq8ikWAM')
+        try:
+            if args.provider == 'google':
+                synth_google(text, out, voice)
+            elif args.provider == 'azure':
+                synth_azure(text, out, voice)
+            elif args.provider == 'piper':
+                synth_piper(text, out, voice)
+            else:
+                synth_elevenlabs(text, out, voice)
+            manifest[pid] = 'wav' if os.path.exists(out.replace('.mp3', '.wav')) else True
+            made += 1
+            print(f'  {n}/{len(items)}  {pid}  {text[:60]}')
+        except Exception as e:
+            print(f'  FAILED {pid}: {e}', file=sys.stderr)
+
+    json.dump(manifest, open(MANIFEST, 'w', encoding='utf-8'), indent=0)
+    print(f'\ndone: {made} generated, {skipped} already existed')
+    print(f'manifest: {MANIFEST}  ({len(manifest)} entries)')
+    print('Commit audio/ and audio-manifest.json, then bump CACHE_VERSION in sw.js.')
+
+
+if __name__ == '__main__':
+    main()
