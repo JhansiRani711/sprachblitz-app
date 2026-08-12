@@ -1,17 +1,22 @@
 {
-  "name": "Sprachblitz — A1 & A2 Deutsch lernen",
+  "name": "Sprachblitz — A1 bis B2 Deutsch lernen",
   "short_name": "Sprachblitz",
-  "description": "Learn German A1 and A2 with Bruno: vocabulary, grammar, listening, reading, writing, speaking and Goethe mock exams.",
+  "description": "Learn German from A1 to B2 with Bruno: vocabulary, grammar, listening, reading, writing, speaking and Goethe-style mock exams.",
+  "id": "/sprachblitz-app/",
   "start_url": "./",
   "scope": "./",
-  "display": "browser",
+  "display": "standalone",
+  "display_override": ["standalone", "minimal-ui"],
   "orientation": "portrait",
+  "lang": "de",
+  "dir": "ltr",
+  "categories": ["education"],
   "background_color": "#0f172a",
   "theme_color": "#0f172a",
-  "lang": "de",
   "icons": [
     { "src": "./icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
     { "src": "./icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
-    { "src": "./icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+    { "src": "./icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" },
+    { "src": "./apple-touch-icon.png", "sizes": "180x180", "type": "image/png", "purpose": "any" }
   ]
 }
