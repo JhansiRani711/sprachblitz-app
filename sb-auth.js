@@ -17,13 +17,14 @@
 //   Leave ENABLE_APPLE false until you have one.
 // =====================================================================
 
-const FIREBASE_CONFIG = {
-  apiKey: "PASTE_YOUR_API_KEY",
-  authDomain: "PASTE_YOUR_PROJECT.firebaseapp.com",
-  projectId: "PASTE_YOUR_PROJECT_ID",
-  storageBucket: "PASTE_YOUR_PROJECT.firebasestorage.app",
-  messagingSenderId: "PASTE_SENDER_ID",
-  appId: "PASTE_APP_ID"
+const firebaseConfig = {
+  apiKey: "AIzaSyBcHo97Ekni3F4LA9s14vlNZ9lrqkZRD2c",
+  authDomain: "sprachblitz.firebaseapp.com",
+  projectId: "sprachblitz",
+  storageBucket: "sprachblitz.firebasestorage.app",
+  messagingSenderId: "1088979468853",
+  appId: "1:1088979468853:web:ead7d1a35062caf074277c",
+  measurementId: "G-HKD2Y8X0P2"
 };
 
 const ENABLE_APPLE = false;   // needs a paid Apple Developer account
