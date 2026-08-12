@@ -4133,17 +4133,17 @@
 
     function toggleJournal() { journalOpen = !journalOpen; renderActiveTabModule(); }
 
-    // ---- Accounts (Firebase). Falls back to a clear message when the
-    // project keys in sb-auth.js have not been filled in yet. ----
+    // ---- Accounts (Firebase). Shows a clear message while the project keys
+    // in sb-auth.js are still placeholders. ----
     let authMode = 'signin';   // 'signin' | 'signup'
     let authEmail = '', authPass = '', authName = '', authMsg = '';
 
     function sbAuthError(e) {
       const map = {
-        'auth/invalid-email': 'Diese E-Mail-Adresse ist ungültig.',
+        'auth/invalid-email': 'Diese E-Mail-Adresse ist ung\u00fcltig.',
         'auth/missing-password': 'Bitte gib ein Passwort ein.',
         'auth/weak-password': 'Das Passwort braucht mindestens 6 Zeichen.',
-        'auth/email-already-in-use': 'Für diese E-Mail gibt es schon ein Konto. Melde dich an.',
+        'auth/email-already-in-use': 'F\u00fcr diese E-Mail gibt es schon ein Konto. Melde dich an.',
         'auth/invalid-credential': 'E-Mail oder Passwort stimmt nicht.',
         'auth/popup-blocked': 'Das Anmeldefenster wurde blockiert. Bitte Pop-ups erlauben.',
         'auth/popup-closed-by-user': 'Anmeldung abgebrochen.',
@@ -4174,13 +4174,10 @@
 
     function sbSyncPromptHTML() {
       const ready = (typeof sbAuthReady === 'function') && sbAuthReady();
-      if (!ready) return '';
-      if (window.sbUser) return '';
+      if (!ready || window.sbUser) return '';
       if (localStorage.getItem('sb_sync_prompt_off') === '1') return '';
-      // Don't nag someone who has just opened the app for the first time.
       const lessons = Object.keys(lessonProgress).length;
       if (totalXPAmount < 60 && lessons < 3) return '';
-
       return `
         <div class="rounded-3xl p-4 sb-rise" style="background:linear-gradient(135deg,#1e3a8a,#4338ca); box-shadow:0 5px 0 rgba(0,0,0,.35)">
           <div class="flex items-start gap-3">
@@ -4225,18 +4222,13 @@
           </div>`;
       }
 
-      const appleBtn = (typeof sbAppleEnabled === 'function' && sbAppleEnabled())
-        ? `<button onclick="sbSignInApple()" class="btn3d w-full py-3 rounded-xl text-xs font-black text-white" style="background:#000000">\uf8ff  Weiter mit Apple</button>`
-        : '';
-
       return `
         <div class="rounded-2xl p-4 space-y-2" style="background:#1e293b">
           <p class="text-[10px] font-black uppercase tracking-wider od-muted">Konto</p>
           <p class="text-[11px] font-bold od-dim leading-relaxed">
-            Melde dich an, damit dein Fortschritt auf allen Geräten gleich ist.</p>
+            Melde dich an, damit dein Fortschritt auf allen Ger\u00e4ten gleich ist.</p>
 
           <button onclick="sbSignInGoogle()" class="btn3d w-full py-3 rounded-xl text-xs font-black" style="background:#ffffff;color:#1f2937">Weiter mit Google</button>
-          ${appleBtn}
 
           <div class="flex items-center gap-2 py-1">
             <span style="flex:1;height:1px;background:#334155"></span>
@@ -6451,4 +6443,4 @@
   </script>
   <script type="module" src="./sb-auth.js"></script>
 </body>
-</html>
+</html>s
