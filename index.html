@@ -239,6 +239,7 @@
   <div id="sb-overlay"></div>
   <div id="sb-settings"></div>
   <div id="sb-achievements"></div>
+  <div id="sb-auth"></div>
 
   <!-- Master Application Logic & Core Datastructure Matrices -->
   <script>
@@ -4132,6 +4133,106 @@
 
     function toggleJournal() { journalOpen = !journalOpen; renderActiveTabModule(); }
 
+    // ---- Accounts (Firebase). Falls back to a clear message when the
+    // project keys in sb-auth.js have not been filled in yet. ----
+    let authMode = 'signin';   // 'signin' | 'signup'
+    let authEmail = '', authPass = '', authName = '', authMsg = '';
+
+    function sbAuthError(e) {
+      const map = {
+        'auth/invalid-email': 'Diese E-Mail-Adresse ist ungültig.',
+        'auth/missing-password': 'Bitte gib ein Passwort ein.',
+        'auth/weak-password': 'Das Passwort braucht mindestens 6 Zeichen.',
+        'auth/email-already-in-use': 'Für diese E-Mail gibt es schon ein Konto. Melde dich an.',
+        'auth/invalid-credential': 'E-Mail oder Passwort stimmt nicht.',
+        'auth/popup-blocked': 'Das Anmeldefenster wurde blockiert. Bitte Pop-ups erlauben.',
+        'auth/popup-closed-by-user': 'Anmeldung abgebrochen.',
+        'auth/unauthorized-domain': 'Diese Domain ist in Firebase nicht freigegeben.'
+      };
+      authMsg = map[e && e.code] || ('Fehler: ' + ((e && e.code) || e));
+      renderActiveTabModule();
+    }
+    function sbAuthNotice(m) { authMsg = m; renderActiveTabModule(); }
+    function setAuthMode(m) { authMode = m; authMsg = ''; renderActiveTabModule(); }
+    function setAuthField(which, v) {
+      if (which === 'email') authEmail = v;
+      else if (which === 'pass') authPass = v;
+      else authName = v;
+    }
+    function submitAuthForm() {
+      authMsg = '';
+      if (authMode === 'signup') sbSignUpEmail(authEmail, authPass, authName || learnerName);
+      else sbSignInEmail(authEmail, authPass);
+    }
+
+    function sbAccountBlockHTML() {
+      const ready = (typeof sbAuthReady === 'function') && sbAuthReady();
+      if (!ready) {
+        return `
+          <div class="rounded-2xl p-4" style="background:#1e293b">
+            <p class="text-[10px] font-black uppercase tracking-wider od-muted">Konto</p>
+            <p class="text-[11px] font-bold od-dim mt-1 leading-relaxed">
+              Cloud-Konten sind noch nicht eingerichtet. Trage die Firebase-Zugangsdaten
+              in <b>sb-auth.js</b> ein, dann erscheint hier die Anmeldung.</p>
+          </div>`;
+      }
+
+      const u = window.sbUser;
+      if (u) {
+        return `
+          <div class="rounded-2xl p-4 space-y-2" style="background:#1e293b">
+            <p class="text-[10px] font-black uppercase tracking-wider od-muted">Konto</p>
+            <p class="text-xs font-black od-title">${u.displayName || u.email || 'Angemeldet'}</p>
+            <p class="text-[10px] font-bold od-green">\u2713 Fortschritt wird automatisch gesichert</p>
+            <div class="grid grid-cols-2 gap-2 pt-1">
+              <button onclick="sbForceSync()" class="btn3d py-2.5 rounded-xl text-[11px] font-black text-white" style="background:#334155">Jetzt sichern</button>
+              <button onclick="sbSignOut()" class="btn3d py-2.5 rounded-xl text-[11px] font-black text-white" style="background:#7f1d1d">Abmelden</button>
+            </div>
+          </div>`;
+      }
+
+      const appleBtn = (typeof sbAppleEnabled === 'function' && sbAppleEnabled())
+        ? `<button onclick="sbSignInApple()" class="btn3d w-full py-3 rounded-xl text-xs font-black text-white" style="background:#000000">\uf8ff  Weiter mit Apple</button>`
+        : '';
+
+      return `
+        <div class="rounded-2xl p-4 space-y-2" style="background:#1e293b">
+          <p class="text-[10px] font-black uppercase tracking-wider od-muted">Konto</p>
+          <p class="text-[11px] font-bold od-dim leading-relaxed">
+            Melde dich an, damit dein Fortschritt auf allen Geräten gleich ist.</p>
+
+          <button onclick="sbSignInGoogle()" class="btn3d w-full py-3 rounded-xl text-xs font-black" style="background:#ffffff;color:#1f2937">Weiter mit Google</button>
+          ${appleBtn}
+
+          <div class="flex items-center gap-2 py-1">
+            <span style="flex:1;height:1px;background:#334155"></span>
+            <span class="text-[10px] font-bold od-dim">oder mit E-Mail</span>
+            <span style="flex:1;height:1px;background:#334155"></span>
+          </div>
+
+          ${authMode === 'signup' ? `
+            <input value="${authName.replace(/"/g, '&quot;')}" oninput="setAuthField('name', this.value)" placeholder="Dein Name"
+                   class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs font-bold text-white outline-none">` : ''}
+          <input type="email" inputmode="email" autocomplete="email" value="${authEmail.replace(/"/g, '&quot;')}"
+                 oninput="setAuthField('email', this.value)" placeholder="E-Mail"
+                 class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs font-bold text-white outline-none">
+          <input type="password" autocomplete="${authMode === 'signup' ? 'new-password' : 'current-password'}"
+                 oninput="setAuthField('pass', this.value)" placeholder="Passwort"
+                 class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs font-bold text-white outline-none">
+
+          <button onclick="submitAuthForm()" class="btn3d w-full py-3 rounded-xl text-xs font-black text-white" style="background:#4f46e5">
+            ${authMode === 'signup' ? 'Konto erstellen' : 'Anmelden'}</button>
+
+          <div class="flex justify-between items-center pt-1">
+            <button onclick="setAuthMode('${authMode === 'signup' ? 'signin' : 'signup'}')" class="text-[10px] font-black od-muted">
+              ${authMode === 'signup' ? 'Ich habe schon ein Konto' : 'Neues Konto erstellen'}</button>
+            ${authMode === 'signin' ? `<button onclick="sbResetPassword(authEmail)" class="text-[10px] font-black od-muted">Passwort vergessen?</button>` : ''}
+          </div>
+
+          ${authMsg ? `<p class="text-[11px] font-bold od-amber pt-1">${authMsg}</p>` : ''}
+        </div>`;
+    }
+
     // The settings sheet is rendered on top of whatever tab is open.
     function settingsSheetHTML() {
       if (!settingsOpen) return '';
@@ -4200,6 +4301,8 @@
                      `<option value="${k}" ${k === currentThemeProfile ? 'selected' : ''}>${k.replace(/-/g, ' ')}</option>`).join('')}
                  </select>`)}
             </div>
+
+            ${sbAccountBlockHTML()}
 
             <div class="rounded-2xl p-4 space-y-2" style="background:#1e293b">
               <p class="text-[10px] font-black uppercase tracking-wider od-muted">Your progress</p>
@@ -5172,6 +5275,8 @@
               </div>
             </div>`;
           })()}
+
+          ${sbInstallCardHTML()}
 
           ${(() => {
             const done = blitzDoneToday();
@@ -6241,5 +6346,73 @@
       window.speechSynthesis.onvoiceschanged = () => window.speechSynthesis.getVoices();
     }
   </script>
+  <script>
+    // ---- Installable app (PWA) ----
+    // Android/desktop Chrome fire beforeinstallprompt; we stash it and show
+    // our own button. iOS has no such event, so we detect Safari instead and
+    // explain the Share -> Add to Home Screen route.
+    let sbInstallPrompt = null;
+
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./sw.js').catch(err =>
+          console.warn('Service worker registration failed:', err));
+      });
+    }
+
+    window.addEventListener('beforeinstallprompt', e => {
+      e.preventDefault();
+      sbInstallPrompt = e;
+      if (typeof renderActiveTabModule === 'function') renderActiveTabModule();
+    });
+
+    window.addEventListener('appinstalled', () => {
+      sbInstallPrompt = null;
+      localStorage.setItem('sb_installed', '1');
+      if (typeof renderActiveTabModule === 'function') renderActiveTabModule();
+    });
+
+    function sbIsStandalone() {
+      return window.matchMedia('(display-mode: standalone)').matches
+          || window.navigator.standalone === true
+          || localStorage.getItem('sb_installed') === '1';
+    }
+
+    async function sbTriggerInstall() {
+      if (!sbInstallPrompt) return;
+      sbInstallPrompt.prompt();
+      await sbInstallPrompt.userChoice;
+      sbInstallPrompt = null;
+      if (typeof renderActiveTabModule === 'function') renderActiveTabModule();
+    }
+
+    // iOS gets a short how-to instead of a button, because Apple gives
+    // web apps no programmatic install path.
+    function sbInstallCardHTML() {
+      if (sbIsStandalone()) return '';
+      if (sbInstallPrompt) {
+        return `
+          <button onclick="sbTriggerInstall()" class="btn3d w-full rounded-2xl p-4 text-left flex items-center gap-3"
+                  style="background:#1e293b; box-shadow:0 4px 0 rgba(0,0,0,.35)">
+            <span class="text-2xl leading-none shrink-0">\u2b07\ufe0f</span>
+            <span class="flex-1 min-w-0">
+              <span class="block text-sm font-black text-white">Install Sprachblitz</span>
+              <span class="block text-[11px] font-bold text-slate-400">Works offline, opens like a normal app</span>
+            </span>
+          </button>`;
+      }
+      if (isAppleMobile) {
+        return `
+          <div class="rounded-2xl p-4" style="background:#1e293b">
+            <p class="text-sm font-black text-white">\ud83d\udcf1 Add to your Home Screen</p>
+            <p class="text-[11px] font-bold text-slate-400 mt-0.5">
+              Tap the Share button in Safari, then \u201eAdd to Home Screen\u201c. Sprachblitz then opens
+              full screen and works without internet.</p>
+          </div>`;
+      }
+      return '';
+    }
+  </script>
+  <script type="module" src="./sb-auth.js"></script>
 </body>
 </html>
