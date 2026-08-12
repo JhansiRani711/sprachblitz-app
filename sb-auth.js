@@ -16,16 +16,17 @@
 //   Apple sign-in additionally needs a paid Apple Developer account.
 //   Leave ENABLE_APPLE false until you have one.
 // =====================================================================
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
+
 const FIREBASE_CONFIG = {
-  apiKey: "AIzaSyBcHo97Ekni3F4LA9s14vlNZ9lrqkZRD2c",
-  authDomain: "sprachblitz.firebaseapp.com",
-  projectId: "sprachblitz",
-  storageBucket: "sprachblitz.firebasestorage.app",
-  messagingSenderId: "1088979468853",
-  appId: "1:1088979468853:web:ead7d1a35062caf074277c",
-  measurementId: "G-HKD2Y8X0P2"
+  apiKey: "PASTE_YOUR_API_KEY",
+  authDomain: "PASTE_YOUR_PROJECT.firebaseapp.com",
+  projectId: "PASTE_YOUR_PROJECT_ID",
+  storageBucket: "PASTE_YOUR_PROJECT.firebasestorage.app",
+  messagingSenderId: "PASTE_SENDER_ID",
+  appId: "PASTE_APP_ID"
 };
+
+const ENABLE_APPLE = false;   // needs a paid Apple Developer account
 
 // These localStorage keys are device-specific and must NOT sync,
 // or installing on a second device would report itself as installed.
@@ -34,6 +35,7 @@ const NO_SYNC_KEYS = ['sb_installed'];
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js';
 import {
   getAuth, onAuthStateChanged, signOut,
+  setPersistence, browserLocalPersistence, getRedirectResult,
   GoogleAuthProvider, OAuthProvider, signInWithPopup, signInWithRedirect,
   createUserWithEmailAndPassword, signInWithEmailAndPassword,
   sendPasswordResetEmail, updateProfile
@@ -53,6 +55,17 @@ if (configured) {
   app  = initializeApp(FIREBASE_CONFIG);
   auth = getAuth(app);
   db   = getFirestore(app);
+
+  // Keep the session across restarts. Without this an installed app can
+  // sign in and then forget immediately, which looks like a failed login.
+  setPersistence(auth, browserLocalPersistence)
+    .catch(e => console.warn('[auth] persistence', e));
+
+  // If we came back from a redirect sign-in, finish it. Skipping this is
+  // exactly how a successful login ends up showing the form again.
+  getRedirectResult(auth)
+    .then(res => { if (res && res.user) console.log('[auth] redirect completed', res.user.email); })
+    .catch(e => { console.error('[auth] redirect failed', e); if (window.sbAuthError) window.sbAuthError(e); });
 }
 
 // ---------- reading and writing the local progress ----------
@@ -162,6 +175,7 @@ function askWhichProgress(localData, cloudData) {
 
 if (configured) {
   onAuthStateChanged(auth, async user => {
+    console.log('[auth] state:', user ? user.email || user.uid : 'signed out');
     sbUser = user;
     window.sbUser = user;
 
@@ -182,7 +196,10 @@ if (configured) {
           else await saveCloud();
         }
       } catch (e) {
-        console.warn('[sync] load failed', e);
+        console.error('[sync] load failed \u2014 check the Firestore rules', e);
+        if (e && e.code === 'permission-denied' && window.sbAuthNotice) {
+          window.sbAuthNotice('Angemeldet, aber Speichern ist blockiert. Firestore-Regeln pr\u00fcfen.');
+        }
       }
       syncing = false;
       if (typeof renderActiveTabModule === 'function') renderActiveTabModule();
@@ -194,13 +211,21 @@ if (configured) {
 
 // ---------- actions the UI calls ----------
 
-// Popups are blocked inside installed iOS web apps, so fall back to redirect.
-const useRedirect = window.navigator.standalone === true
-  || window.matchMedia('(display-mode: standalone)').matches;
-
+// Try the popup first — it keeps the user in the app and reports errors
+// properly. Only fall back to a redirect when the popup is actually blocked,
+// which is common inside installed apps.
 async function withProvider(provider) {
-  if (useRedirect) return signInWithRedirect(auth, provider);
-  return signInWithPopup(auth, provider);
+  try {
+    return await signInWithPopup(auth, provider);
+  } catch (e) {
+    const fallback = ['auth/popup-blocked', 'auth/operation-not-supported-in-this-environment',
+                      'auth/cancelled-popup-request'];
+    if (fallback.includes(e && e.code)) {
+      console.warn('[auth] popup unavailable, redirecting');
+      return signInWithRedirect(auth, provider);
+    }
+    throw e;
+  }
 }
 
 window.sbAuthReady = () => configured;
@@ -208,7 +233,7 @@ window.sbAppleEnabled = () => ENABLE_APPLE;
 
 window.sbSignInGoogle = async () => {
   try { await withProvider(new GoogleAuthProvider()); }
-  catch (e) { window.sbAuthError(e); }
+  catch (e) { console.error('[auth] google', e); window.sbAuthError(e); }
 };
 
 window.sbSignInApple = async () => {
@@ -223,12 +248,15 @@ window.sbSignUpEmail = async (email, password, name) => {
   try {
     const cred = await createUserWithEmailAndPassword(auth, email, password);
     if (name) await updateProfile(cred.user, { displayName: name });
-  } catch (e) { window.sbAuthError(e); }
+    console.log('[auth] account created', cred.user.email);
+  } catch (e) { console.error('[auth] signup', e); window.sbAuthError(e); }
 };
 
 window.sbSignInEmail = async (email, password) => {
-  try { await signInWithEmailAndPassword(auth, email, password); }
-  catch (e) { window.sbAuthError(e); }
+  try {
+    const cred = await signInWithEmailAndPassword(auth, email, password);
+    console.log('[auth] signed in', cred.user.email);
+  } catch (e) { console.error('[auth] signin', e); window.sbAuthError(e); }
 };
 
 window.sbResetPassword = async (email) => {
