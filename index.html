@@ -4165,6 +4165,40 @@
       else sbSignInEmail(authEmail, authPass);
     }
 
+    // Shown on the Path screen once someone has real progress but no account,
+    // so the offer is visible without ever blocking the app. Dismissible.
+    function sbDismissSyncPrompt() {
+      localStorage.setItem('sb_sync_prompt_off', '1');
+      renderActiveTabModule();
+    }
+
+    function sbSyncPromptHTML() {
+      const ready = (typeof sbAuthReady === 'function') && sbAuthReady();
+      if (!ready) return '';
+      if (window.sbUser) return '';
+      if (localStorage.getItem('sb_sync_prompt_off') === '1') return '';
+      // Don't nag someone who has just opened the app for the first time.
+      const lessons = Object.keys(lessonProgress).length;
+      if (totalXPAmount < 60 && lessons < 3) return '';
+
+      return `
+        <div class="rounded-3xl p-4 sb-rise" style="background:linear-gradient(135deg,#1e3a8a,#4338ca); box-shadow:0 5px 0 rgba(0,0,0,.35)">
+          <div class="flex items-start gap-3">
+            <img src="./bears/bear-hug.png" alt="" class="h-14 w-auto shrink-0" onerror="this.style.display='none'">
+            <div class="flex-1 min-w-0">
+              <p class="text-sm font-black text-white">Fortschritt sichern?</p>
+              <p class="text-[11px] font-bold mb-3" style="color:#c7d2fe">
+                Du hast schon ${totalXPAmount} XP gesammelt. Mit einem Konto bleibt dein Fortschritt
+                erhalten \u2013 auch auf dem Handy oder nach dem L\u00f6schen des Browsers.</p>
+              <div class="grid grid-cols-2 gap-2">
+                <button onclick="openSettings()" class="btn3d py-2.5 rounded-xl font-black text-xs text-white" style="background:#4f46e5">Konto erstellen</button>
+                <button onclick="sbDismissSyncPrompt()" class="btn3d py-2.5 rounded-xl font-black text-xs text-white" style="background:rgba(0,0,0,.3)">Sp\u00e4ter</button>
+              </div>
+            </div>
+          </div>
+        </div>`;
+    }
+
     function sbAccountBlockHTML() {
       const ready = (typeof sbAuthReady === 'function') && sbAuthReady();
       if (!ready) {
@@ -5277,6 +5311,8 @@
           })()}
 
           ${sbInstallCardHTML()}
+
+          ${sbSyncPromptHTML()}
 
           ${(() => {
             const done = blitzDoneToday();
