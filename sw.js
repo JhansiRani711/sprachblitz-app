@@ -1,6 +1,6 @@
 // Sprachblitz service worker
 // Bump CACHE_VERSION on every deploy, or users keep the old app.
-const CACHE_VERSION = 'sprachblitz-v22-1';
+const CACHE_VERSION = 'sprachblitz-v22-3';
 
 const APP_SHELL = [
   './',
@@ -68,8 +68,28 @@ self.addEventListener('fetch', event => {
     return;
   }
 
-  // Everything else: cache first, then network, and remember what comes back.
-  // This is what makes the Tailwind CDN and the web font work offline.
+  // Our own code and config must never go stale, or a deploy silently fails
+  // to reach installed users. Network first, cache only as an offline fallback.
+  const ownCode = url.origin === self.location.origin
+    && /\.(js|json)$/.test(url.pathname);
+
+  if (ownCode) {
+    event.respondWith((async () => {
+      try {
+        const fresh = await fetch(req, { cache: 'no-cache' });
+        const cache = await caches.open(CACHE_VERSION);
+        cache.put(req, fresh.clone());
+        return fresh;
+      } catch (e) {
+        const hit = await caches.match(req);
+        return hit || Response.error();
+      }
+    })());
+    return;
+  }
+
+  // Everything else (images, fonts, the Tailwind CDN): cache first, then
+  // network. These rarely change and are what make offline work.
   event.respondWith((async () => {
     const hit = await caches.match(req);
     if (hit) return hit;
