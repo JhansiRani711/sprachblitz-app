@@ -8,6 +8,7 @@ const APP_SHELL = [
   './manifest.json',
   './icon-192.png',
   './icon-512.png',
+  './grammar-batch1.js',
   './apple-touch-icon.png',
   './bears/bear-stand.png',
   './bears/bear-sit.png',
