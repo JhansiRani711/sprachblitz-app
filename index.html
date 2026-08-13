@@ -65,7 +65,7 @@
       -webkit-backface-visibility: hidden;
       backface-visibility: hidden;
       border-radius: 1rem;
-      padding: 1.25rem;
+      padding: 1.25rem; 
       display: flex;
       flex-direction: column;
       justify-content: space-between;
@@ -2092,7 +2092,7 @@
     ];
 
     // Global Core Architecture Reactivity State Cache Layout Engine Variables
-    const APP_BUILD = 'v25';
+    const APP_BUILD = 'v26';
     // Which level the room screen is showing. Progress is stored per lesson,
     // so switching levels never loses anything.
     let activeLevel = localStorage.getItem('sb_level') || 'A1';
@@ -6641,6 +6641,7 @@
       return '';
     }
   </script>
+  <script src="./grammar-batch1.js"></script>
   <script type="module" src="./sb-auth.js"></script>
 </body>
 </html>
