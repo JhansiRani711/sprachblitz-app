@@ -166,36 +166,65 @@ def synth_azure(text, out_path, voice):
         fh.write(r.content)
 
 
-def synth_piper(text, out_path, voice):
-    """Piper: a local neural TTS. No account, no card, no network after the
-    voice model has downloaded once. Writes WAV, converted to MP3 when ffmpeg
-    is available and left as WAV otherwise."""
-    import subprocess, shutil, tempfile
+def _find_piper_model(voice):
+    """Locate the .onnx file that `python -m piper.download_voices` fetched.
+    It lands in different places depending on OS and how piper was installed,
+    so look in all the usual ones rather than guessing."""
+    import glob
+    name = voice if voice.endswith('.onnx') else voice + '.onnx'
+    candidates = [
+        os.path.join(os.getcwd(), name),
+        os.path.join(os.path.expanduser('~'), '.local', 'share', 'piper', name),
+        os.path.join(os.path.expanduser('~'), 'AppData', 'Local', 'piper', name),
+        os.path.join(os.path.expanduser('~'), '.cache', 'piper', name),
+    ]
+    for c in candidates:
+        if os.path.exists(c):
+            return c
+    # Last resort: search the home folder and the project for it.
+    for root in (os.getcwd(), os.path.expanduser('~')):
+        hits = glob.glob(os.path.join(root, '**', name), recursive=True)
+        if hits:
+            return hits[0]
+    return None
 
-    # pip often installs piper.exe into a Scripts folder that is not on PATH
-    # (very common on Windows), so prefer running it as a module.
-    exe = shutil.which('piper')
-    cmd_prefix = [exe] if exe else [sys.executable, '-m', 'piper']
+
+_PIPER_VOICES_LOADED = {}
+
+
+def synth_piper(text, out_path, voice):
+    """Piper: local neural TTS. No account, no card, no network once the voice
+    model is downloaded.
+
+    Uses the Python API rather than the command line. Piping text through a
+    Windows console mangles every umlaut (fünf becomes fÃ¼nf, and piper then
+    pronounces the garbage), and that boundary simply does not exist here.
+    """
+    import wave, shutil, tempfile, subprocess
+
+    try:
+        from piper import PiperVoice
+    except ImportError:
+        sys.exit('piper not installed. Run:  pip install piper-tts')
+
+    if voice not in _PIPER_VOICES_LOADED:
+        model = _find_piper_model(voice)
+        if not model:
+            sys.exit(f'Voice model not found: {voice}\n'
+                     f'Download it with:  python -m piper.download_voices {voice}')
+        _PIPER_VOICES_LOADED[voice] = PiperVoice.load(model)
+    pv = _PIPER_VOICES_LOADED[voice]
 
     with tempfile.NamedTemporaryFile(suffix='.wav', delete=False) as tmp:
         wav = tmp.name
-    try:
-        subprocess.run(cmd_prefix + ['--model', voice, '--output_file', wav],
-                       input=text.encode('utf-8'), check=True,
-                       stdout=subprocess.DEVNULL, stderr=subprocess.PIPE)
-    except FileNotFoundError:
-        sys.exit('piper not found. Install it with:  pip install piper-tts')
-    except subprocess.CalledProcessError as e:
-        msg = (e.stderr or b'').decode('utf-8', 'ignore').strip()
-        sys.exit('piper failed: ' + (msg[-500:] or 'no error text'))
+    with wave.open(wav, 'wb') as wf:
+        pv.synthesize_wav(text, wf)          # text passed as a Python str
 
     if shutil.which('ffmpeg'):
         subprocess.run(['ffmpeg', '-y', '-i', wav, '-b:a', '64k', out_path],
                        check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
         os.unlink(wav)
     else:
-        # No ffmpeg: keep the WAV. Browsers play it fine, the files are just
-        # larger, so the app looks for .mp3 first and then .wav.
         os.replace(wav, out_path.replace('.mp3', '.wav'))
 
 
@@ -221,7 +250,35 @@ def main():
     ap.add_argument('--limit', type=int, default=0, help='only do the first N (a cheap test run)')
     ap.add_argument('--voice', default=None)
     ap.add_argument('--dry-run', action='store_true', help='list what would be generated')
+    ap.add_argument('--force', action='store_true',
+                    help='regenerate even if the file already exists')
+    ap.add_argument('--say', default=None,
+                    help='synthesise one phrase to test.wav and show the bytes involved')
+    ap.add_argument('--only', default=None,
+                    help='only phrases matching this regex, e.g. --only "[äöüßÄÖÜ]"')
     args = ap.parse_args()
+
+    # Single-phrase diagnostic: proves whether the text survives intact all the
+    # way from this script into the audio file.
+    if args.say:
+        text = args.say
+        print('text          :', text)
+        print('repr          :', repr(text))
+        print('utf-8 bytes   :', text.encode('utf-8'))
+        print('codepoints    :', [hex(ord(c)) for c in text])
+        os.makedirs(AUDIO_DIR, exist_ok=True)
+        out = os.path.join(AUDIO_DIR, 'test.mp3')
+        pools = {'google': GOOGLE_VOICES, 'azure': AZURE_VOICES, 'piper': PIPER_VOICES}
+        pool = pools.get(args.provider)
+        voice = args.voice or (pool[0] if pool else '21m00Tcm4TlvDq8ikWAM')
+        print('voice         :', voice)
+        {'google': synth_google, 'azure': synth_azure,
+         'piper': synth_piper, 'elevenlabs': synth_elevenlabs}[args.provider](text, out, voice)
+        made = out if os.path.exists(out) else out.replace('.mp3', '.wav')
+        print('wrote         :', made)
+        print('\nPlay that file. If it sounds right, the pipeline is fine and any')
+        print('remaining bad audio is simply an old file that needs --force.')
+        return
 
     phrases = extract_phrases(INDEX)
     chars = sum(len(p) for p in phrases)
@@ -239,6 +296,10 @@ def main():
         manifest = json.load(open(MANIFEST, encoding='utf-8'))
 
     items = sorted(phrases.items())
+    if args.only:
+        pat = re.compile(args.only)
+        items = [(t, k) for t, k in items if pat.search(t)]
+        print(f'{len(items)} phrases match --only {args.only!r}')
     if args.limit:
         items = items[:args.limit]
 
@@ -246,7 +307,12 @@ def main():
     for n, (text, key) in enumerate(items, 1):
         pid = phrase_id(text)
         out = os.path.join(AUDIO_DIR, pid + '.mp3')
-        if os.path.exists(out) or os.path.exists(out.replace('.mp3', '.wav')):
+        wav_alt = out.replace('.mp3', '.wav')
+        if args.force:
+            for stale in (out, wav_alt):
+                if os.path.exists(stale):
+                    os.unlink(stale)
+        elif os.path.exists(out) or os.path.exists(wav_alt):
             manifest[pid] = 'wav' if os.path.exists(out.replace('.mp3', '.wav')) else True
             skipped += 1
             continue
