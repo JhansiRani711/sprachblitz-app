@@ -9,6 +9,7 @@ const APP_SHELL = [
   './icon-192.png',
   './icon-512.png',
   './grammar-batch1.js',
+  './grammar-batch2.js',
   './apple-touch-icon.png',
   './bears/bear-stand.png',
   './bears/bear-sit.png',
