@@ -6648,71 +6648,47 @@
   <script type="module" src="./sb-auth.js"></script>
        <!-- Guest Trial Feature (Robust) -->
       <script>
-    // Wait for Firebase, then start trial
-    function waitForFirebaseAndStartTrial() {
-      if (typeof firebase === 'undefined') {
-        console.log('[trial] Firebase not loaded yet, waiting...');
-        setTimeout(waitForFirebaseAndStartTrial, 500);
+    // Guest trial: pure timer, no Firebase dependency
+    setInterval(function() {
+      // If there's a trial modal visible, Firebase checked and user is blocked
+      if (document.querySelector('[data-trial-modal]')) return;
+      
+      const key = 'sb_trial_start';
+      const stored = localStorage.getItem(key);
+      
+      // Has a trial timer been set?
+      if (!stored) {
+        localStorage.setItem(key, Date.now());
+        console.log('[trial] Timer started');
         return;
       }
       
-      console.log('[trial] Firebase loaded, starting trial logic');
+      const elapsed = Math.floor((Date.now() - parseInt(stored)) / 1000 / 60);
       
-      // Now start the trial timer
-      setInterval(function() {
-        const user = firebase.auth().currentUser;
-        
-        if (user) {
-          // User is logged in — remove trial marker
-          localStorage.removeItem('sb_trial_start');
-          return;
-        }
-        
-        // User is NOT logged in — check trial timer
-        const start = localStorage.getItem('sb_trial_start');
-        if (!start) {
-          localStorage.setItem('sb_trial_start', Date.now());
-          console.log('[trial] Timer started');
-          return;
-        }
-        
-        const mins = Math.floor((Date.now() - parseInt(start)) / 1000 / 60);
-        console.log('[trial] Elapsed:', mins, 'minutes');
-        
-        // Warning at 5 min
-        if (mins === 5) {
-          alert('⏰ 5 minutes left! Sign up to save your progress.');
-          console.log('[trial] Warning shown at 5 min');
-        }
-        
-        // Block at 10 min
-        if (mins >= 10) {
-          if (!document.querySelector('[data-trial-modal]')) {
-            const modal = document.createElement('div');
-            modal.setAttribute('data-trial-modal', '1');
-            modal.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.7);z-index:9999;display:flex;align-items:center;justify-content:center;';
-            modal.innerHTML = `
-              <div style="background:white;padding:40px;border-radius:8px;text-align:center;max-width:400px;">
-                <h2 style="margin:0 0 16px;">⏱️ Trial Ended</h2>
-                <p style="margin:0 0 24px;color:#666;">Sign up to save your progress and continue learning.</p>
-                <button onclick="document.querySelector('[data-tab=settings]')?.click();" style="background:#4F46E5;color:white;border:none;padding:12px 24px;border-radius:6px;cursor:pointer;font-weight:bold;font-size:16px;">
-                  Sign Up / Log In
-                </button>
-              </div>
-            `;
-            document.body.appendChild(modal);
-            console.log('[trial] Modal shown at 10 min');
-          }
-        }
-      }, 5000); // Check every 5 seconds
-    }
-    
-    // Start waiting for Firebase as soon as page loads
-    if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', waitForFirebaseAndStartTrial);
-    } else {
-      waitForFirebaseAndStartTrial();
-    }
+      // Show message at 5 min
+      if (elapsed === 5) {
+        alert('⏰ 5 minutes left! Sign up to save your progress and continue learning.');
+        console.log('[trial] Alert shown at 5 min');
+      }
+      
+      // Block at 10 min
+      if (elapsed >= 10) {
+        const modal = document.createElement('div');
+        modal.setAttribute('data-trial-modal', '1');
+        modal.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.7);z-index:9999;display:flex;align-items:center;justify-content:center;font-family:system-ui,sans-serif;';
+        modal.innerHTML = `
+          <div style="background:white;padding:40px;border-radius:8px;text-align:center;max-width:400px;box-shadow:0 10px 40px rgba(0,0,0,0.3);">
+            <h2 style="margin:0 0 16px;font-size:24px;">⏱️ Trial Ended</h2>
+            <p style="margin:0 0 24px;color:#666;font-size:16px;line-height:1.5;">Your 10-minute free trial is complete. Sign up to save your progress and continue learning.</p>
+            <button onclick="document.querySelector('[data-tab=settings]')?.click();" style="background:#4F46E5;color:white;border:none;padding:12px 24px;border-radius:6px;cursor:pointer;font-weight:bold;font-size:16px;transition:0.2s;">
+              Sign Up / Log In
+            </button>
+          </div>
+        `;
+        document.body.appendChild(modal);
+        console.log('[trial] Modal shown at 10 min - user blocked');
+      }
+    }, 5000); // Check every 5 seconds
   </script>
 </body>
 </html>
