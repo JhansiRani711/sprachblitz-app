@@ -6646,33 +6646,27 @@
   <script src="./grammar-batch3.js"></script>
   <script src="./grammar-batch4.js"></script>
   <script type="module" src="./sb-auth.js"></script>
-     <!-- Guest Trial Feature (Fixed) -->
+       <!-- Guest Trial Feature (Robust) -->
   <script>
     (function() {
       const TRIAL_MINUTES = 10;
       const WARNING_MINUTE = 5;
+      let trialCheckInterval = null;
       
-      function initGuestTrial() {
-        // Check if user is logged in via Firebase
-        firebase.auth().onAuthStateChanged(function(user) {
-          if (user) {
-            // User is logged in — clear trial and stop checking
-            localStorage.removeItem('sb_trial_start');
-            console.log('[Sprachblitz] User logged in, trial ended');
-            return;
-          }
-          
-          // User is NOT logged in — run trial logic
-          const trialStartKey = 'sb_trial_start';
-          const now = Date.now();
-          const stored = localStorage.getItem(trialStartKey);
-          
-          if (!stored) {
-            localStorage.setItem(trialStartKey, now);
-            console.log('[Sprachblitz] Guest trial started');
-          }
-          
-          const elapsed = Math.floor((now - parseInt(stored)) / 1000 / 60);
+      function startTrialCheck() {
+        const trialStartKey = 'sb_trial_start';
+        const now = Date.now();
+        const stored = localStorage.getItem(trialStartKey);
+        
+        if (!stored) {
+          localStorage.setItem(trialStartKey, now);
+          console.log('[Sprachblitz] Guest trial started');
+        }
+        
+        // Check every 10 seconds
+        if (trialCheckInterval) clearInterval(trialCheckInterval);
+        trialCheckInterval = setInterval(function() {
+          const elapsed = Math.floor((Date.now() - parseInt(stored || now)) / 1000 / 60);
           
           // Warning at 5 minutes
           if (elapsed === WARNING_MINUTE) {
@@ -6682,17 +6676,22 @@
           
           // Block at 10 minutes
           if (elapsed >= TRIAL_MINUTES) {
+            clearInterval(trialCheckInterval);
             showLoginRequiredModal();
-            return;
           }
-          
-          // Check again in 1 minute
-          setTimeout(initGuestTrial, 60000);
-        });
+        }, 10000);
+      }
+      
+      function stopTrialCheck() {
+        if (trialCheckInterval) {
+          clearInterval(trialCheckInterval);
+          trialCheckInterval = null;
+        }
+        localStorage.removeItem('sb_trial_start');
+        console.log('[Sprachblitz] Trial stopped - user logged in');
       }
       
       function showLoginRequiredModal() {
-        // Don't show modal if one already exists
         if (document.querySelector('[data-trial-modal]')) return;
         
         const modal = document.createElement('div');
@@ -6709,7 +6708,6 @@
         `;
         document.body.appendChild(modal);
         
-        // When button is clicked, open settings
         document.getElementById('trial-login-btn').addEventListener('click', function() {
           document.querySelector('[data-tab="settings"]')?.click();
           modal.remove();
@@ -6718,12 +6716,29 @@
         console.log('[Sprachblitz] Trial ended - login required modal shown');
       }
       
-      // Start checking when Firebase is ready
-      if (window.firebase) {
-        initGuestTrial();
+      function checkAuthState() {
+        if (typeof firebase === 'undefined') {
+          console.warn('[Sprachblitz] Firebase not loaded yet, retrying...');
+          setTimeout(checkAuthState, 500);
+          return;
+        }
+        
+        firebase.auth().onAuthStateChanged(function(user) {
+          if (user) {
+            // User is logged in
+            stopTrialCheck();
+          } else {
+            // User is NOT logged in — start trial
+            startTrialCheck();
+          }
+        });
+      }
+      
+      // Check auth state when page loads
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', checkAuthState);
       } else {
-        // Wait for Firebase to load
-        window.addEventListener('firebaseLoaded', initGuestTrial);
+        checkAuthState();
       }
     })();
   </script>
