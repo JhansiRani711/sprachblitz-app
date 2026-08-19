@@ -6646,64 +6646,84 @@
   <script src="./grammar-batch3.js"></script>
   <script src="./grammar-batch4.js"></script>
   <script type="module" src="./sb-auth.js"></script>
-    <!-- Guest Trial Feature -->
+     <!-- Guest Trial Feature (Fixed) -->
   <script>
     (function() {
       const TRIAL_MINUTES = 10;
       const WARNING_MINUTE = 5;
       
       function initGuestTrial() {
-        // If user is logged in, skip trial logic
-        if (localStorage.getItem('sb_user_id')) return;
-        
-        const trialStartKey = 'sb_trial_start';
-        const now = Date.now();
-        const stored = localStorage.getItem(trialStartKey);
-        
-        if (!stored) {
-          localStorage.setItem(trialStartKey, now);
-          console.log('[Sprachblitz] Guest trial started');
-        }
-        
-        const elapsed = Math.floor((now - parseInt(stored)) / 1000 / 60);
-        
-        // Warning at 5 minutes
-        if (elapsed === WARNING_MINUTE) {
-          alert('Your free trial ends in 5 minutes. Please sign up to save your progress and continue learning.');
-          console.log('[Sprachblitz] Trial warning shown at 5 min');
-        }
-        
-        // Block at 10 minutes
-        if (elapsed >= TRIAL_MINUTES) {
-          showLoginRequiredModal();
-          return;
-        }
-        
-        // Check again in 1 minute
-        setTimeout(initGuestTrial, 60000);
+        // Check if user is logged in via Firebase
+        firebase.auth().onAuthStateChanged(function(user) {
+          if (user) {
+            // User is logged in — clear trial and stop checking
+            localStorage.removeItem('sb_trial_start');
+            console.log('[Sprachblitz] User logged in, trial ended');
+            return;
+          }
+          
+          // User is NOT logged in — run trial logic
+          const trialStartKey = 'sb_trial_start';
+          const now = Date.now();
+          const stored = localStorage.getItem(trialStartKey);
+          
+          if (!stored) {
+            localStorage.setItem(trialStartKey, now);
+            console.log('[Sprachblitz] Guest trial started');
+          }
+          
+          const elapsed = Math.floor((now - parseInt(stored)) / 1000 / 60);
+          
+          // Warning at 5 minutes
+          if (elapsed === WARNING_MINUTE) {
+            alert('Your free trial ends in 5 minutes. Please sign up to save your progress and continue learning.');
+            console.log('[Sprachblitz] Trial warning shown at 5 min');
+          }
+          
+          // Block at 10 minutes
+          if (elapsed >= TRIAL_MINUTES) {
+            showLoginRequiredModal();
+            return;
+          }
+          
+          // Check again in 1 minute
+          setTimeout(initGuestTrial, 60000);
+        });
       }
       
       function showLoginRequiredModal() {
+        // Don't show modal if one already exists
+        if (document.querySelector('[data-trial-modal]')) return;
+        
         const modal = document.createElement('div');
+        modal.setAttribute('data-trial-modal', 'true');
         modal.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.5);display:flex;justify-content:center;align-items:center;z-index:9999;';
         modal.innerHTML = `
           <div style="background:white;border-radius:8px;padding:32px;text-align:center;max-width:400px;box-shadow:0 4px 12px rgba(0,0,0,0.15);">
             <h2 style="margin:0 0 16px;color:#333;">Time's Up!</h2>
             <p style="margin:0 0 24px;color:#666;line-height:1.5;">Your 10-minute free trial has ended. Sign up or log in to continue learning and save your progress.</p>
-            <button onclick="document.querySelector('[data-tab=settings]')?.click(); this.closest('div').parentElement.remove();" style="background:#4F46E5;color:white;border:none;padding:12px 24px;border-radius:6px;cursor:pointer;font-weight:bold;font-size:16px;">
+            <button id="trial-login-btn" style="background:#4F46E5;color:white;border:none;padding:12px 24px;border-radius:6px;cursor:pointer;font-weight:bold;font-size:16px;">
               Sign Up or Log In
             </button>
           </div>
         `;
         document.body.appendChild(modal);
+        
+        // When button is clicked, open settings
+        document.getElementById('trial-login-btn').addEventListener('click', function() {
+          document.querySelector('[data-tab="settings"]')?.click();
+          modal.remove();
+        });
+        
         console.log('[Sprachblitz] Trial ended - login required modal shown');
       }
       
-      // Start checking when DOM is ready
-      if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', initGuestTrial);
-      } else {
+      // Start checking when Firebase is ready
+      if (window.firebase) {
         initGuestTrial();
+      } else {
+        // Wait for Firebase to load
+        window.addEventListener('firebaseLoaded', initGuestTrial);
       }
     })();
   </script>
