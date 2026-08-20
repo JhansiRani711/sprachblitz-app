@@ -1,120 +1,285 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <meta name="google" content="notranslate">
-    <meta name="theme-color" content="#0f172a">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="Sprachblitz">
-    <link rel="manifest" href="./manifest.json">
-    <link rel="apple-touch-icon" href="./apple-touch-icon.png">
-    <link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png">
-    <title>Sprachblitz – Deutsch lernen A1 bis B2</title>
-
-    <meta name="description" content="Learn German A1 to B2 with Bruno: vocabulary, grammar, four skills and mock exams. Free, fast and intuitive.">
-    <link rel="canonical" href="https://sprachblitz-app.github.io/sprachblitz-app/">
-    <meta property="og:type" content="website">
-    <meta property="og:site_name" content="Sprachblitz">
-    <meta property="og:title" content="Sprachblitz – Deutsch lernen A1 bis B2">
-    <meta property="og:description" content="Free German app: vocabulary, grammar, four skills and mock exams, A1 to B2. Works offline. Sprachblitz is a space to think.">
-    <meta property="og:image" content="https://sprachblitz-app.github.io/sprachblitz-app/og-image.png">
-    <meta property="og:url" content="https://sprachblitz-app.github.io/sprachblitz-app/">
-    <meta property="og:image:width" content="1200">
-    <meta property="og:image:height" content="630">
-    <meta name="twitter:card" content="summary_large_image">
-
-    <style>
-        /* Your existing styles */
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: Arial, sans-serif; background: #0f172a; color: #fff; }
-    </style>
-
-    <!-- Your app content goes here -->
-</head>
-
-<body>
-    <!-- Your existing app HTML -->
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="google" content="notranslate">
+  <meta name="theme-color" content="#0f172a">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Sprachblitz">
+  <link rel="manifest" href="./manifest.json">
+  <link rel="apple-touch-icon" href="./apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png">
+  <title>Sprachblitz – Deutsch lernen A1 bis B2</title>
+  <script type="module">
+    import { auth } from './sb-auth.js';
     
-    <!-- TIMER SCRIPT WITH BLOCKING -->
-    <script type="module">
-        import { auth, sbAuthReady } from './sb-auth.js';
-        window.sbAuthReady = sbAuthReady;
+    // Firebase is now imported from sb-auth.js
+    console.log('Firebase ready');
+</script>
+
+  <!-- Link previews on LinkedIn, WhatsApp, Slack, X, Facebook, iMessage. -->
+  <meta name="description" content="Learn German A1 to B2 with Bruno: vocabulary, grammar, four skills and mock exams. Free, works offline, installs on any device.">
+  <link rel="canonical" href="https://sprachblitz-app.github.io/sprachblitz-app/">
+
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Sprachblitz">
+  <meta property="og:title" content="Sprachblitz — Deutsch lernen A1 bis B2">
+  <meta property="og:description" content="Free German app: vocabulary, grammar, four skills and mock exams, A1 to B2. Works offline on any device.">
+  <meta property="og:url" content="https://sprachblitz-app.github.io/sprachblitz-app/">
+  <meta property="og:image" content="https://sprachblitz-app.github.io/sprachblitz-app/og-image.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:type" content="image/png">
+  <meta property="og:image:alt" content="Sprachblitz — Deutsch lernen A1 bis B2">
+  <meta property="og:locale" content="de_DE">
+
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Sprachblitz — Deutsch lernen A1 bis B2">
+  <meta name="twitter:description" content="A free German learning app: A1 to B2, four skills, mock exams. Works offline.">
+  <meta name="twitter:image" content="https://sprachblitz-app.github.io/sprachblitz-app/og-image.png">
+  <meta name="twitter:image:alt" content="Sprachblitz — Deutsch lernen A1 bis B2">
+  <meta name="robots" content="index, follow">
+  <meta name="author" content="Sprachblitz">
+  <!-- Tailwind CSS Core Setup -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- External Font Family Tracking -->
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    /* German content must never be machine-translated - Chrome would turn
+       "der Trainer" into "the coach" and quietly break every lesson. */
+    .de { }
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+    .flashcard-wrapper { perspective: 1000px; }
+    .flashcard-inner {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      text-align: center;
+      transition: transform 0.5s;
+      transform-style: preserve-3d;
+    }
+    .flashcard-wrapper.flipped .flashcard-inner { transform: rotateY(180deg); }
+    .flashcard-front, .flashcard-back {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      -webkit-backface-visibility: hidden;
+      backface-visibility: hidden;
+      border-radius: 1rem;
+      padding: 1.25rem; 
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .flashcard-back { transform: rotateY(180deg); }
+    .theme-transition { transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+    .room-obj { cursor: pointer; outline: none; }
+    .room-obj:focus-visible { filter: drop-shadow(0 0 6px rgba(99,102,241,.9)); }
+    .room-pin { cursor: pointer; outline: none; transition: transform .1s ease; transform-box: fill-box; transform-origin: center; }
+    .room-pin:active { transform: scale(.86); }
+    .room-pin:focus-visible { filter: drop-shadow(0 0 6px rgba(99,102,241,.95)); }
+
+    /* Splash screen shown on first paint, faded out by window.onload */
+    #splash-screen {
+      position: fixed; inset: 0; z-index: 9999;
+      background: #0f172a;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center; gap: 16px;
+      opacity: 1; transition: opacity .45s ease;
+    }
+    #splash-screen.hide { opacity: 0; pointer-events: none; }
+    #splash-screen img { animation: splash-pop .6s cubic-bezier(.34,1.56,.64,1); }
+    #splash-screen h1 { font-size: 27px; font-weight: 800; color: #f1f5f9; margin: 0; letter-spacing: -.02em; }
+    #splash-screen p { font-size: 13px; color: #818cf8; margin: 0; font-weight: 600; }
+    @keyframes splash-pop { from { transform: scale(.65); opacity: 0 } to { transform: scale(1); opacity: 1 } }
+    @media (prefers-reduced-motion: reduce) { #splash-screen img { animation: none } }
+
+    /* Respect the iPhone notch and home indicator */
+    /* Pressable 3D buttons - a solid bottom edge instead of a border */
+    .stone {
+      width: 68px; height: 68px; border-radius: 50%; border: none;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 26px; line-height: 1; cursor: pointer;
+      transition: transform .08s ease, box-shadow .08s ease;
+    }
+    .stone.done    { background:#22c55e; box-shadow: 0 5px 0 #15803d; }
+    .stone.current { background:#4f46e5; box-shadow: 0 5px 0 #3730a3, 0 0 0 6px rgba(99,102,241,.22); width:76px; height:76px; font-size:30px; }
+    .stone.locked  { background:#1e293b; box-shadow: none; opacity:.55; cursor: not-allowed; }
+    .stone.done:active, .stone.current:active { transform: translateY(5px); box-shadow: 0 0 0 #15803d; }
+    .chest { width:56px; height:56px; border-radius:14px; border:none; display:flex; align-items:center; justify-content:center; font-size:26px; }
+    /* Answer feedback: a short pop for right, a short shake for wrong. */
+    @keyframes sb-pop   { 0%{transform:scale(1)} 40%{transform:scale(1.06)} 100%{transform:scale(1)} }
+    @keyframes sb-shake { 0%,100%{transform:translateX(0)} 20%{transform:translateX(-6px)} 40%{transform:translateX(6px)} 60%{transform:translateX(-4px)} 80%{transform:translateX(4px)} }
+    @keyframes sb-rise  { from{opacity:0; transform:translateY(10px)} to{opacity:1; transform:translateY(0)} }
+    @keyframes sb-glow  { 0%,100%{box-shadow:0 0 0 rgba(250,204,21,0)} 50%{box-shadow:0 0 18px rgba(250,204,21,.55)} }
+    .sb-pop   { animation: sb-pop .34s ease; }
+    .sb-shake { animation: sb-shake .38s ease; }
+    .sb-rise  { animation: sb-rise .3s ease both; }
+    .sb-combo { animation: sb-glow 1.1s ease-in-out infinite; }
+    .sb-bar   { transition: width .45s cubic-bezier(.4,0,.2,1); }
+    @media (prefers-reduced-motion: reduce) {
+      .sb-pop, .sb-shake, .sb-rise, .sb-combo { animation: none !important; }
+      .sb-bar { transition: none; }
+    }
+
+    .btn3d { border:none !important; box-shadow: 0 4px 0 rgba(0,0,0,.35); transition: transform .08s, box-shadow .08s; }
+    .btn3d:active { transform: translateY(4px); box-shadow: 0 0 0 rgba(0,0,0,.35); }
+
+    .room-obj { cursor: pointer; transition: opacity .25s ease, transform .18s ease; }
+    .room-obj:active { transform: translateY(2px); }
+    .room-suggest { animation: room-pulse 2.6s ease-in-out infinite; }
+    @keyframes room-pulse {
+      0%, 100% { filter: drop-shadow(0 0 0 rgba(255,214,120,0)); }
+      50%      { filter: drop-shadow(0 0 14px rgba(255,214,120,.95)); }
+    }
+    @media (prefers-reduced-motion: reduce) { .room-suggest { animation: none } }
+
+    .tab-icon {
+      font-size: 25px; line-height: 1; padding: 7px 10px; border-radius: 14px;
+      border: 2px solid transparent; display: flex; align-items: center; justify-content: center;
+      transition: background .15s, border-color .15s;
+    }
+    .tab-active .tab-icon { border-color:#38bdf8; background: rgba(56,189,248,.12); }
+
+    #app-header-nav { padding-top: max(1rem, env(safe-area-inset-top)); }
+    #app-footer-nav { padding-bottom: env(safe-area-inset-bottom); height: auto; min-height: 4rem; }
+    ::-webkit-scrollbar { width: 4px; }
+    ::-webkit-scrollbar-thumb { background: rgba(156, 163, 175, 0.3); border-radius: 2px; }
+  </style>
+
+  <!-- REST OF YOUR HTML STYLES AND CONTENT -->
+  <!-- (Keep all your existing HTML between here and before the trial script) -->
+
+     <script src="./grammar-batch1.js"></script>
+  <script src="./grammar-batch2.js"></script>
+  <script src="./grammar-batch3.js"></script>
+  <script src="./grammar-batch4.js"></script>
+  <script type="module" src="./sb-auth.js"></script>
+  
+  <!-- IMPROVED GUEST TRIAL WITH COUNTDOWN BANNER -->
+  <script>
+    const TRIAL_DURATION = 10 * 60 * 1000; // 10 minutes
+    let alertShown = false;
+    let isExpired = false;
+
+    function startTrialTimer() {
+      const key = 'sb_trial_start';
+      const stored = localStorage.getItem(key);
+      
+      if (!stored) {
+        localStorage.setItem(key, Date.now());
+        console.log('[trial] Timer started');
+      }
+      
+      updateTimer();
+    }
+
+    function updateTimer() {
+      const key = 'sb_trial_start';
+      const stored = localStorage.getItem(key);
+      
+      if (!stored) return;
+      
+      const startTime = parseInt(stored);
+      const now = Date.now();
+      const elapsed = now - startTime;
+      const timeLeft = TRIAL_DURATION - elapsed;
+      
+      const minutes = Math.floor(timeLeft / 1000 / 60);
+      const seconds = Math.floor((timeLeft / 1000) % 60);
+      const timeDisplay = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+      
+      if (timeLeft <= 0) {
+        // TRIAL EXPIRED
+        isExpired = true;
+        showCountdownBanner('🔒 Trial EXPIRED! Login to continue →', true);
+        blockApp();
         
-        const TRIAL_DURATION = 10 * 60 * 1000; // 10 minutes
-        let alertShown = false;
-        let isExpired = false;
-        
-        function startTrialTimer() {
-            const startTime = Date.now();
-            const endTime = startTime + TRIAL_DURATION;
-            
-            localStorage.setItem('trialStartTime', startTime);
-            localStorage.setItem('trialEndTime', endTime);
-            
-            updateTimer();
+        if (!alertShown) {
+          alert('⏱️ Your 10-minute trial has ended!\n\nPlease LOGIN to continue learning and save your progress.');
+          alertShown = true;
         }
-        
-        function updateTimer() {
-            const endTime = parseInt(localStorage.getItem('trialEndTime')) || Date.now() + TRIAL_DURATION;
-            const now = Date.now();
-            const timeLeft = endTime - now;
-            
-            const minutes = Math.floor(timeLeft / 1000 / 60);
-            const seconds = Math.floor((timeLeft / 1000) % 60);
-            const timeDisplay = `${minutes}:${seconds.toString().padStart(2, '0')}`;
-            
-            if (timeLeft <= 0) {
-                // TRIAL EXPIRED
-                isExpired = true;
-                showWarning('🔒 Trial EXPIRED! Login to continue →');
-                blockApp(); // BLOCK THE APP
-                
-                // Show alert ONCE
-                if (!alertShown) {
-                    alert('⏱️ Your 10-minute trial has ended!\n\nPlease LOGIN to continue learning and save your progress.');
-                    alertShown = true;
-                }
-                return;
-            }
-            
-            // Show countdown
-            if (timeLeft <= 5 * 60 * 1000) {
-                showWarning(`⏱️ ${timeDisplay} left - Login to save! ⚠️`);
-            } else {
-                showWarning(`⏱️ Trial: ${timeDisplay}`);
-            }
-            
-            setTimeout(updateTimer, 1000);
-        }
-        
-        function blockApp() {
-            // Create blocking overlay
-            if (!document.getElementById('trialBlocker')) {
-                const blocker = document.createElement('div');
-                blocker.id = 'trialBlocker';
-                blocker.style.cssText = `
-                    position: fixed;
-                    top: 0;
-                    left: 0;
-                    right: 0;
-                    bottom: 0;
-                    background: rgba(0, 0, 0, 0.8);
-                    display: flex;
-                    justify-content: center;
-                    align-items: center;
-                    z-index: 9998;
-                `;
-                
-                blocker.innerHTML = `
-                    <div style="
-                        background: white;
-                        padding: 30px;
-                        border-radius: 10px;
-                        text-align: center;
-                        max-width: 400px;
-                    ">
-                        <h2 style="color: #333; margin-bottom: 15px;">⏱️ Trial Expired</h2>
-                        <p style="color: #666; margin-bottom: 20px;">
-                            Your 10-minute free trial
+        return;
+      }
+      
+      // Show countdown banner
+      if (timeLeft <= 5 * 60 * 1000) {
+        // Last 5 minutes - red warning
+        showCountdownBanner(`⏱️ ${timeDisplay} left - Login to save! ⚠️`, false);
+      } else {
+        // First 5 minutes - normal
+        showCountdownBanner(`⏱️ Trial: ${timeDisplay}`, false);
+      }
+      
+      setTimeout(updateTimer, 1000);
+    }
+
+    function showCountdownBanner(message, expired) {
+      if (!document.getElementById('trialBanner')) {
+        const banner = document.createElement('div');
+        banner.id = 'trialBanner';
+        banner.style.cssText = `
+          position: fixed;
+          top: 0;
+          left: 0;
+          right: 0;
+          background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+          color: white;
+          padding: 15px;
+          text-align: center;
+          font-weight: bold;
+          z-index: 9997;
+          font-size: 16px;
+          box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+        `;
+        document.body.prepend(banner);
+      }
+      
+      const banner = document.getElementById('trialBanner');
+      banner.textContent = message;
+      
+      if (expired) {
+        banner.style.background = 'linear-gradient(90deg, #ff6b6b 0%, #ff5252 100%)';
+      } else if (message.includes('left')) {
+        banner.style.background = 'linear-gradient(90deg, #ff9f43 0%, #ff7e5f 100%)';
+      } else {
+        banner.style.background = 'linear-gradient(90deg, #667eea 0%, #764ba2 100%)';
+      }
+    }
+
+    function blockApp() {
+      if (!document.querySelector('[data-trial-modal]')) {
+        const modal = document.createElement('div');
+        modal.setAttribute('data-trial-modal', '1');
+        modal.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.8);z-index:9998;display:flex;align-items:center;justify-content:center;font-family:system-ui,sans-serif;';
+        modal.innerHTML = `
+          <div style="background:white;padding:40px;border-radius:12px;text-align:center;max-width:400px;box-shadow:0 10px 40px rgba(0,0,0,0.3);">
+            <h2 style="margin:0 0 16px;font-size:24px;color:#333;">⏱️ Trial Ended</h2>
+            <p style="margin:0 0 24px;color:#666;font-size:16px;line-height:1.5;">Your 10-minute free trial is complete. Login to save your progress and continue learning.</p>
+            <button id="trialSignupBtn" style="background:#667eea;color:white;border:none;padding:12px 24px;border-radius:6px;cursor:pointer;font-weight:bold;font-size:16px;">
+              Go to Login
+            </button>
+          </div>
+        `;
+        document.body.appendChild(modal);
+        console.log('[trial] Modal shown at 10 min');
+
+        document.getElementById('trialSignupBtn').addEventListener('click', function() {
+          window.location.href = 'login.html';
+        });
+      }
+    }
+
+    // Start the timer on page load
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', startTrialTimer);
+    } else {
+      startTrialTimer();
+    }
+  </script>
+</html>
