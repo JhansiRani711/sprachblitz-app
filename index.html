@@ -12,34 +12,9 @@
   <link rel="apple-touch-icon" href="./apple-touch-icon.png">
   <link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png">
   <title>Sprachblitz – Deutsch lernen A1 bis B2</title>
-  <script type="module">
-    import { 
-        auth, 
-        db,
-        sbSignInEmail,
-        sbSignUpEmail,
-        sbSignInGoogle,
-        sbSignOut,
-        sbResetPassword,
-        sbForceSync,
-        sbLoadProgress,
-        sbAuthReady
-    } from './sb-auth.js';
-    
-    // Make Firebase functions available GLOBALLY for the app
-    window.auth = auth;
-    window.db = db;
-    window.sbSignInEmail = sbSignInEmail;
-    window.sbSignUpEmail = sbSignUpEmail;
-    window.sbSignInGoogle = sbSignInGoogle;
-    window.sbSignOut = sbSignOut;
-    window.sbResetPassword = sbResetPassword;
-    window.sbForceSync = sbForceSync;
-    window.sbLoadProgress = sbLoadProgress;
-    window.sbAuthReady = sbAuthReady;
-    
-    console.log('[Firebase] All functions loaded globally');
-</script>
+ <script src="https://www.gstatic.com/firebasejs/10.0.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.0.0/firebase-auth.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.0.0/firebase-firestore.js"></script>
   <!-- Link previews on LinkedIn, WhatsApp, Slack, X, Facebook, iMessage. -->
   <meta name="description" content="Learn German A1 to B2 with Bruno: vocabulary, grammar, four skills and mock exams. Free, works offline, installs on any device.">
   <link rel="canonical" href="https://sprachblitz-app.github.io/sprachblitz-app/">
@@ -6675,7 +6650,7 @@
   <script src="./grammar-batch2.js"></script>
   <script src="./grammar-batch3.js"></script>
   <script src="./grammar-batch4.js"></script>
-  <script type="module" src="./sb-auth.js"></script>
+ <script src="./sb-auth.js"></script> 
   
   <!-- Guest Trial Feature (FIXED - Correct Timer Logic) -->
   <script>
