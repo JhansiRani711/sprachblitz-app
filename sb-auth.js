@@ -1,7 +1,6 @@
 // =====================================================================
 // Sprachblitz — accounts and cloud sync (Firebase)
 // =====================================================================
-
 const FIREBASE_CONFIG = {
   authDomain: "sprachblitz.firebaseapp.com",
   projectId: "sprachblitz",
