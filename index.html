@@ -237,6 +237,9 @@
         <p id="header-note" class="text-[9px] font-bold text-slate-500"></p>
       </div>
       <div class="flex items-center gap-2 shrink-0">
+        <div id="trial-timer-badge" class="font-bold text-xs flex items-center gap-1 px-2 py-1 rounded-lg border border-orange-800 bg-orange-950 text-orange-400" style="display:none;">
+          ⏱️ <span id="trial-timer-display">10:00</span>
+        </div>
         <div class="font-bold text-xs flex items-center gap-1 px-2 py-1 rounded-lg border border-amber-900/60 bg-amber-950/40 text-amber-400">
           🔥 <span id="streak-days-val">1</span>
         </div>
@@ -6652,67 +6655,104 @@
   <script src="./grammar-batch3.js"></script>
   <script src="./grammar-batch4.js"></script>
   <script type="module" src="./sb-auth.js"></script>
-       <!-- Guest Trial Feature (Robust) -->
-      <script>
-    // Guest trial: pure timer, alert shows once
-    setInterval(function() {
-      if (document.querySelector('[data-trial-modal]')) return;
+  
+  <!-- Guest Trial Feature (FIXED - Correct Timer Logic) -->
+  <script>
+    const TRIAL_DURATION = 10 * 60 * 1000; // 10 minutes in milliseconds
+    const TRIAL_START_KEY = 'sb_trial_start_v2';
+    const TRIAL_WARNED_KEY = 'sb_trial_warned_v2';
+    const TRIAL_EXPIRED_KEY = 'sb_trial_expired_v2';
 
-      const key = 'sb_trial_start';
-      const warnKey = 'sb_trial_warned';
-      const bypassKey = 'sb_trial_bypass';
-      const stored = localStorage.getItem(key);
-
-      // Skip showing the block modal while user is mid-signup (5 min grace period)
-      const bypassAt = localStorage.getItem(bypassKey);
-      if (bypassAt && (Date.now() - parseInt(bypassAt)) < 5 * 60 * 1000) {
+    function initTrialTimer() {
+      // Check if user is already logged in
+      const isLoggedIn = localStorage.getItem('sb_user_logged_in');
+      if (isLoggedIn === 'true') {
+        console.log('[trial] User is logged in - skipping trial');
+        const timerBadge = document.getElementById('trial-timer-badge');
+        if (timerBadge) timerBadge.style.display = 'none';
         return;
       }
 
-      if (!stored) {
-        localStorage.setItem(key, Date.now());
-        console.log('[trial] Timer started');
-        return;
+      let startTime = localStorage.getItem(TRIAL_START_KEY);
+      
+      if (!startTime) {
+        // First load - start trial now
+        startTime = Date.now();
+        localStorage.setItem(TRIAL_START_KEY, startTime);
+        console.log('[trial] Timer initialized: ' + new Date(startTime));
+      } else {
+        startTime = parseInt(startTime);
       }
 
-      const elapsed = Math.floor((Date.now() - parseInt(stored)) / 1000 / 60);
+      // Show timer badge immediately
+      const timerBadge = document.getElementById('trial-timer-badge');
+      if (timerBadge) timerBadge.style.display = 'flex';
 
-      if (elapsed >= 5 && !localStorage.getItem(warnKey)) {
-        localStorage.setItem(warnKey, 'true');
-        alert('⏰ 5 minutes left! Sign up to save your progress and continue learning.');
-        console.log('[trial] Warning shown once at 5 min');
-      }
-
-      if (elapsed >= 10) {
-        if (!document.querySelector('[data-trial-modal]')) {
-          const modal = document.createElement('div');
-          modal.setAttribute('data-trial-modal', '1');
-          modal.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.7);z-index:9999;display:flex;align-items:center;justify-content:center;font-family:system-ui,sans-serif;';
-          modal.innerHTML = `
-            <div style="background:white;padding:40px;border-radius:8px;text-align:center;max-width:400px;box-shadow:0 10px 40px rgba(0,0,0,0.3);">
-              <h2 style="margin:0 0 16px;font-size:24px;">⏱️ Trial Ended</h2>
-              <p style="margin:0 0 24px;color:#666;font-size:16px;line-height:1.5;">Your 10-minute free trial is complete. Sign up to save your progress and continue learning.</p>
-              <button id="trialSignupBtn" style="background:#4F46E5;color:white;border:none;padding:12px 24px;border-radius:6px;cursor:pointer;font-weight:bold;font-size:16px;">
-                Sign Up / Log In
-              </button>
-            </div>
-          `;
-          document.body.appendChild(modal);
-          console.log('[trial] Modal shown once at 10 min');
-
-          document.getElementById('trialSignupBtn').addEventListener('click', function() {
-            localStorage.setItem(bypassKey, Date.now()); // grace period so it doesn't reappear mid-signup
-            modal.remove();
-            // openSettings() is defined in your main app script and opens
-            // the real sign-in panel (Google button + email/password form)
-            if (typeof openSettings === 'function') {
-              openSettings();
-            } else {
-              console.warn('[trial] openSettings() not found — app script may not have loaded yet');
-            }
-          });
+      // Update timer every 1 second
+      setInterval(() => {
+        const now = Date.now();
+        const elapsed = now - startTime;
+        const remaining = Math.max(0, TRIAL_DURATION - elapsed);
+        
+        // Update header display if element exists
+        const timerDisplay = document.getElementById('trial-timer-display');
+        const timerBadge = document.getElementById('trial-timer-badge');
+        if (timerDisplay) {
+          const minutes = Math.floor(remaining / 60000);
+          const seconds = Math.floor((remaining % 60000) / 1000);
+          timerDisplay.textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+          
+          // Change color at 5 minutes
+          if (remaining <= 5 * 60 * 1000) {
+            if (timerBadge) timerBadge.className = 'font-bold text-xs flex items-center gap-1 px-2 py-1 rounded-lg border border-red-800 bg-red-950 text-red-400';
+          }
         }
-      }
-    }, 5000);
+
+        // 5 minute warning
+        if (remaining <= 5 * 60 * 1000 && remaining > 4 * 60 * 1000 && !localStorage.getItem(TRIAL_WARNED_KEY)) {
+          localStorage.setItem(TRIAL_WARNED_KEY, 'true');
+          alert('⏰ 5 minutes left! Sign up to save your progress and continue learning.');
+          console.log('[trial] Warning shown at 5 minutes');
+        }
+
+        // 10 minute expiration
+        if (remaining === 0 && !localStorage.getItem(TRIAL_EXPIRED_KEY)) {
+          localStorage.setItem(TRIAL_EXPIRED_KEY, 'true');
+          console.log('[trial] Trial expired at 10 minutes');
+          
+          // Show modal
+          const existingModal = document.querySelector('[data-trial-modal]');
+          if (!existingModal) {
+            const modal = document.createElement('div');
+            modal.setAttribute('data-trial-modal', '1');
+            modal.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.8);z-index:9999;display:flex;align-items:center;justify-content:center;font-family:system-ui,sans-serif;';
+            modal.innerHTML = `
+              <div style="background:white;padding:40px;border-radius:12px;text-align:center;max-width:450px;box-shadow:0 20px 60px rgba(0,0,0,0.4);">
+                <h2 style="margin:0 0 16px;font-size:28px;color:#333;">⏱️ Trial Ended</h2>
+                <p style="margin:0 0 24px;color:#666;font-size:16px;line-height:1.6;">Your 10-minute free trial is complete. Create an account to save your progress and continue learning German!</p>
+                <button id="trialSignupBtn" style="background:#667eea;color:white;border:none;padding:14px 28px;border-radius:8px;cursor:pointer;font-weight:bold;font-size:16px;width:100%;">
+                  ➡️ Sign Up / Log In
+                </button>
+              </div>
+            `;
+            document.body.appendChild(modal);
+            console.log('[trial] Modal shown at 10 minutes');
+
+            document.getElementById('trialSignupBtn').addEventListener('click', function() {
+              modal.style.display = 'none';
+              // Navigate to login page
+              window.location.href = 'login.html';
+            });
+          }
+        }
+      }, 1000); // Update every second
+    }
+
+    // Start timer when page loads
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initTrialTimer);
+    } else {
+      initTrialTimer();
+    }
   </script>
 </html>
