@@ -26,3 +26,8 @@ const auth = getAuth(app);
 const db = getFirestore(app);
 
 export { auth, db, signInWithEmailAndPassword, createUserWithEmailAndPassword, signInAnonymously, signInWithPopup, GoogleAuthProvider, onAuthStateChanged, signOut };
+
+// Tell index.html that Firebase is ready!
+export function sbAuthReady() {
+    return true;
+}
