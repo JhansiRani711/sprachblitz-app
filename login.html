@@ -126,3 +126,90 @@
                 }, 2000);
             } else {
                 document.getElementById('emailError').textContent = 'Auth not ready. Refresh the page.';
+            }
+        }
+
+        // Email Signup - uses global sbSignUpEmail function
+        function handleEmailSignup() {
+            const email = document.getElementById('signupEmail').value;
+            const pass = document.getElementById('signupPassword').value;
+            const confirm = document.getElementById('confirmPass').value;
+            
+            if (!email || !pass || !confirm) {
+                document.getElementById('signupError').textContent = 'Please fill in all fields';
+                return;
+            }
+            
+            if (pass.length < 6) {
+                document.getElementById('signupError').textContent = 'Password must be at least 6 characters';
+                return;
+            }
+            
+            if (pass !== confirm) {
+                document.getElementById('signupError').textContent = 'Passwords do not match!';
+                return;
+            }
+            
+            if (typeof window.sbSignUpEmail === 'function') {
+                window.sbSignUpEmail(email, pass);
+                setTimeout(() => {
+                    if (window.sbUser) {
+                        window.location.href = './';
+                    }
+                }, 2000);
+            } else {
+                document.getElementById('signupError').textContent = 'Auth not ready. Refresh the page.';
+            }
+        }
+
+        // Google Login - uses global sbSignInGoogle function
+        function handleGoogleLogin() {
+            if (typeof window.sbSignInGoogle === 'function') {
+                window.sbSignInGoogle();
+                setTimeout(() => {
+                    if (window.sbUser) {
+                        window.location.href = './';
+                    }
+                }, 2000);
+            } else {
+                alert('Google auth not ready. Please refresh the page.');
+            }
+        }
+
+        // Anonymous Login - 10 min trial
+        function handleAnonLogin() {
+            localStorage.setItem('sb_user_logged_in', 'false');
+            localStorage.setItem('sb_trial_start_v2', Date.now());
+            localStorage.removeItem('sb_trial_warned_v2');
+            localStorage.removeItem('sb_trial_expired_v2');
+            window.location.href = './';
+        }
+
+        // Toggle between forms
+        function toggleForm() {
+            const loginForm = document.getElementById('loginForm');
+            const signupForm = document.getElementById('signupForm');
+            
+            if (loginForm.style.display === 'none') {
+                loginForm.style.display = 'block';
+                signupForm.style.display = 'none';
+            } else {
+                loginForm.style.display = 'none';
+                signupForm.style.display = 'block';
+            }
+        }
+
+        // Wait for auth to be ready
+        function waitForAuth() {
+            if (typeof window.sbAuthReady === 'function' && window.sbAuthReady()) {
+                console.log('[login.html] ✅ Auth ready');
+                return;
+            }
+            setTimeout(waitForAuth, 200);
+        }
+        waitForAuth();
+
+        console.log('[login.html] Page loaded, waiting for Firebase...');
+    </script>
+</body>
+</html>
