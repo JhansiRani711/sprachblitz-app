@@ -2476,7 +2476,7 @@
       const pool = (allVocabularyDatabase[cat] || []).slice();
       if (pool.length < 4) return [];
       const topicByEar = audioOnlyTopics.indexOf(cat) !== -1;
-      const picked = shuffle(pool).slice(0, Math.min(5, pool.length));
+      const picked = shuffle(pool).slice(0, Math.min(20, pool.length));
       return picked.map(item => {
         const wrong = shuffle(pool.filter(x => x.id !== item.id)).slice(0, 3).map(x => x.english);
         const opts = shuffle(wrong.concat([item.english]));
@@ -2507,7 +2507,7 @@
         });
       });
       if (pool.length < 5) return [];
-      return shuffle(pool).slice(0, 5).map(item => {
+      return shuffle(pool).slice(0, 20).map(item => {
         const opts = ['der', 'die', 'das'];
         return {
           prompt: '___ ' + item.noun,
@@ -2646,8 +2646,7 @@
         { prompt: "Ich sehe gern ___. (fernsehen)", ask: "Complete the sentence", options: ["mit", "nach", "vor", "fern"], correct: 3, explain: "fernsehen -> sehe ... fern" }
       ],
       g_imp: [
-        { prompt: "___ hierher! (kommen, du)", ask: "Form the imperative", options: ["Kommt", "Kommst", "Kommen", "Komm"], correct: 3, explain: "Drop 'du' and the -st ending." },
-        { prompt: "___ bitte langsam! (sprechen, Sie)", ask: "Form the imperative", options: ["Sprecht", "Sprechen Sie", "Sprich", "Sprichst"], correct: 1, explain: "Formal keeps the pronoun after the verb." },
+        { prompt: "___ hierher! (kommen, du)", ask: "Form the imperative", options: ["Kommt", "Kommst", "Kommen", "Komm"], correct: 3, explain: "Drop 'du' and the -st ending."prompt: "___ bitte langsam! (sprechen, Sie)", ask: "Form the imperative", options: ["Sprecht", "Sprechen Sie", "Sprich", "Sprichst"], correct: 1, explain: "Formal keeps the pronoun after the verb." },
         { prompt: "___ das Fenster! (öffnen, du)", ask: "Form the imperative", options: ["Öffnet", "Öffnen", "Öffne", "Öffnest"], correct: 2, explain: "du-form imperative: öffne" },
         { prompt: "___ mir bitte! (helfen, du)", ask: "Form the imperative", options: ["Helft", "Helfen", "Hilf", "Hilfst"], correct: 2, explain: "Stem change e->i: hilf" },
         { prompt: "___ leise, bitte! (sein, du)", ask: "Form the imperative", options: ["Seid", "Bist", "Sei", "Sein"], correct: 2, explain: "sein is irregular: sei" }
