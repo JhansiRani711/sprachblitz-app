@@ -1,5 +1,11 @@
 console.log('[sbauth] STARTING FIREBASE AUTH MODULE');
-
+// Initialize trial timer if not logged in
+if (!localStorage.getItem('sb_user_logged_in')) {
+  if (!localStorage.getItem('sb_trial_start_v2')) {
+    localStorage.setItem('sb_trial_start_v2', Date.now());
+    console.log('[sbauth] Trial started - 10 minutes');
+  }
+}
 // Wait for Firebase Compat SDK to load
 function initFirebaseAuth() {
     if (!window.firebase) {
