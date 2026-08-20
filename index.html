@@ -2440,7 +2440,7 @@
       lab.className = 'absolute inset-0 flex items-center justify-center text-[8px] font-black ' + (pct >= 1 ? 'text-emerald-400' : 'text-amber-400');
     }
 
-    // ===== Lesson quiz: 20 questions from the topic, 4 to pass =====
+    // ===== Lesson quiz: 5 questions from the topic, 4 to pass =====
     let quizActive = false;
     let quizLesson = null;
     let quizQuestions = [];
@@ -2646,7 +2646,8 @@
         { prompt: "Ich sehe gern ___. (fernsehen)", ask: "Complete the sentence", options: ["mit", "nach", "vor", "fern"], correct: 3, explain: "fernsehen -> sehe ... fern" }
       ],
       g_imp: [
-        { prompt: "___ hierher! (kommen, du)", ask: "Form the imperative", options: ["Kommt", "Kommst", "Kommen", "Komm"], correct: 3, explain: "Drop 'du' and the -st ending."prompt: "___ bitte langsam! (sprechen, Sie)", ask: "Form the imperative", options: ["Sprecht", "Sprechen Sie", "Sprich", "Sprichst"], correct: 1, explain: "Formal keeps the pronoun after the verb." },
+        { prompt: "___ hierher! (kommen, du)", ask: "Form the imperative", options: ["Kommt", "Kommst", "Kommen", "Komm"], correct: 3, explain: "Drop 'du' and the -st ending." },
+        { prompt: "___ bitte langsam! (sprechen, Sie)", ask: "Form the imperative", options: ["Sprecht", "Sprechen Sie", "Sprich", "Sprichst"], correct: 1, explain: "Formal keeps the pronoun after the verb." },
         { prompt: "___ das Fenster! (öffnen, du)", ask: "Form the imperative", options: ["Öffnet", "Öffnen", "Öffne", "Öffnest"], correct: 2, explain: "du-form imperative: öffne" },
         { prompt: "___ mir bitte! (helfen, du)", ask: "Form the imperative", options: ["Helft", "Helfen", "Hilf", "Hilfst"], correct: 2, explain: "Stem change e->i: hilf" },
         { prompt: "___ leise, bitte! (sein, du)", ask: "Form the imperative", options: ["Seid", "Bist", "Sei", "Sein"], correct: 2, explain: "sein is irregular: sei" }
@@ -2860,7 +2861,7 @@
       if (gid === 'g_art') return buildArticleQuestions();
       const bank = grammarExercises[gid];
       if (!bank) return [];
-      return shuffle(bank).slice(0, 20).map(q => ({
+      return shuffle(bank).slice(0, 5).map(q => ({
         prompt: q.prompt, hint: null, speak: null, ask: q.ask,
         options: q.options, correct: q.correct, explain: q.explain
       }));
