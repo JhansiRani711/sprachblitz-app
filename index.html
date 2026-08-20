@@ -6647,7 +6647,7 @@
   <script src="./grammar-batch4.js"></script>
   <script type="module" src="./sb-auth.js"></script>
        <!-- Guest Trial Feature (Robust) -->
-       <script>
+      <script>
     // Guest trial: pure timer, alert shows once
     setInterval(function() {
       if (document.querySelector('[data-trial-modal]')) return;
@@ -6671,14 +6671,12 @@
 
       const elapsed = Math.floor((Date.now() - parseInt(stored)) / 1000 / 60);
 
-      // Show alert at 5 min, but only ONCE
       if (elapsed >= 5 && !localStorage.getItem(warnKey)) {
         localStorage.setItem(warnKey, 'true');
         alert('⏰ 5 minutes left! Sign up to save your progress and continue learning.');
         console.log('[trial] Warning shown once at 5 min');
       }
 
-      // Block at 10 min
       if (elapsed >= 10) {
         if (!document.querySelector('[data-trial-modal]')) {
           const modal = document.createElement('div');
@@ -6688,7 +6686,7 @@
             <div style="background:white;padding:40px;border-radius:8px;text-align:center;max-width:400px;box-shadow:0 10px 40px rgba(0,0,0,0.3);">
               <h2 style="margin:0 0 16px;font-size:24px;">⏱️ Trial Ended</h2>
               <p style="margin:0 0 24px;color:#666;font-size:16px;line-height:1.5;">Your 10-minute free trial is complete. Sign up to save your progress and continue learning.</p>
-              <button id="trialSignupBtn" style="background:#4F46E5;color:white;border:none;padding:12px 24px;border-radius:6px;cursor:pointer;font-weight:bold;font-size:16px;transition:0.2s;">
+              <button id="trialSignupBtn" style="background:#4F46E5;color:white;border:none;padding:12px 24px;border-radius:6px;cursor:pointer;font-weight:bold;font-size:16px;">
                 Sign Up / Log In
               </button>
             </div>
@@ -6697,18 +6695,14 @@
           console.log('[trial] Modal shown once at 10 min');
 
           document.getElementById('trialSignupBtn').addEventListener('click', function() {
-            localStorage.setItem(bypassKey, Date.now()); // grace period starts now
+            localStorage.setItem(bypassKey, Date.now()); // grace period so it doesn't reappear mid-signup
             modal.remove();
-            const settingsTrigger =
-              document.querySelector('[data-tab=settings]') ||
-              document.querySelector('#settingsBtn') ||
-              document.querySelector('.settings-icon') ||
-              Array.from(document.querySelectorAll('button, div, span'))
-                .find(el => el.textContent.trim() === '⚙️' && el.children.length === 0);
-            if (settingsTrigger) {
-              settingsTrigger.click();
+            // openSettings() is defined in your main app script and opens
+            // the real sign-in panel (Google button + email/password form)
+            if (typeof openSettings === 'function') {
+              openSettings();
             } else {
-              console.warn('[trial] Could not find the settings/sign-in trigger element');
+              console.warn('[trial] openSettings() not found — app script may not have loaded yet');
             }
           });
         }
