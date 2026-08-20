@@ -6654,7 +6654,14 @@
 
       const key = 'sb_trial_start';
       const warnKey = 'sb_trial_warned';
+      const bypassKey = 'sb_trial_bypass';
       const stored = localStorage.getItem(key);
+
+      // Skip showing the block modal while user is mid-signup (5 min grace period)
+      const bypassAt = localStorage.getItem(bypassKey);
+      if (bypassAt && (Date.now() - parseInt(bypassAt)) < 5 * 60 * 1000) {
+        return;
+      }
 
       if (!stored) {
         localStorage.setItem(key, Date.now());
@@ -6689,8 +6696,8 @@
           document.body.appendChild(modal);
           console.log('[trial] Modal shown once at 10 min');
 
-          // Fix: remove the overlay first, THEN open settings — try a few likely selectors as fallback
           document.getElementById('trialSignupBtn').addEventListener('click', function() {
+            localStorage.setItem(bypassKey, Date.now()); // grace period starts now
             modal.remove();
             const settingsTrigger =
               document.querySelector('[data-tab=settings]') ||
