@@ -22,7 +22,7 @@
 Audio files and vocabulary cached on your device are yours to keep. They're not encrypted because you own them once downloaded — this is the same as saving a file to your computer.
 
 ## Questions or Concerns
-Contact us at: .......
+Contact us at: sprachblitz2026@gmail.com
 
 ---
 
