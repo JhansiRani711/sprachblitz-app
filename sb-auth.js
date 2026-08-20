@@ -1,20 +1,5 @@
 // =====================================================================
 // Sprachblitz — accounts and cloud sync (Firebase)
-//
-// WHAT THIS DOES
-//   Signs a learner in, then keeps every `sb_*` key from localStorage
-//   mirrored to a single Firestore document for that account. Open the
-//   app on another device, sign in, and the progress is there.
-//
-// SETUP — you must do these three things or nothing will work:
-//   1. Create a project at https://console.firebase.google.com
-//   2. Project settings -> Your apps -> Web -> copy the config into
-//      FIREBASE_CONFIG below.
-//   3. Authentication -> Sign-in method -> enable Email/Password and
-//      Google. Add your GitHub Pages domain under Authorized domains.
-//
-//   Apple sign-in additionally needs a paid Apple Developer account.
-//   Leave ENABLE_APPLE false until you have one.
 // =====================================================================
 
 const FIREBASE_CONFIG = {
@@ -26,10 +11,8 @@ const FIREBASE_CONFIG = {
   appId: "1:1088979468853:web:ead7d1a35062caf074277c",
   measurementId: "G-HKD2Y8X0P2"
 };
-const ENABLE_APPLE = false;   // needs a paid Apple Developer account
+const ENABLE_APPLE = false;
 
-// These localStorage keys are device-specific and must NOT sync,
-// or installing on a second device would report itself as installed.
 const NO_SYNC_KEYS = ['sb_installed'];
 
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js';
@@ -56,19 +39,13 @@ if (configured) {
   auth = getAuth(app);
   db   = getFirestore(app);
 
-  // Keep the session across restarts. Without this an installed app can
-  // sign in and then forget immediately, which looks like a failed login.
   setPersistence(auth, browserLocalPersistence)
     .catch(e => console.warn('[auth] persistence', e));
 
-  // If we came back from a redirect sign-in, finish it. Skipping this is
-  // exactly how a successful login ends up showing the form again.
   getRedirectResult(auth)
     .then(res => { if (res && res.user) console.log('[auth] redirect completed', res.user.email); })
     .catch(e => { console.error('[auth] redirect failed', e); if (window.sbAuthError) window.sbAuthError(e); });
 }
-
-// ---------- reading and writing the local progress ----------
 
 function collectLocal() {
   const out = {};
@@ -80,7 +57,6 @@ function collectLocal() {
 }
 
 function applyLocal(data) {
-  // Clear first, so a key deleted on another device really disappears here.
   const mine = [];
   for (let i = 0; i < localStorage.length; i++) {
     const k = localStorage.key(i);
@@ -90,8 +66,6 @@ function applyLocal(data) {
   Object.entries(data || {}).forEach(([k, v]) => localStorage.setItem(k, v));
 }
 
-// Rough measure of "has this device actually been used", so we don't
-// interrupt a brand new install with a merge question.
 function localHasProgress() {
   const xp = parseInt(localStorage.getItem('sb_total_xp'), 10) || 0;
   const lessons = Object.keys(JSON.parse(localStorage.getItem('sb_lesson_progress') || '{}')).length;
@@ -108,8 +82,6 @@ function summarise(data) {
   const lessons = Object.keys(JSON.parse((data || {}).sb_lesson_progress || '{}')).length;
   return `${xp} XP · ${lessons} Lektionen`;
 }
-
-// ---------- cloud ----------
 
 async function loadCloud(uid) {
   const snap = await getDoc(doc(db, 'progress', uid));
@@ -129,8 +101,6 @@ async function saveCloud() {
   }
 }
 
-// Any write to localStorage schedules a cloud save a few seconds later,
-// so a burst of answers costs one write rather than twenty.
 const nativeSetItem = Storage.prototype.setItem;
 Storage.prototype.setItem = function (k, v) {
   nativeSetItem.call(this, k, v);
@@ -139,10 +109,7 @@ Storage.prototype.setItem = function (k, v) {
     saveTimer = setTimeout(saveCloud, 2500);
   }
 };
-// Don't lose the last few seconds of work when the app is closed.
 window.addEventListener('pagehide', () => { if (sbUser) saveCloud(); });
-
-// ---------- the merge question ----------
 
 function askWhichProgress(localData, cloudData) {
   return new Promise(resolve => {
@@ -171,8 +138,6 @@ function askWhichProgress(localData, cloudData) {
   });
 }
 
-// ---------- sign-in state ----------
-
 if (configured) {
   onAuthStateChanged(auth, async user => {
     console.log('[auth] state:', user ? user.email || user.uid : 'signed out');
@@ -180,15 +145,20 @@ if (configured) {
     window.sbUser = user;
 
     if (user) {
+      // NEW: trial is over now that they're signed in — stop the countdown for good
+      localStorage.removeItem('sb_trial_start');
+      localStorage.removeItem('sb_trial_warned');
+      localStorage.removeItem('sb_trial_bypass');
+
       syncing = true;
       try {
         const cloud = await loadCloud(user.uid);
         const local = collectLocal();
 
         if (!cloudHasProgress(cloud) && localHasProgress()) {
-          await saveCloud();                       // first sign-in: adopt this device
+          await saveCloud();
         } else if (cloudHasProgress(cloud) && !localHasProgress()) {
-          applyLocal(cloud);                       // fresh device: take the account
+          applyLocal(cloud);
         } else if (cloudHasProgress(cloud) && localHasProgress()
                    && JSON.stringify(cloud) !== JSON.stringify(local)) {
           const choice = await askWhichProgress(local, cloud);
@@ -209,11 +179,6 @@ if (configured) {
   });
 }
 
-// ---------- actions the UI calls ----------
-
-// Try the popup first — it keeps the user in the app and reports errors
-// properly. Only fall back to a redirect when the popup is actually blocked,
-// which is common inside installed apps.
 async function withProvider(provider) {
   try {
     return await signInWithPopup(auth, provider);
@@ -267,7 +232,7 @@ window.sbResetPassword = async (email) => {
 };
 
 window.sbSignOut = async () => {
-  await saveCloud();          // don't lose the last answers
+  await saveCloud();
   await signOut(auth);
   sbUser = null; window.sbUser = null;
   if (typeof renderActiveTabModule === 'function') renderActiveTabModule();
