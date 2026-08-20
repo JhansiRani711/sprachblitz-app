@@ -3,7 +3,6 @@
 // =====================================================================
 
 const FIREBASE_CONFIG = {
-  apiKey: "AIzaSyDFm77rEYnSP7Fpvy99iYDXMWCXP0UAQAU",
   authDomain: "sprachblitz.firebaseapp.com",
   projectId: "sprachblitz",
   storageBucket: "sprachblitz.firebasestorage.app",
