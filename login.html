@@ -102,10 +102,14 @@
     </div>
 
     <script type="module">
-        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.0.0/firebase-app.js';
-        import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signInAnonymously, signInWithPopup, GoogleAuthProvider } from 'https://www.gstatic.com/firebasejs/10.0.0/firebase-auth.js';
-        import { auth } from './sb-auth.js';
-       
+        import { 
+            auth, 
+            signInWithEmailAndPassword, 
+            createUserWithEmailAndPassword, 
+            signInAnonymously, 
+            signInWithPopup, 
+            GoogleAuthProvider 
+        } from './sb-auth.js';
 
         window.emailLogin = async () => {
             const email = document.getElementById('email').value;
@@ -149,3 +153,16 @@
                 await signInAnonymously(auth);
                 window.location.href = 'index.html';
             } catch (error) {
+                alert('Anonymous login failed: ' + error.message);
+            }
+        }
+
+        window.toggleForm = () => {
+            document.getElementById('loginForm').style.display = 
+                document.getElementById('loginForm').style.display === 'none' ? 'block' : 'none';
+            document.getElementById('signupForm').style.display = 
+                document.getElementById('signupForm').style.display === 'none' ? 'block' : 'none';
+        }
+    </script>
+</body>
+</html>
