@@ -2440,7 +2440,7 @@
       lab.className = 'absolute inset-0 flex items-center justify-center text-[8px] font-black ' + (pct >= 1 ? 'text-emerald-400' : 'text-amber-400');
     }
 
-    // ===== Lesson quiz: 5 questions from the topic, 4 to pass =====
+    // ===== Lesson quiz: 20 questions from the topic, 15 to pass =====
     let quizActive = false;
     let quizLesson = null;
     let quizQuestions = [];
@@ -2860,7 +2860,7 @@
       if (gid === 'g_art') return buildArticleQuestions();
       const bank = grammarExercises[gid];
       if (!bank) return [];
-      return shuffle(bank).slice(0, 5).map(q => ({
+      return shuffle(bank).slice(0, 20).map(q => ({
         prompt: q.prompt, hint: null, speak: null, ask: q.ask,
         options: q.options, correct: q.correct, explain: q.explain
       }));
@@ -2908,7 +2908,7 @@
       if (quizIndex < quizQuestions.length - 1) { quizIndex++; }
       else {
         quizFinished = true;
-        if (quizCorrect >= Math.min(4, quizQuestions.length)) { markLessonDone(quizLesson.id); rewardXP(10); }
+        if (quizCorrect >= Math.ceil(quizQuestions.length * 0.75)) { markLessonDone(quizLesson.id); rewardXP(10); }
       }
       renderActiveTabModule(); maybeAutoPlayQuiz();
     }
@@ -5835,7 +5835,7 @@
         // ---- Lesson quiz overlay ----
         if (quizActive) {
           if (quizFinished) {
-            const passed = quizCorrect >= Math.min(4, quizQuestions.length);
+            const passed = quizCorrect >= Math.ceil(quizQuestions.length * 0.75);
             container.innerHTML = `
               <div class="text-center p-6 ${conf.cardBg} border rounded-2xl shadow-xl space-y-4">
                 <img src="./bears/${passed ? 'bear-jump' : 'bear-think'}.png" alt="" class="h-28 w-auto mx-auto" onerror="this.style.display='none'">
