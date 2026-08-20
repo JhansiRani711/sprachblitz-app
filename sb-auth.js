@@ -1,28 +1,16 @@
-console.log('[sbauth] START');
+console.log('[sbauth] STARTING FIREBASE AUTH MODULE');
 
-// Wait for Firebase to be available globally
-function waitForFirebase(callback, attempts) {
-    attempts = attempts || 0;
-    if (attempts > 50) {
-        console.error('[sbauth] Firebase SDK never loaded after 50 attempts');
+// Wait for Firebase Compat SDK to load
+function initFirebaseAuth() {
+    if (!window.firebase) {
+        console.warn('[sbauth] Firebase SDK not loaded yet, retrying...');
+        setTimeout(initFirebaseAuth, 200);
         return;
     }
     
-    if (window.firebase && window.firebase.auth) {
-        console.log('[sbauth] Firebase SDK is available');
-        callback();
-        return;
-    }
+    console.log('[sbauth] Firebase SDK detected');
     
-    setTimeout(function() {
-        waitForFirebase(callback, attempts + 1);
-    }, 100);
-}
-
-// Initialize Firebase when SDK is ready
-function initFirebase() {
-    console.log('[sbauth] Initializing Firebase...');
-    
+    // Firebase configuration (NO API KEY)
     var firebaseConfig = {
         authDomain: "sprachblitz.firebaseapp.com",
         projectId: "sprachblitz",
@@ -33,45 +21,58 @@ function initFirebase() {
     
     try {
         firebase.initializeApp(firebaseConfig);
-        console.log('[sbauth] Firebase app initialized');
+        console.log('[sbauth] ✅ Firebase app initialized');
     } catch (e) {
-        console.log('[sbauth] Firebase already initialized or error:', e.message);
+        if (e.code === 'app/duplicate-app') {
+            console.log('[sbauth] Firebase already initialized');
+        } else {
+            console.error('[sbauth] Firebase initialization error:', e.message);
+            return;
+        }
     }
     
+    // Get auth instance
     var auth = firebase.auth();
-    console.log('[sbauth] Auth instance ready');
+    console.log('[sbauth] Auth instance created');
     
-    // Listen for auth changes
+    // Global user state
+    window.sbUser = null;
+    
+    // Listen for auth state changes
     firebase.auth().onAuthStateChanged(function(user) {
         window.sbUser = user;
         if (user) {
             localStorage.setItem('sb_user_logged_in', 'true');
-            localStorage.removeItem('sb_trial_start_v2');
-            console.log('[sbauth] User logged in');
+            console.log('[sbauth] ✅ User logged in:', user.email || 'anonymous');
             if (typeof window.renderActiveTabModule === 'function') {
                 window.renderActiveTabModule();
             }
         } else {
             localStorage.setItem('sb_user_logged_in', 'false');
-            console.log('[sbauth] User logged out');
+            console.log('[sbauth] User logged out or not logged in');
             if (typeof window.renderActiveTabModule === 'function') {
                 window.renderActiveTabModule();
             }
         }
     });
     
-    // Define all auth functions
+    // ========== AUTH FUNCTIONS ==========
+    
     window.sbSignInGoogle = function() {
+        console.log('[sbauth] Google sign-in initiated');
         var provider = new firebase.auth.GoogleAuthProvider();
         firebase.auth().signInWithPopup(provider)
             .then(function(result) {
-                console.log('[sbauth] Google login success');
+                console.log('[sbauth] ✅ Google login successful');
                 if (typeof window.sbAuthNotice === 'function') {
                     window.sbAuthNotice('✅ Google-Anmeldung erfolgreich!');
                 }
+                if (typeof window.closeSettings === 'function') {
+                    setTimeout(window.closeSettings, 300);
+                }
             })
             .catch(function(error) {
-                console.error('[sbauth] Google login error:', error);
+                console.error('[sbauth] Google login error:', error.code, error.message);
                 if (typeof window.sbAuthError === 'function') {
                     window.sbAuthError(error);
                 }
@@ -79,15 +80,19 @@ function initFirebase() {
     };
     
     window.sbSignInEmail = function(email, password) {
+        console.log('[sbauth] Email sign-in initiated');
         firebase.auth().signInWithEmailAndPassword(email, password)
             .then(function(result) {
-                console.log('[sbauth] Email login success');
+                console.log('[sbauth] ✅ Email login successful');
                 if (typeof window.sbAuthNotice === 'function') {
                     window.sbAuthNotice('✅ Anmeldung erfolgreich!');
                 }
+                if (typeof window.closeSettings === 'function') {
+                    setTimeout(window.closeSettings, 300);
+                }
             })
             .catch(function(error) {
-                console.error('[sbauth] Email login error:', error);
+                console.error('[sbauth] Email login error:', error.code);
                 if (typeof window.sbAuthError === 'function') {
                     window.sbAuthError(error);
                 }
@@ -95,15 +100,19 @@ function initFirebase() {
     };
     
     window.sbSignUpEmail = function(email, password, displayName) {
+        console.log('[sbauth] Email signup initiated');
         firebase.auth().createUserWithEmailAndPassword(email, password)
             .then(function(result) {
-                console.log('[sbauth] Email signup success');
+                console.log('[sbauth] ✅ Email signup successful');
                 if (typeof window.sbAuthNotice === 'function') {
                     window.sbAuthNotice('✅ Konto erstellt! Willkommen!');
                 }
+                if (typeof window.closeSettings === 'function') {
+                    setTimeout(window.closeSettings, 300);
+                }
             })
             .catch(function(error) {
-                console.error('[sbauth] Email signup error:', error);
+                console.error('[sbauth] Email signup error:', error.code);
                 if (typeof window.sbAuthError === 'function') {
                     window.sbAuthError(error);
                 }
@@ -111,16 +120,16 @@ function initFirebase() {
     };
     
     window.sbSignOut = function() {
+        console.log('[sbauth] Sign-out initiated');
         firebase.auth().signOut()
             .then(function() {
-                console.log('[sbauth] Sign out success');
-                localStorage.setItem('sb_trial_start_v2', Date.now());
+                console.log('[sbauth] ✅ User signed out');
                 if (typeof window.renderActiveTabModule === 'function') {
                     window.renderActiveTabModule();
                 }
             })
             .catch(function(error) {
-                console.error('[sbauth] Sign out error:', error);
+                console.error('[sbauth] Sign-out error:', error);
                 if (typeof window.sbAuthError === 'function') {
                     window.sbAuthError(error);
                 }
@@ -129,18 +138,22 @@ function initFirebase() {
     
     window.sbResetPassword = function(email) {
         if (!email) {
-            alert('Please enter an email address');
+            console.warn('[sbauth] Password reset called without email');
+            if (typeof window.sbAuthError === 'function') {
+                window.sbAuthError({ code: 'auth/missing-email' });
+            }
             return;
         }
+        console.log('[sbauth] Password reset initiated for:', email);
         firebase.auth().sendPasswordResetEmail(email)
             .then(function() {
                 console.log('[sbauth] Password reset email sent');
                 if (typeof window.sbAuthNotice === 'function') {
-                    window.sbAuthNotice('📧 Passwort-Link wurde gesendet!');
+                    window.sbAuthNotice('📧 Passwort-Link wurde gesendet. Bitte deine E-Mail überprüfen.');
                 }
             })
             .catch(function(error) {
-                console.error('[sbauth] Password reset error:', error);
+                console.error('[sbauth] Password reset error:', error.code);
                 if (typeof window.sbAuthError === 'function') {
                     window.sbAuthError(error);
                 }
@@ -149,10 +162,13 @@ function initFirebase() {
     
     window.sbForceSync = function() {
         if (!window.sbUser) {
-            alert('Please log in first');
+            console.warn('[sbauth] Sync called but user not logged in');
+            if (typeof window.sbAuthError === 'function') {
+                window.sbAuthError({ code: 'auth/not-logged-in' });
+            }
             return;
         }
-        console.log('[sbauth] Progress synced');
+        console.log('[sbauth] Progress synced for user:', window.sbUser.uid);
         if (typeof window.sbAuthNotice === 'function') {
             window.sbAuthNotice('✅ Fortschritt gesichert!');
         }
@@ -163,16 +179,26 @@ function initFirebase() {
         return null;
     };
     
+    // Critical: Signal that auth is ready
     window.sbAuthReady = function() {
-        var isReady = window.firebase && window.firebase.auth && typeof window.sbSignInGoogle === 'function';
-        console.log('[sbauth] sbAuthReady() = ' + isReady);
-        return isReady;
+        var ready = typeof firebase !== 'undefined' && 
+                    firebase.auth && 
+                    typeof window.sbSignInGoogle === 'function' &&
+                    typeof window.sbSignOut === 'function';
+        return ready;
     };
     
-    console.log('[sbauth] ✅ ALL FUNCTIONS READY');
+    console.log('[sbauth] ✅✅✅ ALL AUTH FUNCTIONS REGISTERED AND READY ✅✅✅');
     window.sbAuthModuleReady = true;
+    
+    // Verify auth is ready
+    if (window.sbAuthReady()) {
+        console.log('[sbauth] ✅ sbAuthReady() returns TRUE');
+    } else {
+        console.error('[sbauth] ❌ sbAuthReady() returns FALSE');
+    }
 }
 
-// Start waiting for Firebase
+// Start initialization
 console.log('[sbauth] Waiting for Firebase SDK...');
-waitForFirebase(initFirebase);
+initFirebaseAuth();
