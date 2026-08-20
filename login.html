@@ -65,13 +65,13 @@
                 <label>Password</label>
                 <input type="password" id="password" placeholder="••••••••">
             </div>
-            <button class="btn-primary" onclick="emailLogin()">Sign In</button>
+            <button class="btn-primary" onclick="handleEmailLogin()">Sign In</button>
             <div id="emailError" class="error"></div>
 
             <div class="divider">OR</div>
 
-            <button class="btn-google" onclick="googleLogin()">Sign In with Google</button>
-            <button class="btn-anon" onclick="anonLogin()">Continue Anonymously (10 min trial)</button>
+            <button class="btn-google" onclick="handleGoogleLogin()">Sign In with Google</button>
+            <button class="btn-anon" onclick="handleAnonLogin()">Continue Anonymously (10 min trial)</button>
 
             <div class="toggle-link">
                 New user? <a onclick="toggleForm()">Create Account</a>
@@ -92,7 +92,7 @@
                 <label>Confirm Password</label>
                 <input type="password" id="confirmPass" placeholder="••••••••">
             </div>
-            <button class="btn-primary" onclick="emailSignup()">Create Account</button>
+            <button class="btn-primary" onclick="handleEmailSignup()">Create Account</button>
             <div id="signupError" class="error"></div>
 
             <div class="toggle-link">
@@ -101,68 +101,28 @@
         </div>
     </div>
 
-    <script type="module">
-        import { 
-            auth, 
-            signInWithEmailAndPassword, 
-            createUserWithEmailAndPassword, 
-            signInAnonymously, 
-            signInWithPopup, 
-            GoogleAuthProvider 
-        } from './sb-auth.js';
+    <!-- Load Firebase SDK Compat FIRST -->
+    <script src="https://www.gstatic.com/firebasejs/10.0.0/firebase-compat.js"></script>
+    <!-- Load sbauth.js as regular script (NOT module) -->
+    <script src="./sbauth.js"></script>
 
-        window.emailLogin = async () => {
+    <script>
+        // Email Login - uses global sbSignInEmail function
+        function handleEmailLogin() {
             const email = document.getElementById('email').value;
             const password = document.getElementById('password').value;
-            try {
-                await signInWithEmailAndPassword(auth, email, password);
-                window.location.href = 'index.html';
-            } catch (error) {
-                document.getElementById('emailError').textContent = error.message;
-            }
-        }
-
-        window.emailSignup = async () => {
-            const email = document.getElementById('signupEmail').value;
-            const pass = document.getElementById('signupPassword').value;
-            const confirm = document.getElementById('confirmPass').value;
-            if (pass !== confirm) {
-                document.getElementById('signupError').textContent = 'Passwords do not match!';
+            
+            if (!email || !password) {
+                document.getElementById('emailError').textContent = 'Please enter email and password';
                 return;
             }
-            try {
-                await createUserWithEmailAndPassword(auth, email, pass);
-                window.location.href = 'index.html';
-            } catch (error) {
-                document.getElementById('signupError').textContent = error.message;
-            }
-        }
-
-        window.googleLogin = async () => {
-            try {
-                const provider = new GoogleAuthProvider();
-                await signInWithPopup(auth, provider);
-                window.location.href = 'index.html';
-            } catch (error) {
-                alert('Google sign-in failed: ' + error.message);
-            }
-        }
-
-        window.anonLogin = async () => {
-            try {
-                await signInAnonymously(auth);
-                window.location.href = 'index.html';
-            } catch (error) {
-                alert('Anonymous login failed: ' + error.message);
-            }
-        }
-
-        window.toggleForm = () => {
-            document.getElementById('loginForm').style.display = 
-                document.getElementById('loginForm').style.display === 'none' ? 'block' : 'none';
-            document.getElementById('signupForm').style.display = 
-                document.getElementById('signupForm').style.display === 'none' ? 'block' : 'none';
-        }
-    </script>
-</body>
-</html>
+            
+            if (typeof window.sbSignInEmail === 'function') {
+                window.sbSignInEmail(email, password);
+                setTimeout(() => {
+                    if (window.sbUser) {
+                        window.location.href = './';
+                    }
+                }, 2000);
+            } else {
+                document.getElementById('emailError').textContent = 'Auth not ready. Refresh the page.';
