@@ -2440,7 +2440,7 @@
       lab.className = 'absolute inset-0 flex items-center justify-center text-[8px] font-black ' + (pct >= 1 ? 'text-emerald-400' : 'text-amber-400');
     }
 
-    // ===== Lesson quiz: 5 questions from the topic, 4 to pass =====
+    // ===== Lesson quiz: 20 questions from the topic, 4 to pass =====
     let quizActive = false;
     let quizLesson = null;
     let quizQuestions = [];
@@ -2860,7 +2860,7 @@
       if (gid === 'g_art') return buildArticleQuestions();
       const bank = grammarExercises[gid];
       if (!bank) return [];
-      return shuffle(bank).slice(0, 5).map(q => ({
+      return shuffle(bank).slice(0, 20).map(q => ({
         prompt: q.prompt, hint: null, speak: null, ask: q.ask,
         options: q.options, correct: q.correct, explain: q.explain
       }));
