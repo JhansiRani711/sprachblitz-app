@@ -162,29 +162,28 @@
             }
         }
 
-        // Google Login - uses global sbSignInGoogle function
-        function handleGoogleLogin() {
-            if (typeof window.sbSignInGoogle === 'function') {
-                window.sbSignInGoogle();
-                setTimeout(() => {
-                    if (window.sbUser) {
-                        window.location.href = './';
-                    }
-                }, 2000);
-            } else {
-                alert('Google auth not ready. Please refresh the page.');
-            }
+    // Google Login
+async function handleGoogleLogin() {
+    try {
+        const { sbSignInGoogle } = await import('./sb-auth.js');
+        sbSignInGoogle();
+    } catch (error) {
+        console.error('Failed to import:', error);
+        alert('Google sign-in is loading. Please try again.');
+    }
+}
         }
 
         // Anonymous Login - 10 min trial
-        function handleAnonLogin() {
-            localStorage.setItem('sb_user_logged_in', 'false');
-            localStorage.setItem('sb_trial_start_v2', Date.now());
-            localStorage.removeItem('sb_trial_warned_v2');
-            localStorage.removeItem('sb_trial_expired_v2');
-            window.location.href = './';
-        }
-
+async function handleAnonLogin() {
+    try {
+        const { sbSignInAnonymously } = await import('./sb-auth.js');
+        sbSignInAnonymously();
+    } catch (error) {
+        console.error('Failed to import:', error);
+        alert('Sign-in is loading. Please try again.');
+    }
+}
         // Toggle between forms
         function toggleForm() {
             const loginForm = document.getElementById('loginForm');
