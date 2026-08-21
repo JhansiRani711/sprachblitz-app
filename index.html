@@ -13,27 +13,47 @@
   <link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png">
   <title>Sprachblitz – Deutsch lernen A1 bis B2</title>
   <script type="module">
-    import { auth, sbAuthReady, signInAnonymously, signInWithPopup, GoogleAuthProvider } from './sb-auth.js';
+    import { auth, sbAuthReady, signInAnonymously, createUserWithEmailAndPassword, signInWithPopup, GoogleAuthProvider, onAuthStateChanged } from './sb-auth.js';
     
     window.sbAuthReady = sbAuthReady;
     
-    // KONTO button handlers
+    // Anonymous login
     window.sbSignInAnonymously = async function() {
         try {
-            await signInAnonymously(auth);
-            alert('✅ Logged in! Your progress is now saved.');
-            location.reload();
+            const result = await signInAnonymously(auth);
+            console.log('✅ Logged in anonymously as:', result.user.uid);
+            setTimeout(() => location.reload(), 500); // Wait 500ms before reload
         } catch(error) {
             alert('❌ Error: ' + error.message);
         }
     }
     
+    // Google login
     window.sbSignInGoogle = async function() {
         try {
             const provider = new GoogleAuthProvider();
-            await signInWithPopup(auth, provider);
-            alert('✅ Logged in with Google!');
-            location.reload();
+            const result = await signInWithPopup(auth, provider);
+            console.log('✅ Logged in with Google:', result.user.email);
+            setTimeout(() => location.reload(), 500);
+        } catch(error) {
+            alert('❌ Error: ' + error.message);
+        }
+    }
+    
+    // Email/Password signup
+    window.sbCreateAccount = async function() {
+        const email = document.querySelector('input[type="email"]')?.value;
+        const password = document.querySelector('input[type="password"]')?.value;
+        
+        if (!email || !password) {
+            alert('Please enter email and password');
+            return;
+        }
+        
+        try {
+            const result = await createUserWithEmailAndPassword(auth, email, password);
+            console.log('✅ Account created:', result.user.email);
+            setTimeout(() => location.reload(), 500);
         } catch(error) {
             alert('❌ Error: ' + error.message);
         }
