@@ -6863,40 +6863,41 @@ async function sbLogout() {
       startTrialTimer();
     });
   });
-   
+
   // ===== DISPLAY LOGGED-IN USER IN KONTO SECTION =====
-  import { auth, onAuthStateChanged, signOut as fbSignOut } from './sb-auth.js';
-  
-  onAuthStateChanged(auth, (user) => {
-    if (user && !user.isAnonymous) {
-      // User is logged in - find and update KONTO section
-      const sections = document.querySelectorAll('div[style*="background:#1e293b"]');
-      for (let section of sections) {
-        const text = section.textContent;
-        if (text.includes('Melde dich an')) {
-          section.innerHTML = `
-            <div class="rounded-2xl p-4 space-y-2" style="background:#1e293b">
-              <p class="text-[10px] font-black uppercase tracking-wider od-muted">Konto</p>
-              <p class="text-[11px] font-bold od-dim leading-relaxed">
-                Angemeldet als:<br><strong>${user.email}</strong>
-              </p>
-              <button onclick="logout()" class="btn3d w-full py-3 rounded-xl text-xs font-black bg-red-600 hover:bg-red-700 text-white">
-                Abmelden (Logout)
-              </button>
-            </div>
-          `;
-          break;
+  if (typeof onAuthStateChanged === 'function') {
+    onAuthStateChanged(auth, (user) => {
+      console.log('[Konto] Auth check:', user ? user.email : 'not logged in');
+      if (user && !user.isAnonymous) {
+        // User is logged in - find and update KONTO section
+        const sections = document.querySelectorAll('div[style*="background:#1e293b"]');
+        for (let section of sections) {
+          if (section.textContent.includes('Melde dich an')) {
+            section.innerHTML = `
+              <div class="rounded-2xl p-4 space-y-2" style="background:#1e293b">
+                <p class="text-[10px] font-black uppercase tracking-wider od-muted">Konto</p>
+                <p class="text-[11px] font-bold od-dim leading-relaxed">
+                  📧 ${user.email}
+                </p>
+                <button onclick="logoutUser()" class="btn3d w-full py-3 rounded-xl text-xs font-black bg-red-600 text-white">
+                  Abmelden
+                </button>
+              </div>
+            `;
+            break;
+          }
         }
       }
-    }
-  });
-
-  async function logout() {
-    const { signOut } = await import('./sb-auth.js');
-    const { auth: firebaseAuth } = await import('./sb-auth.js');
-    signOut(firebaseAuth).then(() => {
-      window.location.href = './login.html';
     });
-  }    
-</script>
+  }
+
+  async function logoutUser() {
+    try {
+      await signOut(auth);
+      window.location.href = './login.html';
+    } catch (e) {
+      console.error('Logout error:', e);
+      window.location.href = './login.html';
+    }
+  }</script>
 </html>
