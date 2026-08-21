@@ -27,6 +27,9 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
+// Create Google Provider
+const googleProvider = new GoogleAuthProvider();
+
 // Export Firebase services
 export { 
     auth, 
@@ -40,16 +43,120 @@ export {
     signOut
 };
 
-// Auth ready function
+// Auth ready flag
 let authInitialized = false;
-
 onAuthStateChanged(auth, (user) => {
     authInitialized = true;
     console.log('[Firebase] Auth ready. User:', user ? user.email : 'Anonymous');
 });
 
 export function sbAuthReady() {
-    return authInitialized || true;
+    return authInitialized;
 }
 
-console.log('[Firebase] Initialization started');
+// ========== SIGN IN WITH GOOGLE ==========
+export function sbSignInGoogle() {
+    console.log('[Auth] Starting Google sign-in...');
+    return signInWithPopup(auth, googleProvider)
+        .then((result) => {
+            console.log('[Auth] Google sign-in successful:', result.user.email);
+            window.location.href = 'index.html';
+            return result.user;
+        })
+        .catch((error) => {
+            console.error('[Auth] Google sign-in error:', error.message);
+            alert(`Google sign-in failed: ${error.message}`);
+            throw error;
+        });
+}
+
+// ========== SIGN IN ANONYMOUSLY ==========
+export function sbSignInAnonymously() {
+    console.log('[Auth] Starting anonymous sign-in...');
+    return signInAnonymously(auth)
+        .then((result) => {
+            console.log('[Auth] Anonymous sign-in successful');
+            window.location.href = 'index.html';
+            return result.user;
+        })
+        .catch((error) => {
+            console.error('[Auth] Anonymous sign-in error:', error.message);
+            alert(`Anonymous sign-in failed: ${error.message}`);
+            throw error;
+        });
+}
+
+// ========== SIGN IN WITH EMAIL & PASSWORD ==========
+export function sbSignInEmail(email, password) {
+    console.log('[Auth] Starting email sign-in...');
+    
+    if (!email || !password) {
+        alert('Please enter both email and password');
+        return Promise.reject('Missing credentials');
+    }
+
+    return signInWithEmailAndPassword(auth, email, password)
+        .then((result) => {
+            console.log('[Auth] Email sign-in successful:', result.user.email);
+            window.location.href = 'index.html';
+            return result.user;
+        })
+        .catch((error) => {
+            console.error('[Auth] Email sign-in error:', error.message);
+            alert(`Sign-in failed: ${error.message}`);
+            throw error;
+        });
+}
+
+// ========== CREATE ACCOUNT WITH EMAIL & PASSWORD ==========
+export function sbCreateAccount(email, password, confirmPassword) {
+    console.log('[Auth] Starting account creation...');
+    
+    if (!email || !password || !confirmPassword) {
+        alert('Please fill in all fields');
+        return Promise.reject('Missing fields');
+    }
+
+    if (password !== confirmPassword) {
+        alert('Passwords do not match');
+        return Promise.reject('Passwords do not match');
+    }
+
+    if (password.length < 6) {
+        alert('Password must be at least 6 characters');
+        return Promise.reject('Password too short');
+    }
+
+    return createUserWithEmailAndPassword(auth, email, password)
+        .then((result) => {
+            console.log('[Auth] Account created successfully:', result.user.email);
+            window.location.href = 'index.html';
+            return result.user;
+        })
+        .catch((error) => {
+            console.error('[Auth] Account creation error:', error.message);
+            alert(`Account creation failed: ${error.message}`);
+            throw error;
+        });
+}
+
+// ========== SIGN OUT ==========
+export function sbLogout() {
+    console.log('[Auth] Signing out...');
+    return signOut(auth)
+        .then(() => {
+            console.log('[Auth] Sign-out successful');
+            window.location.href = 'login.html';
+        })
+        .catch((error) => {
+            console.error('[Auth] Sign-out error:', error.message);
+            alert(`Sign-out failed: ${error.message}`);
+        });
+}
+
+// ========== GET CURRENT USER ==========
+export function sbGetCurrentUser() {
+    return auth.currentUser;
+}
+
+console.log('[Firebase] Initialization complete');
