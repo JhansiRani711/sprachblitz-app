@@ -4505,6 +4505,37 @@
 
           ${authMsg ? `<p class="text-[11px] font-bold od-amber pt-1">${authMsg}</p>` : ''}
         </div>`;
+      // Update KONTO section when user logs in/out
+import { auth, onAuthStateChanged, signOut } from './sb-auth.js';
+
+onAuthStateChanged(auth, (user) => {
+  const kontoSection = document.querySelector('div:has(> p:contains("Melde dich an"))');
+  
+  if (user && !user.isAnonymous) {
+    // User is logged in - show email and logout button
+    kontoSection.innerHTML = `
+      <div class="rounded-2xl p-4 space-y-2" style="background:#1e293b">
+        <p class="text-[10px] font-black uppercase tracking-wider od-muted">Konto</p>
+        <p class="text-[11px] font-bold od-dim leading-relaxed">
+          Angemeldet als: <strong>${user.email}</strong>
+        </p>
+        <button onclick="sbLogout()" class="btn3d w-full py-3 rounded-xl text-xs font-black bg-red-600 hover:bg-red-700 text-white">
+          Abmelden (Logout)
+        </button>
+      </div>
+    `;
+  } else {
+    // User is not logged in - show login forms (original content)
+    // Content will display naturally from the HTML
+  }
+});
+
+async function sbLogout() {
+  const { signOut } = await import('./sb-auth.js');
+  signOut(auth).then(() => {
+    window.location.href = './login.html';
+  });
+}
     }
 
     // The settings sheet is rendered on top of whatever tab is open.
@@ -6832,4 +6863,40 @@
       startTrialTimer();
     });
   });
+   
+  // ===== DISPLAY LOGGED-IN USER IN KONTO SECTION =====
+  import { auth, onAuthStateChanged, signOut as fbSignOut } from './sb-auth.js';
+  
+  onAuthStateChanged(auth, (user) => {
+    if (user && !user.isAnonymous) {
+      // User is logged in - find and update KONTO section
+      const sections = document.querySelectorAll('div[style*="background:#1e293b"]');
+      for (let section of sections) {
+        const text = section.textContent;
+        if (text.includes('Melde dich an')) {
+          section.innerHTML = `
+            <div class="rounded-2xl p-4 space-y-2" style="background:#1e293b">
+              <p class="text-[10px] font-black uppercase tracking-wider od-muted">Konto</p>
+              <p class="text-[11px] font-bold od-dim leading-relaxed">
+                Angemeldet als:<br><strong>${user.email}</strong>
+              </p>
+              <button onclick="logout()" class="btn3d w-full py-3 rounded-xl text-xs font-black bg-red-600 hover:bg-red-700 text-white">
+                Abmelden (Logout)
+              </button>
+            </div>
+          `;
+          break;
+        }
+      }
+    }
+  });
+
+  async function logout() {
+    const { signOut } = await import('./sb-auth.js');
+    const { auth: firebaseAuth } = await import('./sb-auth.js');
+    signOut(firebaseAuth).then(() => {
+      window.location.href = './login.html';
+    });
+  }    
 </script>
+</html>
