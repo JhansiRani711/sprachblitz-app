@@ -13,7 +13,7 @@ import { getFirestore } from 'https://www.gstatic.com/firebasejs/10.0.0/firebase
 
 // Firebase Configuration
 const firebaseConfig = {
-    apiKey: "AIzaSyDIgW7mv8iA8ap9IATuKZjEmZoF60Cd6vA",
+    apiKey: "AIzaSyAMk_LK3HqGX0B5wjo75hrMC71wzhxat0Q",
     authDomain: "sprachblitz.firebaseapp.com",
     projectId: "sprachblitz",
     storageBucket: "sprachblitz.firebasestorage.app",
@@ -29,6 +29,9 @@ const db = getFirestore(app);
 
 // Create Google Provider
 const googleProvider = new GoogleAuthProvider();
+
+// Base URL for redirects (GitHub Pages)
+const BASE_URL = 'https://sprachblitz-app.github.io/sprachblitz-app/';
 
 // Export Firebase services
 export { 
@@ -60,7 +63,8 @@ export function sbSignInGoogle() {
     return signInWithPopup(auth, googleProvider)
         .then((result) => {
             console.log('[Auth] Google sign-in successful:', result.user.email);
-            window.location.href = 'index.html';
+            // Redirect to main app
+            window.location.href = BASE_URL + 'index.html';
             return result.user;
         })
         .catch((error) => {
@@ -76,7 +80,8 @@ export function sbSignInAnonymously() {
     return signInAnonymously(auth)
         .then((result) => {
             console.log('[Auth] Anonymous sign-in successful');
-            window.location.href = 'index.html';
+            // Redirect to main app
+            window.location.href = BASE_URL + 'index.html';
             return result.user;
         })
         .catch((error) => {
@@ -98,7 +103,8 @@ export function sbSignInEmail(email, password) {
     return signInWithEmailAndPassword(auth, email, password)
         .then((result) => {
             console.log('[Auth] Email sign-in successful:', result.user.email);
-            window.location.href = 'index.html';
+            // Redirect to main app
+            window.location.href = BASE_URL + 'index.html';
             return result.user;
         })
         .catch((error) => {
@@ -130,7 +136,8 @@ export function sbCreateAccount(email, password, confirmPassword) {
     return createUserWithEmailAndPassword(auth, email, password)
         .then((result) => {
             console.log('[Auth] Account created successfully:', result.user.email);
-            window.location.href = 'index.html';
+            // Redirect to main app
+            window.location.href = BASE_URL + 'index.html';
             return result.user;
         })
         .catch((error) => {
@@ -146,7 +153,8 @@ export function sbLogout() {
     return signOut(auth)
         .then(() => {
             console.log('[Auth] Sign-out successful');
-            window.location.href = 'login.html';
+            // Redirect to login page
+            window.location.href = BASE_URL + 'login.html';
         })
         .catch((error) => {
             console.error('[Auth] Sign-out error:', error.message);
