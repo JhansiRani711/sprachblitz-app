@@ -12,8 +12,12 @@
   <link rel="apple-touch-icon" href="./apple-touch-icon.png">
   <link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png">
   <title>Sprachblitz – Deutsch lernen A1 bis B2</title>
-    <script src="https://www.gstatic.com/firebasejs/10.0.0/firebase-compat.js" defer></script>
-  <script src="./sbauth.js" defer></script>
+  <script type="module">
+    import { auth } from './sb-auth.js';
+    
+    // Firebase is now imported from sb-auth.js
+    console.log('Firebase ready');
+</script>
 
   <!-- Link previews on LinkedIn, WhatsApp, Slack, X, Facebook, iMessage. -->
   <meta name="description" content="Learn German A1 to B2 with Bruno: vocabulary, grammar, four skills and mock exams. Free, works offline, installs on any device.">
@@ -4400,23 +4404,16 @@
 
     function sbAccountBlockHTML() {
       const ready = (typeof sbAuthReady === 'function') && sbAuthReady();
-            // Show login buttons if not logged in
-      const u = window.sbUser;
-      if (!u) {
+      if (!ready) {
         return `
-          <div class="rounded-2xl p-4 space-y-2" style="background:#1e293b">
+          <div class="rounded-2xl p-4" style="background:#1e293b">
             <p class="text-[10px] font-black uppercase tracking-wider od-muted">Konto</p>
-            <button onclick="sbSignInGoogle()" class="w-full btn3d py-2.5 rounded-xl text-[11px] font-black text-white mb-2" style="background:#4f46e5">
-              🔵 Weiter mit Google
-            </button>
-            <button onclick="alert('Email-Anmeldung'); const e=prompt('Email:'); const p=prompt('Passwort:'); if(e&&p) sbSignInEmail(e,p);" class="w-full btn3d py-2.5 rounded-xl text-[11px] font-black text-white mb-2" style="background:#7c3aed">
-              ✉️ Email anmelden
-            </button>
-            <button onclick="alert('Konto erstellen'); const e=prompt('Email:'); const p=prompt('Passwort:'); if(e&&p) sbSignUpEmail(e,p);" class="w-full btn3d py-2.5 rounded-xl text-[11px] font-black text-white" style="background:#059669">
-              ➕ Konto erstellen
-            </button>
+            <p class="text-[11px] font-bold od-dim mt-1 leading-relaxed">
+              Cloud-Konten sind noch nicht eingerichtet. Trage die Firebase-Zugangsdaten
+              in <b>sb-auth.js</b> ein, dann erscheint hier die Anmeldung.</p>
           </div>`;
       }
+
       const u = window.sbUser;
       if (u) {
         return `
@@ -6655,50 +6652,119 @@
   <script src="./grammar-batch3.js"></script>
   <script src="./grammar-batch4.js"></script>
   <script type="module" src="./sb-auth.js"></script>
-       <!-- Guest Trial Feature (Robust) -->
-       <script>
-    // Guest trial: pure timer, alert shows once
-    setInterval(function() {
-      if (document.querySelector('[data-trial-modal]')) return;
+      <!-- IMPROVED GUEST TRIAL WITH COUNTDOWN BANNER -->
+<script>
+  const TRIAL_DURATION = 10 * 60 * 1000; // 10 minutes
+  let alertShown = false;
+  let isExpired = false;
+
+  function startTrialTimer() {
+    const key = 'sb_trial_start';
+    const stored = localStorage.getItem(key);
+    
+    if (!stored) {
+      localStorage.setItem(key, Date.now());
+      console.log('[trial] Timer started');
+    }
+    
+    updateTimer();
+  }
+
+  function updateTimer() {
+    const key = 'sb_trial_start';
+    const stored = localStorage.getItem(key);
+    
+    if (!stored) return;
+    
+    const startTime = parseInt(stored);
+    const now = Date.now();
+    const elapsed = now - startTime;
+    const timeLeft = TRIAL_DURATION - elapsed;
+    
+    const minutes = Math.floor(timeLeft / 1000 / 60);
+    const seconds = Math.floor((timeLeft / 1000) % 60);
+    const timeDisplay = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+    
+    if (timeLeft <= 0) {
+      isExpired = true;
+      showCountdownBanner('🔒 Trial EXPIRED! Login to continue →', true);
+      blockApp();
       
-      const key = 'sb_trial_start';
-      const warnKey = 'sb_trial_warned';
-      const stored = localStorage.getItem(key);
-      
-      if (!stored) {
-        localStorage.setItem(key, Date.now());
-        console.log('[trial] Timer started');
-        return;
+      if (!alertShown) {
+        alert('⏱️ Your 10-minute trial has ended!\n\nPlease LOGIN to continue learning and save your progress.');
+        alertShown = true;
       }
-      
-      const elapsed = Math.floor((Date.now() - parseInt(stored)) / 1000 / 60);
-      
-      // Show alert at 5 min, but only ONCE
-      if (elapsed >= 5 && !localStorage.getItem(warnKey)) {
-        localStorage.setItem(warnKey, 'true');
-        alert('⏰ 5 minutes left! Sign up to save your progress and continue learning.');
-        console.log('[trial] Warning shown once at 5 min');
-      }
-      
-      // Block at 10 min
-      if (elapsed >= 10) {
-        if (!document.querySelector('[data-trial-modal]')) {
-          const modal = document.createElement('div');
-          modal.setAttribute('data-trial-modal', '1');
-          modal.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.7);z-index:9999;display:flex;align-items:center;justify-content:center;font-family:system-ui,sans-serif;';
-          modal.innerHTML = `
-            <div style="background:white;padding:40px;border-radius:8px;text-align:center;max-width:400px;box-shadow:0 10px 40px rgba(0,0,0,0.3);">
-              <h2 style="margin:0 0 16px;font-size:24px;">⏱️ Trial Ended</h2>
-              <p style="margin:0 0 24px;color:#666;font-size:16px;line-height:1.5;">Your 10-minute free trial is complete. Sign up to save your progress and continue learning.</p>
-              <button onclick="document.querySelector('[data-tab=settings]')?.click();" style="background:#4F46E5;color:white;border:none;padding:12px 24px;border-radius:6px;cursor:pointer;font-weight:bold;font-size:16px;transition:0.2s;">
-                Sign Up / Log In
-              </button>
-            </div>
-          `;
-          document.body.appendChild(modal);
-          console.log('[trial] Modal shown once at 10 min');
-        }
-      }
-    }, 5000);
-  </script>
+      return;
+    }
+    
+    if (timeLeft <= 5 * 60 * 1000) {
+      showCountdownBanner(`⏱️ ${timeDisplay} left - Login to save! ⚠️`, false);
+    } else {
+      showCountdownBanner(`⏱️ Trial: ${timeDisplay}`, false);
+    }
+    
+    setTimeout(updateTimer, 1000);
+  }
+
+  function showCountdownBanner(message, expired) {
+    if (!document.getElementById('trialBanner')) {
+      const banner = document.createElement('div');
+      banner.id = 'trialBanner';
+      banner.style.cssText = `
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 15px;
+        text-align: center;
+        font-weight: bold;
+        z-index: 9997;
+        font-size: 16px;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+      `;
+      document.body.prepend(banner);
+    }
+    
+    const banner = document.getElementById('trialBanner');
+    banner.textContent = message;
+    
+    if (expired) {
+      banner.style.background = 'linear-gradient(90deg, #ff6b6b 0%, #ff5252 100%)';
+    } else if (message.includes('left')) {
+      banner.style.background = 'linear-gradient(90deg, #ff9f43 0%, #ff7e5f 100%)';
+    } else {
+      banner.style.background = 'linear-gradient(90deg, #667eea 0%, #764ba2 100%)';
+    }
+  }
+
+  function blockApp() {
+    if (!document.querySelector('[data-trial-modal]')) {
+      const modal = document.createElement('div');
+      modal.setAttribute('data-trial-modal', '1');
+      modal.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.8);z-index:9998;display:flex;align-items:center;justify-content:center;font-family:system-ui,sans-serif;';
+      modal.innerHTML = `
+        <div style="background:white;padding:40px;border-radius:12px;text-align:center;max-width:400px;box-shadow:0 10px 40px rgba(0,0,0,0.3);">
+          <h2 style="margin:0 0 16px;font-size:24px;color:#333;">⏱️ Trial Ended</h2>
+          <p style="margin:0 0 24px;color:#666;font-size:16px;line-height:1.5;">Your 10-minute free trial is complete. Login to save your progress and continue learning.</p>
+          <button id="trialSignupBtn" style="background:#667eea;color:white;border:none;padding:12px 24px;border-radius:6px;cursor:pointer;font-weight:bold;font-size:16px;">
+            Go to Login
+          </button>
+        </div>
+      `;
+      document.body.appendChild(modal);
+
+      document.getElementById('trialSignupBtn').addEventListener('click', function() {
+        window.location.href = 'login.html';
+      });
+    }
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', startTrialTimer);
+  } else {
+    startTrialTimer();
+  }
+</script>
 </html>
