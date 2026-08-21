@@ -6689,13 +6689,9 @@
       return '';
     }
   </script>
-     <script src="./grammar-batch1.js"></script>
-  <script src="./grammar-batch2.js"></script>
-  <script src="./grammar-batch3.js"></script>
-  <script src="./grammar-batch4.js"></script>
-  <script type="module" src="./sb-auth.js"></script>
-      <!-- IMPROVED GUEST TRIAL WITH COUNTDOWN BANNER -->
-<script>
+     <script type="module">
+  import { auth, onAuthStateChanged } from './sb-auth.js';
+
   document.addEventListener('DOMContentLoaded', function() {
     console.log('[trial] DOM ready, starting timer');
     
@@ -6811,7 +6807,29 @@
       }
     }
 
-    startTrialTimer();
+    // CHECK IF USER IS AUTHENTICATED - ONLY START TRIAL FOR ANONYMOUS USERS
+    onAuthStateChanged(auth, (user) => {
+      console.log('[trial] Auth state changed. User:', user ? user.email : 'Anonymous');
+      
+      if (user && !user.isAnonymous) {
+        // User is logged in - don't show trial
+        console.log('[trial] User is authenticated, skipping trial');
+        
+        // Remove trial banner if it exists
+        const banner = document.getElementById('trialBanner');
+        if (banner) banner.remove();
+        document.body.style.paddingTop = '0';
+        
+        // Remove trial modal if it exists
+        const modal = document.querySelector('[data-trial-modal]');
+        if (modal) modal.remove();
+        
+        return;
+      }
+      
+      // User is anonymous - start trial
+      console.log('[trial] User is anonymous or not authenticated, starting trial');
+      startTrialTimer();
+    });
   });
 </script>
-</html>
