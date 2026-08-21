@@ -13,7 +13,7 @@ import { getFirestore } from 'https://www.gstatic.com/firebasejs/10.0.0/firebase
 
 // Firebase Configuration
 const firebaseConfig = {
-    apiKey: "AIzaSyDIgW7mv8iA8ap9IATuKZjEmZoF60Cd6vA",
+    apiKey: "AIzaSyAMk_LK3HqGX0B5wjo75hrMC71wzhxat0Q",
     authDomain: "sprachblitz.firebaseapp.com",
     projectId: "sprachblitz",
     storageBucket: "sprachblitz.firebasestorage.app",
@@ -27,7 +27,7 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
-// Export Firebase services and functions
+// Export Firebase services
 export { 
     auth, 
     db, 
@@ -40,9 +40,16 @@ export {
     signOut
 };
 
-// Export sbAuthReady function - tells the app that Firebase is initialized
+// Auth ready function
+let authInitialized = false;
+
+onAuthStateChanged(auth, (user) => {
+    authInitialized = true;
+    console.log('[Firebase] Auth ready. User:', user ? user.email : 'Anonymous');
+});
+
 export function sbAuthReady() {
-    return true;
+    return authInitialized || true;
 }
 
-console.log('[Firebase] Initialized successfully');
+console.log('[Firebase] Initialization started');
