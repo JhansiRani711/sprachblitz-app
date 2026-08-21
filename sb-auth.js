@@ -64,7 +64,7 @@ export function sbSignInGoogle() {
         .then((result) => {
             console.log('[Auth] Google sign-in successful:', result.user.email);
             // Redirect to main app
-            window.location.href = BASE_URL + 'index.html';
+            window.location.href = 'https://sprachblitz-app.github.io/sprachblitz-app/index.html';
             return result.user;
         })
         .catch((error) => {
@@ -81,7 +81,7 @@ export function sbSignInAnonymously() {
         .then((result) => {
             console.log('[Auth] Anonymous sign-in successful');
             // Redirect to main app
-            window.location.href = BASE_URL + 'index.html';
+            window.location.href = 'https://sprachblitz-app.github.io/sprachblitz-app/index.html';
             return result.user;
         })
         .catch((error) => {
@@ -104,7 +104,7 @@ export function sbSignInEmail(email, password) {
         .then((result) => {
             console.log('[Auth] Email sign-in successful:', result.user.email);
             // Redirect to main app
-            window.location.href = BASE_URL + 'index.html';
+           window.location.href = 'https://sprachblitz-app.github.io/sprachblitz-app/index.html';
             return result.user;
         })
         .catch((error) => {
@@ -137,7 +137,7 @@ export function sbCreateAccount(email, password, confirmPassword) {
         .then((result) => {
             console.log('[Auth] Account created successfully:', result.user.email);
             // Redirect to main app
-            window.location.href = BASE_URL + 'index.html';
+           window.location.href = 'https://sprachblitz-app.github.io/sprachblitz-app/index.html';
             return result.user;
         })
         .catch((error) => {
@@ -154,7 +154,7 @@ export function sbLogout() {
         .then(() => {
             console.log('[Auth] Sign-out successful');
             // Redirect to login page
-            window.location.href = BASE_URL + 'login.html';
+           window.location.href = 'https://sprachblitz-app.github.io/sprachblitz-app/index.html';
         })
         .catch((error) => {
             console.error('[Auth] Sign-out error:', error.message);
