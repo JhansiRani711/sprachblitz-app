@@ -13,7 +13,7 @@ import { getFirestore } from 'https://www.gstatic.com/firebasejs/10.0.0/firebase
 
 // Firebase Configuration
 const firebaseConfig = {
-    apiKey: "AIzaSyAMk_LK3HqGX0B5wjo75hrMC71wzhxat0Q",
+    apiKey: "AIzaSyBkPYfPGWXkbu-x2opF3TVrt3ADXZYimak",
     authDomain: "sprachblitz.firebaseapp.com",
     projectId: "sprachblitz",
     storageBucket: "sprachblitz.firebasestorage.app",
