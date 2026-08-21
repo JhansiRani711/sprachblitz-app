@@ -4400,16 +4400,23 @@
 
     function sbAccountBlockHTML() {
       const ready = (typeof sbAuthReady === 'function') && sbAuthReady();
-      if (!ready) {
+            // Show login buttons if not logged in
+      const u = window.sbUser;
+      if (!u) {
         return `
-          <div class="rounded-2xl p-4" style="background:#1e293b">
+          <div class="rounded-2xl p-4 space-y-2" style="background:#1e293b">
             <p class="text-[10px] font-black uppercase tracking-wider od-muted">Konto</p>
-            <p class="text-[11px] font-bold od-dim mt-1 leading-relaxed">
-              Cloud-Konten sind noch nicht eingerichtet. Trage die Firebase-Zugangsdaten
-              in <b>sb-auth.js</b> ein, dann erscheint hier die Anmeldung.</p>
+            <button onclick="sbSignInGoogle()" class="w-full btn3d py-2.5 rounded-xl text-[11px] font-black text-white mb-2" style="background:#4f46e5">
+              🔵 Weiter mit Google
+            </button>
+            <button onclick="alert('Email-Anmeldung'); const e=prompt('Email:'); const p=prompt('Passwort:'); if(e&&p) sbSignInEmail(e,p);" class="w-full btn3d py-2.5 rounded-xl text-[11px] font-black text-white mb-2" style="background:#7c3aed">
+              ✉️ Email anmelden
+            </button>
+            <button onclick="alert('Konto erstellen'); const e=prompt('Email:'); const p=prompt('Passwort:'); if(e&&p) sbSignUpEmail(e,p);" class="w-full btn3d py-2.5 rounded-xl text-[11px] font-black text-white" style="background:#059669">
+              ➕ Konto erstellen
+            </button>
           </div>`;
       }
-
       const u = window.sbUser;
       if (u) {
         return `
