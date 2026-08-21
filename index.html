@@ -6676,117 +6676,122 @@
   <script type="module" src="./sb-auth.js"></script>
       <!-- IMPROVED GUEST TRIAL WITH COUNTDOWN BANNER -->
 <script>
-  const TRIAL_DURATION = 10 * 60 * 1000; // 10 minutes
-  let alertShown = false;
-  let isExpired = false;
+  document.addEventListener('DOMContentLoaded', function() {
+    console.log('[trial] DOM ready, starting timer');
+    
+    const TRIAL_DURATION = 10 * 60 * 1000;
+    let alertShown = false;
+    let isExpired = false;
 
-  function startTrialTimer() {
-    const key = 'sb_trial_start';
-    const stored = localStorage.getItem(key);
-    
-    if (!stored) {
-      localStorage.setItem(key, Date.now());
-      console.log('[trial] Timer started');
-    }
-    
-    updateTimer();
-  }
-
-  function updateTimer() {
-    const key = 'sb_trial_start';
-    const stored = localStorage.getItem(key);
-    
-    if (!stored) return;
-    
-    const startTime = parseInt(stored);
-    const now = Date.now();
-    const elapsed = now - startTime;
-    const timeLeft = TRIAL_DURATION - elapsed;
-    
-    const minutes = Math.floor(timeLeft / 1000 / 60);
-    const seconds = Math.floor((timeLeft / 1000) % 60);
-    const timeDisplay = `${minutes}:${seconds.toString().padStart(2, '0')}`;
-    
-    if (timeLeft <= 0) {
-      isExpired = true;
-      showCountdownBanner('🔒 Trial EXPIRED! Login to continue →', true);
-      blockApp();
+    function startTrialTimer() {
+      const key = 'sb_trial_start';
+      const stored = localStorage.getItem(key);
       
-      if (!alertShown) {
-        alert('⏱️ Your 10-minute trial has ended!\n\nPlease LOGIN to continue learning and save your progress.');
-        alertShown = true;
+      if (!stored) {
+        localStorage.setItem(key, Date.now());
+        console.log('[trial] Timer started');
       }
-      return;
+      
+      updateTimer();
     }
-    
-    if (timeLeft <= 5 * 60 * 1000) {
-      showCountdownBanner(`⏱️ ${timeDisplay} left - Login to save! ⚠️`, false);
-    } else {
-      showCountdownBanner(`⏱️ Trial: ${timeDisplay}`, false);
-    }
-    
-    setTimeout(updateTimer, 1000);
-  }
 
-  function showCountdownBanner(message, expired) {
-    if (!document.getElementById('trialBanner')) {
-      const banner = document.createElement('div');
-      banner.id = 'trialBanner';
-      banner.style.cssText = `
-        position: fixed;
-        top: 0;
-        left: 0;
-        right: 0;
-        background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
-        color: white;
-        padding: 15px;
-        text-align: center;
-        font-weight: bold;
-        z-index: 9997;
-        font-size: 16px;
-        box-shadow: 0 4px 6px rgba(0,0,0,0.2);
-      `;
-     document.body.style.paddingTop = '50px';
+    function updateTimer() {
+      const key = 'sb_trial_start';
+      const stored = localStorage.getItem(key);
+      
+      if (!stored) {
+        startTrialTimer();
+        return;
+      }
+      
+      const startTime = parseInt(stored);
+      const now = Date.now();
+      const elapsed = now - startTime;
+      const timeLeft = TRIAL_DURATION - elapsed;
+      
+      const minutes = Math.floor(timeLeft / 1000 / 60);
+      const seconds = Math.floor((timeLeft / 1000) % 60);
+      const timeDisplay = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+      
+      if (timeLeft <= 0) {
+        isExpired = true;
+        showCountdownBanner('🔒 Trial EXPIRED! Login to continue →', true);
+        blockApp();
+        
+        if (!alertShown) {
+          alert('⏱️ Your 10-minute trial has ended!\n\nPlease LOGIN to continue learning and save your progress.');
+          alertShown = true;
+        }
+        return;
+      }
+      
+      if (timeLeft <= 5 * 60 * 1000) {
+        showCountdownBanner(`⏱️ ${timeDisplay} left - Login to save! ⚠️`, false);
+      } else {
+        showCountdownBanner(`⏱️ Trial: ${timeDisplay}`, false);
+      }
+      
+      setTimeout(updateTimer, 1000);
     }
-    
-    const banner = document.getElementById('trialBanner');
-    banner.textContent = message;
-    
-    if (expired) {
-      banner.style.background = 'linear-gradient(90deg, #ff6b6b 0%, #ff5252 100%)';
-    } else if (message.includes('left')) {
-      banner.style.background = 'linear-gradient(90deg, #ff9f43 0%, #ff7e5f 100%)';
-    } else {
-      banner.style.background = 'linear-gradient(90deg, #667eea 0%, #764ba2 100%)';
+
+    function showCountdownBanner(message, expired) {
+      let banner = document.getElementById('trialBanner');
+      
+      if (!banner) {
+        banner = document.createElement('div');
+        banner.id = 'trialBanner';
+        banner.style.cssText = `
+          position: fixed;
+          top: 0;
+          left: 0;
+          right: 0;
+          background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+          color: white;
+          padding: 15px;
+          text-align: center;
+          font-weight: bold;
+          z-index: 9997;
+          font-size: 16px;
+          box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+        `;
+        document.body.prepend(banner);
+        document.body.style.paddingTop = '50px';
+      }
+      
+      banner.textContent = message;
+      
+      if (expired) {
+        banner.style.background = 'linear-gradient(90deg, #ff6b6b 0%, #ff5252 100%)';
+      } else if (message.includes('left')) {
+        banner.style.background = 'linear-gradient(90deg, #ff9f43 0%, #ff7e5f 100%)';
+      } else {
+        banner.style.background = 'linear-gradient(90deg, #667eea 0%, #764ba2 100%)';
+      }
     }
-  }
 
-  function blockApp() {
-    if (!document.querySelector('[data-trial-modal]')) {
-      const modal = document.createElement('div');
-      modal.setAttribute('data-trial-modal', '1');
-      modal.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.8);z-index:9998;display:flex;align-items:center;justify-content:center;font-family:system-ui,sans-serif;';
-      modal.innerHTML = `
-        <div style="background:white;padding:40px;border-radius:12px;text-align:center;max-width:400px;box-shadow:0 10px 40px rgba(0,0,0,0.3);">
-          <h2 style="margin:0 0 16px;font-size:24px;color:#333;">⏱️ Trial Ended</h2>
-          <p style="margin:0 0 24px;color:#666;font-size:16px;line-height:1.5;">Your 10-minute free trial is complete. Login to save your progress and continue learning.</p>
-          <button id="trialSignupBtn" style="background:#667eea;color:white;border:none;padding:12px 24px;border-radius:6px;cursor:pointer;font-weight:bold;font-size:16px;">
-            Go to Login
-          </button>
-        </div>
-      `;
-      document.body.appendChild(modal);
+    function blockApp() {
+      if (!document.querySelector('[data-trial-modal]')) {
+        const modal = document.createElement('div');
+        modal.setAttribute('data-trial-modal', '1');
+        modal.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.8);z-index:9998;display:flex;align-items:center;justify-content:center;font-family:system-ui,sans-serif;';
+        modal.innerHTML = `
+          <div style="background:white;padding:40px;border-radius:12px;text-align:center;max-width:400px;box-shadow:0 10px 40px rgba(0,0,0,0.3);">
+            <h2 style="margin:0 0 16px;font-size:24px;color:#333;">⏱️ Trial Ended</h2>
+            <p style="margin:0 0 24px;color:#666;font-size:16px;line-height:1.5;">Your 10-minute free trial is complete. Login to save your progress and continue learning.</p>
+            <button id="trialSignupBtn" style="background:#667eea;color:white;border:none;padding:12px 24px;border-radius:6px;cursor:pointer;font-weight:bold;font-size:16px;">
+              Go to Settings
+            </button>
+          </div>
+        `;
+        document.body.appendChild(modal);
 
-      document.getElementById('trialSignupBtn').addEventListener('click', function() {
-        window.location.href = 'login.html';
-      });
+        document.getElementById('trialSignupBtn').addEventListener('click', function() {
+          window.location.href = 'login.html';
+        });
+      }
     }
-  }
 
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', startTrialTimer);
-  } else {
     startTrialTimer();
-  }
+  });
 </script>
 </html>
