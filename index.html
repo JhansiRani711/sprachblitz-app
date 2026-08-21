@@ -17,25 +17,25 @@
     
     window.sbAuthReady = sbAuthReady;
     
-    // Login button handlers
-    window.loginAnonymously = async function() {
+    // KONTO button handlers
+    window.sbSignInAnonymously = async function() {
         try {
             await signInAnonymously(auth);
-            alert('Logged in anonymously!');
+            alert('✅ Logged in! Your progress is now saved.');
             location.reload();
         } catch(error) {
-            alert('Error: ' + error.message);
+            alert('❌ Error: ' + error.message);
         }
     }
     
-    window.loginGoogle = async function() {
+    window.sbSignInGoogle = async function() {
         try {
             const provider = new GoogleAuthProvider();
             await signInWithPopup(auth, provider);
-            alert('Logged in with Google!');
+            alert('✅ Logged in with Google!');
             location.reload();
         } catch(error) {
-            alert('Error: ' + error.message);
+            alert('❌ Error: ' + error.message);
         }
     }
     
