@@ -6826,6 +6826,22 @@ async function sbLogout() {
         const banner = document.getElementById('trialBanner');
         if (banner) banner.remove();
         document.body.style.paddingTop = '0';
+                
+        // Update KONTO section to show user email and logout button
+        const kontoSection = document.querySelector('[style*="background:#1e293b"]');
+        if (kontoSection && kontoSection.textContent.includes('Melde dich an')) {
+          kontoSection.innerHTML = `
+            <div class="rounded-2xl p-4 space-y-2" style="background:#1e293b">
+              <p class="text-[10px] font-black uppercase tracking-wider od-muted">Konto</p>
+              <p class="text-[11px] font-bold od-dim leading-relaxed">
+                📧 <strong>${user.email}</strong>
+              </p>
+              <button onclick="sbLogout()" class="btn3d w-full py-3 rounded-xl text-xs font-black bg-red-600 hover:bg-red-700 text-white">
+                Abmelden (Logout)
+              </button>
+            </div>
+          `;
+        }
         
         // Remove trial modal if it exists
         const modal = document.querySelector('[data-trial-modal]');
