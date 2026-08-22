@@ -74,15 +74,16 @@ onAuthStateChanged(auth, (user) => {
         }
     }
 });
-
 function updateLoginDisplay(user) {
     console.log('🔄 Updating login display for:', user.email);
     
-    let kontoElement = document.querySelector('[data-konto]') 
+    // Find KONTO section - try ALL possible selectors
+    let kontoElement = document.querySelector('[style*="background:#1e293b"]')
+      || document.querySelector('[data-konto]')
       || document.querySelector('.konto-section')
       || Array.from(document.querySelectorAll('div')).find(el => 
-          el.textContent.includes('Melde dich an') && 
-          el.querySelector('button')
+          el.textContent.includes('Melde dich') || 
+          el.textContent.includes('KONTO')
         );
     
     if (kontoElement) {
