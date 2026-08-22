@@ -1,6 +1,42 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <script>
+    // ===== AUDIO INITIALIZATION FOR iOS/Android =====
+    console.log('🔊 Audio init script loaded');
+    
+    window.initAudio = function() {
+      try {
+        const AudioContext = window.AudioContext || window.webkitAudioContext;
+        if (!AudioContext) return;
+        
+        const ctx = new AudioContext();
+        console.log('🔊 AudioContext state:', ctx.state);
+        
+        if (ctx.state === 'suspended') {
+          const buf = ctx.createBuffer(1, 1, 22050);
+          const src = ctx.createBufferSource();
+          src.buffer = buf;
+          src.connect(ctx.destination);
+          try { src.start(0); } catch (e) {}
+          
+          ctx.resume().then(() => {
+            console.log('✅ Audio context resumed for iOS');
+          });
+        }
+      } catch (e) {
+        console.log('Audio init error (non-critical):', e.message);
+      }
+    };
+    
+    // Initialize on various events
+    document.addEventListener('DOMContentLoaded', window.initAudio);
+    document.addEventListener('click', window.initAudio, { once: false });
+    document.addEventListener('touchstart', window.initAudio, { once: false });
+    document.addEventListener('touchend', window.initAudio, { once: false });
+    
+    console.log('✅ Audio event listeners registered');
+  </script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <meta name="google" content="notranslate">
@@ -49,6 +85,18 @@
             alert('Please enter email and password');
             return;
         }
+          
+    // Logout function
+    window.sbLogout = async function() {
+        try {
+            const { signOut } = await import('./sb-auth.js');
+            await signOut(auth);
+            console.log('✅ Logged out');
+            location.reload();
+        } catch(error) {
+            alert('❌ Logout error: ' + error.message);
+        }
+    }
         
         try {
             const result = await createUserWithEmailAndPassword(auth, email, password);
@@ -6791,20 +6839,51 @@ async function sbLogout() {
         banner.style.background = 'linear-gradient(90deg, #667eea 0%, #764ba2 100%)';
       }
     }
-
-    function blockApp() {
-      if (!document.querySelector('[data-trial-modal]')) {
-        const modal = document.createElement('div');
-        modal.setAttribute('data-trial-modal', '1');
-        modal.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.8);z-index:9998;display:flex;align-items:center;justify-content:center;font-family:system-ui,sans-serif;';
-        modal.innerHTML = `
-          <div style="background:white;padding:40px;border-radius:12px;text-align:center;max-width:400px;box-shadow:0 10px 40px rgba(0,0,0,0.3);">
-            <h2 style="margin:0 0 16px;font-size:24px;color:#333;">⏱️ Trial Ended</h2>
-            <p style="margin:0 0 24px;color:#666;font-size:16px;line-height:1.5;">Your 10-minute free trial is complete. Login to save your progress and continue learning.</p>
-            <button id="trialSignupBtn" style="background:#667eea;color:white;border:none;padding:12px 24px;border-radius:6px;cursor:pointer;font-weight:bold;font-size:16px;">
-              Go to Settings
-            </button>
-          </div>
+        // Update KONTO section to show user email and logout button
+        console.log('✅ User logged in! Updating KONTO display...');
+        
+        // Try multiple selectors to find KONTO section
+        let kontoElement = document.querySelector('[data-konto]') 
+          || document.querySelector('.konto-section')
+          || Array.from(document.querySelectorAll('div')).find(el => 
+              el.textContent.includes('Melde dich an') && 
+              el.querySelector('button')
+            );
+        
+        if (kontoElement) {
+          console.log('✅ Found KONTO element, updating display...');
+          kontoElement.innerHTML = `
+            <div class="rounded-2xl p-4 space-y-2" style="background:#1e293b">
+              <p class="text-[10px] font-black uppercase tracking-wider od-muted">✅ Konto</p>
+              <p class="text-[11px] font-bold od-dim leading-relaxed">
+                📧 <strong>${user.email}</strong>
+              </p>
+              <p class="text-[10px] text-green-400 font-bold">✅ Logged In Successfully</p>
+              <button onclick="sbLogout()" class="btn3d w-full py-3 rounded-xl text-xs font-black bg-red-600 hover:bg-red-700 text-white">
+                Logout
+              </button>
+            </div>
+          `;
+        } else {
+          console.warn('⚠️ KONTO element not found, will retry...');
+          setTimeout(() => {
+            const kb = document.querySelector('[data-konto]');
+            if (kb) {
+              kb.innerHTML = `
+                <div class="rounded-2xl p-4 space-y-2" style="background:#1e293b">
+                  <p class="text-[10px] font-black uppercase tracking-wider od-muted">✅ Konto</p>
+                  <p class="text-[11px] font-bold od-dim leading-relaxed">
+                    📧 <strong>${user.email}</strong>
+                  </p>
+                  <p class="text-[10px] text-green-400 font-bold">✅ Logged In Successfully</p>
+                  <button onclick="sbLogout()" class="btn3d w-full py-3 rounded-xl text-xs font-black bg-red-600 hover:bg-red-700 text-white">
+                    Logout
+                  </button>
+                </div>
+              `;
+            }
+          }, 500);
+        }
         `;
         document.body.appendChild(modal);
 
