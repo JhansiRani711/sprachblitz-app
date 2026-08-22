@@ -64,15 +64,20 @@
         }
     }
     
-    // Google login
+       // Google login
     window.sbSignInGoogle = async function() {
         try {
+            console.log('🔐 Starting Google sign-in...');
             const provider = new GoogleAuthProvider();
             const result = await signInWithPopup(auth, provider);
-            console.log('✅ Logged in with Google:', result.user.email);
-            setTimeout(() => location.reload(), 500);
+            console.log('✅ Google login success:', result.user.email);
+            // Force page reload after small delay
+            setTimeout(() => {
+                window.location.href = window.location.href;
+            }, 1000);
         } catch(error) {
-            alert('❌ Error: ' + error.message);
+            console.error('Google login error:', error);
+            alert('❌ Google Sign-In Error:\n' + error.message + '\n\nMake sure you:\n1. Accept the Google popup\n2. Verify your email\n3. Check Firebase OAuth consent screen is configured');
         }
     }
     
