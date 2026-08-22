@@ -1,25 +1,25 @@
 // ===== FIREBASE SETUP =====
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js';
-import { getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged, signOut, signInWithEmailAndPassword, createUserWithEmailAndPassword } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js';
+import { getAuth, signInAnonymously, signInWithPopup, GoogleAuthProvider, onAuthStateChanged, signOut, signInWithEmailAndPassword, createUserWithEmailAndPassword } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js';
 import { getFirestore, doc, setDoc, getDoc, collection, query, where, getDocs } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js';
 
+// ===== FIREBASE CONFIG =====
 const firebaseConfig = {
-    apiKey: "AIzaSyAVkPB4-OhcVN5nJ8qR2mX9pL1zY3vW5aB",
-    authDomain: "sprachblitz-app.firebaseapp.com",
-    projectId: "sprachblitz-app",
-    storageBucket: "sprachblitz-app.appspot.com",
-    messagingSenderId: "123456789012",
-    appId: "1:123456789012:web:abc123def456"
+  apiKey: "AIzaSyAVkPB4-OhcVN5nJ8qR2mX9pL1zY3vW5aB",
+  authDomain: "sprachblitz-app.firebaseapp.com",
+  projectId: "sprachblitz-app",
+  storageBucket: "sprachblitz-app.appspot.com",
+  messagingSenderId: "123456789012",
+  appId: "1:123456789012:web:abc123def456"
 };
 
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
-const googleProvider = new GoogleAuthProvider();
 
-// ===== AUDIO INITIALIZATION (works on iOS) =====
+// ===== AUDIO INITIALIZATION =====
 function initializeAudio() {
-    console.log('🔊 Initializing audio context...');
+    console.log('🔊 Initializing audio...');
     try {
         const AudioContext = window.AudioContext || window.webkitAudioContext;
         const ctx = new AudioContext();
@@ -30,29 +30,23 @@ function initializeAudio() {
             });
         }
         
-        // Unlock audio with user interaction
         const unlock = () => {
-            const emptyBuffer = ctx.createBuffer(1, 1, 22050);
-            const source = ctx.createBufferSource();
-            source.buffer = emptyBuffer;
-            source.connect(ctx.destination);
-            try {
-                source.start(0);
-            } catch (e) {}
-            console.log('✅ Audio unlocked via user interaction');
-            document.removeEventListener('click', unlock);
-            document.removeEventListener('touchstart', unlock);
+            const buf = ctx.createBuffer(1, 1, 22050);
+            const src = ctx.createBufferSource();
+            src.buffer = buf;
+            src.connect(ctx.destination);
+            try { src.start(0); } catch (e) {}
+            console.log('✅ Audio unlocked');
         };
         
         document.addEventListener('click', unlock, { once: true });
         document.addEventListener('touchstart', unlock, { once: true });
         
-    } catch (error) {
-        console.log('⚠️ Audio init error (non-critical):', error);
+    } catch (e) {
+        console.log('Audio init error:', e);
     }
 }
 
-// Initialize audio immediately
 if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', initializeAudio);
 } else {
@@ -64,52 +58,70 @@ let authInitialized = false;
 
 onAuthStateChanged(auth, (user) => {
     authInitialized = true;
-    console.log('[Firebase] Auth state changed. User:', user ? user.email : 'Anonymous');
+    console.log('[Firebase] Auth ready. User:', user ? user.email : 'Anonymous');
     
     if (user) {
         console.log('✅ USER LOGGED IN:', user.email);
         updateLoginDisplay(user);
         
-        // Hide trial banner when logged in
         const trialBanner = document.getElementById('trial-banner');
         if (trialBanner) {
             trialBanner.style.display = 'none';
         }
         
-        // Stop trial timer
         if (window.trialInterval) {
             clearInterval(window.trialInterval);
-            console.log('⏸️ Trial timer stopped');
         }
-        
-    } else {
-        console.log('User not logged in');
-        hideLoginDisplay();
     }
 });
 
 function updateLoginDisplay(user) {
     console.log('🔄 Updating login display for:', user.email);
     
-    // Find all possible KONTO sections
-    const kontoSelectors = [
-        '#konto',
-        '[data-tab="konto"]',
-        '.konto-section',
-        '[data-section="konto"]',
-        document.getElementById('konto-content'),
-        document.querySelector('[data-konto]'),
-        // Try to find by text content
-        ...Array.from(document.querySelectorAll('*')).filter(el => 
-            el.textContent.includes('KONTO') || el.textContent.includes('Konto')
-        )
-    ];
+    let kontoElement = document.querySelector('[data-konto]') 
+      || document.querySelector('.konto-section')
+      || Array.from(document.querySelectorAll('div')).find(el => 
+          el.textContent.includes('Melde dich an') && 
+          el.querySelector('button')
+        );
     
-    let found = false;
-    
-    // Try each selector
-    for (let selector of kontoSelectors) {
-        let element = null;
-        
-        if (typeof selector === 'string') {
-            element =
+    if (kontoElement) {
+        console.log('✅ Found KONTO element');
+        kontoElement.innerHTML = `
+            <div class="rounded-2xl p-4 space-y-2" style="background:#1e293b">
+              <p class="text-[10px] font-black uppercase tracking-wider od-muted">✅ Konto</p>
+              <p class="text-[11px] font-bold od-dim leading-relaxed">
+                📧 <strong>${user.email}</strong>
+              </p>
+              <p class="text-[10px] text-green-400 font-bold">✅ Logged In Successfully</p>
+              <button onclick="sbLogout()" class="btn3d w-full py-3 rounded-xl text-xs font-black bg-red-600 hover:bg-red-700 text-white">
+                Logout
+              </button>
+            </div>
+          `;
+    }
+}
+
+// ===== EXPORTS =====
+export { 
+  auth, 
+  db,
+  signInAnonymously, 
+  signInWithPopup, 
+  GoogleAuthProvider, 
+  onAuthStateChanged, 
+  signOut,
+  signInWithEmailAndPassword,
+  createUserWithEmailAndPassword,
+  doc,
+  setDoc,
+  getDoc,
+  collection,
+  query,
+  where,
+  getDocs
+};
+
+export function sbAuthReady() {
+    return authInitialized;
+}
